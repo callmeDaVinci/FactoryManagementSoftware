@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>530</ApplicationRevision>
+    <ApplicationRevision>532</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -243,6 +243,12 @@
     </Compile>
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmSBBBodyCalculation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBBodyCalculation.Designer.cs">
+      <DependentUpon>frmSBBBodyCalculation.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmForecastEditRecord.cs">
       <SubType>Form</SubType>
@@ -1092,6 +1098,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBBodyCalculation.resx">
+      <DependentUpon>frmSBBBodyCalculation.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmForecastEditRecord.resx">
       <DependentUpon>frmForecastEditRecord.cs</DependentUpon>

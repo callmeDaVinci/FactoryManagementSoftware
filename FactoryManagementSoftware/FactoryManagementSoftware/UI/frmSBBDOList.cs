@@ -4038,6 +4038,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = color;
 
             #endregion
+
             ExcelRowHeight(xlWorkSheet, rowDeliveryOrder, 37.8);
 
         }
@@ -4540,8 +4541,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\SemenyihAdminPC\Admin Server\(1.OFFICE)\(1.DO)\" + folderName;
-
+                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(1.DO)\" + folderName;
                 }
 
                 Directory.CreateDirectory(path);

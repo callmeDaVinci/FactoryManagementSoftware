@@ -8,11 +8,17 @@ namespace FactoryManagementSoftware.BLL
 {
     public class itemBLL
     {
+        public int item_ready_stock { get; set; }
+        public int standard_packing_qty { get; set; }
+
         public string item_cat { get; set; }//item category
         public string item_material { get; set; } = null;//item raw material
         public string item_recycle { get; set; } = null;
         public string item_name { get; set; }
         public string item_code { get; set; }
+        public string packaging_code { get; set; }
+        public string packaging_name { get; set; }
+
         public string item_code_present { get; set; }
         public string mould_code { get; set; }
         public int combination_code { get; set; }

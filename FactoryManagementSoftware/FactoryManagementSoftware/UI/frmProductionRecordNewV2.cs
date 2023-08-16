@@ -993,7 +993,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         dt_Row = dt.NewRow();
 
-                        int produced = Convert.ToInt32(row[dalProRecord.TotalProduced].ToString());
+                        int produced = Convert.ToInt32(row[dalProRecord.TotalStockedIn].ToString());
                         int proLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out proLotNo) ? proLotNo : -1;
                         totalProducedQty += produced;
 
@@ -1723,7 +1723,7 @@ namespace FactoryManagementSoftware.UI
 
                         fullBoxQty = row[dalProRecord.FullBox].ToString();
 
-                        txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
+                        txtTotalProduce.Text = row[dalProRecord.TotalStockedIn].ToString();
                         cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                         txtNote.Text = row[dalProRecord.Note].ToString();
                         txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
@@ -2325,7 +2325,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.last_shift_balance = lastShiftBalance;
                 uProRecord.current_shift_balance = thisShiftBalance;
                 uProRecord.full_box = fullBox;
-                uProRecord.total_produced = TotalStockIn;
+                uProRecord.total_stocked_in = TotalStockIn;
                 uProRecord.total_reject = TotalReject;
                 uProRecord.total_actual_reject = TotalActualReject;
                 uProRecord.reject_percentage = RejectPercentage;
@@ -4388,6 +4388,9 @@ namespace FactoryManagementSoftware.UI
             dgvItemList.ClearSelection();
             loaded = true;
         }
+
+      
+
 
         private void dgvDailyRecord_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {

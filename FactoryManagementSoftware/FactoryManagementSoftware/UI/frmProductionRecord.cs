@@ -637,7 +637,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         dt_Row = dt.NewRow();
 
-                        int produced = Convert.ToInt32(row[dalProRecord.TotalProduced].ToString());
+                        int produced = Convert.ToInt32(row[dalProRecord.TotalStockedIn].ToString());
                         int proLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out proLotNo) ? proLotNo : -1;
                         totalProducedQty += produced;
                         
@@ -977,7 +977,7 @@ namespace FactoryManagementSoftware.UI
                         txtIn.Text = row[dalProRecord.directIn].ToString();
                         txtOut.Text = row[dalProRecord.directOut].ToString();
                         txtFullBox.Text = row[dalProRecord.FullBox].ToString();
-                        txtTotalStockIn.Text = row[dalProRecord.TotalProduced].ToString();
+                        txtTotalStockIn.Text = row[dalProRecord.TotalStockedIn].ToString();
                         cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                         txtNote.Text = row[dalProRecord.Note].ToString();
                         //cmbPackingName.Text = tool.getItemName(row[dalProRecord.PackagingCode].ToString());
@@ -1358,7 +1358,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.last_shift_balance = lastShiftBalance;
                 uProRecord.current_shift_balance = thisShiftBalance;
                 uProRecord.full_box = fullBox;
-                uProRecord.total_produced = TotalStockIn;
+                uProRecord.total_stocked_in = TotalStockIn;
                 uProRecord.total_reject = TotalReject;
                 uProRecord.reject_percentage = RejectPercentage;
                 uProRecord.updated_date = updateTime;

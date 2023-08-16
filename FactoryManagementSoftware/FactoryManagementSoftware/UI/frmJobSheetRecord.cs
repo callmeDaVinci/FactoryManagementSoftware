@@ -263,12 +263,14 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private int ORIGINAL_TOTAL_STOCK_IN_QTY = -1;
+
         private void LoadJobSheet()
         {
-            btnSave.Visible = false;
+            //btnSave.Visible = false;
 
-            tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
-            tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
+            //tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);
+            //tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
 
             LoadJobData();
 
@@ -476,6 +478,8 @@ namespace FactoryManagementSoftware.UI
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
+        DataTable DT_ORIGINAL_CARTON = null;
+
         private void LoadCartonData(string fullBox, string qtyPerBox, string balPcsStockIn)
         {
             string itemCode = ITEM_CODE;
@@ -593,6 +597,11 @@ namespace FactoryManagementSoftware.UI
             if (!string.IsNullOrEmpty(AlertMessage))
                 MessageBox.Show(AlertMessage, "Carton Alert",
                 MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+            if(DT_ORIGINAL_CARTON == null && DT_CARTON != null)
+            {
+                DT_ORIGINAL_CARTON = DT_CARTON.Copy();
+            }
         }
         private void ClearAllError()
         {
@@ -695,7 +704,7 @@ namespace FactoryManagementSoftware.UI
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "P")
+                        if (productionInfo[i].ToString() == "J")
                         {
                             startCopy = true;
                         }
@@ -802,7 +811,7 @@ namespace FactoryManagementSoftware.UI
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "P")
+                        if (productionInfo[i].ToString() == "J")
                         {
                             startCopy = true;
                         }
@@ -897,7 +906,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (ifDuplicateData)
                     {
-                        if(sheetID != row[text.Header_SheetID].ToString())
+                        if(sheetID != row[text.Header_SheetID].ToString() && sheetID != SHEET_ID)
                         {
                             MessageBox.Show("There is a existing daily job sheet under your selected date and shift!");
                             return true;
@@ -1048,6 +1057,40 @@ namespace FactoryManagementSoftware.UI
      
 
         private bool DATA_SAVED = false;
+        private bool STOCK_UPDATE_REQUIRED = false;
+
+        public bool AreTablesEqual(DataTable dt1, DataTable dt2)
+        {
+            if (dt1 == null && dt2 == null)
+            {
+                return true;
+            }
+
+            if (dt1 == null || dt2 == null)
+            {
+                return false;
+            }
+
+            if (dt1.Rows.Count != dt2.Rows.Count || dt1.Columns.Count != dt2.Columns.Count)
+            {
+                return false;
+            }
+
+            for (int i = 0; i < dt1.Rows.Count; i++)
+            {
+                for (int j = 0; j < dt1.Columns.Count; j++)
+                {
+                    if (!object.Equals(dt1.Rows[i][j], dt2.Rows[i][j]))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+
 
         private bool SaveSuccess()
         {
@@ -1056,6 +1099,38 @@ namespace FactoryManagementSoftware.UI
 
             if (Validation())
             {
+                if(txtSheetID.Text != string_NewSheet)
+                {
+                    //check if stock update required
+                    int totalStockIn = int.TryParse(txtTotalStockInQty.Text, out int i) ? i : 0;
+
+                    bool stockUpdateRequired = false;
+
+                    if(totalStockIn != ORIGINAL_TOTAL_STOCK_IN_QTY || !AreTablesEqual(DT_CARTON, DT_ORIGINAL_CARTON))
+                    {
+                        stockUpdateRequired = true;
+
+                    }
+
+                    if(stockUpdateRequired && CheckIfPreviousRecordExist())
+                    {
+                        string message = "A stock record already exists for this Job Sheet. Proceeding with this 'Save Only' action will undo the existing stock record.\r\nAre you sure you want to continue?";
+
+                        DialogResult dialogResult = MessageBox.Show(message, "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                        if (dialogResult != DialogResult.Yes)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            UndoPreviousRecordIfExist();
+                        }
+                    }
+
+                }
+
                 frmLoading.ShowLoadingScreen();
 
                 DateTime updateTime = DateTime.Now;
@@ -1099,6 +1174,7 @@ namespace FactoryManagementSoftware.UI
 
                 int fullBox = int.TryParse(txtFullBoxQty.Text, out fullBox) ? fullBox : 0;
                 int TotalStockIn = int.TryParse(txtTotalStockInQty.Text, out TotalStockIn) ? TotalStockIn : 0;
+                int maxOutputQty = int.TryParse(lblMaxQty.Text, out maxOutputQty) ? maxOutputQty : 0;
 
 
                 string note = txtNote.Text;
@@ -1124,7 +1200,8 @@ namespace FactoryManagementSoftware.UI
                 int userID = MainDashboard.USER_ID;
 
                 uProRecord.full_box = fullBox;
-                uProRecord.total_produced = TotalStockIn;
+                uProRecord.total_stocked_in = TotalStockIn;
+                uProRecord.max_output_qty = maxOutputQty;
                 uProRecord.updated_date = updateTime;
                 uProRecord.updated_by = userID;
 
@@ -1935,6 +2012,11 @@ namespace FactoryManagementSoftware.UI
         private void frmJobSheetRecord_Shown(object sender, EventArgs e)
         {
             DATA_EDITED = false;
+
+            if(ORIGINAL_TOTAL_STOCK_IN_QTY == -1)
+            {
+                ORIGINAL_TOTAL_STOCK_IN_QTY = int.TryParse(txtTotalStockInQty.Text, out int i) ? i : 0;
+            }
         }
 
         private void txtRawMatLotNo_TextChanged(object sender, EventArgs e)

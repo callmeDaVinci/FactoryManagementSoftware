@@ -25,7 +25,8 @@ namespace FactoryManagementSoftware.DAL
         public string LastShiftBalance { get; } = "last_shift_balance";
         public string CurrentShiftBalance { get; } = "current_shift_balance";
         public string FullBox { get; } = "full_box";
-        public string TotalProduced { get; } = "total_produced";
+        public string TotalStockedIn { get; } = "total_produced";
+        public string MaxOutputQty { get; } = "max_qty";
         public string TotalReject { get; } = "total_reject";
         public string TotalActualReject { get; } = "total_actual_reject";
         public string RejectPercentage { get; } = "reject_percentage";
@@ -611,7 +612,7 @@ namespace FactoryManagementSoftware.DAL
                             + LastShiftBalance + ","
                             + CurrentShiftBalance + ","
                             + FullBox + ","
-                            + TotalProduced + ","
+                            + TotalStockedIn + ","
                             + TotalReject + ","
                             + TotalActualReject + ","
                             + UpdatedDate + ","
@@ -662,7 +663,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
-                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_stocked_in);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
@@ -725,7 +726,8 @@ namespace FactoryManagementSoftware.DAL
                             + LastShiftBalance + ","
                             + CurrentShiftBalance + ","
                             + FullBox + ","
-                            + TotalProduced + ","
+                            + TotalStockedIn + ","
+                            + MaxOutputQty + ","
                             + TotalReject + ","
                             + TotalActualReject + ","
                             + UpdatedDate + ","
@@ -752,6 +754,7 @@ namespace FactoryManagementSoftware.DAL
                             "@current_shift_balance," +
                             "@full_box," +
                             "@total_produced," +
+                            "@max_qty," +
                             "@total_reject," +
                             "@total_actual_reject," +
                             "@updated_date," +
@@ -780,7 +783,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
-                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_stocked_in);
+                cmd.Parameters.AddWithValue("@max_qty", u.max_output_qty);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
@@ -1107,7 +1111,7 @@ namespace FactoryManagementSoftware.DAL
                             + LastShiftBalance + "=@last_shift_balance,"
                             + CurrentShiftBalance + "=@current_shift_balance,"
                             + FullBox + "=@full_box,"
-                            + TotalProduced + "=@total_produced,"
+                            + TotalStockedIn + "=@total_produced,"
                             + TotalReject + "=@total_reject,"
                             + TotalActualReject + "=@total_actual_reject,"
                             + Active + "=@active,"
@@ -1136,7 +1140,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
-                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_stocked_in);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
@@ -1200,7 +1204,8 @@ namespace FactoryManagementSoftware.DAL
                             + LastShiftBalance + "=@last_shift_balance,"
                             + CurrentShiftBalance + "=@current_shift_balance,"
                             + FullBox + "=@full_box,"
-                            + TotalProduced + "=@total_produced,"
+                            + TotalStockedIn + "=@total_produced,"
+                            + MaxOutputQty + "=@max_qty,"
                             + TotalReject + "=@total_reject,"
                             + TotalActualReject + "=@total_actual_reject,"
                             + Active + "=@active,"
@@ -1231,7 +1236,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
-                cmd.Parameters.AddWithValue("@total_produced", u.total_produced);
+                cmd.Parameters.AddWithValue("@total_produced", u.total_stocked_in);
+                cmd.Parameters.AddWithValue("@max_qty", u.max_output_qty);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);

@@ -469,7 +469,7 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = row[dalItem.ItemCode].ToString();
                 string itemName = row[dalItem.ItemName].ToString();
 
-                int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
+                int totalProduced = int.TryParse(row[dalProRecord.TotalStockedIn].ToString(), out totalProduced) ? totalProduced : 0;
 
                 string rawMat = row[dalItem.ItemMaterial].ToString();
                 string colorMat = row[dalItem.ItemMBatch].ToString();

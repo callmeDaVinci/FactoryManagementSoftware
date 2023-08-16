@@ -992,8 +992,9 @@ namespace FactoryManagementSoftware.UI
                 dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);//169ms
 
                 dgvList.ColumnHeadersVisible = true;
-               
 
+
+              
                 dgvList.ClearSelection();
 
                 //298ms
@@ -3711,19 +3712,22 @@ namespace FactoryManagementSoftware.UI
 
                         string itemCode = itemCode_1;
                         //string stdPacking = dgv.Rows[e.RowIndex].Cells[header_QtyPerBag].Value.ToString();
-                        int stdPacking = int.TryParse(dgv.Rows[e.RowIndex].Cells[header_QtyPerBag].Value.ToString(), out int i) ? i : 0;
+                        int GoodsQtyPerBag = int.TryParse(dgv.Rows[e.RowIndex].Cells[header_QtyPerBag].Value.ToString(), out int i) ? i : 0;
+                        int GoodsReadyStockPcsQty = int.TryParse(dgv.Rows[e.RowIndex].Cells[header_StockPcs].Value.ToString(), out i) ? i : 0;
 
                         int nextRowIndex = e.RowIndex + 1;
 
                         if(nextRowIndex > 0)
                         {
                             itemCode_2 = dgv.Rows[nextRowIndex].Cells[header_Code].Value.ToString();
+                           
                         }
 
                         if(string.IsNullOrEmpty(itemCode_1))
                         {
                             itemCode = itemCode_2;
-                            stdPacking = int.TryParse(dgv.Rows[nextRowIndex].Cells[header_QtyPerBag].Value.ToString(), out  i) ? i : 0;
+                            GoodsQtyPerBag = int.TryParse(dgv.Rows[nextRowIndex].Cells[header_QtyPerBag].Value.ToString(), out  i) ? i : 0;
+                            GoodsReadyStockPcsQty = int.TryParse(dgv.Rows[nextRowIndex].Cells[header_StockPcs].Value.ToString(), out i) ? i : 0;
                         }
 
                         if (string.IsNullOrEmpty(itemCode_1) && string.IsNullOrEmpty(itemCode_2))
@@ -3742,6 +3746,7 @@ namespace FactoryManagementSoftware.UI
                             string headerJoinQty = "JOIN QTY";
                             string headerJoinMax = "JOIN MAX";
                             string headerJoinMin = "JOIN MIN";
+                            string headerMainCarton = "MAIN CARTON";
 
                             int joinMax = 0;
                             int joinMin = 0;
@@ -3775,7 +3780,6 @@ namespace FactoryManagementSoftware.UI
                                 string ParentCode = row[headerParentCode].ToString();
                                 string ChildCode = row[headerChildCode].ToString();
                               
-
                                 if(ParentCode.Contains("CFPOR"))
                                 {
                                     isOring = true;
@@ -3827,7 +3831,6 @@ namespace FactoryManagementSoftware.UI
                             int SemenyihBodyStock = 0;
                             int BinaBodyStock = 0;
                             
-
                             //get body item stock qty: Semenyih & Bina
                             foreach(DataRow row in dt_AllStockData.Rows)
                             {
@@ -3866,14 +3869,77 @@ namespace FactoryManagementSoftware.UI
                             string divideLine = "========================";
                             my_menu.Items.Add(divideLine).Name = divideLine;
 
-                            int SemenyihBodyStock_Bag = stdPacking > 0? SemenyihBodyStock/stdPacking : 0;
-                            int BinaBodyStock_Bag = stdPacking > 0 ? BinaBodyStock / stdPacking : 0;
+                            int SemenyihBodyStock_Bag = GoodsQtyPerBag > 0? SemenyihBodyStock/GoodsQtyPerBag : 0;
+                            int BinaBodyStock_Bag = GoodsQtyPerBag > 0 ? BinaBodyStock / GoodsQtyPerBag : 0;
 
-                            string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " " +unit+")";
-                            string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " " + unit + ")";
+                            dt = tool.getJoinDataTableFromDataTable(dt_JoinInfo, bodyCode);
+                            itemBLL bodyItem = new itemBLL();
 
-                            my_menu.Items.Add(SemenyihStockString).Name = SemenyihStockString;
-                            my_menu.Items.Add(BinaStockString).Name = BinaStockString;
+                            bodyItem.packaging_code = "CTR 003";
+                            bodyItem.packaging_name = "CONTAINER WHITE";
+                            bodyItem.standard_packing_qty = 0;
+
+                            foreach (DataRow row in dt.Rows)
+                            {
+                                string ParentCode = row[headerParentCode].ToString();
+
+                                if (ParentCode.Equals(bodyCode))
+                                {
+                                    string ChildCode = row[headerChildCode].ToString();
+
+                                    string ChildCat = tool.getItemCatFromDataTable(dt_Item, ChildCode);
+
+                                    if(ChildCat == text.Cat_Carton)
+                                    {
+                                        bool mainCarton = bool.TryParse(row[headerMainCarton].ToString(), out mainCarton) ? mainCarton : false;
+
+                                        if(mainCarton)
+                                        {
+                                            bodyItem.packaging_code = ChildCode;
+                                            bodyItem.packaging_name = tool.getItemNameFromDataTable(dt_Item, ChildCode);
+
+                                            bodyItem.standard_packing_qty = int.TryParse(row[headerJoinMax].ToString(), out i) ? i : 0;
+                                            break;
+
+                                        }
+                                        else
+                                        {
+                                            bodyItem.packaging_code = ChildCode;
+                                            bodyItem.packaging_name = tool.getItemNameFromDataTable(dt_Item, ChildCode);
+                                            bodyItem.standard_packing_qty = int.TryParse(row[headerJoinMax].ToString(), out i) ? i : 0;
+                                        }
+
+                                    }
+
+                                  
+                                }
+
+                            }
+
+                            bodyItem.item_code = bodyCode;
+                            bodyItem.item_name = tool.getItemNameFromDataTable(dt_Item, bodyCode);
+                            bodyItem.item_ready_stock = SemenyihBodyStock;
+                            
+
+                            itemBLL goodsItem = new itemBLL();
+
+                            goodsItem.item_code = itemCode;
+                            goodsItem.item_name = tool.getItemNameFromDataTable(dt_Item, itemCode);
+                            goodsItem.item_ready_stock = GoodsReadyStockPcsQty;
+                            goodsItem.standard_packing_qty = GoodsQtyPerBag;
+
+                            frmSBBBodyCalculation frm = new frmSBBBodyCalculation(bodyItem, goodsItem, 1);
+
+                            frm.StartPosition = FormStartPosition.CenterScreen;
+
+                            frm.Show();
+                            //string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " " +unit+")";
+                            //string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " " + unit + ")";
+
+                            //my_menu.Items.Add(SemenyihStockString).Name = SemenyihStockString;
+                            //my_menu.Items.Add(BinaStockString).Name = BinaStockString;
+
+                            validCelltoShowMenu = false;
                         }
 
                     }

@@ -788,7 +788,7 @@
             // 
             // tableLayoutPanel14
             // 
-            this.tableLayoutPanel14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.tableLayoutPanel14.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
             this.tableLayoutPanel14.ColumnCount = 1;
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel14.Controls.Add(this.txtMeterEnd, 0, 0);
@@ -804,7 +804,7 @@
             // txtMeterEnd
             // 
             this.txtMeterEnd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMeterEnd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.txtMeterEnd.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
             this.txtMeterEnd.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMeterEnd.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.txtMeterEnd.Location = new System.Drawing.Point(3, 8);
@@ -818,7 +818,7 @@
             // 
             // tableLayoutPanel13
             // 
-            this.tableLayoutPanel13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.tableLayoutPanel13.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel13.Controls.Add(this.txtMeterStart, 0, 0);
@@ -834,7 +834,7 @@
             // txtMeterStart
             // 
             this.txtMeterStart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtMeterStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.txtMeterStart.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
             this.txtMeterStart.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtMeterStart.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.txtMeterStart.Location = new System.Drawing.Point(3, 8);
@@ -848,7 +848,7 @@
             // 
             // tableLayoutPanel24
             // 
-            this.tableLayoutPanel24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
+            this.tableLayoutPanel24.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
             this.tableLayoutPanel24.ColumnCount = 1;
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel24.Controls.Add(this.lblMaxQty, 0, 0);
@@ -1047,7 +1047,7 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.tableLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
             this.tableLayoutPanel8.ColumnCount = 1;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel8.Controls.Add(this.txtFullBoxQty, 0, 0);
@@ -1063,7 +1063,7 @@
             // txtFullBoxQty
             // 
             this.txtFullBoxQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtFullBoxQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
+            this.txtFullBoxQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
             this.txtFullBoxQty.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtFullBoxQty.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
             this.txtFullBoxQty.Location = new System.Drawing.Point(3, 13);
@@ -1130,7 +1130,7 @@
             this.btnSave.Radius = 2;
             this.btnSave.Size = new System.Drawing.Size(200, 40);
             this.btnSave.TabIndex = 16;
-            this.btnSave.Text = "Save Draft";
+            this.btnSave.Text = "Save Only";
             this.btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 

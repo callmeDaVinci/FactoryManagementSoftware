@@ -2532,16 +2532,16 @@ namespace FactoryManagementSoftware.UI
 
                 if(shift == "M" || shift == "N")
                 {
-                    note = "[Plan " + JobNo + "(" + shift + ")]";
+                    note = "[Job " + JobNo + "(" + shift + ")]";
                 }
                 else if (shift == "MB" || shift == "NB")
                 {
-                    note = "[Plan " + JobNo + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
+                    note = "[Job " + JobNo + "(" + shift.Substring(0, 1) + ") " + text.Note_BalanceStockIn + "]";
                 }
                 else if (shift == "MBO" || shift == "NBO")
                 {
 
-                    note = "[Plan " + JobNo + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
+                    note = "[Job " + JobNo + "(" + shift.Substring(0, 1) + ") "+ text.Note_OldBalanceStockOut +"]";
                 }
 
                 if(itemCat == text.Cat_Carton || itemCat == text.Cat_Packaging)

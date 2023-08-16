@@ -1623,7 +1623,7 @@ namespace FactoryManagementSoftware.UI
 
                 string note = row[dalProRecord.Note].ToString();
 
-                int totalProduced = int.TryParse(row[dalProRecord.TotalProduced].ToString(), out totalProduced) ? totalProduced : 0;
+                int totalProduced = int.TryParse(row[dalProRecord.TotalStockedIn].ToString(), out totalProduced) ? totalProduced : 0;
 
                 int totalReject = int.TryParse(row[dalProRecord.TotalActualReject].ToString(), out totalReject) ? totalReject : 0;
 

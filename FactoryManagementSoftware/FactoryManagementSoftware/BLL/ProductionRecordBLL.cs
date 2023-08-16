@@ -24,7 +24,8 @@ namespace FactoryManagementSoftware.BLL
         public int directIn { get; set; }
         public int directOut { get; set; }
         public int full_box { get; set; }
-        public int total_produced { get; set; }
+        public int total_stocked_in { get; set; }
+        public int max_output_qty { get; set; }
         public int total_reject { get; set; }
         public int total_actual_reject { get; set; }
         public double actual_reject_percentage { get; set; }

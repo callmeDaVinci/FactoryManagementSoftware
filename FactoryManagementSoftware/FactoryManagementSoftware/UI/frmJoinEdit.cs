@@ -17,7 +17,6 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             loadItemCategoryData();
         }
-
         public frmJoinEdit(joinBLL u, bool closeAfterSave)
         {
             CLOSE_PAGE_AFTER_SAVED = closeAfterSave;

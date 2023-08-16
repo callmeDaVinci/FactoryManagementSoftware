@@ -518,7 +518,7 @@ namespace FactoryManagementSoftware.UI
                     txtMac.Text = macID.ToString();
                     dt_Row = dt.NewRow();
 
-                    int produced = Convert.ToInt32(row[dalProRecord.TotalProduced].ToString());
+                    int produced = Convert.ToInt32(row[dalProRecord.TotalStockedIn].ToString());
                     int proLotNo = int.TryParse(row[dalProRecord.ProLotNo].ToString(), out proLotNo) ? proLotNo : -1;
                     totalProducedQty += produced;
 
@@ -1109,7 +1109,7 @@ namespace FactoryManagementSoftware.UI
 
                     fullBoxQty = row[dalProRecord.FullBox].ToString();
 
-                    txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
+                    txtTotalProduce.Text = row[dalProRecord.TotalStockedIn].ToString();
                     cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                     txtNote.Text = row[dalProRecord.Note].ToString();
                     txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();
@@ -1225,7 +1225,7 @@ namespace FactoryManagementSoftware.UI
 
                     fullBoxQty = row[dalProRecord.FullBox].ToString();
 
-                    txtTotalProduce.Text = row[dalProRecord.TotalProduced].ToString();
+                    txtTotalProduce.Text = row[dalProRecord.TotalStockedIn].ToString();
                     cmbParentList.Text = row[dalProRecord.ParentCode].ToString();
                     txtNote.Text = row[dalProRecord.Note].ToString();
                     txtPackingMaxQty.Text = row[dalProRecord.PackagingQty].ToString();

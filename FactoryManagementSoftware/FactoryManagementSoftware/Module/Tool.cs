@@ -106,6 +106,7 @@ namespace FactoryManagementSoftware.Module
         public readonly string headerJoinQty = "JOIN QTY";
         public readonly string headerJoinMax = "JOIN MAX";
         public readonly string headerJoinMin = "JOIN MIN";
+        public readonly string headerMainCarton = "MAIN CARTON";
 
         public readonly string Header_Index  = "#";
         public readonly string Header_MatCode = "MAT. CODE";
@@ -3797,7 +3798,7 @@ namespace FactoryManagementSoftware.Module
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "P")
+                        if (productionInfo[i].ToString() == "J")
                         {
                             startCopy = true;
                         }
@@ -5008,7 +5009,7 @@ namespace FactoryManagementSoftware.Module
             DataRow dtJoin_row;
             int index = 1;
 
-            if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+            if (itemCode.Length > 8 && itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
             {
                 foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
                 {
@@ -5039,6 +5040,7 @@ namespace FactoryManagementSoftware.Module
                         dtJoin_row[headerJoinQty] = row[dalJoin.JoinQty];
                         dtJoin_row[headerJoinMax] = row[dalJoin.JoinMax];
                         dtJoin_row[headerJoinMin] = row[dalJoin.JoinMin];
+                        dtJoin_row[headerMainCarton] = row[dalJoin.JoinMainCarton];
 
                         dt_Join.Rows.Add(dtJoin_row);
                         index++;
@@ -5356,6 +5358,7 @@ namespace FactoryManagementSoftware.Module
             dt.Columns.Add(headerJoinQty, typeof(int));
             dt.Columns.Add(headerJoinMax, typeof(int));
             dt.Columns.Add(headerJoinMin, typeof(int));
+            dt.Columns.Add(headerMainCarton, typeof(bool));
 
             return dt;
         }
