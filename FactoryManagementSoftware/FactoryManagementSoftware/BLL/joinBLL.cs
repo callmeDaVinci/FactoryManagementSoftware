@@ -9,7 +9,9 @@ namespace FactoryManagementSoftware.BLL
     public class joinBLL
     {
         public string join_parent_code { get; set; }
+        public string join_parent_name { get; set; }
         public string join_child_code { get; set; }
+        public string join_child_name { get; set; }
         public float join_qty { get; set; }
         
         public int join_max { get; set; }

@@ -86,6 +86,9 @@ namespace FactoryManagementSoftware.UI
         readonly string text_FillIn = "Fill In";
         readonly string text_FillAll = "Fill All";
         readonly string text_FillAllByCustomer = "Fill All By Customer";
+        readonly string text_JumpToFirstItem = "Jump To First Item";
+        readonly string text_JumpToNextItem = "Jump To Next Item";
+        readonly string text_JumpToLastItem = "Jump To Last Item";
         readonly string text_Reset = "Reset";
         readonly string text_ResetAll = "Reset All";
         readonly string text_ResetAllByCustomer = "Reset All By Customer";
@@ -138,7 +141,7 @@ namespace FactoryManagementSoftware.UI
         private DataTable dt_ToUpdate;
 
         DataTable dt_AllStockData;
-        DataTable dt_JoinInfo;
+        static public DataTable dt_JoinInfo;
 
         private bool Loaded = false;
         private bool dataChanged = false;
@@ -1871,6 +1874,105 @@ namespace FactoryManagementSoftware.UI
 
 
             }
+        }
+
+        private void JumpToNextItem(DataGridView dgv)
+        {
+            dgv.SuspendLayout();
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int currentRowIndex = dgv.CurrentCell.RowIndex;
+            int currentColIndex = dgv.CurrentCell.ColumnIndex;
+            int jumpToRowIndex = -1;
+            string headerName = dgv.Columns[currentColIndex].Name;
+            string priorityLevel = headerName.Replace(header_Priority, "");
+
+
+            for (int i = currentRowIndex + 1; i < dt.Rows.Count; i++)
+            {
+                int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + priorityLevel].ToString(), out orderQty) ? orderQty : 0;
+
+                if (orderQty > 0)
+                {
+                    jumpToRowIndex = i;
+                    break;
+
+                }
+            }
+
+            if (jumpToRowIndex != -1 && jumpToRowIndex >= currentRowIndex && jumpToRowIndex + 1< dt.Rows.Count)
+            {
+                dgv.CurrentCell = dgv[currentColIndex, jumpToRowIndex + 1];
+            }
+            else
+            {
+                MessageBox.Show("No next item found under this PO.");
+            }
+
+            dgv.ResumeLayout();
+        }
+        private void JumpToLastItem(DataGridView dgv)
+        {
+            dgv.SuspendLayout();
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int currentRowIndex = dgv.CurrentCell.RowIndex;
+            int currentColIndex = dgv.CurrentCell.ColumnIndex;
+            string headerName = dgv.Columns[currentColIndex].Name;
+            string priorityLevel = headerName.Replace(header_Priority, "");
+
+            int lastRowIndex = currentRowIndex;
+
+            for (int i = dt.Rows.Count - 1; i >= 0; i--)
+            {
+                int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + priorityLevel].ToString(), out orderQty) ? orderQty : 0;
+
+                if (orderQty > 0)
+                {
+                    lastRowIndex = i;
+                    break;
+
+                }
+            }
+
+            if (lastRowIndex > -1)
+            {
+                dgv.CurrentCell = dgv[currentColIndex, lastRowIndex + 1];
+            }
+
+            dgv.ResumeLayout();
+        }
+
+        private void JumpToFirstItem(DataGridView dgv)
+        {
+            dgv.SuspendLayout();
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int currentRowIndex = dgv.CurrentCell.RowIndex;
+            int currentColIndex = dgv.CurrentCell.ColumnIndex;
+            string headerName = dgv.Columns[currentColIndex].Name;
+            string priorityLevel = headerName.Replace(header_Priority, "");
+
+            int FirstRowIndex = -1;
+
+            for (int i = 0 ; i < dt.Rows.Count; i++)
+            {
+                int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + priorityLevel].ToString(), out orderQty) ? orderQty : 0;
+
+                if (orderQty > 0)
+                {
+                    FirstRowIndex = i;
+                    break;
+
+                }
+            }
+
+            if (FirstRowIndex > -1)
+            {
+                dgv.CurrentCell = dgv[currentColIndex, FirstRowIndex + 1];
+            }
+
+            dgv.ResumeLayout();
         }
 
         private void NewAutoFill(DataGridView dgv)
@@ -3933,6 +4035,12 @@ namespace FactoryManagementSoftware.UI
                             frm.StartPosition = FormStartPosition.CenterScreen;
 
                             frm.Show();
+
+                            if(frmSBBBodyCalculation.PACKING_INFO_CHANGED)
+                            {
+                                dt_JoinInfo = dalJoin.SelectAll();
+                            }
+
                             //string SemenyihStockString = "SEMENYIH: " + SemenyihBodyStock + " ( " + SemenyihBodyStock_Bag + " " +unit+")";
                             //string BinaStockString     = "BINA         : " + BinaBodyStock + " ( " + BinaBodyStock_Bag + " " + unit + ")";
 
@@ -3953,6 +4061,14 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(text_FillIn).Name = text_FillIn;
                         my_menu.Items.Add(text_FillAll).Name = text_FillAll;
                         my_menu.Items.Add(text_FillAllByCustomer).Name = text_FillAllByCustomer;
+
+                        if(headerName.Contains(header_Priority))
+                        {
+                            my_menu.Items.Add(text_JumpToNextItem).Name = text_JumpToNextItem;
+                            my_menu.Items.Add(text_JumpToLastItem).Name = text_JumpToLastItem;
+                            my_menu.Items.Add(text_JumpToFirstItem).Name = text_JumpToFirstItem;
+
+                        }
 
                         if (dgv.SelectionMode != DataGridViewSelectionMode.CellSelect)
                         {
@@ -3993,9 +4109,9 @@ namespace FactoryManagementSoftware.UI
 
                 string ClickedItem = e.ClickedItem.Name.ToString();
                 stopAfterBalUpdate = true;
-                if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer)  || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
+                if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_JumpToLastItem) || ClickedItem.Equals(text_JumpToFirstItem) || ClickedItem.Equals(text_JumpToNextItem) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer)  || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
                 {
-                   
+
                     if (ClickedItem.Equals(text_Reset))
                     {
                         Reset(dgv);
@@ -4018,7 +4134,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else if (ClickedItem.Equals(text_FillAllByCustomer))
                     {
-                        NewAutoFillAllByCustomer(dgv, colIndex);                      
+                        NewAutoFillAllByCustomer(dgv, colIndex);
                     }
                     else if (ClickedItem.Equals(text_NewTrip))
                     {
@@ -4028,7 +4144,18 @@ namespace FactoryManagementSoftware.UI
                     {
                         OpenDO(dgv);
                     }
-
+                    else if (ClickedItem.Equals(text_JumpToNextItem))
+                    {
+                        JumpToNextItem(dgv);
+                    }
+                    else if (ClickedItem.Equals(text_JumpToLastItem))
+                    {
+                        JumpToLastItem(dgv);
+                    }
+                    else if (ClickedItem.Equals(text_JumpToFirstItem))
+                    {
+                        JumpToFirstItem(dgv);
+                    }
                     CalculateTotalBag(dgv);
                 }
                 stopAfterBalUpdate = false;

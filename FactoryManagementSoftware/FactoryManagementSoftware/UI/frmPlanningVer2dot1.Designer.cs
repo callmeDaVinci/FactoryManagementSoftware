@@ -286,18 +286,18 @@
             this.panelStatusUp1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel63 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep4 = new System.Windows.Forms.Label();
+            this.circleLabelStep4 = new FactoryManagementSoftware.UI.CircleLabel();
             this.tableLayoutPanel62 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep3 = new System.Windows.Forms.Label();
+            this.circleLabelStep3 = new FactoryManagementSoftware.UI.CircleLabel();
             this.tableLayoutPanel61 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep2 = new System.Windows.Forms.Label();
+            this.circleLabelStep2 = new FactoryManagementSoftware.UI.CircleLabel();
             this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep1 = new System.Windows.Forms.Label();
+            this.circleLabelStep1 = new FactoryManagementSoftware.UI.CircleLabel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.circleLabelStep4 = new FactoryManagementSoftware.UI.CircleLabel();
-            this.circleLabelStep3 = new FactoryManagementSoftware.UI.CircleLabel();
-            this.circleLabelStep2 = new FactoryManagementSoftware.UI.CircleLabel();
-            this.circleLabelStep1 = new FactoryManagementSoftware.UI.CircleLabel();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpJobPlanningStep.SuspendLayout();
             this.tableLayoutPanel56.SuspendLayout();
@@ -4614,6 +4614,20 @@
             this.lblStep4.TabIndex = 183;
             this.lblStep4.Text = "Job Review";
             // 
+            // circleLabelStep4
+            // 
+            this.circleLabelStep4.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.circleLabelStep4.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep4.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep4.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.circleLabelStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.circleLabelStep4.Location = new System.Drawing.Point(7, 1);
+            this.circleLabelStep4.Name = "circleLabelStep4";
+            this.circleLabelStep4.Size = new System.Drawing.Size(25, 25);
+            this.circleLabelStep4.TabIndex = 185;
+            this.circleLabelStep4.Text = "4";
+            this.circleLabelStep4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tableLayoutPanel62
             // 
             this.tableLayoutPanel62.ColumnCount = 2;
@@ -4643,6 +4657,20 @@
             this.lblStep3.Size = new System.Drawing.Size(113, 17);
             this.lblStep3.TabIndex = 183;
             this.lblStep3.Text = "Machine Schedule";
+            // 
+            // circleLabelStep3
+            // 
+            this.circleLabelStep3.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.circleLabelStep3.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep3.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep3.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.circleLabelStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.circleLabelStep3.Location = new System.Drawing.Point(7, 1);
+            this.circleLabelStep3.Name = "circleLabelStep3";
+            this.circleLabelStep3.Size = new System.Drawing.Size(25, 25);
+            this.circleLabelStep3.TabIndex = 185;
+            this.circleLabelStep3.Text = "3";
+            this.circleLabelStep3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel61
             // 
@@ -4674,6 +4702,20 @@
             this.lblStep2.TabIndex = 183;
             this.lblStep2.Text = "Stock Verification";
             // 
+            // circleLabelStep2
+            // 
+            this.circleLabelStep2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.circleLabelStep2.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep2.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep2.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.circleLabelStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.circleLabelStep2.Location = new System.Drawing.Point(7, 1);
+            this.circleLabelStep2.Name = "circleLabelStep2";
+            this.circleLabelStep2.Size = new System.Drawing.Size(25, 25);
+            this.circleLabelStep2.TabIndex = 185;
+            this.circleLabelStep2.Text = "2";
+            this.circleLabelStep2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // tableLayoutPanel60
             // 
             this.tableLayoutPanel60.ColumnCount = 2;
@@ -4704,58 +4746,6 @@
             this.lblStep1.TabIndex = 183;
             this.lblStep1.Text = "Item && Requirements";
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
-            // circleLabelStep4
-            // 
-            this.circleLabelStep4.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.circleLabelStep4.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep4.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep4.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.circleLabelStep4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.circleLabelStep4.Location = new System.Drawing.Point(7, 1);
-            this.circleLabelStep4.Name = "circleLabelStep4";
-            this.circleLabelStep4.Size = new System.Drawing.Size(25, 25);
-            this.circleLabelStep4.TabIndex = 185;
-            this.circleLabelStep4.Text = "4";
-            this.circleLabelStep4.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // circleLabelStep3
-            // 
-            this.circleLabelStep3.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.circleLabelStep3.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep3.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep3.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.circleLabelStep3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.circleLabelStep3.Location = new System.Drawing.Point(7, 1);
-            this.circleLabelStep3.Name = "circleLabelStep3";
-            this.circleLabelStep3.Size = new System.Drawing.Size(25, 25);
-            this.circleLabelStep3.TabIndex = 185;
-            this.circleLabelStep3.Text = "3";
-            this.circleLabelStep3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // circleLabelStep2
-            // 
-            this.circleLabelStep2.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.circleLabelStep2.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep2.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.circleLabelStep2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.circleLabelStep2.Location = new System.Drawing.Point(7, 1);
-            this.circleLabelStep2.Name = "circleLabelStep2";
-            this.circleLabelStep2.Size = new System.Drawing.Size(25, 25);
-            this.circleLabelStep2.TabIndex = 185;
-            this.circleLabelStep2.Text = "2";
-            this.circleLabelStep2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // circleLabelStep1
             // 
             this.circleLabelStep1.Anchor = System.Windows.Forms.AnchorStyles.None;
@@ -4769,6 +4759,16 @@
             this.circleLabelStep1.TabIndex = 185;
             this.circleLabelStep1.Text = "1";
             this.circleLabelStep1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
             // 
             // frmPlanningVer2dot1
             // 

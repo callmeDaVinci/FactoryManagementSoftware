@@ -1229,6 +1229,10 @@ namespace FactoryManagementSoftware.UI
                 lblJobNo.Text = JobNo;
                 txtTargetQty.Text = targetQty;
 
+                END_PRODUCTION_UPDATING = true;
+                cbEndProduction.Checked = false;
+                END_PRODUCTION_UPDATING = false;
+
                 int cycleTime = int.TryParse(lblCycleTime.Text, out cycleTime) ? cycleTime : 0;
 
                 int IdealHourlyShot = cycleTime > 0 ? 3600 / cycleTime : 0;
@@ -1738,6 +1742,12 @@ namespace FactoryManagementSoftware.UI
                         //txtActualTotalReject.Text = row[dalProRecord.TotalActualReject].ToString();
 
                         // txtRejectPercentage.Text = row[dalProRecord.ProLotNo].ToString();
+
+
+
+                        END_PRODUCTION_UPDATING = true;
+                        cbEndProduction.Checked = txtNote.Text.ToUpper().Contains("END") && txtNote.Text.ToUpper().Contains("PRODUCTION");
+                        END_PRODUCTION_UPDATING = false;
 
                         break;
                     }
@@ -5478,21 +5488,30 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
+        private bool END_PRODUCTION_UPDATING = false;
+
         private void cbEndProduction_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbEndProduction.Checked)
+            if(!END_PRODUCTION_UPDATING)
             {
-                txtNote.Text = txtNote.Text + "[END PRODUCTION]";
+                END_PRODUCTION_UPDATING = true;
 
-                //check if balance havent key in
-                int balance = int.TryParse(txtBalanceOfThisShift.Text, out balance) ? balance : 0;
+                if (cbEndProduction.Checked)
+                {
+                    txtNote.Text = txtNote.Text + "[END PRODUCTION]";
 
-                if (balance > 0)
-                    MessageBox.Show("Please update the 'In Balance' quantity when production ends.");
-            }
-            else
-            {
-                txtNote.Text = txtNote.Text.Replace("[END PRODUCTION]", "");
+                    //check if balance havent key in
+                    int balance = int.TryParse(txtBalanceOfThisShift.Text, out balance) ? balance : 0;
+
+                    if (balance > 0)
+                        MessageBox.Show("Please update the 'In Balance' quantity when production ends.");
+                }
+                else
+                {
+                    txtNote.Text = txtNote.Text.Replace("[END PRODUCTION]", "");
+                }
+
+                END_PRODUCTION_UPDATING = false;
             }
         }
     }

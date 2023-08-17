@@ -183,16 +183,41 @@ namespace FactoryManagementSoftware.UI
             ContainerToBagConvert();
         }
 
+        static public bool PACKING_INFO_CHANGED = false;
+
         private void btnBodyPcsPerContainerSave_Click(object sender, EventArgs e)
         {
             joinBLL uJoin = new joinBLL();
 
             uJoin.join_parent_code = BODY_INFO.item_code;
+            uJoin.join_parent_name = BODY_INFO.item_name;
             uJoin.join_child_code = BODY_INFO.packaging_code;
+            uJoin.join_child_name = BODY_INFO.packaging_name;
 
-            frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+            int perPerPackaging = int.TryParse(txtBodyPcsPerContainer.Text, out int i) ? i : 0;
+
+            uJoin.join_qty = 1;
+            uJoin.join_max = perPerPackaging;
+            uJoin.join_max = perPerPackaging;
+
+            uJoin.join_main_carton = true;
+            uJoin.join_stock_out = true;
+          
+            frmJoinEdit frm = new frmJoinEdit(uJoin, true,1);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
+
+            if(frmJoinEdit.DATA_UPDATED)
+            {
+                BODY_INFO.packaging_code = frmJoinEdit.SAVED_JOIN_INFO.join_child_code;
+                BODY_INFO.packaging_name = frmJoinEdit.SAVED_JOIN_INFO.join_child_name;
+
+                BODY_INFO.standard_packing_qty = frmJoinEdit.SAVED_JOIN_INFO.join_max;
+                txtBodyPcsPerContainer.Text = BODY_INFO.standard_packing_qty.ToString();
+                PACKING_INFO_CHANGED = true;
+                frmSBBPOVSStock.dt_JoinInfo = new joinDAL().SelectAll();
+
+            }
         }
 
         private void btnGoodsPcsPerBagSave_Click(object sender, EventArgs e)
@@ -200,11 +225,35 @@ namespace FactoryManagementSoftware.UI
             joinBLL uJoin = new joinBLL();
 
             uJoin.join_parent_code = GOODS_INFO.item_code;
-            uJoin.join_child_code = GOODS_INFO.packaging_code;
+            uJoin.join_parent_name = GOODS_INFO.item_name;
 
-            frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+            uJoin.join_child_code = GOODS_INFO.packaging_code;
+            uJoin.join_child_name = GOODS_INFO.packaging_name;
+
+            int perPerPackaging = int.TryParse(txtGoodsPcsPerBag.Text, out int i) ? i : 0;
+
+            uJoin.join_qty = 1;
+            uJoin.join_max = perPerPackaging;
+            uJoin.join_max = perPerPackaging;
+
+            uJoin.join_main_carton = true;
+            uJoin.join_stock_out = true;
+
+            frmJoinEdit frm = new frmJoinEdit(uJoin, true, 1);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//Item Edit
+
+            if (frmJoinEdit.DATA_UPDATED)
+            {
+                GOODS_INFO.packaging_code = frmJoinEdit.SAVED_JOIN_INFO.join_child_code;
+                GOODS_INFO.packaging_name = frmJoinEdit.SAVED_JOIN_INFO.join_child_name;
+
+                GOODS_INFO.standard_packing_qty = frmJoinEdit.SAVED_JOIN_INFO.join_max;
+                txtGoodsPcsPerBag.Text = GOODS_INFO.standard_packing_qty.ToString();
+                PACKING_INFO_CHANGED = true;
+
+                frmSBBPOVSStock.dt_JoinInfo = new joinDAL().SelectAll();
+            }
         }
     }
 }

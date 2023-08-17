@@ -60,6 +60,28 @@ namespace FactoryManagementSoftware.UI
             updateTestName();
         }
 
+        public frmJoinEdit(joinBLL u, bool closeAfterSave, int mode)
+        {
+            //mode
+            //1: parent, child, ratio qty load
+            //2: parent, child
+            //3: parent
+            //4: child
+
+            CLOSE_PAGE_AFTER_SAVED = closeAfterSave;
+            DATA_UPDATED = false;
+
+            InitializeComponent();
+            uJoin = u;
+            loadItemCategoryData();
+
+            DT_ITEM = dalItem.Select();
+
+            LoadJoinData(u);
+            
+            updateTestName();
+
+        }
         public frmJoinEdit(joinBLL u, bool closeAfterSave, bool newJoin)
         {
             CLOSE_PAGE_AFTER_SAVED = closeAfterSave;
@@ -92,6 +114,7 @@ namespace FactoryManagementSoftware.UI
         private readonly string LBL_PARENT_MAX = "PARENT QTY (MAX)";
         private readonly string LBL_PARENT_NORMAL = "PARENT QTY";
 
+        private DataTable DT_ITEM;
         #region Load/Close
 
         private void LoadJoinData(string ParentCode)
@@ -180,6 +203,54 @@ namespace FactoryManagementSoftware.UI
            
         }
 
+        private void LoadJoinData(joinBLL joinInfo)
+        {
+            string ParentName = joinInfo.join_parent_name;
+            string ChildName = joinInfo.join_child_name;
+
+            if(string.IsNullOrEmpty(ParentName) && !string.IsNullOrEmpty(joinInfo.join_parent_code))
+            {
+                ParentName = tool.getItemNameFromDataTable(DT_ITEM, joinInfo.join_parent_code);
+            }
+
+            if (string.IsNullOrEmpty(ChildName) && !string.IsNullOrEmpty(joinInfo.join_child_code))
+            {
+                ChildName = tool.getItemNameFromDataTable(DT_ITEM, joinInfo.join_child_code);
+            }
+
+            if(!string.IsNullOrEmpty(ParentName))
+            {
+                cmbParentName.Text = ParentName;
+                cmbParentCode.Text = joinInfo.join_parent_code;
+            }
+
+
+            if (!string.IsNullOrEmpty(ChildName))
+            {
+                cmbChildCat.Text = tool.getItemCatFromDataTable(DT_ITEM, joinInfo.join_child_code);
+
+                cmbChildName.Text = ChildName;
+
+                LoadChidCodeCMB();
+
+                cmbChildCode.Text = joinInfo.join_child_code;
+            }
+
+            txtChildQty.Text = joinInfo.join_qty.ToString();
+            txtMax.Text = joinInfo.join_max.ToString();
+            txtMin.Text = joinInfo.join_min.ToString();
+
+            if (!string.IsNullOrEmpty(joinInfo.join_parent_code))
+            {
+                cmbParentCat.Enabled = false;
+                cmbParentName.Enabled = false;
+                cmbParentCode.Enabled = false;
+            }
+
+            cbMainCarton.Checked = joinInfo.join_main_carton;
+            cbStockOut.Checked = joinInfo.join_stock_out;
+
+        }
         private void loadItemCategoryData()
         {
             //DataTable dtItemCat = dALItemCat.Select();
@@ -625,6 +696,8 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
+        static public joinBLL SAVED_JOIN_INFO; 
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             if (Validation())
@@ -635,8 +708,10 @@ namespace FactoryManagementSoftware.UI
                 {
                    
                     uJoin.join_parent_code = cmbParentCode.Text;
-                     
+                    uJoin.join_parent_name = cmbParentName.Text;
+
                     uJoin.join_child_code = cmbChildCode.Text;
+                    uJoin.join_child_name = cmbChildName.Text;
 
                     frmJoin.editedParentCode = uJoin.join_parent_code;
                     frmJoin.editedChildCode = uJoin.join_child_code;
@@ -673,6 +748,7 @@ namespace FactoryManagementSoftware.UI
                             //Data Successfully Inserted
                             MessageBox.Show("Join updated.");
                             DATA_UPDATED = true;
+                            SAVED_JOIN_INFO = uJoin;
                         }
                         else
                         {
@@ -693,6 +769,7 @@ namespace FactoryManagementSoftware.UI
                             MessageBox.Show("Join successfully created");
                             // this.Close();
                             DATA_UPDATED = true;
+                            SAVED_JOIN_INFO = uJoin;
                         }
                         else
                         {
