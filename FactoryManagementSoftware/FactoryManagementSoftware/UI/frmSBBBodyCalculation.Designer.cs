@@ -35,6 +35,7 @@
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblBagBalQty = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGoodsPcsPerBagSave = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,6 +57,7 @@
             this.lblGoodsDescription = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblContainerBalQty = new System.Windows.Forms.Label();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.btnBodyPcsPerContainerSave = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -145,6 +147,7 @@
             this.txtContainerQty.Text = "8888";
             this.txtContainerQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtContainerQty.TextChanged += new System.EventHandler(this.txtContainerQty_TextChanged);
+            this.txtContainerQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.isNumber_KeyPress);
             // 
             // tableLayoutPanel3
             // 
@@ -186,6 +189,7 @@
             this.tableLayoutPanel8.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel8.ColumnCount = 1;
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.Controls.Add(this.lblBagBalQty, 0, 1);
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel12, 0, 8);
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel10, 0, 6);
             this.tableLayoutPanel8.Controls.Add(this.tableLayoutPanel7, 0, 0);
@@ -197,8 +201,8 @@
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 10;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 74F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 26F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
@@ -206,8 +210,20 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(347, 374);
             this.tableLayoutPanel8.TabIndex = 346;
+            // 
+            // lblBagBalQty
+            // 
+            this.lblBagBalQty.AutoSize = true;
+            this.lblBagBalQty.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblBagBalQty.Location = new System.Drawing.Point(3, 103);
+            this.lblBagBalQty.Margin = new System.Windows.Forms.Padding(3);
+            this.lblBagBalQty.Name = "lblBagBalQty";
+            this.lblBagBalQty.Size = new System.Drawing.Size(15, 19);
+            this.lblBagBalQty.TabIndex = 343;
+            this.lblBagBalQty.Text = "-";
             // 
             // tableLayoutPanel12
             // 
@@ -218,7 +234,7 @@
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel12.Controls.Add(this.btnGoodsPcsPerBagSave, 2, 0);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 310);
+            this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 306);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel12.Name = "tableLayoutPanel12";
             this.tableLayoutPanel12.RowCount = 1;
@@ -269,7 +285,7 @@
             this.tableLayoutPanel10.Controls.Add(this.label18, 3, 0);
             this.tableLayoutPanel10.Controls.Add(this.txtGoodsPcsPerBag, 2, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 265);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 261);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
@@ -321,6 +337,7 @@
             this.txtGoodsPcsPerBag.Text = "88888";
             this.txtGoodsPcsPerBag.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtGoodsPcsPerBag.TextChanged += new System.EventHandler(this.txtGoodsPcsPerBag_TextChanged);
+            this.txtGoodsPcsPerBag.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.isNumber_KeyPress);
             // 
             // tableLayoutPanel7
             // 
@@ -380,6 +397,7 @@
             this.txtBagQty.Text = "8888";
             this.txtBagQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBagQty.TextChanged += new System.EventHandler(this.txtBagQty_TextChanged);
+            this.txtBagQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.isNumber_KeyPress);
             // 
             // tableLayoutPanel11
             // 
@@ -397,7 +415,7 @@
             this.tableLayoutPanel11.Controls.Add(this.txtGoodsStockPcsQty, 2, 0);
             this.tableLayoutPanel11.Controls.Add(this.label13, 3, 0);
             this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 210);
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(0, 206);
             this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
@@ -445,6 +463,7 @@
             this.txtGoodsStockBagQty.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtGoodsStockBagQty.Location = new System.Drawing.Point(220, 3);
             this.txtGoodsStockBagQty.Name = "txtGoodsStockBagQty";
+            this.txtGoodsStockBagQty.ReadOnly = true;
             this.txtGoodsStockBagQty.Size = new System.Drawing.Size(44, 30);
             this.txtGoodsStockBagQty.TabIndex = 349;
             this.txtGoodsStockBagQty.Text = "888";
@@ -457,6 +476,7 @@
             this.txtGoodsStockPcsQty.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtGoodsStockPcsQty.Location = new System.Drawing.Point(90, 3);
             this.txtGoodsStockPcsQty.Name = "txtGoodsStockPcsQty";
+            this.txtGoodsStockPcsQty.ReadOnly = true;
             this.txtGoodsStockPcsQty.Size = new System.Drawing.Size(84, 30);
             this.txtGoodsStockPcsQty.TabIndex = 346;
             this.txtGoodsStockPcsQty.Text = "8888888";
@@ -477,7 +497,7 @@
             // 
             this.lblGoodsDescription.AutoSize = true;
             this.lblGoodsDescription.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblGoodsDescription.Location = new System.Drawing.Point(3, 113);
+            this.lblGoodsDescription.Location = new System.Drawing.Point(3, 133);
             this.lblGoodsDescription.Margin = new System.Windows.Forms.Padding(3);
             this.lblGoodsDescription.Name = "lblGoodsDescription";
             this.lblGoodsDescription.Size = new System.Drawing.Size(315, 19);
@@ -501,6 +521,7 @@
             this.tableLayoutPanel6.BackColor = System.Drawing.Color.Transparent;
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Controls.Add(this.lblContainerBalQty, 0, 1);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel14, 0, 8);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel4, 0, 6);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel2, 0, 4);
@@ -512,8 +533,8 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 10;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 76F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
@@ -521,8 +542,20 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(346, 374);
             this.tableLayoutPanel6.TabIndex = 228;
+            // 
+            // lblContainerBalQty
+            // 
+            this.lblContainerBalQty.AutoSize = true;
+            this.lblContainerBalQty.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblContainerBalQty.Location = new System.Drawing.Point(3, 103);
+            this.lblContainerBalQty.Margin = new System.Windows.Forms.Padding(3);
+            this.lblContainerBalQty.Name = "lblContainerBalQty";
+            this.lblContainerBalQty.Size = new System.Drawing.Size(15, 19);
+            this.lblContainerBalQty.TabIndex = 342;
+            this.lblContainerBalQty.Text = "-";
             // 
             // tableLayoutPanel14
             // 
@@ -533,7 +566,7 @@
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel14.Controls.Add(this.btnBodyPcsPerContainerSave, 2, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(0, 310);
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(0, 304);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
@@ -584,7 +617,7 @@
             this.tableLayoutPanel4.Controls.Add(this.label1, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.txtBodyPcsPerContainer, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 265);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 259);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -636,6 +669,7 @@
             this.txtBodyPcsPerContainer.Text = "88888";
             this.txtBodyPcsPerContainer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtBodyPcsPerContainer.TextChanged += new System.EventHandler(this.txtBodyPcsPerContainer_TextChanged);
+            this.txtBodyPcsPerContainer.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.isNumber_KeyPress);
             // 
             // tableLayoutPanel2
             // 
@@ -653,7 +687,7 @@
             this.tableLayoutPanel2.Controls.Add(this.txtBodyStockPcsQty, 2, 0);
             this.tableLayoutPanel2.Controls.Add(this.label6, 3, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 210);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 204);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -701,6 +735,7 @@
             this.txtBodyStockContainerQty.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtBodyStockContainerQty.Location = new System.Drawing.Point(219, 3);
             this.txtBodyStockContainerQty.Name = "txtBodyStockContainerQty";
+            this.txtBodyStockContainerQty.ReadOnly = true;
             this.txtBodyStockContainerQty.Size = new System.Drawing.Size(44, 30);
             this.txtBodyStockContainerQty.TabIndex = 349;
             this.txtBodyStockContainerQty.Text = "888";
@@ -713,6 +748,7 @@
             this.txtBodyStockPcsQty.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.txtBodyStockPcsQty.Location = new System.Drawing.Point(90, 3);
             this.txtBodyStockPcsQty.Name = "txtBodyStockPcsQty";
+            this.txtBodyStockPcsQty.ReadOnly = true;
             this.txtBodyStockPcsQty.Size = new System.Drawing.Size(83, 30);
             this.txtBodyStockPcsQty.TabIndex = 346;
             this.txtBodyStockPcsQty.Text = "8888888";
@@ -733,7 +769,7 @@
             // 
             this.lblBodyDescription.AutoSize = true;
             this.lblBodyDescription.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblBodyDescription.Location = new System.Drawing.Point(3, 113);
+            this.lblBodyDescription.Location = new System.Drawing.Point(3, 133);
             this.lblBodyDescription.Margin = new System.Windows.Forms.Padding(3);
             this.lblBodyDescription.Name = "lblBodyDescription";
             this.lblBodyDescription.Size = new System.Drawing.Size(315, 19);
@@ -825,5 +861,7 @@
         private Guna.UI.WinForms.GunaGradientButton btnGoodsPcsPerBagSave;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private Guna.UI.WinForms.GunaGradientButton btnBodyPcsPerContainerSave;
+        private System.Windows.Forms.Label lblBagBalQty;
+        private System.Windows.Forms.Label lblContainerBalQty;
     }
 }

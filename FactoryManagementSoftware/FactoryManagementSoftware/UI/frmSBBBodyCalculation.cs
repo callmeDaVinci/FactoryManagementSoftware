@@ -110,20 +110,57 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void balQtyUpdate()
+        {
+            double balqty = (double.TryParse(txtContainerQty.Text, out double i) ? i : 0) % 1;
+
+            balqty = Math.Round(balqty, 2);
+
+            if (balqty > 0)
+            {
+                int containerBalQty = (int)(balqty * (double.TryParse(txtBodyPcsPerContainer.Text, out i) ? i : 0));
+
+                lblContainerBalQty.Text = balqty + " = " + containerBalQty.ToString() + " pcs";
+            }
+            else
+            {
+                lblContainerBalQty.Text = "-";
+            }
+
+            balqty = (double.TryParse(txtBagQty.Text, out  i) ? i : 0) % 1;
+
+            balqty = Math.Round(balqty, 2);
+
+            if (balqty > 0)
+            {
+                int bagBalQty = (int)(balqty * (double.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0));
+
+                lblBagBalQty.Text = balqty + " = " + bagBalQty.ToString() + " pcs";
+            }
+            else
+            {
+                lblBagBalQty.Text = "-";
+            }
+        }
+
         private void ContainerToBagConvert()
         {
             if(!DATA_UPDATING)
             {
                 DATA_UPDATING = true;
 
-                int bodyPerContainer = int.TryParse(txtBodyPcsPerContainer.Text, out int i) ? i : 0;
-                int goodsPerBag = int.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
+                double bodyPerContainer = double.TryParse(txtBodyPcsPerContainer.Text, out double i) ? i : 0;
+                double goodsPerBag = double.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
 
-                int containerQty = int.TryParse(txtContainerQty.Text, out i) ? i : 0;
+                double containerQty = double.TryParse(txtContainerQty.Text, out double x) ? x : 0;
 
                 // bag qty = pcs/ctn x ctn qty / ratio / pcs/bag
-                int bagQty = bodyPerContainer * containerQty / BODY_QTY_PER_GOODS / goodsPerBag;
-                txtBagQty.Text = bagQty.ToString();
+                double bagQty = bodyPerContainer * containerQty / BODY_QTY_PER_GOODS / goodsPerBag;
+
+                txtBagQty.Text = bagQty.ToString("0.##");
+
+                balQtyUpdate();
+
 
                 DATA_UPDATING = false;
             }
@@ -131,21 +168,40 @@ namespace FactoryManagementSoftware.UI
             // ctn qty = bag qty x ratio x pcs/bag / pcs/ctn
         }
 
+      
         private void BagToContainerConvert()
         {
             if (!DATA_UPDATING)
             {
                 DATA_UPDATING = true;
 
-                int bodyPerContainer = int.TryParse(txtBodyPcsPerContainer.Text, out int i) ? i : 0;
-                int goodsPerBag = int.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
+                double bodyPerContainer = double.TryParse(txtBodyPcsPerContainer.Text, out double i) ? i : 0;
+                double goodsPerBag = double.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
 
-                int bagQty = int.TryParse(txtBagQty.Text, out i) ? i : 0;
+                double bagQty = double.TryParse(txtBagQty.Text, out i) ? i : 0;
 
                 // ctn qty = bag qty x ratio x pcs/bag / pcs/ctn
-                int containerQty = bagQty * BODY_QTY_PER_GOODS * goodsPerBag / bodyPerContainer;
+                double containerQty = bagQty * BODY_QTY_PER_GOODS * goodsPerBag / bodyPerContainer;
 
-                txtContainerQty.Text = containerQty.ToString();
+                txtContainerQty.Text = containerQty.ToString("0.##");
+
+                double balqty = containerQty % 1;
+
+                balqty = Math.Round(balqty, 2);
+
+                if (balqty > 0)
+                {
+                    int containerBalQty = (int)(balqty * (double.TryParse(txtBodyPcsPerContainer.Text, out  i) ? i : 0));
+
+                    lblContainerBalQty.Text = balqty + " = " +containerBalQty.ToString() + " pcs";
+                }
+                else
+                {
+                    lblContainerBalQty.Text = "-";
+                }
+
+                balQtyUpdate();
+
 
                 DATA_UPDATING = false;
             }
@@ -253,6 +309,14 @@ namespace FactoryManagementSoftware.UI
                 PACKING_INFO_CHANGED = true;
 
                 frmSBBPOVSStock.dt_JoinInfo = new joinDAL().SelectAll();
+            }
+        }
+
+        private void isNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
             }
         }
     }
