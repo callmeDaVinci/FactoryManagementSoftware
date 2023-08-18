@@ -3628,19 +3628,19 @@ namespace FactoryManagementSoftware.UI
             //}
 
 
-            int count = Application.OpenForms.OfType<frmSBBDOList>().Count();
+            int count = Application.OpenForms.OfType<frmSBBDOListVer2>().Count();
 
 
             if (count == 1)
             {
                 //Form is already open
-                Application.OpenForms.OfType<frmSBBDOList>().First().BringToFront();
-                Application.OpenForms.OfType<frmSBBDOList>().First().WindowState = FormWindowState.Normal;
+                Application.OpenForms.OfType<frmSBBDOListVer2>().First().BringToFront();
+                Application.OpenForms.OfType<frmSBBDOListVer2>().First().WindowState = FormWindowState.Normal;
             }
             else
             {
                 // Form is not open
-                frmSBBDOList frm = new frmSBBDOList
+                frmSBBDOListVer2 frm = new frmSBBDOListVer2
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };
@@ -3655,7 +3655,7 @@ namespace FactoryManagementSoftware.UI
 
         private void WorkInProgressMessage()
         {
-            MessageBox.Show("work in progress...");
+           // MessageBox.Show("work in progress...");
         }
 
         private void button10_Click(object sender, EventArgs e)

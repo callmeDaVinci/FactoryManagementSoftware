@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
@@ -10,8 +8,6 @@ using System.Windows.Forms;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.Module;
-using System.Globalization;
-using Org.BouncyCastle.Bcpg;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -577,8 +573,9 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 dt_Item = dalItem.Select();
-                dt_POList = dalSPP.POSelect();
-                dt_DOList = dalSPP.DOWithInfoSelect();
+                dt_POList = dalSPP.ActivePOSelect();//
+                //dt_POList = dalSPP.POSelect();//411ms
+                dt_DOList = dalSPP.ActiveDOWithInfoSelect();//2296ms
 
                 dt_AllStockData = dalStock.Select();
                 dt_JoinInfo = dalJoin.SelectAll();
@@ -596,7 +593,7 @@ namespace FactoryManagementSoftware.UI
                     dt_POList.DefaultView.Sort = dalSPP.PriorityLevel + " ASC," + dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC";
                 }
 
-
+                //^^2831ms
                 dt_POList = dt_POList.DefaultView.ToTable();
 
                 int index = 1;
@@ -719,6 +716,31 @@ namespace FactoryManagementSoftware.UI
                 string colCustIDName = "";
                 string colPODateName = "";
 
+                string EditUnit = cmbEditUnit.Text;
+                //start: code to improve speed
+
+                DataTable dt_DO_Short = dt_DOList.Clone();
+
+                foreach (DataRow row in dt_POList.Rows)
+                {
+                    string poTblCode = row[dalSPP.TableCode].ToString();
+
+                    foreach (DataRow rowDO in dt_DOList.Rows)
+                    {
+                        bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
+                        bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
+                        string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
+
+                        if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
+                        {
+                            //get to delivery qty
+                            dt_DO_Short.Rows.Add(rowDO.ItemArray);
+                        }
+                    }
+
+                }
+
+                #region old Code to improve speed
                 foreach (DataRow row in dt_POList.Rows)
                 {
                     bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
@@ -818,7 +840,7 @@ namespace FactoryManagementSoftware.UI
 
                                     int divideBy = pcsPerBag;
 
-                                    if (cmbEditUnit.Text == text_Pcs)
+                                    if (EditUnit == text_Pcs)
                                     {
                                         divideBy = 1;
                                     }
@@ -844,7 +866,7 @@ namespace FactoryManagementSoftware.UI
                                     int DO_ToDeliveryQty = 0;
                                     string deliveryStatus = text_DeliveryStatus_ToOpen;
 
-                                    foreach (DataRow rowDO in dt_DOList.Rows)
+                                    foreach (DataRow rowDO in dt_DO_Short.Rows)
                                     {
                                         bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
                                         bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
@@ -967,10 +989,12 @@ namespace FactoryManagementSoftware.UI
                     }
 
                 }
+                #endregion
+                //ennd: code to improve speed
 
                 #endregion
-
-                dgvList.SuspendLayout();//148ms
+                //^^4116ms
+                dgvList.SuspendLayout();
 
                 dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
                 dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
@@ -1000,7 +1024,7 @@ namespace FactoryManagementSoftware.UI
               
                 dgvList.ClearSelection();
 
-                //298ms
+                //^^872ms
                 Cursor = Cursors.Arrow;
 
                 frmLoading.CloseForm();//1122ms//986ms

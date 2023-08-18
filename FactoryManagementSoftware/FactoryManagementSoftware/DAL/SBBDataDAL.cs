@@ -1104,6 +1104,63 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ActivePOSelect()
+        {
+            //static method to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"
+            SELECT 
+                *
+            FROM 
+                tbl_spp_po 
+            INNER JOIN 
+                tbl_spp_customer 
+                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code
+            WHERE 
+                tbl_spp_po.po_code IN (
+                    SELECT 
+                        po_code
+                    FROM 
+                        tbl_spp_po
+                    GROUP BY 
+                        po_code
+                    HAVING 
+                        SUM(CASE WHEN delivered_qty < po_qty THEN 1 ELSE 0 END) > 0
+                )
+            ORDER BY 
+                tbl_spp_po.po_date ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+
+
+
         public DataTable POSelect(string poNoString)
         {
             //static methodd to connect database
@@ -1660,6 +1717,59 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ActiveDOWithInfoSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                String sql = @"SELECT * FROM tbl_spp_do 
+                         INNER JOIN tbl_spp_po
+                         ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                         INNER JOIN tbl_spp_customer 
+                         ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                         INNER JOIN tbl_item
+                         ON tbl_spp_po.item_code = tbl_item.item_code
+                         LEFT JOIN tbl_spp_size size1
+                            ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                         LEFT JOIN tbl_spp_size size2
+                            ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                         INNER JOIN tbl_spp_type
+                         ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                         FULL JOIN tbl_spp_stdpacking
+                         ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                         WHERE (tbl_spp_do.isRemoved = @isRemoved OR tbl_spp_do.isRemoved IS NULL)
+                     AND (tbl_spp_do.isDelivered = @isDelivered OR tbl_spp_do.isDelivered IS NULL)
+                     ORDER BY tbl_spp_do.do_no ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@isRemoved", false);
+                cmd.Parameters.AddWithValue("@isDelivered", false);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable SBBPageDOWithInfoSelect()
         {
             //static methodd to connect database
