@@ -512,7 +512,6 @@ namespace FactoryManagementSoftware.UI
             string Keywords = txtSearch.Text;
             bool GetCompletedPlanOnly = !cbPending.Checked && !cbRunning.Checked && !cbWarning.Checked && !cbCancelled.Checked && cbCompleted.Checked;
 
-
             if (ChangePlanToAction)
             {
                 txtSearch.Text = ITEM_CODE;
@@ -574,9 +573,16 @@ namespace FactoryManagementSoftware.UI
 
                 if (!(cbSearchByJobNo.Checked && !string.IsNullOrEmpty(Keywords)))
                 {
+
                     if (string.IsNullOrEmpty(status))
                     {
                         match = false;
+                    }
+
+                    if (status == text.planning_status_draft && userPermission < MainDashboard.ACTION_LVL_FOUR)
+                    {
+                        match = false;
+                        continue;
                     }
 
                     if (!cbPending.Checked && status.Equals(text.planning_status_pending))

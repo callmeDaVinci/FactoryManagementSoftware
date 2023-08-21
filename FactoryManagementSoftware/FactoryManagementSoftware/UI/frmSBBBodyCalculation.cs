@@ -271,7 +271,7 @@ namespace FactoryManagementSoftware.UI
                 BODY_INFO.standard_packing_qty = frmJoinEdit.SAVED_JOIN_INFO.join_max;
                 txtBodyPcsPerContainer.Text = BODY_INFO.standard_packing_qty.ToString();
                 PACKING_INFO_CHANGED = true;
-                frmSBBPOVSStock.dt_JoinInfo = new joinDAL().SelectAll();
+                frmSBBPOVSStock.DB_JOIN_ALL = new joinDAL().SelectAll();
 
             }
         }
@@ -308,7 +308,7 @@ namespace FactoryManagementSoftware.UI
                 txtGoodsPcsPerBag.Text = GOODS_INFO.standard_packing_qty.ToString();
                 PACKING_INFO_CHANGED = true;
 
-                frmSBBPOVSStock.dt_JoinInfo = new joinDAL().SelectAll();
+                frmSBBPOVSStock.DB_JOIN_ALL = new joinDAL().SelectAll();
             }
         }
 

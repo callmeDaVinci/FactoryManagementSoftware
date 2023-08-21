@@ -1,4 +1,5 @@
-﻿using FactoryManagementSoftware.BLL;
+﻿using Accord.Statistics.Running;
+using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -3006,6 +3008,32 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void AddNewTransaction(int rowIndex)
+        {
+            DataGridView dgv = dgvTransfer;
+
+            if (rowIndex >= 0)
+            {
+               
+                cmbTrfItemCat.Text = dgv.Rows[rowIndex].Cells[CatColumnName].Value.ToString();
+                cmbTrfItemName.Text = dgv.Rows[rowIndex].Cells[NameColumnName].Value.ToString();
+                cmbTrfItemCode.Text = dgv.Rows[rowIndex].Cells[CodeColumnName].Value.ToString();
+
+                cmbTrfFromCategory.Text = dgv.Rows[rowIndex].Cells[FromCatColumnName].Value.ToString();
+                cmbTrfFrom.Text = dgv.Rows[rowIndex].Cells[FromColumnName].Value.ToString();
+                cmbTrfToCategory.Text = dgv.Rows[rowIndex].Cells[ToCatColumnName].Value.ToString();
+                cmbTrfTo.Text = dgv.Rows[rowIndex].Cells[ToColumnName].Value.ToString();
+
+                txtTrfQty.Text = "0";
+                cmbTrfQtyUnit.Text = dgv.Rows[rowIndex].Cells[UnitColumnName].Value.ToString();
+                txtTrfNote.Text = "";
+
+
+                dgvEdit = false;
+                changeButton();
+            }
+
+        }
         private void loadFromDGV()
         {
             DataGridView dgv = dgvTransfer;
@@ -3165,6 +3193,8 @@ namespace FactoryManagementSoftware.UI
             //e.Handled = true;
         }
 
+        private ContextMenuStrip my_menu;
+
         private void dgvTransfer_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
@@ -3174,7 +3204,7 @@ namespace FactoryManagementSoftware.UI
                 //handle the row selection on right click
                 if (e.Button == MouseButtons.Right)
                 {
-                    ContextMenuStrip my_menu = new ContextMenuStrip();
+                    my_menu = new ContextMenuStrip();
 
                     dgvTransfer.CurrentCell = dgvTransfer.Rows[e.RowIndex].Cells[e.ColumnIndex];
 
@@ -3361,7 +3391,14 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(fac + "   " + qty).Name = fac;
                     }
 
+                    my_menu.Items.Add("").Name = "";
+                    my_menu.Items.Add("").Name = "";
+                    my_menu.Items.Add(text.AddTransaction).Name = text.AddTransaction;
+
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+
                 }
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
@@ -3372,6 +3409,29 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void my_menu_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvTransfer;
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            int rowIndex = dgv.CurrentCell.RowIndex;
+   
+
+           
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            my_menu.Hide();
+
+
+            if (itemClicked.Equals(text.AddTransaction))
+            {
+                AddNewTransaction(rowIndex);
+            }
+         
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
         private float GetTotalBalAfterTransfer(DataTable dtStock,DataTable dt_Fac, string itemCode, float trfQty, string trfFrom, string trfTo)
         {
             float afterTotalQty = 0;

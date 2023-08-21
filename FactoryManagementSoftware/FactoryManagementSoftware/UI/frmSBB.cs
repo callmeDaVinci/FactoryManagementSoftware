@@ -2070,7 +2070,8 @@ namespace FactoryManagementSoftware.UI
             dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
             dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
 
-            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
+            //dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//1757
+            dt_DOWithTrfInfoSelectedPeriod = frmLogIn.dt_DOWithTrfInfoSelectedPeriod.Copy();
 
             dt_Stock = dalStock.StockDataSelect();
 
@@ -2348,6 +2349,7 @@ namespace FactoryManagementSoftware.UI
 
             SuspendLayout();
             //SBBItemUpload();
+            tableLayoutPanel29.Visible = false;
 
             //ShowDataSourceUI();
             dtpDate1.Value = DateTime.Now;
@@ -2364,7 +2366,8 @@ namespace FactoryManagementSoftware.UI
 
             //var now = DateTime.Now;
             //var startOfMonth = new DateTime(now.Year, now.Month, 1);
-            
+            tableLayoutPanel29.Visible = true;
+
             ResumeLayout();
         }
 
@@ -3183,7 +3186,7 @@ namespace FactoryManagementSoftware.UI
             DateTime now = DateTime.Now;
             string start = MonthlyDateStart.ToString("yyyy/MM/dd");
             string end = MonthlyDateEnd.ToString("yyyy/MM/dd");
-
+            
             foreach (DataRow row_DO in dt_DOWithTrfInfoSelectedPeriod.Rows)
             {
                 string trfResult = row_DO[dalTrfHist.TrfResult].ToString();
@@ -3315,13 +3318,13 @@ namespace FactoryManagementSoftware.UI
 
         private void RefreshPage()
         {
-            NewInitialDBData();
+            NewInitialDBData();//429ms
          
-            LoadPendingSummary();//923->283
+            LoadPendingSummary();//1289ms
 
-            LoadStockAlert();//166
+            LoadStockAlert();//376ms
 
-            LoadUsage();//1421->564
+            LoadUsage();//1142ms
 
         }
 

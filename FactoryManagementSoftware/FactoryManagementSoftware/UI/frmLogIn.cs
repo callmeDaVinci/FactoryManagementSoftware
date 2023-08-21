@@ -185,24 +185,24 @@ namespace FactoryManagementSoftware.UI
             start = MonthlyDateStart.ToString("yyyy/MM/dd");
             end = MonthlyDateEnd.ToString("yyyy/MM/dd");
 
-            dt_SBBCustWithoutRemovedDataSelect = dalSBB.CustomerWithoutRemovedDataSelect();//84
+            //dt_SBBCustWithoutRemovedDataSelect = dalSBB.CustomerWithoutRemovedDataSelect();//84
 
-            dt_PendingPOSelect = dalSBB.SBBPagePendingPOSelect();//456
+            //dt_PendingPOSelect = dalSBB.SBBPagePendingPOSelect();//456
 
 
-            dt_JoinSelectWithChildCat = dalJoin.SelectWithChildCat();//98
-            dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
-            dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
+            //dt_JoinSelectWithChildCat = dalJoin.SelectWithChildCat();//98
+            //dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
+            //dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
 
             dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
 
-            dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
-            dt_SBBCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
-            dt_SBBCustSearchWithTypeAndSize = dt_SBBCustSearchWithTypeAndSize.DefaultView.ToTable();
+            //dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
+            //dt_SBBCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
+            //dt_SBBCustSearchWithTypeAndSize = dt_SBBCustSearchWithTypeAndSize.DefaultView.ToTable();
 
-            dt_Item = dalItem.Select();
+            //dt_Item = dalItem.Select();
 
-            dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
+            //dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
 
         }
 
@@ -219,6 +219,7 @@ namespace FactoryManagementSoftware.UI
             else if(ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_Semenyih) || ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_JunPC))
             {
                 //SBBPageDataPreLoad();
+                SBBPageDataPreLoad();
             }
 
             ShowSystemVersion();

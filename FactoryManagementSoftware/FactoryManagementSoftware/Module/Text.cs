@@ -46,6 +46,7 @@ namespace FactoryManagementSoftware.Module
         public string LogOut { get; } = "LogOut";
 
         public string AddItem { get; } = "AddItem";
+        public string AddTransaction { get; } = "Add New Transaction";
         public string ItemEdit { get; } = "ItemEdit";
         public string ItemDelete { get; } = "ItemDelete";
 

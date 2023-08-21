@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System;
 using System.Drawing;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -661,7 +662,7 @@ namespace FactoryManagementSoftware.UI
             return true;
         }
 
-        private void LoadDeliveredData()
+        private void Old_LoadDeliveredData()
         {
             dgvList.DataSource = null;
 
@@ -1080,6 +1081,711 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void LoadDeliveredData()
+        {
+            dgvList.DataSource = null;
+
+            lblTotalBag.Text = 0 + " BAG(s) / " + 0 + " PCS " + text_Selected;
+            if (Validation())
+            {
+                #region Pre Setting
+
+                frmLoading.ShowLoadingScreen();
+
+                DataGridView dgv = dgvList;
+                DataTable dt_DeliveredReport = NewDeliveredTable();
+                //DataTable dt_ItemList;
+                //DataTable dt_TrfHist;
+
+                dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                string dateType = cmbReportType.Text;
+                //string itemSize = cmbItemSize.Text;
+                //string itemType = cmbItemType.Text;
+
+                #endregion
+
+                #region get start and end date
+
+                string start = dtpDateFrom.Value.ToString("yyyy/MM/dd");
+                string end = dtpDateTo.Value.ToString("yyyy/MM/dd");
+
+                #endregion
+
+                #region Load data from database
+
+                string itemCust = text.SPP_BrandName;
+                DataTable dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//19ms
+
+                if (cbSortByType.Checked)
+                {
+                    dt_Product.DefaultView.Sort = dalSPP.TypeName + " ASC," + dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
+                    dt_Product = dt_Product.DefaultView.ToTable();
+                }
+                else
+                {
+                    dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
+                    dt_Product = dt_Product.DefaultView.ToTable();
+                }
+
+                DataTable dt_Item = dalItem.Select();//16ms
+
+                //DataTable dt_DOList = dalSPP.DOWithTrfInfoSelect(start, end);//1897ms
+                DataTable dt_DOList = dalSPP.NEW_DOWithTrfInfoSelect(start, end);//300
+
+                dt_DOList.Columns.Add("To Delete", typeof(string));
+
+                #endregion
+
+                //^ 2600ms>>359ms
+
+                #region load product list
+                int index = 1;
+
+                #region new Code
+
+
+                Dictionary<string, List<DataRow>> doDict = new Dictionary<string, List<DataRow>>();
+
+                foreach (DataRow row_DO in dt_DOList.Rows)
+                {
+                    string itemCode = row_DO[dalSPP.ItemCode].ToString();
+                    if (!doDict.ContainsKey(itemCode))
+                    {
+                        doDict[itemCode] = new List<DataRow>();
+                    }
+                    doDict[itemCode].Add(row_DO);
+                }
+
+                foreach (DataRow row in dt_Product.Rows)
+                {
+                    //get product info
+                    string itemCode = row[dalSPP.ItemCode].ToString();
+                    string itemName = row[dalSPP.ItemName].ToString();
+                    int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+                    int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
+                    int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                    int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
+                    int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                    int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                    string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+
+                    string typeName = row[dalSPP.TypeName].ToString();
+
+                    int pcsStock = readyStock;
+                    int bagStock = pcsStock / qtyPerBag;
+
+
+                    string sizeString = "";
+
+                    #region Get Size Data
+
+                    int numerator_2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                    int denominator_2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                    string sizeUnit_2 = row[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+
+                    string sizeString_1 = "";
+                    string sizeString_2 = "";
+
+                    int size_1 = 1;
+                    int size_2 = 1;
+
+                    if (denominator == 1)
+                    {
+                        size_1 = numerator;
+                        sizeString_1 = numerator.ToString();
+
+                    }
+                    else
+                    {
+                        size_1 = numerator / denominator;
+                        sizeString_1 = numerator + "/" + denominator;
+                    }
+
+                    if (numerator_2 > 0)
+                    {
+                        if (denominator_2 == 1)
+                        {
+                            sizeString_2 += numerator_2;
+                            size_2 = numerator_2;
+
+                        }
+                        else
+                        {
+                            size_2 = numerator_2 / denominator_2;
+
+                            if (numerator_2 == 3 && denominator_2 == 2)
+                            {
+                                sizeString_2 += "1 1" + "/" + denominator_2;
+                            }
+                            else
+                            {
+                                sizeString_2 += numerator_2 + "/" + denominator_2;
+                            }
+
+
+
+                        }
+                    }
+
+                    if (size_1 >= size_2)
+                    {
+                        if (sizeString_2 != "")
+                            sizeString = sizeString_1 + " x " + sizeString_2;
+
+                        else
+                        {
+                            sizeString = sizeString_1;
+                        }
+                    }
+                    else
+                    {
+
+                        if (sizeString_2 != "")
+                            sizeString = sizeString_2 + " x " + sizeString_1;
+
+                        else
+                        {
+                            sizeString = sizeString_2;
+                        }
+                    }
+                    #endregion
+
+                    DataRow newRow = dt_DeliveredReport.NewRow();
+
+                    newRow[header_Index] = index++;
+
+                    newRow[header_ItemCode] = itemCode;
+                    newRow[header_ItemSize_Numerator] = numerator;
+                    newRow[header_ItemSize_Denominator] = denominator;
+                    newRow[header_SizeUnit] = sizeUnit;
+                    newRow[header_ItemSizeString] = sizeString;
+                    newRow[header_ItemType] = typeName;
+                    //newRow[header_ItemString] = sizeString + " " + typeName;
+                    newRow[header_ItemString] = itemName;
+
+                    newRow[header_StdPacking] = qtyPerBag;
+
+                    bool DOFound = false;
+
+                    if (doDict.ContainsKey(itemCode))
+                    {
+                        foreach (DataRow row_DO in doDict[itemCode])
+                        {
+                            string trfResult = row_DO[dalTrfHist.TrfResult].ToString();
+                            string toDelete = row_DO["To Delete"].ToString();
+
+                            if (toDelete != "1" && trfResult == "Passed" && row_DO[dalSPP.ItemCode].ToString() == itemCode)
+                            {
+                                int custID = int.TryParse(row_DO[dalSPP.CustTblCode].ToString(), out custID) ? custID : -1;
+                                string shortName = row_DO[dalSPP.ShortName].ToString();
+
+                                DateTime trfDate = DateTime.TryParse(row_DO[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
+
+                                int deliveredPcs = int.TryParse(row_DO[dalTrfHist.TrfQty].ToString(), out deliveredPcs) ? deliveredPcs : 0;
+
+                                if (dt_DeliveredReport.Rows.Count > 0)
+                                {
+                                    bool custFound = false;
+
+                                    foreach (DataRow delivered_Row in dt_DeliveredReport.Rows)
+                                    {
+                                        if (delivered_Row[header_ItemCode].ToString() == itemCode && delivered_Row[header_CustID].ToString() == custID.ToString())
+                                        {
+                                            //get delivered pcs qty
+                                            string dateHeaderName = GetDateHeaderName(trfDate);
+
+                                            int oldDeliveredPcs = int.TryParse(delivered_Row[dateHeaderName + header_DeliveredPcs].ToString(), out oldDeliveredPcs) ? oldDeliveredPcs : 0;
+
+                                            deliveredPcs += oldDeliveredPcs;
+
+                                            int deliveredBag = deliveredPcs / qtyPerBag;
+
+                                            string bagString = " BAGS (";
+
+                                            if (deliveredBag <= 1)
+                                            {
+                                                bagString = " BAG (";
+                                            }
+
+                                            string DeliveredQtyString = "";
+
+                                            if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                                            {
+                                                DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                                            }
+                                            else if (cbDeliveredQtyInPcs.Checked)
+                                            {
+                                                DeliveredQtyString = deliveredPcs.ToString();
+                                            }
+                                            else if (cbDeliveredQtyInBag.Checked)
+                                            {
+                                                DeliveredQtyString = deliveredBag.ToString();
+                                            }
+
+                                            newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                                            newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                                            newRow[dateHeaderName] = DeliveredQtyString;
+
+                                            //newRow[dateHeaderName] = deliveredPcs;
+                                            //newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
+
+
+                                            DOFound = true;
+                                            custFound = true;
+                                            break;
+                                        }
+                                    }
+
+                                    if (!custFound)
+                                    {
+                                        newRow = dt_DeliveredReport.NewRow();
+
+                                        newRow[header_Index] = index++;
+
+                                        newRow[header_ItemCode] = itemCode;
+                                        newRow[header_ItemSize_Numerator] = numerator;
+                                        newRow[header_ItemSize_Denominator] = denominator;
+                                        newRow[header_SizeUnit] = sizeUnit;
+                                        //newRow[header_ItemString] = sizeString + " " + typeName;
+                                        newRow[header_ItemString] = itemName;
+                                        newRow[header_ItemSizeString] = sizeString;
+                                        newRow[header_ItemType] = typeName;
+                                        newRow[header_StdPacking] = qtyPerBag;
+
+                                        newRow[header_CustID] = custID;
+                                        newRow[header_CustShortName] = shortName;
+
+                                        string dateHeaderName = GetDateHeaderName(trfDate);
+
+                                        int deliveredBag = deliveredPcs / qtyPerBag;
+
+                                        string bagString = " Bags (";
+
+                                        if (deliveredBag <= 1)
+                                        {
+                                            bagString = " Bag (";
+                                        }
+
+                                        string DeliveredQtyString = "";
+
+                                        if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                                        {
+                                            DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                                        }
+                                        else if (cbDeliveredQtyInPcs.Checked)
+                                        {
+                                            DeliveredQtyString = deliveredPcs.ToString();
+                                        }
+                                        else if (cbDeliveredQtyInBag.Checked)
+                                        {
+                                            DeliveredQtyString = deliveredBag.ToString();
+                                        }
+
+                                        newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                                        newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                                        newRow[dateHeaderName] = DeliveredQtyString;
+
+                                        dt_DeliveredReport.Rows.Add(newRow);
+                                        DOFound = true;
+                                    }
+                                }
+                                else
+                                {
+                                    // insert first data of the table
+                                    newRow[header_CustID] = custID;
+                                    newRow[header_CustShortName] = shortName;
+
+                                    string dateHeaderName = GetDateHeaderName(trfDate);
+
+                                    int deliveredBag = deliveredPcs / qtyPerBag;
+
+                                    string bagString = " Bags (";
+
+                                    if (deliveredBag <= 1)
+                                    {
+                                        bagString = " Bag (";
+                                    }
+
+                                    string DeliveredQtyString = "";
+
+                                    if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                                    {
+                                        DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                                    }
+                                    else if (cbDeliveredQtyInPcs.Checked)
+                                    {
+                                        DeliveredQtyString = deliveredPcs.ToString();
+                                    }
+                                    else if (cbDeliveredQtyInBag.Checked)
+                                    {
+                                        DeliveredQtyString = deliveredBag.ToString();
+                                    }
+
+                                    newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                                    newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                                    newRow[dateHeaderName] = DeliveredQtyString;
+
+                                    //newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                                    //newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                                    ////newRow[dateHeaderName] = deliveredPcs;
+                                    //newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
+
+                                    dt_DeliveredReport.Rows.Add(newRow);
+                                    DOFound = true;
+                                }
+
+                                row_DO["To Delete"] = "1";
+
+
+                            }
+                        }
+                        doDict.Remove(itemCode); // Once processed, no need to check again.
+                    }
+                    else
+                    {
+                        dt_DeliveredReport.Rows.Add(newRow);
+                    }
+                }
+
+                #endregion
+
+                #region Old Code
+
+                //foreach (DataRow row in dt_Product.Rows)
+                //{
+                //    //get product info
+                //    string itemCode = row[dalSPP.ItemCode].ToString();
+                //    string itemName = row[dalSPP.ItemName].ToString();
+                //    int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+                //    int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
+                //    int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                //    int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
+                //    int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                //    int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                //    string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+
+                //    string typeName = row[dalSPP.TypeName].ToString();
+
+                //    int pcsStock = readyStock;
+                //    int bagStock = pcsStock / qtyPerBag;
+
+
+                //    string sizeString = "";
+
+                //    #region Get Size Data
+
+                //    int numerator_2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                //    int denominator_2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                //    string sizeUnit_2 = row[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+
+                //    string sizeString_1 = "";
+                //    string sizeString_2 = "";
+
+                //    int size_1 = 1;
+                //    int size_2 = 1;
+
+                //    if (denominator == 1)
+                //    {
+                //        size_1 = numerator;
+                //        sizeString_1 = numerator.ToString();
+
+                //    }
+                //    else
+                //    {
+                //        size_1 = numerator / denominator;
+                //        sizeString_1 = numerator + "/" + denominator;
+                //    }
+
+                //    if (numerator_2 > 0)
+                //    {
+                //        if (denominator_2 == 1)
+                //        {
+                //            sizeString_2 += numerator_2;
+                //            size_2 = numerator_2;
+
+                //        }
+                //        else
+                //        {
+                //            size_2 = numerator_2 / denominator_2;
+
+                //            if (numerator_2 == 3 && denominator_2 == 2)
+                //            {
+                //                sizeString_2 += "1 1" + "/" + denominator_2;
+                //            }
+                //            else
+                //            {
+                //                sizeString_2 += numerator_2 + "/" + denominator_2;
+                //            }
+
+
+
+                //        }
+                //    }
+
+                //    if (size_1 >= size_2)
+                //    {
+                //        if (sizeString_2 != "")
+                //            sizeString = sizeString_1 + " x " + sizeString_2;
+
+                //        else
+                //        {
+                //            sizeString = sizeString_1;
+                //        }
+                //    }
+                //    else
+                //    {
+
+                //        if (sizeString_2 != "")
+                //            sizeString = sizeString_2 + " x " + sizeString_1;
+
+                //        else
+                //        {
+                //            sizeString = sizeString_2;
+                //        }
+                //    }
+                //    #endregion
+
+                //    DataRow newRow = dt_DeliveredReport.NewRow();
+
+                //    newRow[header_Index] = index++;
+
+                //    newRow[header_ItemCode] = itemCode;
+                //    newRow[header_ItemSize_Numerator] = numerator;
+                //    newRow[header_ItemSize_Denominator] = denominator;
+                //    newRow[header_SizeUnit] = sizeUnit;
+                //    newRow[header_ItemSizeString] = sizeString;
+                //    newRow[header_ItemType] = typeName;
+                //    //newRow[header_ItemString] = sizeString + " " + typeName;
+                //    newRow[header_ItemString] = itemName;
+
+                //    newRow[header_StdPacking] = qtyPerBag;
+
+                //    bool DOFound = false;
+
+                //    //search product delivered record
+                //    foreach (DataRow row_DO in dt_DOList.Rows)
+                //    {
+                //        string trfResult = row_DO[dalTrfHist.TrfResult].ToString();
+
+                //        if (trfResult == "Passed" && row_DO[dalSPP.ItemCode].ToString() == itemCode)
+                //        {
+                //            int custID = int.TryParse(row_DO[dalSPP.CustTblCode].ToString(), out custID) ? custID : -1;
+                //            string shortName = row_DO[dalSPP.ShortName].ToString();
+
+                //            DateTime trfDate = DateTime.TryParse(row_DO[dalTrfHist.TrfDate].ToString(), out trfDate) ? trfDate : DateTime.MaxValue;
+
+                //            int deliveredPcs = int.TryParse(row_DO[dalTrfHist.TrfQty].ToString(), out deliveredPcs) ? deliveredPcs : 0;
+
+                //            if (dt_DeliveredReport.Rows.Count > 0)
+                //            {
+                //                bool custFound = false;
+
+                //                foreach (DataRow delivered_Row in dt_DeliveredReport.Rows)
+                //                {
+                //                    if (delivered_Row[header_ItemCode].ToString() == itemCode && delivered_Row[header_CustID].ToString() == custID.ToString())
+                //                    {
+                //                        //get delivered pcs qty
+                //                        string dateHeaderName = GetDateHeaderName(trfDate);
+
+                //                        int oldDeliveredPcs = int.TryParse(delivered_Row[dateHeaderName + header_DeliveredPcs].ToString(), out oldDeliveredPcs) ? oldDeliveredPcs : 0;
+
+                //                        deliveredPcs += oldDeliveredPcs;
+
+                //                        int deliveredBag = deliveredPcs / qtyPerBag;
+
+                //                        string bagString = " BAGS (";
+
+                //                        if (deliveredBag <= 1)
+                //                        {
+                //                            bagString = " BAG (";
+                //                        }
+
+                //                        string DeliveredQtyString = "";
+
+                //                        if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                //                        {
+                //                            DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                //                        }
+                //                        else if (cbDeliveredQtyInPcs.Checked)
+                //                        {
+                //                            DeliveredQtyString = deliveredPcs.ToString();
+                //                        }
+                //                        else if (cbDeliveredQtyInBag.Checked)
+                //                        {
+                //                            DeliveredQtyString = deliveredBag.ToString();
+                //                        }
+
+                //                        newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                //                        newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                //                        newRow[dateHeaderName] = DeliveredQtyString;
+
+                //                        //newRow[dateHeaderName] = deliveredPcs;
+                //                        //newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
+
+
+                //                        DOFound = true;
+                //                        custFound = true;
+                //                        break;
+                //                    }
+                //                }
+
+                //                if (!custFound)
+                //                {
+                //                    newRow = dt_DeliveredReport.NewRow();
+
+                //                    newRow[header_Index] = index++;
+
+                //                    newRow[header_ItemCode] = itemCode;
+                //                    newRow[header_ItemSize_Numerator] = numerator;
+                //                    newRow[header_ItemSize_Denominator] = denominator;
+                //                    newRow[header_SizeUnit] = sizeUnit;
+                //                    //newRow[header_ItemString] = sizeString + " " + typeName;
+                //                    newRow[header_ItemString] = itemName;
+                //                    newRow[header_ItemSizeString] = sizeString;
+                //                    newRow[header_ItemType] = typeName;
+                //                    newRow[header_StdPacking] = qtyPerBag;
+
+                //                    newRow[header_CustID] = custID;
+                //                    newRow[header_CustShortName] = shortName;
+
+                //                    string dateHeaderName = GetDateHeaderName(trfDate);
+
+                //                    int deliveredBag = deliveredPcs / qtyPerBag;
+
+                //                    string bagString = " Bags (";
+
+                //                    if (deliveredBag <= 1)
+                //                    {
+                //                        bagString = " Bag (";
+                //                    }
+
+                //                    string DeliveredQtyString = "";
+
+                //                    if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                //                    {
+                //                        DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                //                    }
+                //                    else if (cbDeliveredQtyInPcs.Checked)
+                //                    {
+                //                        DeliveredQtyString = deliveredPcs.ToString();
+                //                    }
+                //                    else if (cbDeliveredQtyInBag.Checked)
+                //                    {
+                //                        DeliveredQtyString = deliveredBag.ToString();
+                //                    }
+
+                //                    newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                //                    newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                //                    newRow[dateHeaderName] = DeliveredQtyString;
+
+                //                    dt_DeliveredReport.Rows.Add(newRow);
+                //                    DOFound = true;
+                //                }
+                //            }
+                //            else
+                //            {
+                //                // insert first data of the table
+                //                newRow[header_CustID] = custID;
+                //                newRow[header_CustShortName] = shortName;
+
+                //                string dateHeaderName = GetDateHeaderName(trfDate);
+
+                //                int deliveredBag = deliveredPcs / qtyPerBag;
+
+                //                string bagString = " Bags (";
+
+                //                if (deliveredBag <= 1)
+                //                {
+                //                    bagString = " Bag (";
+                //                }
+
+                //                string DeliveredQtyString = "";
+
+                //                if (cbDeliveredQtyInPcs.Checked && cbDeliveredQtyInBag.Checked && deliveredBag != 0)
+                //                {
+                //                    DeliveredQtyString = deliveredBag + bagString + deliveredPcs + ")";
+                //                }
+                //                else if (cbDeliveredQtyInPcs.Checked)
+                //                {
+                //                    DeliveredQtyString = deliveredPcs.ToString();
+                //                }
+                //                else if (cbDeliveredQtyInBag.Checked)
+                //                {
+                //                    DeliveredQtyString = deliveredBag.ToString();
+                //                }
+
+                //                newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                //                newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                //                newRow[dateHeaderName] = DeliveredQtyString;
+
+                //                //newRow[dateHeaderName + header_DeliveredPcs] = deliveredPcs;
+                //                //newRow[dateHeaderName + header_DeliveredBag] = deliveredBag;
+                //                ////newRow[dateHeaderName] = deliveredPcs;
+                //                //newRow[dateHeaderName] = deliveredBag + bagString + deliveredPcs + ")";
+
+                //                dt_DeliveredReport.Rows.Add(newRow);
+                //                DOFound = true;
+                //            }
+                //        }
+
+                //    }
+
+
+                //    if (!DOFound)
+                //    {
+                //        dt_DeliveredReport.Rows.Add(newRow);
+                //    }
+
+
+                //}
+
+                #endregion
+
+                #endregion
+
+                //^ 2634ms>>2000ms
+                if (cbSortByCustomer.Checked)
+                {
+                    dt_DeliveredReport.DefaultView.Sort = header_CustShortName + " DESC";
+
+                    dt_DeliveredReport = dt_DeliveredReport.DefaultView.ToTable();
+
+
+                }
+
+                if (cbMergeItem.Checked)
+                {
+                    dt_DeliveredReport = MergeSameItem(dt_DeliveredReport);//3567MS>1867ms
+                }
+                else if (cbMergeCustomer.Checked)
+                {
+                    dt_DeliveredReport = MergeSameCustomer(dt_DeliveredReport);
+                }
+                else
+                {
+                    dt_DeliveredReport = CalculateRowTotal(dt_DeliveredReport);
+                }
+
+                //^ 3797ms >> 924ms
+                ReallocateIndexAndSumUp(dt_DeliveredReport);
+
+                AddDividerEmptyRow(dt_DeliveredReport);
+                dt_DeliveredReport = AddDividerEmptyRow(dt_DeliveredReport);
+          
+                dgv.DataSource = dt_DeliveredReport;
+
+                DgvUIEdit(dgv);
+
+                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+
+                dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
+           
+                dgv.ClearSelection();
+                frmLoading.CloseForm();
+            }
+        }
         private void LoadSalesData()
         {
             dgvList.DataSource = null;
@@ -1613,6 +2319,183 @@ namespace FactoryManagementSoftware.UI
         private DataTable MergeSameItem(DataTable dt)
         {
             DataTable dt_Merge = dt.Copy();
+            string header_Removed = "REMOVED";
+            dt_Merge.Columns.Add(header_Removed, typeof(string));
+
+            bool isPcsChecked = cbDeliveredQtyInPcs.Checked;
+            bool isBagChecked = cbDeliveredQtyInBag.Checked;
+
+            string preItemCode = null;
+            int totalCustomer = 1;
+
+            #region new code
+
+            // Cache the column indices for efficiency
+            List<int> deliveredPcsIndices = new List<int>();
+            List<int> deliveredBagIndices = new List<int>();
+
+            for (int j = 0; j < dt_Merge.Columns.Count; j++)
+            {
+                string colHeaderName = dt_Merge.Columns[j].ColumnName;
+                if (colHeaderName.Contains(header_DeliveredPcs))
+                {
+                    string DateColHeaderName = dt_Merge.Columns[j - 1].ColumnName;
+                    deliveredPcsIndices.Add(dt_Merge.Columns.IndexOf(DateColHeaderName + header_DeliveredPcs));
+                    deliveredBagIndices.Add(dt_Merge.Columns.IndexOf(DateColHeaderName + header_DeliveredBag));
+                }
+            }
+
+            for (int i = 0; i < dt_Merge.Rows.Count; i++)
+            {
+                string itemCode = dt_Merge.Rows[i][header_ItemCode].ToString();
+
+                if (preItemCode == null || preItemCode != itemCode)
+                {
+                    preItemCode = itemCode;
+                    totalCustomer = 1;
+                }
+                else if (preItemCode == itemCode)
+                {
+                    dt_Merge.Rows[i][header_CustShortName] = ++totalCustomer;
+
+                    int rowTotalBag = 0;
+                    int rowTotalPcs = 0;
+
+                    for (int j = 0; j < deliveredPcsIndices.Count; j++)
+                    {
+                        int oldDeliveredPcs = int.TryParse(dt_Merge.Rows[i - 1][deliveredPcsIndices[j]].ToString(), out int tempVal) ? tempVal : 0;
+                        int newDeliveredPcs = int.TryParse(dt_Merge.Rows[i][deliveredPcsIndices[j]].ToString(), out tempVal) ? tempVal : 0;
+                        newDeliveredPcs += oldDeliveredPcs;
+
+                        int oldDeliveredBag = int.TryParse(dt_Merge.Rows[i - 1][deliveredBagIndices[j]].ToString(), out tempVal) ? tempVal : 0;
+                        int newDeliveredBag = int.TryParse(dt_Merge.Rows[i][deliveredBagIndices[j]].ToString(), out tempVal) ? tempVal : 0;
+                        newDeliveredBag += oldDeliveredBag;
+
+                        rowTotalBag += newDeliveredBag;
+                        rowTotalPcs += newDeliveredPcs;
+
+                        dt_Merge.Rows[i][deliveredPcsIndices[j]] = newDeliveredPcs;
+                        dt_Merge.Rows[i][deliveredBagIndices[j]] = newDeliveredBag;
+
+                        string DateColHeaderName = dt_Merge.Columns[deliveredPcsIndices[j] - 1].ColumnName;
+                        string DeliveredQtyString = GetDeliveredQtyString(isPcsChecked, isBagChecked, newDeliveredBag, newDeliveredPcs);
+                        dt_Merge.Rows[i][DateColHeaderName] = DeliveredQtyString;
+                    }
+
+                    dt_Merge.Rows[i][header_TotalPcs] = rowTotalPcs;
+                    dt_Merge.Rows[i][header_TotalBag] = rowTotalBag;
+                    dt_Merge.Rows[i][header_TotalString] = $"{rowTotalBag} Bags ({rowTotalPcs})";
+
+                    dt_Merge.Rows[i - 1][header_Removed] = "1";
+                }
+            }
+
+
+            #endregion
+
+
+            #region old code
+
+
+
+            //for (int i = 0; i < dt_Merge.Rows.Count; i++)
+            //{
+            //    string itemCode = dt_Merge.Rows[i][header_ItemCode].ToString();
+
+            //    if (preItemCode == null || preItemCode != itemCode)
+            //    {
+            //        preItemCode = itemCode;
+            //        totalCustomer = 1;
+            //    }
+            //    else if (preItemCode == itemCode)
+            //    {
+            //        dt_Merge.Rows[i][header_CustShortName] = ++totalCustomer;
+
+            //        int rowTotalBag = 0;
+            //        int rowTotalPcs = 0;
+
+            //        for (int j = 0; j < dt_Merge.Columns.Count; j++)
+            //        {
+            //            string colHeaderName = dt_Merge.Columns[j].ColumnName;
+
+            //            if (colHeaderName.Contains(header_DeliveredPcs))
+            //            {
+            //                string DateColHeaderName = dt_Merge.Columns[j - 1].ColumnName;
+
+            //                int columnDeliverdPcsIndex = dt_Merge.Columns.IndexOf(DateColHeaderName + header_DeliveredPcs);
+            //                int columnDeliverdBagIndex = dt_Merge.Columns.IndexOf(DateColHeaderName + header_DeliveredBag);
+
+            //                int oldDeliveredPcs = int.TryParse(dt_Merge.Rows[i - 1][columnDeliverdPcsIndex].ToString(), out int tempVal) ? tempVal : 0;
+            //                int newDeliveredPcs = int.TryParse(dt_Merge.Rows[i][columnDeliverdPcsIndex].ToString(), out tempVal) ? tempVal : 0;
+            //                newDeliveredPcs += oldDeliveredPcs;
+
+            //                int oldDeliveredBag = int.TryParse(dt_Merge.Rows[i - 1][columnDeliverdBagIndex].ToString(), out tempVal) ? tempVal : 0;
+            //                int newDeliveredBag = int.TryParse(dt_Merge.Rows[i][columnDeliverdBagIndex].ToString(), out tempVal) ? tempVal : 0;
+            //                newDeliveredBag += oldDeliveredBag;
+
+            //                string DeliveredQtyString = GetDeliveredQtyString(isPcsChecked, isBagChecked, newDeliveredBag, newDeliveredPcs);
+
+
+            //                rowTotalBag += newDeliveredBag;
+            //                rowTotalPcs += newDeliveredPcs;
+
+            //                dt_Merge.Rows[i][columnDeliverdPcsIndex] = newDeliveredPcs;
+            //                dt_Merge.Rows[i][columnDeliverdBagIndex] = newDeliveredBag;
+            //                dt_Merge.Rows[i][DateColHeaderName] = DeliveredQtyString;
+            //                dt_Merge.Rows[i - 1][header_Removed] = "1";
+
+            //                dt_Merge.Rows[i][header_TotalPcs] = rowTotalPcs;
+            //                dt_Merge.Rows[i][header_TotalBag] = rowTotalBag;
+            //                dt_Merge.Rows[i][header_TotalString] = $"{rowTotalBag} Bags ({rowTotalPcs})";
+            //            }
+            //        }
+            //    }
+            //}
+
+            #endregion
+
+            List<DataRow> rowsToDelete = new List<DataRow>();
+
+            foreach (DataRow row in dt_Merge.Rows)
+            {
+                if (row[header_Removed].ToString() == "1")
+                {
+                    rowsToDelete.Add(row);
+                }
+            }
+
+            foreach (DataRow row in rowsToDelete)
+            {
+                dt_Merge.Rows.Remove(row);
+            }
+
+            dt_Merge.Columns.Remove(header_Removed);
+            return dt_Merge;
+        }
+
+
+        private string GetDeliveredQtyString(bool isPcsChecked, bool isBagChecked, int newDeliveredBag, int newOeliveredPcs)
+        {
+            string bagString = newDeliveredBag <= 1 ? " Bag (" : " Bags (";
+            if (isPcsChecked && isBagChecked && newDeliveredBag != 0)
+            {
+                return newDeliveredBag + bagString + newOeliveredPcs + ")";
+            }
+            if (isPcsChecked)
+            {
+                return newOeliveredPcs.ToString();
+            }
+            if (isBagChecked)
+            {
+                return newDeliveredBag.ToString();
+            }
+            return string.Empty;
+        }
+
+
+        private DataTable Old_MergeSameItem(DataTable dt)
+        {
+            DataTable dt_Merge = dt.Copy();
 
             string header_Removed = "REMOVED";
 
@@ -1715,6 +2598,7 @@ namespace FactoryManagementSoftware.UI
                 
             }
 
+            //^^3999MS
             dt_Merge.AcceptChanges();
             foreach (DataRow row in dt_Merge.Rows)
             {

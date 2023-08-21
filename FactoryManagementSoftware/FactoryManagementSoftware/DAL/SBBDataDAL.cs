@@ -2039,6 +2039,73 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+
+        public DataTable NEW_DOWithTrfInfoSelect(string start, string end)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT tbl_trf_hist.trf_result, 
+                              tbl_item.item_code, 
+                              tbl_spp_po.customer_tbl_code,
+                              tbl_spp_customer.short_name,
+                              tbl_trf_hist.trf_hist_trf_date,
+                              tbl_trf_hist.trf_hist_qty FROM tbl_spp_do 
+                             INNER JOIN tbl_spp_po
+                             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                             INNER JOIN tbl_trf_hist
+                             ON tbl_spp_do.trf_tbl_code = tbl_trf_hist.trf_hist_id 
+                             INNER JOIN tbl_spp_customer 
+                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                             INNER JOIN tbl_item
+                             ON tbl_spp_po.item_code = tbl_item.item_code
+                             INNER JOIN tbl_spp_size
+                             ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+                             INNER JOIN tbl_spp_type
+                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                             FULL JOIN tbl_spp_stdpacking
+                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                             WHERE tbl_trf_hist.trf_hist_trf_date 
+                             BETWEEN @start 
+                             AND @end 
+                             AND tbl_trf_hist.trf_result = 'Passed'
+                             ORDER BY tbl_item.item_code ASC,tbl_spp_customer.tbl_code ASC,  tbl_trf_hist.trf_hist_trf_date ASC";
+
+                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         public DataTable DeliverySelect()
         {
             //static methodd to connect database
