@@ -278,6 +278,7 @@
             this.Text = "ERP System";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmLogIn_FormClosed);
             this.Load += new System.EventHandler(this.frmLogIn_Load);
+            this.Shown += new System.EventHandler(this.frmLogIn_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmLogIn_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();

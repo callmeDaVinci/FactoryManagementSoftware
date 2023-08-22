@@ -53,7 +53,8 @@ namespace FactoryManagementSoftware.UI
 
         joinDAL dalJoin = new joinDAL();
 
-        static public DataTable dt_DOWithTrfInfoSelectedPeriod;
+        static public DataTable DB_DO_TRF_INFO;
+        static public DataTable DB_STOCK;
         static public DataTable dt_Item;
         static public DataTable dt_SBBCustSearchWithTypeAndSize;
         static public DataTable dt_SBBItemSelect;
@@ -98,16 +99,6 @@ namespace FactoryManagementSoftware.UI
 
             if (validation())
             {
-                //if (username.ToUpper() == "EMMELINE" && password == "ep668")
-                //{
-                //    frmLoading.ShowLoadingScreen();
-                //    //tool.historyRecord(text.LogIn, text.Success, DateTime.Now, userID);
-
-                //    FinexDataUpload frm = new FinexDataUpload();
-                //    frm.Show();
-                //    frmLoading.CloseForm();
-                //    Hide();
-                //}
 
                 int userID = dalUser.userLogin(username, password);
 
@@ -125,9 +116,10 @@ namespace FactoryManagementSoftware.UI
                         //frmLoading.ShowLoadingScreen();
                         tool.historyRecord(text.LogIn, text.Success, DateTime.Now, userID);
                         MainDashboard frm = new MainDashboard(userID);
+                        Hide();
+
                         frm.Show();
                         //frmLoading.CloseForm();
-                        Hide();
                     }
                 }
                 else
@@ -173,14 +165,19 @@ namespace FactoryManagementSoftware.UI
 
         private void SBBPageDataPreLoad()
         {
-            DateTime MonthlyDateStart = tool.GetSBBMonthlyStartDate();
-            DateTime MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+            //frmLoading.ShowLoadingScreen();
+
+            //DateTime MonthlyDateStart = tool.GetSBBMonthlyStartDate();
+            //DateTime MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
+            DateTime now = DateTime.Now;
+
+            DateTime MonthlyDateStart = new DateTime(now.Year, now.Month, 1);
+            DateTime MonthlyDateEnd = MonthlyDateStart.AddMonths(1).AddDays(-1);
 
             string start;
             string end;
             string itemCust = text.SPP_BrandName;
 
-            DateTime now = DateTime.Now;
 
             start = MonthlyDateStart.ToString("yyyy/MM/dd");
             end = MonthlyDateEnd.ToString("yyyy/MM/dd");
@@ -194,7 +191,12 @@ namespace FactoryManagementSoftware.UI
             //dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
             //dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
 
-            dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
+            //dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
+            DB_DO_TRF_INFO = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//765
+
+            facStockDAL dalStock = new facStockDAL();
+
+            DB_STOCK = dalStock.StockDataSelect();//350ms
 
             //dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
             //dt_SBBCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
@@ -203,22 +205,25 @@ namespace FactoryManagementSoftware.UI
             //dt_Item = dalItem.Select();
 
             //dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
-
+            //frmLoading.CloseForm();
         }
 
+        private bool DB_FOUND = false;
         private void frmLogIn_Load(object sender, EventArgs e)
         {
             lblDate.Text = DateTime.Now.ToShortDateString();
+            DB_FOUND = true;
 
             //checking whether database exist or not
             if (!CheckDatabaseExist())
             {
+                DB_FOUND = false;
+
                 MessageBox.Show("Database not exist");
                 //GenerateDatabase();
             }
             else if(ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_Semenyih) || ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_JunPC))
             {
-                //SBBPageDataPreLoad();
                 SBBPageDataPreLoad();
             }
 
@@ -226,7 +231,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private bool CheckDatabaseExist()
+        private bool Old_CheckDatabaseExist()
         {
             bool result;
             string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
@@ -247,6 +252,39 @@ namespace FactoryManagementSoftware.UI
             conn.Close();
             return result;
         }
+
+        private bool CheckDatabaseExist()
+        {
+            //frmLoading.ShowLoadingScreen();
+
+            string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    //frmLoading.CloseForm();
+
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    tool.saveToText(ex);
+                    //frmLoading.CloseForm();
+
+                    return false;
+                }
+                finally
+                {
+                    //frmLoading.CloseForm();
+
+                }
+            }
+
+
+        }
+
 
         private void GenerateDatabase()
         {
@@ -334,6 +372,14 @@ namespace FactoryManagementSoftware.UI
         private void lblVersion_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void frmLogIn_Shown(object sender, EventArgs e)
+        {
+           //if (DB_FOUND && ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_Semenyih) || ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString.Equals(text.DB_JunPC))
+           // {
+           //     SBBPageDataPreLoad();
+           // }
         }
     }
     

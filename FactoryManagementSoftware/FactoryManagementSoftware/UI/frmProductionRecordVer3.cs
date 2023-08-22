@@ -1005,7 +1005,7 @@ namespace FactoryManagementSoftware.UI
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "J")
+                        if (productionInfo[i].ToString() == "J" || productionInfo[i].ToString() == "P")
                         {
                             startCopy = true;
                         }

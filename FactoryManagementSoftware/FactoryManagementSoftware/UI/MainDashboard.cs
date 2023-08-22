@@ -111,7 +111,10 @@ namespace FactoryManagementSoftware.UI
                 dAILYToolStripMenuItem.Visible = false;
                 //orderToolStripMenuItem1.Visible = false;
             }
-
+            else if(userPermission < ACTION_LVL_FIVE)
+            {
+                sBBToolStripMenuItem.Visible = false;
+            }
         }
 
 
@@ -674,26 +677,26 @@ namespace FactoryManagementSoftware.UI
 
         private void productionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!NEWProductionFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-                frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
-                {
-                    MdiParent = this,
-                    StartPosition = FormStartPosition.CenterScreen,
-                    WindowState = FormWindowState.Maximized
-                };
-                frm.Show();
-                NEWProductionFormOpen = true;
-                frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
-                {
-                    Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
-                }
-            }
+            //if (!NEWProductionFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+            //    {
+            //        MdiParent = this,
+            //        StartPosition = FormStartPosition.CenterScreen,
+            //        WindowState = FormWindowState.Maximized
+            //    };
+            //    frm.Show();
+            //    NEWProductionFormOpen = true;
+            //    frmLoading.CloseForm();
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+            //    {
+            //        Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+            //    }
+            //}
 
             //if (!ProductionFormOpen)
             //{
@@ -719,60 +722,60 @@ namespace FactoryManagementSoftware.UI
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
 
-            //if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
-            //{
-            //    if (!NewDailyJobSheetFormOpenVer3)
-            //    {
-            //        frmLoading.ShowLoadingScreen();
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            {
+                if (!NewDailyJobSheetFormOpenVer3)
+                {
+                    frmLoading.ShowLoadingScreen();
 
-            //        frmProductionRecordVer3 frm = new frmProductionRecordVer3();
-            //        frm.MdiParent = this;
-            //        frm.StartPosition = FormStartPosition.CenterScreen;
-            //        frm.WindowState = FormWindowState.Maximized;
-            //        frm.Show();
+                    frmProductionRecordVer3 frm = new frmProductionRecordVer3();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
 
-            //        NewDailyJobSheetFormOpenVer3 = true;
+                    NewDailyJobSheetFormOpenVer3 = true;
 
-            //        frmLoading.CloseForm();
+                    frmLoading.CloseForm();
 
-            //    }
-            //    else
-            //    {
-            //        if (Application.OpenForms.OfType<frmProductionRecordVer3>().Count() == 1)
-            //        {
-            //            Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
-            //        }
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmProductionRecordVer3>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
+                    }
 
-            //    }
-            //}
-            //else
-            //{
-            //    if (!NewDailyJobSheetFormOpen)
-            //    {
-            //        frmLoading.ShowLoadingScreen();
+                }
+            }
+            else
+            {
+                if (!NewDailyJobSheetFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
 
-            //        frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-            //        frm.MdiParent = this;
-            //        frm.StartPosition = FormStartPosition.CenterScreen;
-            //        frm.WindowState = FormWindowState.Maximized;
-            //        frm.Show();
-            //        NewDailyJobSheetFormOpen = true;
+                    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                    frm.MdiParent = this;
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Maximized;
+                    frm.Show();
+                    NewDailyJobSheetFormOpen = true;
 
-            //        frmLoading.CloseForm();
+                    frmLoading.CloseForm();
 
-            //    }
-            //    else
-            //    {
-            //        if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-            //        {
-            //            Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-            //        }
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                    {
+                        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                    }
 
-            //    }
-            //}
+                }
+            }
 
 
 
@@ -1196,28 +1199,28 @@ namespace FactoryManagementSoftware.UI
 
         private void oUGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!NewDailyJobSheetFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
+            //if (!NewDailyJobSheetFormOpen)
+            //{
+            //    frmLoading.ShowLoadingScreen();
 
-                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                NewDailyJobSheetFormOpen = true;
+            //    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+            //    frm.MdiParent = this;
+            //    frm.StartPosition = FormStartPosition.CenterScreen;
+            //    frm.WindowState = FormWindowState.Maximized;
+            //    frm.Show();
+            //    NewDailyJobSheetFormOpen = true;
 
-                frmLoading.CloseForm();
+            //    frmLoading.CloseForm();
 
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-                }
+            //}
+            //else
+            //{
+            //    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+            //    {
+            //        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+            //    }
 
-            }
+            //}
         }
 
         private void semenyihToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1245,6 +1248,57 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+        }
+
+        private void oldVersionToolStripMenuItem_Click_2(object sender, EventArgs e)
+        {
+
+            if (!ProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineSchedule frm = new frmMachineSchedule
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                ProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+                }
+            }
+        }
+
+        private void newVersionToolStripMenuItem_Click_2(object sender, EventArgs e)
+        {
+            if (!NEWProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                NEWProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+                }
+            }
+
+           
         }
     }
 }

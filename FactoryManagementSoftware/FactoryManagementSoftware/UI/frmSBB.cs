@@ -2039,7 +2039,7 @@ namespace FactoryManagementSoftware.UI
             dt_JoinSelectWithChildCat = frmLogIn.dt_JoinSelectWithChildCat;
             dt_SBBItemSelect = frmLogIn.dt_SBBItemSelect;
             dt_POSelectWithSizeAndType = frmLogIn.dt_POSelectWithSizeAndType;
-            dt_DOWithTrfInfoSelectedPeriod = frmLogIn.dt_DOWithTrfInfoSelectedPeriod;
+            dt_DOWithTrfInfoSelectedPeriod = frmLogIn.DB_DO_TRF_INFO;
             dt_SBBCustSearchWithTypeAndSize = frmLogIn.dt_SBBCustSearchWithTypeAndSize;
             dt_Item = frmLogIn.dt_Item;
 
@@ -2063,17 +2063,35 @@ namespace FactoryManagementSoftware.UI
 
             dt_SBBCustWithoutRemovedDataSelect = dalSBB.CustomerWithoutRemovedDataSelect();//84
 
-            dt_PendingPOSelect = dalSBB.SBBPagePendingPOSelect();//456
+            dt_PendingPOSelect = dalSBB.SBBPagePendingPOSelect();//14ms
 
 
-            dt_JoinSelectWithChildCat = dalJoin.SelectWithChildCat();//98
-            dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//49
-            dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//60
+            dt_JoinSelectWithChildCat = dalJoin.SelectWithChildCat();//174ms
+            dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);//98ms
+            dt_POSelectWithSizeAndType = dalSBB.SBBPagePOSelectWithSizeAndType();//137ms
 
-            //dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//1757
-            dt_DOWithTrfInfoSelectedPeriod = frmLogIn.dt_DOWithTrfInfoSelectedPeriod.Copy();
 
-            dt_Stock = dalStock.StockDataSelect();
+            if (Loaded)
+            {
+                dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//1757
+                dt_Stock = dalStock.StockDataSelect();//350ms
+
+            }
+            else
+            {
+                if(frmLogIn.DB_DO_TRF_INFO != null)
+                {
+                    dt_DOWithTrfInfoSelectedPeriod = frmLogIn.DB_DO_TRF_INFO.Copy();
+                    dt_Stock = frmLogIn.DB_STOCK.Copy();
+                }
+                else
+                {
+                    dt_DOWithTrfInfoSelectedPeriod = dalSBB.SBBPageDOWithTrfInfoSelect(start, end);//1757
+                    dt_Stock = dalStock.StockDataSelect();//350ms
+                }
+              
+            }
+
 
 
             dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
@@ -2343,13 +2361,42 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
+        private void LayoutPanelDisplay(bool show)
+        {
+            tlpSBB.Visible = show;
+
+            tableLayoutPanel15.Visible = show;
+            tableLayoutPanel16.Visible = show;
+            tableLayoutPanel17.Visible = show;
+            tableLayoutPanel18.Visible = show;
+            tableLayoutPanel19.Visible = show;
+            tableLayoutPanel20.Visible = show;
+            tableLayoutPanel21.Visible = show;
+            tableLayoutPanel23.Visible = show;
+            tableLayoutPanel24.Visible = show;
+            tableLayoutPanel25.Visible = show;
+            tableLayoutPanel26.Visible = show;
+            tableLayoutPanel27.Visible = show;
+            tableLayoutPanel28.Visible = show;
+            tableLayoutPanel29.Visible = show;
+            tableLayoutPanel30.Visible = show;
+            tableLayoutPanel33.Visible = show;
+            tableLayoutPanel34.Visible = show;
+
+            lblPendingDO.Visible = show;
+            tlpDashBoard.Visible = show;
+
+
+
+        }
         private void frmSBB_Load(object sender, EventArgs e)
         {
             //TempChildStdPackingUpload();
-
+            Loaded = false;
             SuspendLayout();
             //SBBItemUpload();
-            tableLayoutPanel29.Visible = false;
+
+            LayoutPanelDisplay(false);
 
             //ShowDataSourceUI();
             dtpDate1.Value = DateTime.Now;
@@ -2366,7 +2413,8 @@ namespace FactoryManagementSoftware.UI
 
             //var now = DateTime.Now;
             //var startOfMonth = new DateTime(now.Year, now.Month, 1);
-            tableLayoutPanel29.Visible = true;
+            LayoutPanelDisplay(true);
+
 
             ResumeLayout();
         }
@@ -3318,14 +3366,28 @@ namespace FactoryManagementSoftware.UI
 
         private void RefreshPage()
         {
-            NewInitialDBData();//429ms
+
+            NewInitialDBData();//429ms>>461ms>>366ms
          
-            LoadPendingSummary();//1289ms
+            LoadPendingSummary();//1289ms>>2005ms
 
-            LoadStockAlert();//376ms
+            LoadStockAlert();//376ms>>312ms
 
-            LoadUsage();//1142ms
+            LoadUsage();//1142ms>>1251ms
+        }
 
+        private void RefreshPage(bool showUpdatedDataOnly)
+        {
+
+            frmLoading.ShowLoadingScreen();
+
+            NewInitialDBData();//429ms>>461ms>>366ms
+
+            LoadPendingSummary();//1289ms>>2005ms
+
+            LoadStockAlert();//376ms>>312ms
+
+            frmLoading.CloseForm();
         }
 
         private DataTable LoadUsageItemList()
@@ -3605,7 +3667,7 @@ namespace FactoryManagementSoftware.UI
 
         public static void Reload()
         {
-            _instance.RefreshPage();
+            _instance.RefreshPage(true);
         }
 
         private void OpenDOList(object sender, EventArgs e)
@@ -4249,6 +4311,33 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSBB_Shown(object sender, EventArgs e)
         {
+            ////TempChildStdPackingUpload();
+            //Loaded = false;
+            //SuspendLayout();
+            ////SBBItemUpload();
+
+            //LayoutPanelDisplay(false);
+
+            ////ShowDataSourceUI();
+            //dtpDate1.Value = DateTime.Now;
+
+            //LoadTypeCMB(cmbType);
+            //LoadStockLocationCMB(cmbStockLocation);
+
+            //RefreshPage();
+
+            //Loaded = true;
+
+            //dgvStockAlert.ClearSelection();
+            //dgvUsage.ClearSelection();
+
+            ////var now = DateTime.Now;
+            ////var startOfMonth = new DateTime(now.Year, now.Month, 1);
+            //LayoutPanelDisplay(true);
+
+
+            //ResumeLayout();
+
             dgvStockAlert.ClearSelection();
             dgvUsage.ClearSelection();
         }

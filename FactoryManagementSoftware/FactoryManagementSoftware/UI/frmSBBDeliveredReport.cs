@@ -662,7 +662,7 @@ namespace FactoryManagementSoftware.UI
             return true;
         }
 
-        private void Old_LoadDeliveredData()
+        private void old_LoadDeliveredData()
         {
             dgvList.DataSource = null;
 

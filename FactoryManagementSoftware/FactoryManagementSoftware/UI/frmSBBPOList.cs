@@ -550,44 +550,45 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPPPOList_Load(object sender, EventArgs e)
         {
-            ShowOrHideFilter();
+            
+            //ShowOrHideFilter();
 
-            if (!EditMode && !callFromPlanner)
-            {
-                ShowPOListUI();
-                LoadPOList();
+            //if (!EditMode && !callFromPlanner)
+            //{
+            //    ShowPOListUI();
+            //    LoadPOList();
 
-            }
-            else
-            {
-                dgvDOList.ClearSelection();
-                dgvItemList.ClearSelection();
-            }
+            //}
+            //else
+            //{
+            //    dgvDOList.ClearSelection();
+            //    dgvItemList.ClearSelection();
+            //}
 
-            lblSubList.Text = text_POItemList;
+            //lblSubList.Text = text_POItemList;
 
-            if (POMode && (callFromDOPage || callFromPlanner))
-            {
-                frmLoading.ShowLoadingScreen();
-                Cursor = Cursors.WaitCursor;
+            //if (POMode && (callFromDOPage || callFromPlanner))
+            //{
+            //    frmLoading.ShowLoadingScreen();
+            //    Cursor = Cursors.WaitCursor;
 
-                if(callFromPlanner)
-                {
-                    AddingDOStep2();
-                    POToDOFromPlanner();
-                }
-                else
-                {
-                    AddingDOStep1();
-                    AddingDOStep2();
-                    POToDO();
+            //    if(callFromPlanner)
+            //    {
+            //        AddingDOStep2();
+            //        POToDOFromPlanner();
+            //    }
+            //    else
+            //    {
+            //        AddingDOStep1();
+            //        AddingDOStep2();
+            //        POToDO();
                    
-                }
-                Cursor = Cursors.Arrow;
-                frmLoading.CloseForm();
-                BringToFront();
-                Activate();
-            }
+            //    }
+            //    Cursor = Cursors.Arrow;
+            //    frmLoading.CloseForm();
+            //    BringToFront();
+            //    Activate();
+            //}
         }
 
         private void LoadCustomerList()
@@ -845,190 +846,211 @@ namespace FactoryManagementSoftware.UI
             return Tuple.Create(pendingPOQty, pendingCustQty);
         }
 
+        private DataTable DB_DO_INFO;
+
+        private void DBDataLoading()
+        {
+            DB_DO_INFO = dalSPP.DOWithInfoSelect();
+            DB_PO_WITH_SIZE_TYPE = dalSPP.POSelectWithSizeAndType();
+        }
+
+        private bool PO_LIST_LOADING = false;
+
         private void LoadPOList()
         {
-            btnEdit.Visible = false;
-            dgvItemList.DataSource = null;
-
-            DataTable dt = NewPOTable();
-            DataTable dt_DOList = dalSPP.DOWithInfoSelect();
-
-            DataRow dt_row;
-
-            int poCode = -1;
-            int prePOCode = -1;
-            int orderQty = 0;
-            int deliveredQty = 0;
-            int CustTblCode = -1;
-            int progress = -1;
-            bool dataMatched = true;
-            string PONo = null, ShortName = null, FullName = null;
-            string customer = null;
-            bool isFreeze = false;
-            DateTime PODate = DateTime.MaxValue;
-
-            foreach (DataRow row in dt_POList.Rows)
+            if(!PO_LIST_LOADING)
             {
-                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+                PO_LIST_LOADING = true;
 
-                if (!isRemoved)
+                PO_ITEM_LOADING = true;
+
+                btnEdit.Visible = false;
+                dgvItemList.DataSource = null;
+
+                DataTable dt = NewPOTable();
+
+                DataRow dt_row;
+
+                int poCode = -1;
+                int prePOCode = -1;
+                int orderQty = 0;
+                int deliveredQty = 0;
+                int CustTblCode = -1;
+                int progress = -1;
+                bool dataMatched = true;
+                string PONo = null, ShortName = null, FullName = null;
+                string customer = null;
+                bool isFreeze = false;
+                DateTime PODate = DateTime.MaxValue;
+
+                foreach (DataRow row in dt_POList.Rows)
                 {
-                    poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
+                    bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
 
-                    if (prePOCode == -1)
+                    if (!isRemoved)
                     {
-                        prePOCode = poCode;
-                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
-                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
-                        isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
+                        poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
 
-                        PONo = row[dalSPP.PONo].ToString();
+                        if (prePOCode == -1)
+                        {
+                            prePOCode = poCode;
+                            orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                            deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+                            isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
 
-                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+                            PONo = row[dalSPP.PONo].ToString();
 
-                        ShortName = row[dalSPP.ShortName].ToString();
-                        FullName = row[dalSPP.FullName].ToString();
+                            PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
 
-                        CustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                            ShortName = row[dalSPP.ShortName].ToString();
+                            FullName = row[dalSPP.FullName].ToString();
+
+                            CustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                        }
+                        else if (prePOCode == poCode)
+                        {
+                            int temp = 0;
+                            orderQty += int.TryParse(row[dalSPP.POQty].ToString(), out temp) ? temp : 0;
+                            deliveredQty += int.TryParse(row[dalSPP.DeliveredQty].ToString(), out temp) ? temp : 0;
+                        }
+                        else if (prePOCode != poCode)
+                        {
+                            progress = (int)((float)deliveredQty / orderQty * 100);
+                            dataMatched = true;
+
+                            #region PO TYPE
+
+                            if (progress < 100 && cbInProgressPO.Checked)
+                            {
+                                dataMatched = dataMatched && true;
+                            }
+                            else if (progress >= 100 && cbCompletedPO.Checked)
+                            {
+                                dataMatched = dataMatched && true;
+                            }
+                            else
+                            {
+                                dataMatched = false;
+                            }
+
+                            #endregion
+
+                            #region Customer Filter
+
+                            customer = cmbCustomer.Text;
+                            //string sppCustomer = row[dalSPP.FullName].ToString();
+                            if (string.IsNullOrEmpty(customer) || customer == "ALL")
+                            {
+                                dataMatched &= true;
+                            }
+                            else if (FullName == customer)
+                            {
+                                dataMatched &= true;
+                            }
+                            else
+                            {
+                                dataMatched = false;
+                            }
+
+                            #endregion
+
+                            if (dataMatched)
+                            {
+                                dt_row = dt.NewRow();
+
+                                //int test =(int)((float)deliveredQty / orderQty * 100);
+
+                                dt_row[header_Freeze] = isFreeze;
+                                dt_row[header_POCode] = prePOCode;
+                                dt_row[header_PONoString] = PONo;
+                                dt_row[header_PODate] = PODate;
+                                dt_row[header_Customer] = ShortName;
+                                dt_row[header_CustomerCode] = CustTblCode;
+                                dt_row[header_Progress] = progress + "%";
+                                dt_row[header_DONoString] = GetDONo(DB_DO_INFO, PONo, FullName);
+                                dt.Rows.Add(dt_row);
+                            }
+
+                            prePOCode = poCode;
+                            orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                            deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+                            isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
+                            PONo = row[dalSPP.PONo].ToString();
+
+                            PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                            ShortName = row[dalSPP.ShortName].ToString();
+                            FullName = row[dalSPP.FullName].ToString();
+                            CustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out CustTblCode) ? CustTblCode : -1;
+                        }
                     }
-                    else if (prePOCode == poCode)
-                    {
-                        int temp = 0;
-                        orderQty += int.TryParse(row[dalSPP.POQty].ToString(), out temp) ? temp : 0;
-                        deliveredQty += int.TryParse(row[dalSPP.DeliveredQty].ToString(), out temp) ? temp : 0;
-                    }
-                    else if (prePOCode != poCode)
-                    {
-                        progress = (int)((float)deliveredQty / orderQty * 100);
-                        dataMatched = true;
 
-                        #region PO TYPE
-
-                        if (progress < 100 && cbInProgressPO.Checked)
-                        {
-                            dataMatched = dataMatched && true;
-                        }
-                        else if (progress >= 100 && cbCompletedPO.Checked)
-                        {
-                            dataMatched = dataMatched && true;
-                        }
-                        else
-                        {
-                            dataMatched = false;
-                        }
-
-                        #endregion
-
-                        #region Customer Filter
-
-                        customer = cmbCustomer.Text;
-                        //string sppCustomer = row[dalSPP.FullName].ToString();
-                        if (string.IsNullOrEmpty(customer) || customer == "ALL")
-                        {
-                            dataMatched &= true;
-                        }
-                        else if (FullName == customer)
-                        {
-                            dataMatched &= true;
-                        }
-                        else
-                        {
-                            dataMatched = false;
-                        }
-
-                        #endregion
-
-                        if (dataMatched)
-                        {
-                            dt_row = dt.NewRow();
-
-                            //int test =(int)((float)deliveredQty / orderQty * 100);
-
-                            dt_row[header_Freeze] = isFreeze;
-                            dt_row[header_POCode] = prePOCode;
-                            dt_row[header_PONoString] = PONo;
-                            dt_row[header_PODate] = PODate;
-                            dt_row[header_Customer] = ShortName;
-                            dt_row[header_CustomerCode] = CustTblCode;
-                            dt_row[header_Progress] = progress + "%";
-                            dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
-                            dt.Rows.Add(dt_row);
-                        }
-
-                        prePOCode = poCode;
-                        orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
-                        deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
-                        isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
-                        PONo = row[dalSPP.PONo].ToString();
-
-                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
-
-                        ShortName = row[dalSPP.ShortName].ToString();
-                        FullName = row[dalSPP.FullName].ToString();
-                        CustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out CustTblCode) ? CustTblCode : -1;
-                    }
                 }
 
+                progress = (int)((float)deliveredQty / orderQty * 100);
+                dataMatched = true;
+
+                #region PO TYPE
+
+                if (progress < 100 && cbInProgressPO.Checked)
+                {
+                    dataMatched = dataMatched && true;
+                }
+                else if (progress >= 100 && cbCompletedPO.Checked)
+                {
+                    dataMatched = dataMatched && true;
+                }
+                else
+                {
+                    dataMatched = false;
+                }
+
+                #endregion
+
+                #region Customer Filter
+
+                customer = cmbCustomer.Text;
+
+                if (string.IsNullOrEmpty(customer) || customer == "ALL")
+                {
+                    dataMatched = dataMatched && true;
+                }
+                else if (FullName == customer)
+                {
+                    dataMatched = dataMatched && true;
+                }
+                else
+                {
+                    dataMatched = false;
+                }
+
+                #endregion
+
+                if (dataMatched)
+                {
+                    dt_row = dt.NewRow();
+
+                    dt_row[header_Freeze] = isFreeze;
+                    dt_row[header_POCode] = prePOCode;
+                    dt_row[header_PONoString] = PONo;
+                    dt_row[header_PODate] = PODate;
+                    dt_row[header_Customer] = ShortName;
+                    dt_row[header_CustomerCode] = CustTblCode;
+                    dt_row[header_Progress] = progress + "%";
+                    dt_row[header_DONoString] = GetDONo(DB_DO_INFO, PONo, FullName);
+                    dt.Rows.Add(dt_row);
+                }
+
+
+                dgvPOList.DataSource = dt;
+                DgvUIEdit(dgvPOList);
+                dgvPOList.ClearSelection();
+                PO_ITEM_LOADING = false;
+
+                PO_LIST_LOADING = false;
+
             }
-
-            progress = (int)((float)deliveredQty / orderQty * 100);
-            dataMatched = true;
-
-            #region PO TYPE
-
-            if (progress < 100 && cbInProgressPO.Checked)
-            {
-                dataMatched = dataMatched && true;
-            }
-            else if (progress >= 100 && cbCompletedPO.Checked)
-            {
-                dataMatched = dataMatched && true;
-            }
-            else
-            {
-                dataMatched = false;
-            }
-
-            #endregion
-
-            #region Customer Filter
-
-            customer = cmbCustomer.Text;
-
-            if (string.IsNullOrEmpty(customer) || customer == "ALL")
-            {
-                dataMatched = dataMatched && true;
-            }
-            else if (FullName == customer)
-            {
-                dataMatched = dataMatched && true;
-            }
-            else
-            {
-                dataMatched = false;
-            }
-
-            #endregion
-
-            if (dataMatched)
-            {
-                dt_row = dt.NewRow();
-
-                dt_row[header_Freeze] = isFreeze;
-                dt_row[header_POCode] = prePOCode;
-                dt_row[header_PONoString] = PONo;
-                dt_row[header_PODate] = PODate;
-                dt_row[header_Customer] = ShortName;
-                dt_row[header_CustomerCode] = CustTblCode;
-                dt_row[header_Progress] = progress + "%";
-                dt_row[header_DONoString] = GetDONo(dt_DOList, PONo, FullName);
-                dt.Rows.Add(dt_row);
-            }
-
-
-            dgvPOList.DataSource = dt;
-            DgvUIEdit(dgvPOList);
-            dgvPOList.ClearSelection();
+           
 
         }
 
@@ -1065,6 +1087,8 @@ namespace FactoryManagementSoftware.UI
 
                 frm.ShowDialog();
                 dt_POList = dalSPP.POSelect();
+
+                DBDataLoading();
                 LoadPOList();
             }
             else if (addingDOStep2)
@@ -1237,177 +1261,186 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private DataTable DB_PO_WITH_SIZE_TYPE;
         private void ShowPOItem(string poCode)
         {
-            DataTable dt = dalSPP.POSelectWithSizeAndType();
-
-            DataTable dt_POItemList = NewPOItemTable();
-            DataRow dt_Row;
-            int index = 1;
-            int totalBag = 0;
-            string preType = null;
-
-            foreach (DataRow row in dt.Rows)
+            if(!PO_ITEM_LOADING)
             {
-                if (poCode == row[dalSPP.POCode].ToString())
+                PO_ITEM_LOADING = true;
+
+
+                DataTable dt_POItemList = NewPOItemTable();
+                DataRow dt_Row;
+                int index = 1;
+                int totalBag = 0;
+                string preType = null;
+
+                foreach (DataRow row in DB_PO_WITH_SIZE_TYPE.Rows)
                 {
-                    bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
-
-                    if(!isRemoved)
+                    if (poCode == row[dalSPP.POCode].ToString())
                     {
-                        int deliveredQty = row[dalSPP.DeliveredQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.DeliveredQty].ToString());
-                        int poQty = row[dalSPP.POQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.POQty].ToString());
-                        int qtyPerBag = row[dalSPP.QtyPerBag] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.QtyPerBag].ToString());
+                        bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
 
-                        int poBag = 0;
-
-                        if (poQty > 0 && qtyPerBag > 0)
+                        if (!isRemoved)
                         {
-                            poBag = poQty / qtyPerBag;
-                        }
+                            int deliveredQty = row[dalSPP.DeliveredQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.DeliveredQty].ToString());
+                            int poQty = row[dalSPP.POQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.POQty].ToString());
+                            int qtyPerBag = row[dalSPP.QtyPerBag] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.QtyPerBag].ToString());
 
-                        totalBag += poBag;
+                            int poBag = 0;
 
-                        string type = row[dalSPP.TypeName].ToString();
-
-                        if (preType == null)
-                        {
-                            preType = type;
-                        }
-                        else if (preType != type)
-                        {
-                            preType = type;
-                            dt_Row = dt_POItemList.NewRow();
-                            dt_POItemList.Rows.Add(dt_Row);
-                        }
-
-                        int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                        int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                        string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
-
-                        int numerator_2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
-                        int denominator_2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
-                        string sizeUnit_2 = row[dalSPP.SizeUnit + "1"].ToString().ToUpper();
-
-                        string sizeString = "";
-                        string sizeString_1 = "";
-                        string sizeString_2 = "";
-
-                        int size_1 = 1;
-                        int size_2 = 1;
-
-                        if (denominator == 1)
-                        {
-                            size_1 = numerator;
-                            sizeString_1 = numerator.ToString();
-
-                        }
-                        else
-                        {
-                            size_1 = numerator / denominator;
-                            sizeString_1 = numerator + "/" + denominator;
-                        }
-
-                        if (numerator_2 > 0)
-                        {
-                            if (denominator_2 == 1)
+                            if (poQty > 0 && qtyPerBag > 0)
                             {
-                                sizeString_2 += numerator_2;
-                                size_2 = numerator_2;
+                                poBag = poQty / qtyPerBag;
+                            }
+
+                            totalBag += poBag;
+
+                            string type = row[dalSPP.TypeName].ToString();
+
+                            if (preType == null)
+                            {
+                                preType = type;
+                            }
+                            else if (preType != type)
+                            {
+                                preType = type;
+                                dt_Row = dt_POItemList.NewRow();
+                                dt_POItemList.Rows.Add(dt_Row);
+                            }
+
+                            int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                            int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                            string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+
+                            int numerator_2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                            int denominator_2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                            string sizeUnit_2 = row[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+
+                            string sizeString = "";
+                            string sizeString_1 = "";
+                            string sizeString_2 = "";
+
+                            int size_1 = 1;
+                            int size_2 = 1;
+
+                            if (denominator == 1)
+                            {
+                                size_1 = numerator;
+                                sizeString_1 = numerator.ToString();
 
                             }
                             else
                             {
-                                size_2 = numerator_2 / denominator_2;
+                                size_1 = numerator / denominator;
+                                sizeString_1 = numerator + "/" + denominator;
+                            }
 
-                                if (numerator_2 == 3 && denominator_2 == 2)
+                            if (numerator_2 > 0)
+                            {
+                                if (denominator_2 == 1)
                                 {
-                                    sizeString_2 += "1 1" + "/" + denominator_2;
+                                    sizeString_2 += numerator_2;
+                                    size_2 = numerator_2;
+
                                 }
                                 else
                                 {
-                                    sizeString_2 += numerator_2 + "/" + denominator_2;
+                                    size_2 = numerator_2 / denominator_2;
+
+                                    if (numerator_2 == 3 && denominator_2 == 2)
+                                    {
+                                        sizeString_2 += "1 1" + "/" + denominator_2;
+                                    }
+                                    else
+                                    {
+                                        sizeString_2 += numerator_2 + "/" + denominator_2;
+                                    }
+
+
+
                                 }
-                               
-
-                               
                             }
-                        }
 
-                        if(size_1 >= size_2)
-                        {
-                            if(sizeString_2 != "")
-                            sizeString = sizeString_1 + " x " + sizeString_2;
+                            if (size_1 >= size_2)
+                            {
+                                if (sizeString_2 != "")
+                                    sizeString = sizeString_1 + " x " + sizeString_2;
 
+                                else
+                                {
+                                    sizeString = sizeString_1;
+                                }
+                            }
                             else
                             {
-                                sizeString = sizeString_1;
+
+                                if (sizeString_2 != "")
+                                    sizeString = sizeString_2 + " x " + sizeString_1;
+
+                                else
+                                {
+                                    sizeString = sizeString_2;
+                                }
                             }
-                        }
-                        else
-                        {
 
-                            if (sizeString_2 != "")
-                                sizeString = sizeString_2 + " x " + sizeString_1;
+                            dt_Row = dt_POItemList.NewRow();
+                            dt_Row[header_Index] = index;
+                            dt_Row[header_POTblCode] = row[dalSPP.TableCode];
+                            dt_Row[header_POCode] = row[dalSPP.POCode];
+                            dt_Row[header_Size_1] = row[dalSPP.SizeNumerator];
+                            dt_Row[header_Unit_1] = row[dalSPP.SizeUnit].ToString().ToUpper();
 
-                            else
+                            dt_Row[header_SizeString] = sizeString;
+                            dt_Row[header_Type] = type;
+                            dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
+                            dt_Row[header_DeliveredQty] = deliveredQty;
+                            dt_Row[header_OrderQty] = row[dalSPP.POQty];
+
+
+                            dt_Row[header_DeliveredQtyString] = deliveredQty + " (" + (deliveredQty / qtyPerBag).ToString() + " bags)";
+
+                            if (deliveredQty % qtyPerBag != 0)
                             {
-                                sizeString = sizeString_2;
+                                dt_Row[header_DeliveredQtyString] = deliveredQty + " (" + (deliveredQty / qtyPerBag).ToString() + " bags + " + (deliveredQty % qtyPerBag).ToString() + " pcs)";
                             }
+
+                            int balancePcs = poQty % qtyPerBag;
+
+                            string deliveryQtyString = row[dalSPP.POQty].ToString() + " (" + poBag + " bags)";
+
+                            if (balancePcs != 0)
+                            {
+                                deliveryQtyString = row[dalSPP.POQty].ToString() + " (" + poBag + " bags + " + balancePcs + " pcs)";
+                            }
+
+                            dt_Row[header_OrderQtyString] = deliveryQtyString;
+
+
+                            string note = row[dalSPP.PONote].ToString();
+
+                            note = note.Replace("(" + poBag + " BAGS)", string.Empty);
+                            dt_Row[header_Note] = note;
+
+                            dt_POItemList.Rows.Add(dt_Row);
+                            index++;
                         }
 
-                        dt_Row = dt_POItemList.NewRow();
-                        dt_Row[header_Index] = index;
-                        dt_Row[header_POTblCode] = row[dalSPP.TableCode];
-                        dt_Row[header_POCode] = row[dalSPP.POCode];
-                        dt_Row[header_Size_1] = row[dalSPP.SizeNumerator];
-                        dt_Row[header_Unit_1] = row[dalSPP.SizeUnit].ToString().ToUpper();
 
-                        dt_Row[header_SizeString] = sizeString;
-                        dt_Row[header_Type] = type;
-                        dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
-                        dt_Row[header_DeliveredQty] = deliveredQty;
-                        dt_Row[header_OrderQty] = row[dalSPP.POQty];
-
-
-                        dt_Row[header_DeliveredQtyString] = deliveredQty + " (" + (deliveredQty / qtyPerBag).ToString() + " bags)";
-
-                        if(deliveredQty % qtyPerBag != 0)
-                        {
-                            dt_Row[header_DeliveredQtyString] = deliveredQty + " (" + (deliveredQty / qtyPerBag).ToString() + " bags + " + (deliveredQty % qtyPerBag).ToString() + " pcs)";
-                        }
-
-                        int balancePcs = poQty % qtyPerBag;
-
-                        string deliveryQtyString = row[dalSPP.POQty].ToString() + " (" + poBag + " bags)";
-
-                        if (balancePcs != 0)
-                        {
-                            deliveryQtyString = row[dalSPP.POQty].ToString() + " (" + poBag + " bags + " + balancePcs + " pcs)";
-                        }
-
-                        dt_Row[header_OrderQtyString] = deliveryQtyString;
-
-
-                        string note = row[dalSPP.PONote].ToString();
-
-                        note = note.Replace("(" + poBag + " BAGS)", string.Empty);
-                        dt_Row[header_Note] = note;
-
-                        dt_POItemList.Rows.Add(dt_Row);
-                        index++;
                     }
-
-                    
                 }
+
+                //dt_POItemList = AddSpaceToList(dt_POItemList);
+
+                lblSubList.Text = text_POItemList + " ( Total Bags: " + totalBag + ")";
+                dgvItemList.DataSource = dt_POItemList;
+                DgvUIEdit(dgvItemList);
+                dgvItemList.ClearSelection();
+
+                PO_ITEM_LOADING = false;
+
             }
-
-            //dt_POItemList = AddSpaceToList(dt_POItemList);
-
-            lblSubList.Text = text_POItemList + " ( Total Bags: " + totalBag + ")";
-            dgvItemList.DataSource = dt_POItemList;
-            DgvUIEdit(dgvItemList);
-            dgvItemList.ClearSelection();
+          
         }
 
         private void EditPO()
@@ -1433,6 +1466,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     btnEdit.Visible = false;
                     dt_POList = dalSPP.POSelect();
+                    DBDataLoading();
                     LoadPOList();
                 }
 
@@ -1793,6 +1827,7 @@ namespace FactoryManagementSoftware.UI
             return false;
         }
 
+        private bool PO_ITEM_LOADING = false;
         private void dgvPOList_SelectionChanged(object sender, EventArgs e)
         {
             if (POMode)
@@ -1997,6 +2032,7 @@ namespace FactoryManagementSoftware.UI
 
                     // Clear Clipboard and DataGridView selection
                     Clipboard.Clear();
+              
                     LoadPOList();
                     dgvPOList.ClearSelection();
                 }
@@ -3011,6 +3047,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             btnAddDO.Enabled = true;
+
 
             LoadPOList();
 
@@ -4587,8 +4624,58 @@ namespace FactoryManagementSoftware.UI
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            DBDataLoading();
             LoadPOList();
             lblSubList.Text = text_POItemList;
+        }
+
+        private void frmSBBPOList_Shown(object sender, EventArgs e)
+        {
+            Cursor = Cursors.WaitCursor;
+            frmLoading.ShowLoadingScreen();
+
+            DBDataLoading();
+
+            ShowOrHideFilter();
+
+            if (!EditMode && !callFromPlanner)
+            {
+                ShowPOListUI();
+                LoadPOList();
+
+            }
+            else
+            {
+                dgvDOList.ClearSelection();
+                dgvItemList.ClearSelection();
+            }
+
+            lblSubList.Text = text_POItemList;
+
+            if (POMode && (callFromDOPage || callFromPlanner))
+            {
+                
+
+                if (callFromPlanner)
+                {
+                    AddingDOStep2();
+                    POToDOFromPlanner();
+                }
+                else
+                {
+                    AddingDOStep1();
+                    AddingDOStep2();
+                    POToDO();
+
+                }
+              
+            }
+
+            frmLoading.CloseForm();
+            Cursor = Cursors.Arrow;
+            BringToFront();
+            Activate();
+
         }
     }
 }
