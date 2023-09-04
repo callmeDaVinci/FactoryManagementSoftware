@@ -863,7 +863,7 @@ namespace FactoryManagementSoftware.UI
 
             if (text == textSearchFilter)
             {
-                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 220f);
+                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 220f);
 
                 dgvForecastReport.ResumeLayout();
 
@@ -871,7 +871,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (text == textHideFilter)
             {
-                tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
 
                 dgvForecastReport.ResumeLayout();
 
@@ -889,7 +889,7 @@ namespace FactoryManagementSoftware.UI
 
             if (ShowFilter)
             {
-                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 150f);
+                tlpForecastReport.RowStyles[3] = new RowStyle(SizeType.Absolute, 150f);
 
                 dgvForecastReport.ResumeLayout();
 
@@ -897,7 +897,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpForecastReport.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
 
                 dgvForecastReport.ResumeLayout();
 
@@ -1543,8 +1543,8 @@ namespace FactoryManagementSoftware.UI
 
             dgvForecastReport.SuspendLayout();
 
-            tlpForecastReport.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
             tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+            tlpForecastReport.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
 
             dgvForecastReport.ResumeLayout();
 
@@ -1571,7 +1571,45 @@ namespace FactoryManagementSoftware.UI
             }
             custChanging = false;
 
-          
+            ifNewForeacstUpdatesFound();
+
+        }
+
+        private void ifNewForeacstUpdatesFound()
+        {
+            if(ForecastEditRecordChecked())
+            {
+                //new updates found
+                lblForecastHistoryNotification.Text = "(NEW) Foreacst Edit Record";
+                lblForecastHistoryNotification.BackColor = Color.Yellow;
+                lblForecastHistoryNotification.ForeColor = Color.Red;
+            }
+            else
+            {
+                lblForecastHistoryNotification.Text = "Foreacst Edit Record";
+                lblForecastHistoryNotification.BackColor = Color.Transparent;
+                lblForecastHistoryNotification.ForeColor = Color.Black;
+
+            }
+        }
+
+        private void ifNewForeacstUpdatesFound(bool newData)
+        {
+            if (newData)
+            {
+                //new updates found
+                lblForecastHistoryNotification.Text = "(NEW) Foreacst Edit Record";
+                lblForecastHistoryNotification.BackColor = Color.Yellow;
+                lblForecastHistoryNotification.ForeColor = Color.Red;
+
+            }
+            else
+            {
+                lblForecastHistoryNotification.Text = "Foreacst Edit Record";
+                lblForecastHistoryNotification.BackColor = Color.Transparent;
+                lblForecastHistoryNotification.ForeColor = Color.Black;
+
+            }
         }
 
         private void InitializeFilterData()
@@ -7872,6 +7910,363 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private bool ForecastEditRecordChecked()
+        {
+            FORECAST_HISTORY_NEW = false;
+
+            DB_FOREACST_HISTORY = dalHistory.ForecastEditHistorySelect();//393
+
+            DB_FOREACST_HISTORY.DefaultView.Sort = dalHistory.HistoryID + " DESC";
+            DB_FOREACST_HISTORY = DB_FOREACST_HISTORY.DefaultView.ToTable();
+
+            string habitName_1 = text.habit_ForecastReport_ForecastHistoryChecked ;
+            int userID = MainDashboard.USER_ID;
+
+            DataTable dt = dalHabit.HabitSearch(text.habit_belongTo_ForecastReport, habitName_1, userID);
+
+            if(dt == null || dt.Rows.Count <= 0)
+            {
+                FORECAST_HISTORY_NEW = true;
+                return true;
+            }
+            else
+            {
+                //get habit data INT
+                int habit_History_ID = int.TryParse(dt.Rows[0][dalHabit.HabitData].ToString(), out int i) ? i : -1;
+
+                if(habit_History_ID > 0)
+                {
+                    if(DB_FOREACST_HISTORY?.Rows.Count > 0)
+                    {
+                        //get lastest forecast edit history id
+                        int forecast_History_ID = int.TryParse(DB_FOREACST_HISTORY.Rows[0][dalHistory.HistoryID].ToString(), out i) ? i : -1;
+
+                        if(forecast_History_ID > habit_History_ID)
+                        {
+                            FORECAST_HISTORY_NEW = true;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        FORECAST_HISTORY_NEW = true;
+                        return true;
+                    }
+                }
+                else
+                {
+                    FORECAST_HISTORY_NEW = true;
+                    return true;
+
+                }
+            }
+
+
+            return false;
+
+        }
+
+        private bool FORECAST_HISTORY_NEW = false;
+
+
+        private DataTable DT_FOREACST_EDIT_RECORD;
+        private DataTable DB_FOREACST_HISTORY;
+        historyDAL dalHistory = new historyDAL();
+
+        public void ForecastEditRecord()
+        {
+            frmLoading.ShowLoadingScreen();
+
+            if(DB_FOREACST_HISTORY == null)
+            {
+                DB_FOREACST_HISTORY = dalHistory.ForecastEditHistorySelect();//393
+
+                DB_FOREACST_HISTORY.DefaultView.Sort = dalHistory.HistoryID + " DESC";
+                DB_FOREACST_HISTORY = DB_FOREACST_HISTORY.DefaultView.ToTable();
+            }
+
+            if (DB_FOREACST_HISTORY != null && DB_FOREACST_HISTORY.Rows.Count > 0)
+            {
+                int latestHistoryID = int.TryParse(DB_FOREACST_HISTORY.Rows[0][dalHistory.HistoryID].ToString(), out int x) ? x : -1;
+
+                //DataTable dt = DB_History.Clone();
+
+                DataTable dt = new DataTable();
+
+                dt.Columns.Add(text.Header_ID, typeof(string));
+                dt.Columns.Add(text.Header_Date, typeof(DateTime));
+                dt.Columns.Add(text.Header_Description, typeof(string));
+                dt.Columns.Add(text.Header_EditedBy, typeof(string));
+                dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
+                dt.Columns.Add(text.Header_Customer, typeof(string));
+                dt.Columns.Add(text.Header_Month, typeof(string));
+                dt.Columns.Add(text.Header_OldValue, typeof(string));
+                dt.Columns.Add(text.Header_NewValue, typeof(string));
+
+
+                int monthFrom_INT = int.TryParse(cmbForecastFrom.Text, out monthFrom_INT) ? monthFrom_INT : 0;
+                int monthTo_INT = int.TryParse(cmbForecastTo.Text, out monthTo_INT) ? monthTo_INT : 0;
+
+                int yearFrom_INT = DateTime.Now.Year;
+
+                int yearTo_INT = monthTo_INT < monthFrom_INT ? yearFrom_INT++ : yearFrom_INT;
+
+                DateTime Start = DateTime.Parse(1 + cmbForecastFrom.Text + yearFrom_INT);
+                DateTime End = DateTime.Parse(1 + cmbForecastTo.Text + yearTo_INT);
+
+                foreach (DataRow row in DB_FOREACST_HISTORY.Rows)
+                {
+                    #region Filter
+
+                    string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    //get month and year and customer data
+                    string historyCustomer = "";
+                    string historyItem = "";
+                    string historyMonthAndYear = "";
+                    string historyMonth = "";
+                    string historyYear = "";
+
+                    string value = "";
+                    string oldValue = "";
+                    string newValue = "";
+
+                    bool gettingCustomerInfo = false;
+                    bool gettingMonthAndYearInfo = false;
+                    bool gettingItemInfo = false;
+                    bool gettingValueInfo = false;
+
+                    DateTime HistoryDate = DateTime.MaxValue;
+
+
+                    for (int i = 0; i < historyDetail.Length; i++)
+                    {
+                        if (gettingValueInfo)
+                        {
+                            value += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == ":")
+                        {
+                            gettingItemInfo = false;
+                            gettingValueInfo = true;
+                        }
+
+                        if (gettingItemInfo)
+                        {
+                            historyItem += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "]")
+                        {
+                            gettingMonthAndYearInfo = false;
+                            gettingItemInfo = true;
+                        }
+
+                        if (gettingMonthAndYearInfo)
+                        {
+                            historyMonthAndYear += historyDetail[i].ToString();
+                        }
+
+                        if (gettingCustomerInfo && historyDetail[i].ToString() == "_")
+                        {
+                            gettingCustomerInfo = false;
+                            gettingMonthAndYearInfo = true;
+                        }
+
+                        if (gettingCustomerInfo)
+                        {
+                            historyCustomer += historyDetail[i].ToString();
+                        }
+
+                        if (historyDetail[i].ToString() == "[")
+                        {
+                            gettingCustomerInfo = true;
+                        }
+                    }
+
+                    if (historyMonthAndYear.Length > 4)
+                    {
+                        for (int i = historyMonthAndYear.Length - 4; i < historyMonthAndYear.Length; i++)
+                        {
+                            historyYear += historyMonthAndYear[i].ToString();
+                        }
+
+                        historyMonth = historyMonthAndYear.Replace(historyYear, "");
+                        HistoryDate = DateTime.TryParse(1.ToString() + "/" + historyMonth + "/" + historyYear, out DateTime test) ? test : DateTime.MaxValue;
+
+                    }
+
+
+                    //date inspection
+                    bool dataMatched = true;
+                   
+                    dataMatched = HistoryDate >= Start ? dataMatched : false;
+
+                    dataMatched = HistoryDate == DateTime.MaxValue ? false : dataMatched;
+
+                    #endregion
+
+                    #region Insert Data
+
+                    if (dataMatched)
+                    {
+                        DataRow newRow = dt.NewRow();
+
+                        newRow[text.Header_ID] = row[dalHistory.HistoryID].ToString();
+                        newRow[text.Header_Date] = DateTime.TryParse(row[dalHistory.HistoryDate].ToString(), out DateTime Date) ? Date : DateTime.MaxValue;
+
+                        string Desciption = "";
+                        string HistoryAction = row[dalHistory.HistoryAction].ToString();
+
+                        if (HistoryAction.Contains(text.ForecastEdit))
+                        {
+                            Desciption = text.DataUpdated;
+                        }
+                        else if (HistoryAction.Contains(text.ForecastInsert))
+                        {
+                            Desciption = text.DataAdded;
+                        }
+
+                        newRow[text.Header_Description] = Desciption;
+                        newRow[text.Header_EditedBy] = new userDAL().getUsername(int.TryParse(row[dalHistory.HistoryBy].ToString(), out int userId) ? userId : 0);
+                        newRow[text.Header_Customer] = historyCustomer;
+                        newRow[text.Header_ItemNameAndCode] = historyItem;
+                        newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+
+                        value = value.Replace(" ", "");
+
+                        if (value.Contains("->"))
+                        {
+                            bool newValueFound = false;
+
+                            for (int i = 0; i < value.Length; i++)
+                            {
+                                if (newValueFound)
+                                {
+                                    newValue += value[i].ToString();
+                                }
+                                else if (value[i].ToString() != ("-") && value[i].ToString() != (">"))
+                                {
+                                    oldValue += value[i].ToString();
+
+                                }
+
+                                if (value[i].ToString().Equals(">"))
+                                {
+                                    newValueFound = true;
+                                }
+
+
+                            }
+                        }
+                        else
+                        {
+                            newValue = value;
+                            oldValue = "NA";
+                        }
+
+
+                        newRow[text.Header_OldValue] = oldValue;
+                        newRow[text.Header_NewValue] = newValue;
+
+                        dt.Rows.Add(newRow);
+                    }
+
+                    #endregion
+
+                }
+                //2228
+                if (dt.Rows.Count > 0)
+                {
+                    //dt.DefaultView.Sort = text.Header_Month + " ASC," + text.Header_Date + " DESC";
+
+                    dt.DefaultView.Sort = text.Header_Date + " DESC," + text.Header_ItemNameAndCode + " ASC," + text.Header_Month + " ASC" ;
+                    dt = dt.DefaultView.ToTable();
+
+                    //DataTable dt_ForecastEditRecord = dt.Copy();
+
+                    DT_FOREACST_EDIT_RECORD = dt.Clone();
+
+                    string previousMonth = "";
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        string month = row[text.Header_Month].ToString();
+
+                        DateTime Month_DateTime = DateTime.TryParse(month, out Month_DateTime) ? Month_DateTime : DateTime.MaxValue;
+
+                        row[text.Header_Month] = Month_DateTime.ToString("MMM-yy");
+
+                        if (!string.IsNullOrEmpty(previousMonth) && previousMonth != month)
+                        {
+                            //insert empty row
+                            //dt_ForecastEditRecord.Rows.Add(dt_ForecastEditRecord.NewRow());
+                        }
+
+
+                        DT_FOREACST_EDIT_RECORD.Rows.Add(row.ItemArray);
+                        previousMonth = month;
+
+                    }
+
+                    DT_FOREACST_EDIT_RECORD = RemoveDuplicateRows(DT_FOREACST_EDIT_RECORD);
+                    frmLoading.CloseForm();
+                    frmForecastEditRecord frm = new frmForecastEditRecord(DT_FOREACST_EDIT_RECORD);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();
+
+                    ForecastHistoryCheckedHabitUpdate(latestHistoryID);
+
+                    ifNewForeacstUpdatesFound(false);
+                }
+                else
+                {
+                    frmLoading.CloseForm();
+                    MessageBox.Show("History not found.");
+                }
+            }
+            else
+            {
+                frmLoading.CloseForm();
+                MessageBox.Show("History not found.");
+            }
+
+         
+        }
+
+        private DataTable RemoveDuplicateRows(DataTable dt)
+        {
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                DataRow row1 = dt.Rows[i];
+                for (int j = i + 1; j < dt.Rows.Count; j++)
+                {
+                    DataRow row2 = dt.Rows[j];
+                    if (row1[text.Header_ItemNameAndCode].Equals(row2[text.Header_ItemNameAndCode]) && row1[text.Header_Customer].Equals(row2[text.Header_Customer]) && row1[text.Header_Month].Equals(row2[text.Header_Month]))
+                    {
+                        DateTime date1 = Convert.ToDateTime(row1[text.Header_Date]);
+                        DateTime date2 = Convert.ToDateTime(row2[text.Header_Date]);
+
+                        // Remove the older row
+                        if (DateTime.Compare(date1, date2) > 0)
+                        {
+                            dt.Rows.RemoveAt(j);
+                            j--; // Decrement index to account for removed row
+                        }
+                        else
+                        {
+                            dt.Rows.RemoveAt(i);
+                            i--; // Decrement index to account for removed row
+                            break; // Exit inner loop as the current outer row has been removed
+                        }
+                    }
+                }
+            }
+
+            return dt;
+        }
+
         private void cbRemoveNoDeliveredItem_CheckedChanged(object sender, EventArgs e)
         {
             dgvForecastReport.DataSource = null;
@@ -8283,6 +8678,23 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void ForecastHistoryCheckedHabitUpdate(int latestHistoryID)
+        {
+            if(latestHistoryID > 0)
+            {
+                string habitData_1 = text.habit_ForecastReport_ForecastHistoryChecked;
+                string habitData_2 = latestHistoryID.ToString();
+                //save habit
+                uHabit.belong_to = text.habit_belongTo_ForecastReport;
+                uHabit.habit_name = habitData_1;
+                uHabit.habit_data = habitData_2;
+                uHabit.added_date = DateTime.Now;
+                uHabit.added_by = MainDashboard.USER_ID;
+
+                dalHabit.HabitInsertAndHistoryRecord(uHabit);
+            }
+        }
+
         private void OtherCustomerOutPeriodSave()
         {
             if(loaded && OK_TO_CHECK_DATE_HABIT)
@@ -8385,6 +8797,11 @@ namespace FactoryManagementSoftware.UI
         private void frmForecastReport_NEW_Shown(object sender, EventArgs e)
         {
             OK_TO_CHECK_DATE_HABIT = true;
+        }
+
+        private void label13_Click(object sender, EventArgs e)
+        {
+            ForecastEditRecord();
         }
     }
 

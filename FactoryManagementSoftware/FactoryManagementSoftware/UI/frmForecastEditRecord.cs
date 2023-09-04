@@ -19,9 +19,27 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
         }
 
+        private bool ALL_EDIT_HISTORY_MODE = false;
+
+        public frmForecastEditRecord(DataTable dt)
+        {
+            InitializeComponent();
+            ALL_EDIT_HISTORY_MODE = true;
+
+            lblPart.Text = "";
+
+            tool.DoubleBuffered(dgvForecastRecord, true);
+            dgvForecastRecord.DataSource = dt;
+
+            DgvForecastReportUIEdit(dgvForecastRecord);
+
+            dgvForecastRecord.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+        }
+
         public frmForecastEditRecord(DataTable dt, string itemCode)
         {
             InitializeComponent();
+            ALL_EDIT_HISTORY_MODE = false;
 
             lblPart.Text =new Tool().getItemName(itemCode) + " (" + itemCode + ")";
 
@@ -64,7 +82,7 @@ namespace FactoryManagementSoftware.UI
         private void BoldLatestForecast(DataGridView dgv)
         {
 
-            if(dgv != null)
+            if(dgv != null && !ALL_EDIT_HISTORY_MODE)
             {
                 bool DateBolded = false;
                 DateTime previousMonth = DateTime.MaxValue;

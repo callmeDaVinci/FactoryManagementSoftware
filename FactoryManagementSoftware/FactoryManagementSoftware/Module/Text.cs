@@ -208,6 +208,7 @@ namespace FactoryManagementSoftware.Module
         public string habit_ForecastReport_OutFrom { get; } = "FORECAST REPORT: OUT FROM";
         public string habit_ForecastReport_OutTo { get; } = "FORECAST REPORT: OUT To";
 
+        public string habit_ForecastReport_ForecastHistoryChecked { get; } = "FORECAST HISTORY CHECKED";
 
         #endregion
 

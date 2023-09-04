@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
@@ -125,6 +125,7 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.lblForecastHistoryNotification = new System.Windows.Forms.Label();
             this.tlpForecastReport.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -156,16 +157,18 @@
             // 
             this.tlpForecastReport.ColumnCount = 1;
             this.tlpForecastReport.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpForecastReport.Controls.Add(this.groupBox4, 0, 2);
-            this.tlpForecastReport.Controls.Add(this.tableLayoutPanel2, 0, 0);
-            this.tlpForecastReport.Controls.Add(this.dgvForecastReport, 0, 4);
-            this.tlpForecastReport.Controls.Add(this.tableLayoutPanel4, 0, 3);
-            this.tlpForecastReport.Controls.Add(this.gbFilter, 0, 1);
+            this.tlpForecastReport.Controls.Add(this.lblForecastHistoryNotification, 0, 0);
+            this.tlpForecastReport.Controls.Add(this.groupBox4, 0, 3);
+            this.tlpForecastReport.Controls.Add(this.tableLayoutPanel2, 0, 1);
+            this.tlpForecastReport.Controls.Add(this.dgvForecastReport, 0, 5);
+            this.tlpForecastReport.Controls.Add(this.tableLayoutPanel4, 0, 4);
+            this.tlpForecastReport.Controls.Add(this.gbFilter, 0, 2);
             this.tlpForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpForecastReport.Location = new System.Drawing.Point(15, 15);
             this.tlpForecastReport.Margin = new System.Windows.Forms.Padding(15);
             this.tlpForecastReport.Name = "tlpForecastReport";
-            this.tlpForecastReport.RowCount = 5;
+            this.tlpForecastReport.RowCount = 6;
+            this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 220F));
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 135F));
@@ -179,7 +182,7 @@
             this.groupBox4.Controls.Add(this.tableLayoutPanel11);
             this.groupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.Location = new System.Drawing.Point(5, 305);
+            this.groupBox4.Location = new System.Drawing.Point(5, 325);
             this.groupBox4.Margin = new System.Windows.Forms.Padding(5);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(2);
@@ -396,7 +399,7 @@
             this.tableLayoutPanel2.Controls.Add(this.btnFilter, 3, 0);
             this.tableLayoutPanel2.Controls.Add(this.btnExcel, 8, 0);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 20);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
@@ -735,24 +738,24 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
-            this.dgvForecastReport.Location = new System.Drawing.Point(3, 487);
+            this.dgvForecastReport.Location = new System.Drawing.Point(3, 507);
             this.dgvForecastReport.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvForecastReport.Name = "dgvForecastReport";
             this.dgvForecastReport.RowHeadersVisible = false;
             this.dgvForecastReport.RowHeadersWidth = 51;
             this.dgvForecastReport.RowTemplate.Height = 60;
             this.dgvForecastReport.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvForecastReport.Size = new System.Drawing.Size(1312, 203);
+            this.dgvForecastReport.Size = new System.Drawing.Size(1312, 183);
             this.dgvForecastReport.TabIndex = 152;
             this.dgvForecastReport.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellContentClick);
             this.dgvForecastReport.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvForecastReport_CellEndEdit);
@@ -772,7 +775,7 @@
             this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnRefresh, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 437);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(2, 457);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(2);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
@@ -858,7 +861,7 @@
             this.gbFilter.Controls.Add(this.tableLayoutPanel6);
             this.gbFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbFilter.Location = new System.Drawing.Point(5, 85);
+            this.gbFilter.Location = new System.Drawing.Point(5, 105);
             this.gbFilter.Margin = new System.Windows.Forms.Padding(5);
             this.gbFilter.Name = "gbFilter";
             this.gbFilter.Padding = new System.Windows.Forms.Padding(2);
@@ -1590,6 +1593,21 @@
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
             // 
+            // lblForecastHistoryNotification
+            // 
+            this.lblForecastHistoryNotification.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblForecastHistoryNotification.AutoSize = true;
+            this.lblForecastHistoryNotification.BackColor = System.Drawing.Color.Yellow;
+            this.lblForecastHistoryNotification.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblForecastHistoryNotification.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
+            this.lblForecastHistoryNotification.ForeColor = System.Drawing.Color.Red;
+            this.lblForecastHistoryNotification.Location = new System.Drawing.Point(3, 2);
+            this.lblForecastHistoryNotification.Name = "lblForecastHistoryNotification";
+            this.lblForecastHistoryNotification.Size = new System.Drawing.Size(188, 15);
+            this.lblForecastHistoryNotification.TabIndex = 169;
+            this.lblForecastHistoryNotification.Text = "Forecast and Order Update Record";
+            this.lblForecastHistoryNotification.Click += new System.EventHandler(this.label13_Click);
+            // 
             // frmForecastReport_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1608,6 +1626,7 @@
             this.Shown += new System.EventHandler(this.frmForecastReport_NEW_Shown);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frmForecastReport_NEW_KeyDown);
             this.tlpForecastReport.ResumeLayout(false);
+            this.tlpForecastReport.PerformLayout();
             this.groupBox4.ResumeLayout(false);
             this.tableLayoutPanel11.ResumeLayout(false);
             this.groupBox8.ResumeLayout(false);
@@ -1747,5 +1766,6 @@
         private System.Windows.Forms.DateTimePicker dtpOutFrom;
         private System.Windows.Forms.Label label14;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.Label lblForecastHistoryNotification;
     }
 }
