@@ -21,8 +21,8 @@ namespace FactoryManagementSoftware.UI
 
         #region create class object (database)
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
+        custSupplierBLL uCust = new custSupplierBLL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         facBLL uFac = new facBLL();
         facDAL dalFac = new facDAL();

@@ -102,7 +102,7 @@ namespace FactoryManagementSoftware.UI
         joinDAL dalJoin = new joinDAL();
         userDAL dalUser = new userDAL();
 
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         materialDAL dalMat = new materialDAL();
         dataTrfBLL uData = new dataTrfBLL();
 

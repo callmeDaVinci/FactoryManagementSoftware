@@ -14,6 +14,9 @@ namespace FactoryManagementSoftware.BLL
         public string action_to { get; set; } = "";
         public string note { get; set; } = "";
         public bool active { get; set; } = true;
+        public string do_no { get; set; } = "";
+        public string lot_no { get; set; } = "";
+
 
     }
 }

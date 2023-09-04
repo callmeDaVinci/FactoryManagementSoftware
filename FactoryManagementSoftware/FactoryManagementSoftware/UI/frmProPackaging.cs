@@ -34,10 +34,10 @@ namespace FactoryManagementSoftware.UI
             dgvPackaging.DataSource = dt;
         }
 
-        readonly static public string header_PackagingCode = "CODE";
-        readonly static public string header_PackagingName = "NAME";
-        readonly static public string header_PackagingQty = "TOTAL QTY";
-        readonly static public string header_PackagingMax = "QTY/BOX";
+        readonly static public string header_PackagingCode = "ITEM CODE";
+        readonly static public string header_PackagingName = "ITEM NAME";
+        readonly static public string header_PackagingQty = "Container Qty";
+        readonly static public string header_PackagingMax = "Qty / Container";
 
         readonly private string string_AddItem = "ADD ITEM";
         readonly private string string_EditItem = "EDIT ITEM";

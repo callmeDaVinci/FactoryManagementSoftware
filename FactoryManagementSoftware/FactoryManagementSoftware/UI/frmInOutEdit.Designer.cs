@@ -641,7 +641,7 @@
             this.btnIN.Location = new System.Drawing.Point(2, 2);
             this.btnIN.Margin = new System.Windows.Forms.Padding(2, 2, 5, 2);
             this.btnIN.Name = "btnIN";
-            this.btnIN.Size = new System.Drawing.Size(91, 50);
+            this.btnIN.Size = new System.Drawing.Size(90, 50);
             this.btnIN.TabIndex = 108;
             this.btnIN.Text = "IN";
             this.btnIN.UseVisualStyleBackColor = false;
@@ -655,7 +655,7 @@
             this.btnOUT.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnOUT.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnOUT.ForeColor = System.Drawing.Color.Black;
-            this.btnOUT.Location = new System.Drawing.Point(103, 2);
+            this.btnOUT.Location = new System.Drawing.Point(102, 2);
             this.btnOUT.Margin = new System.Windows.Forms.Padding(5, 2, 5, 2);
             this.btnOUT.Name = "btnOUT";
             this.btnOUT.Size = new System.Drawing.Size(91, 50);
@@ -672,10 +672,10 @@
             this.btnSwitch.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSwitch.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSwitch.ForeColor = System.Drawing.Color.Black;
-            this.btnSwitch.Location = new System.Drawing.Point(204, 2);
+            this.btnSwitch.Location = new System.Drawing.Point(203, 2);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 2, 2, 2);
             this.btnSwitch.Name = "btnSwitch";
-            this.btnSwitch.Size = new System.Drawing.Size(220, 50);
+            this.btnSwitch.Size = new System.Drawing.Size(221, 50);
             this.btnSwitch.TabIndex = 110;
             this.btnSwitch.Text = "SWITCH";
             this.btnSwitch.UseVisualStyleBackColor = false;
@@ -772,7 +772,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 226F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 227F));
             this.tableLayoutPanel5.Controls.Add(this.btnIN, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOUT, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);

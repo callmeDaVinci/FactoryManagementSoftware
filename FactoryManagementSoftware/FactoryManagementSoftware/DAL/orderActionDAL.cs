@@ -201,6 +201,24 @@ namespace FactoryManagementSoftware.DAL
             uOrderAction.action_to = to;
             uOrderAction.note = note;
             uOrderAction.active = ifActive;
+
+            
+        }
+
+        private void setActionData(int orderID, int trfID, string action, string content, string from, string to, string note, bool ifActive, string DONo, string LotNo)
+        {
+            uOrderAction.ord_id = orderID;
+            uOrderAction.trf_id = trfID;
+            uOrderAction.added_date = DateTime.Now;
+            uOrderAction.added_by = MainDashboard.USER_ID;
+            uOrderAction.action = action;
+            uOrderAction.action_detail = content;
+            uOrderAction.action_from = from;
+            uOrderAction.action_to = to;
+            uOrderAction.note = note;
+            uOrderAction.active = ifActive;
+            uOrderAction.do_no = DONo;
+            uOrderAction.lot_no = LotNo;
         }
 
         //order request

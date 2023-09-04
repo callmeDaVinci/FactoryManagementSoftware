@@ -19,7 +19,7 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         trfCatDAL daltrfCat = new trfCatDAL();
         facDAL dalFac = new facDAL();
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         trfHistDAL dalTrfHist = new trfHistDAL();
         itemCatDAL dalItemCat = new itemCatDAL();
         joinDAL dalJoin = new joinDAL();
@@ -191,7 +191,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfFromCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.FullSelect();
+                DataTable dt = dalCust.CustSelectAll();
                 loadLocationData(dt, cmbTrfFrom, "cust_name");
                 //cmbTrfFrom.Text = tool.getCustomerName(cmbTrfItemCode.Text);
             }
@@ -219,7 +219,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfToCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.FullSelect();
+                DataTable dt = dalCust.CustSelectAll();
                 loadLocationData(dt, cmbTrfTo, "cust_name");
 
                // cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);

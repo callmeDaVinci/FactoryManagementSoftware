@@ -130,8 +130,8 @@ namespace FactoryManagementSoftware.UI
 
         #region create class object (database)
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
+        custSupplierBLL uCust = new custSupplierBLL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         facBLL uFac = new facBLL();
         facDAL dalFac = new facDAL();
@@ -541,6 +541,12 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfItemCat.Text = frmInOut.editingItemCat;
                 cmbTrfItemName.Text = frmInOut.editingItemName;
                 cmbTrfItemCode.Text = frmInOut.editingItemCode;
+            }
+            else if (!string.IsNullOrEmpty(frmInOutVer2.editingItemCode))
+            {
+                cmbTrfItemCat.Text = frmInOutVer2.editingItemCat;
+                cmbTrfItemName.Text = frmInOutVer2.editingItemName;
+                cmbTrfItemCode.Text = frmInOutVer2.editingItemCode;
             }
             else
             {
@@ -1845,6 +1851,7 @@ namespace FactoryManagementSoftware.UI
             {
                 updateSuccess = true;
                 frmInOut.editingItemCode = itemCode;
+                frmInOutVer2.editingItemCode = itemCode;
             }
             else
             {
@@ -2193,7 +2200,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbTrfFromCategory.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.FullSelect();
+                DataTable dt = dalCust.CustSelectAll();
                 loadLocationData(dt, cmbTrfFrom, "cust_name");
                 cmbTrfFrom.Text = tool.getCustomerName(cmbTrfItemCode.Text);
             }
@@ -2242,7 +2249,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    DataTable dt = dalCust.FullSelect();
+                    DataTable dt = dalCust.CustSelectAll();
                     loadLocationData(dt, cmbTrfTo, "cust_name");
 
                     cmbTrfTo.Text = tool.getCustomerName(cmbTrfItemCode.Text);

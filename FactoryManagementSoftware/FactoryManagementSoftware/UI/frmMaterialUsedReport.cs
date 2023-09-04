@@ -49,8 +49,8 @@ namespace FactoryManagementSoftware.UI
 
         #region create class object (database)
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
+        custSupplierBLL uCust = new custSupplierBLL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         facBLL uFac = new facBLL();
         facDAL dalFac = new facDAL();
@@ -1477,7 +1477,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadCustomerList()
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.Rows.Add("All");
             distinctTable.DefaultView.Sort = "cust_name ASC";

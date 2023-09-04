@@ -92,7 +92,7 @@ namespace FactoryManagementSoftware.UI
         joinDAL dalJoin = new joinDAL();
         userDAL dalUser = new userDAL();
 
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         materialDAL dalMat = new materialDAL();
         dataTrfBLL uData = new dataTrfBLL();
 
@@ -698,7 +698,7 @@ namespace FactoryManagementSoftware.UI
             string dbItemCode = null, dbItemName = null;
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.FullSelect();
+            DataTable dt_Cust = dalCust.CustSelectAll();
 
             row_Delivered = dt_DeliveredData.NewRow();
 
@@ -752,7 +752,7 @@ namespace FactoryManagementSoftware.UI
             string dbItemCode = null, dbItemName = null;
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.FullSelect();
+            DataTable dt_Cust = dalCust.CustSelectAll();
 
             row_Delivered = dt_DeliveredData.NewRow();
 
@@ -834,7 +834,7 @@ namespace FactoryManagementSoftware.UI
 
             DataRow row_Delivered;
 
-            DataTable dt_Cust = dalCust.FullSelect();
+            DataTable dt_Cust = dalCust.CustSelectAll();
 
             row_Delivered = dt_DeliveredData.NewRow();
 

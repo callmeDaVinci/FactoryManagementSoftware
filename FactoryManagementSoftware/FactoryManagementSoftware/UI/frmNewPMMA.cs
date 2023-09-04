@@ -26,7 +26,7 @@ namespace FactoryManagementSoftware.UI
         itemBLL uItem = new itemBLL();
         joinDAL dalJoin = new joinDAL();
         trfHistDAL dalTrfHist = new trfHistDAL();
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
         pmmaDAL dalPMMA = new pmmaDAL();
         pmmaBLL uPMMA = new pmmaBLL();

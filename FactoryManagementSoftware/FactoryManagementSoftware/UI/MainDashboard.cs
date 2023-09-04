@@ -14,6 +14,7 @@ namespace FactoryManagementSoftware.UI
         static public bool itemFormOpen = false;
         static public bool facFormOpen = false;
         static public bool custFormOpen = false;
+        static public bool supplierFormOpen = false;
         static public bool inOutFormOpen = false;
         static public bool catFormOpen = false;
         static public bool ordFormOpen = false;
@@ -107,8 +108,8 @@ namespace FactoryManagementSoftware.UI
                 //Semenyih
                 pMMAToolStripMenuItem.Visible = false;
                 forecastToolStripMenuItem.Visible = false;
-                macScheduleToolStripMenuItem.Visible = false;
-                dAILYToolStripMenuItem.Visible = false;
+               // macScheduleToolStripMenuItem.Visible = false;
+                //dAILYToolStripMenuItem.Visible = false;
                 //orderToolStripMenuItem1.Visible = false;
             }
             else if(userPermission < ACTION_LVL_FIVE)
@@ -724,8 +725,7 @@ namespace FactoryManagementSoftware.UI
         {
             myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-
-            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            if (myconnstrng == text.DB_JunPC || myconnstrng == text.DB_Semenyih)
             {
                 if (!NewDailyJobSheetFormOpenVer3)
                 {
@@ -1299,6 +1299,27 @@ namespace FactoryManagementSoftware.UI
             }
 
            
+        }
+
+        private void supplierToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            if (!supplierFormOpen)
+            {
+                frmSupplier item = new frmSupplier();
+                item.MdiParent = this;
+                item.StartPosition = FormStartPosition.CenterScreen;
+                item.WindowState = FormWindowState.Maximized;
+                item.Show();
+                supplierFormOpen = true;
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSupplier>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSupplier>().First().BringToFront();
+                }
+            }
         }
     }
 }

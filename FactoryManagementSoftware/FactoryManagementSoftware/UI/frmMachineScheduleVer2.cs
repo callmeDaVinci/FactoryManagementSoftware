@@ -530,6 +530,32 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable specialDataSort(DataTable dt)
         {
+            // Clone the original DataTable schema
+            DataTable sortedDt = dt.Clone();
+
+            // Accept changes to the original DataTable
+            dt.AcceptChanges();
+
+            // Sort the DataTable based on the MacLocationName and MacName
+            dt.DefaultView.Sort = dalMac.MacLocationName+" ASC,"+ dalMac.MacName+" ASC";
+
+            // Create a new DataTable based on the sorted DataView
+            DataTable dtSorted = dt.DefaultView.ToTable();
+
+            // Optionally, you can copy the sorted rows to your 'sortedDt' DataTable if you want to keep using it
+            foreach (DataRow row in dtSorted.Rows)
+            {
+                DataRow newRow = sortedDt.NewRow();
+                newRow.ItemArray = row.ItemArray;
+                sortedDt.Rows.Add(newRow);
+            }
+
+            return sortedDt;
+        }
+
+
+        private DataTable Old_specialDataSort(DataTable dt)
+        {
             DataTable sortedDt = dt.Clone();
             string Fac = null;
             dt.AcceptChanges();
@@ -1732,7 +1758,7 @@ namespace FactoryManagementSoftware.UI
         private string setFileName()
         {
             string fileName = "Test.xls";
-            string title = "MouldChangePlan";
+            string title = "Machine Schedule";
             DateTime currentDate = DateTime.Now;
 
             fileName = title + "_" + currentDate.ToString("ddMMyyyy_HHmmss") + ".xls";
@@ -1835,7 +1861,9 @@ namespace FactoryManagementSoftware.UI
 
 
                             SaveFileDialog sfd = new SaveFileDialog();
-                            string path = @"D:\StockAssistant\Document\MouldChangeReport";
+
+                            string path = @"D:\StockAssistant\Document\MachineSchedule";
+
                             Directory.CreateDirectory(path);
                             sfd.InitialDirectory = path;
                             sfd.Filter = "Excel Documents (*.xls)|*.xls";
@@ -1847,8 +1875,8 @@ namespace FactoryManagementSoftware.UI
                                 // Copy DataGridView results to clipboard
                                 copyAlltoClipboard();
                                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                                object misValue = System.Reflection.Missing.Value;
-                                Microsoft.Office.Interop.Excel.Application xlexcel = new Microsoft.Office.Interop.Excel.Application();
+                                object misValue = Missing.Value;
+                                Excel.Application xlexcel = new Excel.Application();
                                 xlexcel.PrintCommunication = false;
                                 xlexcel.ScreenUpdating = false;
                                 xlexcel.DisplayAlerts = false; // Without this you will get two confirm overwrite prompts
@@ -1857,12 +1885,12 @@ namespace FactoryManagementSoftware.UI
                                 xlexcel.Calculation = XlCalculation.xlCalculationManual;
                                 Worksheet xlWorkSheet = (Worksheet)xlWorkBook.Worksheets.get_Item(1);
                                 DateTime dateNow = DateTime.Now;
-                                xlWorkSheet.Name = "MOULD CHANGE PLAN ";
+                                xlWorkSheet.Name = "Machine Schedule ";
 
 
                                 #region Save data to Sheet
 
-                                string title = "MOULD CHANGE PLAN " + dateNow.ToString("dd/MM/yyyy");
+                                string title = "Machine Schedule " + dateNow.ToString("dd/MM/yyyy");
 
                                 xlWorkSheet.PageSetup.CenterHeader = "&\"Calibri,Bold\"&16 " + title;
 
@@ -1905,7 +1933,7 @@ namespace FactoryManagementSoftware.UI
                                 Range tRange = xlWorkSheet.UsedRange;
                                 tRange.Borders.LineStyle = XlLineStyle.xlContinuous;
                                 tRange.Borders.Weight = XlBorderWeight.xlMedium;
-                                tRange.Font.Size = 12;
+                                tRange.Font.Size = 10;
                                 tRange.Font.Name = "Calibri";
                                 tRange.EntireColumn.AutoFit();
                                 tRange.EntireRow.AutoFit();
@@ -1924,53 +1952,91 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     for (int i = 0; i <= dgvMacSchedule.RowCount - 1; i++)
                                     {
+                                        string Mac = "";
+
                                         for (int j = 0; j <= dgvMacSchedule.ColumnCount - 1; j++)
                                         {
-                                            Range range = (Range)xlWorkSheet.Cells[i + 2, j + 1];
-                                            range.Rows.RowHeight = 30;
-                                            range.Font.Color = ColorTranslator.ToOle(dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.ForeColor);
+                                            string colName = dgvMacSchedule.Columns[j].Name;
+                                           
+                                            if(colName == text.Header_Mac)
+                                            {
+                                                Mac = dgvMacSchedule.Rows[i].Cells[j].Value.ToString();
 
-                                            if (j == 3 || j == 6 || j == 7 || j == 9 || j == 12 || j == 15 || j == 11 || j == 14)
-                                            {
-                                                range.Cells.Font.Bold = true;
-                                                range.Font.Size = 16;
-                                                range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
+                                                if(string.IsNullOrEmpty(Mac))
+                                                {
+                                                    break;
+                                                }
                                             }
+                                           
+                                        }
 
-                                            if (j == 4 || j == 5)
-                                            {
-                                                range.ColumnWidth = 10;
-                                            }
+                                        if (!string.IsNullOrEmpty(Mac))
+                                        {
+                                            Range range = (Range)xlWorkSheet.Cells[i + 2, 1];
 
-                                            if (j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
-                                            {
-                                                range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
-                                                range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-                                            }
-                                            else
-                                            {
-                                                range.Cells.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-                                                range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
-                                            }
+                                            range.EntireRow.RowHeight = 40;
+                                            range.EntireRow.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                                            range.EntireRow.VerticalAlignment = XlVAlign.xlVAlignCenter;
 
-                                            if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Gainsboro)
-                                            {
-                                                range.Interior.Color = Color.White;
-                                                range.Rows.RowHeight = 40;
-                                            }
-                                            else if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(1, 33, 71))
-                                            {
-                                                range.Rows.RowHeight = 4;
-                                                range.Interior.Color = Color.Black;
-                                            }
-                                            else
-                                            {
-                                                range.Interior.Color = ColorTranslator.ToOle(dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor);
-                                                range.Rows.RowHeight = 40;
-                                            }
+                                            //range.Font.Size = 16;
+                                            //range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
+                                            ////range.Font.Color = ColorTranslator.ToOle(dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.ForeColor);
+
+                                            //if (j == 3 || j == 6 || j == 7 || j == 9 || j == 12 || j == 15 || j == 11 || j == 14)
+                                            //{
+                                            //    range.Cells.Font.Bold = true;
+                                            //    range.Font.Size = 16;
+                                            //    range.Cells.Font.Color = ColorTranslator.ToOle(Color.Black);
+                                            //}
+
+                                            //if (j == 4 || j == 5)
+                                            //{
+                                            //    range.ColumnWidth = 10;
+                                            //}
+
+                                            //if (j == 6 || j == 7 || j == 11 || j == 14 || j == 16)
+                                            //{
+                                            //    range.Cells.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                                            //    range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                                            //}
+                                            //else
+                                            //{
+                                            //    range.Cells.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                                            //    range.Cells.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                                            //}
+
+                                            //if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.Gainsboro)
+                                            //{
+                                            //    range.Interior.Color = Color.White;
+                                            //    range.Rows.RowHeight = 40;
+                                            //}
+                                            //else if (dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor == Color.FromArgb(1, 33, 71))
+                                            //{
+                                            //    range.Rows.RowHeight = 4;
+                                            //    range.Interior.Color = Color.Black;
+                                            //}
+                                            //else
+                                            //{
+                                            //    range.Interior.Color = ColorTranslator.ToOle(dgvMacSchedule.Rows[i].Cells[j].InheritedStyle.BackColor);
+                                            //    range.Rows.RowHeight = 40;
+                                            //}
                                         }
                                     }
                                 }
+
+
+                                for(int i = 1; i <= 17; i++)
+                                {
+                                    if(i == 8 || i == 12 || i == 17)
+                                    {
+                                        Range range2 = (Range)xlWorkSheet.Cells[1, i];
+
+                                        range2.EntireColumn.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+                                        range2.EntireColumn.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                                    }
+                                  
+                                }
+                               
 
                                 //Range header2 = (Range)xlWorkSheet.Cells[1, 1];
                                 //header2.Interior.Color = Color.Gold;
@@ -2981,10 +3047,17 @@ namespace FactoryManagementSoftware.UI
 
         private void copyAlltoClipboard()
         {
+            dgvMacSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvMacSchedule.MultiSelect = true;
+
             dgvMacSchedule.SelectAll();
             DataObject dataObj = dgvMacSchedule.GetClipboardContent();
             if (dataObj != null)
                 Clipboard.SetDataObject(dataObj);
+
+            dgvMacSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            dgvMacSchedule.MultiSelect = false;
+
         }
 
         private void releaseObject(object obj)

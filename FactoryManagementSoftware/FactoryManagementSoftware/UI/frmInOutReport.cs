@@ -47,7 +47,7 @@ namespace FactoryManagementSoftware.UI
         facStockDAL dalStock = new facStockDAL();
         itemDAL dalItem = new itemDAL();
         joinDAL dalJoin = new joinDAL();
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         itemCatDAL dalItemCat = new itemCatDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
         CheckChildBLL uCheckChild = new CheckChildBLL();

@@ -1,6 +1,7 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,35 +12,35 @@ using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmInOut_NEW : Form
+    public partial class frmInOutVer2 : Form
     {
         private int userPermission = -1;
 
-        public frmInOut_NEW()
+        public frmInOutVer2()
         {
             try
             {
                 InitializeComponent();
                 dt_Fac = dalFac.SelectDESC();
-                dt_Cust = dalCust.FullSelect();
+                dt_Cust = dalCust.CustSelectAll();
                 addDataToTrfHistDateCMB();
                 userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
-
-                if (userPermission >= MainDashboard.ACTION_LVL_TWO)
-                {
-                    btnTransfer.Show();
-                }
-                else
-                {
-                    btnTransfer.Hide();
-                }
+                btnTransfer.Show();
+                //if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+                //{
+                //    btnTransfer.Show();
+                //}
+                //else
+                //{
+                //    btnTransfer.Hide();
+                //}
 
                 dt_Plan = dalPlan.Select();
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            } 
+            }
         }
 
         #region variable declare
@@ -55,9 +56,12 @@ namespace FactoryManagementSoftware.UI
         readonly string past3Days = "3";
         readonly string pastWeek = "7";
         readonly string pastMonth = "30";
+        readonly string past2Months = "60";
+        readonly string past3Months = "90";
+        readonly string past6Months = "180";
         readonly string pastYear = "365";
         readonly string All = "ALL";
-     
+
         DataTable dt_Fac;
         DataTable dt_Cust;
         DataTable dtJoin;
@@ -81,7 +85,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         itemBLL uItem = new itemBLL();
 
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         itemCatDAL dalItemCat = new itemCatDAL();
 
@@ -89,7 +93,7 @@ namespace FactoryManagementSoftware.UI
         trfHistDAL daltrfHist = new trfHistDAL();
 
         facStockDAL dalStock = new facStockDAL();
-        
+
         joinDAL dalJoin = new joinDAL();
 
         userDAL dalUser = new userDAL();
@@ -131,11 +135,11 @@ namespace FactoryManagementSoftware.UI
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            }  
+            }
             finally
             {
                 //itemListLoaded = true;
-               ActiveControl = label1;
+                ActiveControl = label1;
             }
         }
 
@@ -152,6 +156,9 @@ namespace FactoryManagementSoftware.UI
             cmb.Items.Add(past3Days);
             cmb.Items.Add(pastWeek);
             cmb.Items.Add(pastMonth);
+            cmb.Items.Add(past2Months);
+            cmb.Items.Add(past3Months);
+            cmb.Items.Add(past6Months);
             cmb.Items.Add(pastYear);
             cmb.Items.Add(All);
 
@@ -168,7 +175,7 @@ namespace FactoryManagementSoftware.UI
             cmbSearchCat.DataSource = distinctTable;
             cmbSearchCat.DisplayMember = "item_cat_name";
 
-           
+
             //cmbSearchCat.SelectedIndex = 1;
 
             if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
@@ -226,7 +233,7 @@ namespace FactoryManagementSoftware.UI
                 dgvFactoryStock.Rows.Clear();
                 dgvTotal.Rows.Clear();
             }
-            
+
         }
 
         private void refreshDataList(string itemCode)
@@ -253,7 +260,7 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 dt_Fac = dalFac.SelectDESC();
-                dt_Cust = dalCust.FullSelect();
+                dt_Cust = dalCust.CustSelectAll();
                 dtJoin = dalJoin.SelectwithChildInfo();
                 loadItemCategoryData();
                 itemListLoaded = false;
@@ -272,7 +279,7 @@ namespace FactoryManagementSoftware.UI
             finally
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
-                
+
             }
         }
 
@@ -294,16 +301,16 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataGridViewRow row in dgv.Rows)
             {
-                int n = row.Index;                
+                int n = row.Index;
                 string itemCode = "";
                 if (dgv == dgvItem)
                 {
-                    if(dgv.Rows[n].Cells[dalItem.ItemCode].Value != null)
+                    if (dgv.Rows[n].Cells[dalItem.ItemCode].Value != null)
                     {
                         itemCode = dgv.Rows[n].Cells[dalItem.ItemCode].Value.ToString();
                     }
 
-                    
+
                     float qty = 0;
 
                     if (dgv.Rows[n].Cells[dalItem.ItemStock] != null)
@@ -312,12 +319,12 @@ namespace FactoryManagementSoftware.UI
                     }
                     if (ifGotChild(itemCode))
                     {
-                        if(dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                        if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
                             dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
                         }
-                        else if(!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
+                        else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                             dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
@@ -325,7 +332,7 @@ namespace FactoryManagementSoftware.UI
                         else
                         {
                             dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                            dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };                     
+                            dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         }
                     }
                     if (qty < 0)
@@ -342,7 +349,7 @@ namespace FactoryManagementSoftware.UI
                     itemCode = dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Value.ToString();
 
                     if (ifGotChild(itemCode))
-                    {                       
+                    {
                         if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                         {
                             dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
@@ -364,7 +371,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (dgv.Rows[n].Cells[daltrfHist.TrfResult].Value != null)
                     {
-                        if(dgv.Rows[n].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Undo"))
+                        if (dgv.Rows[n].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Undo"))
                         {
                             dgv.Rows[n].DefaultCellStyle.ForeColor = Color.Red;
                             dgv.Rows[n].DefaultCellStyle.Font = new Font(this.Font, FontStyle.Strikeout);
@@ -407,7 +414,7 @@ namespace FactoryManagementSoftware.UI
 
         private void loadStockList(string itemCode)
         {
-            if(formLoaded)
+            if (formLoaded)
             {
                 DataTable dt = dalStock.Select(itemCode);
 
@@ -438,7 +445,7 @@ namespace FactoryManagementSoftware.UI
                 dgvFactoryStock.Rows.Clear();
                 dgvFactoryStock.Refresh();
             }
-           
+
         }
 
         private void calTotalStock(string itemCode)
@@ -449,7 +456,7 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow stock in dtStock.Rows)
             {
-                if(stock["stock_qty"] == null)
+                if (stock["stock_qty"] == null)
                 {
                     MessageBox.Show("empty stock data");
                 }
@@ -457,7 +464,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     totalStock += Convert.ToSingle(stock["stock_qty"].ToString());
                 }
-                
+
             }
 
             dgvTotal.Rows.Clear();
@@ -465,7 +472,7 @@ namespace FactoryManagementSoftware.UI
             dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.00");
             dgvTotal.ClearSelection();
 
-        
+
         }
 
         private void loadItemList()
@@ -495,7 +502,7 @@ namespace FactoryManagementSoftware.UI
                         dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
 
                     }
-                } 
+                }
             }
             else
             {
@@ -519,14 +526,14 @@ namespace FactoryManagementSoftware.UI
             }
 
             dgv.DataSource = null;
-                
+
             if (dtItem.Rows.Count > 0)
             {
                 dgv.DataSource = dtItem;
                 dgvItemUIEdit(dgv);
                 dgv.ClearSelection();
             }
-           // itemListLoaded = true;
+            itemListLoaded = true;
         }
 
         private void loadTransferList(string itemCode)
@@ -540,11 +547,13 @@ namespace FactoryManagementSoftware.UI
                 if (!cmbTransHistDate.Text.Equals(All))
                 {
                     //MessageBox.Show(currenteDate.ToString("yyyy/MM/dd"));
-                    dt = daltrfHist.codeRangeSearch(itemCode,Convert.ToInt32(cmbTransHistDate.Text));
+                    dt = daltrfHist.codeRangeSearch(itemCode, Convert.ToInt32(cmbTransHistDate.Text));
                 }
                 else
                 {
-                    dt = daltrfHist.codeLikeSearch(itemCode);
+
+                    //dt = daltrfHist.codeLikeSearch(itemCode);
+                    dt = daltrfHist.codeSearch(itemCode);
                 }
 
             }
@@ -568,6 +577,19 @@ namespace FactoryManagementSoftware.UI
             {
                 dt.DefaultView.Sort = "trf_hist_added_date DESC";
                 DataTable sortedDt = dt.DefaultView.ToTable();
+
+                sortedDt.Columns.Add(text.Header_ItemDescription, typeof(string)).SetOrdinal(dt.Columns[daltrfHist.TrfItemCode].Ordinal);
+
+                foreach (DataRow row in sortedDt.Rows)
+                {
+                    string itemName = row[daltrfHist.TrfItemName].ToString();
+                    itemCode = row[daltrfHist.TrfItemCode].ToString();
+
+                    string itemDescription = tool.getItemNameAndCodeString(itemCode, itemName);
+                    row[text.Header_ItemDescription] = itemDescription;
+
+                }
+
                 dgvTrf.DataSource = sortedDt;
                 dgvTrfUIEdit(dgvTrf);
                 dgvTrf.ClearSelection();
@@ -653,13 +675,13 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Plan.Rows)
             {
-                if(PlanID == row[dalPlan.jobNo].ToString())
+                if (PlanID == row[dalPlan.jobNo].ToString())
                 {
                     string itemCode = row[dalPlan.partCode].ToString();
                     string itemName = tool.getItemName(itemCode);
 
-                    if(itemName != itemCode)
-                    planItem = itemCode + "_" + itemName;
+                    if (itemName != itemCode)
+                        planItem = itemCode + "_" + itemName;
                     else
                     {
                         planItem = itemName;
@@ -718,13 +740,25 @@ namespace FactoryManagementSoftware.UI
                     {
                         dt = daltrfHist.catSearch(cmbSearchCat.Text);
                     }
-                }   
+                }
             }
 
             dgvTrf.DataSource = null;
 
             if (dt.Rows.Count > 0)
             {
+                dt.Columns.Add(text.Header_ItemDescription, typeof(string)).SetOrdinal(dt.Columns[daltrfHist.TrfItemCode].Ordinal);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemName = row[daltrfHist.TrfItemName].ToString();
+                    string itemCode = row[daltrfHist.TrfItemCode].ToString();
+
+                    string itemDescription = tool.getItemNameAndCodeString(itemCode, itemName);
+                    row[text.Header_ItemDescription] = itemDescription;
+
+                }
+
                 dgvTrf.DataSource = dt;
                 dgvTrfUIEdit(dgvTrf);
                 dgvTrf.ClearSelection();
@@ -760,17 +794,21 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItemUIEdit(DataGridView dgv)
         {
-            dgv.Columns[dalItem.ItemCat].HeaderText = "CATEGORY";
-            dgv.Columns[dalItem.ItemCode].HeaderText = "CODE";
-            dgv.Columns[dalItem.ItemName].HeaderText = "NAME";
-            dgv.Columns[dalItem.ItemOrd].HeaderText = "ORDER PENDING";
-            dgv.Columns[dalItem.ItemStock].HeaderText = "QTY";
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+            dgv.Columns[dalItem.ItemCat].HeaderText = "Category";
+            dgv.Columns[dalItem.ItemCode].HeaderText = "Code";
+            dgv.Columns[dalItem.ItemName].HeaderText = "Name";
+            dgv.Columns[dalItem.ItemOrd].HeaderText = "Order Pending";
+            dgv.Columns[dalItem.ItemStock].HeaderText = "Stock";
 
             dgv.Columns[dalItem.ItemCat].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalItem.ItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[dalItem.ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
             dgv.Columns[dalItem.ItemOrd].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[dalItem.ItemStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[dalItem.ItemOrd].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[dalItem.ItemStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
             dgv.Columns[dalItem.ItemStock].DefaultCellStyle.Format = "0.##";
             dgv.Columns[dalItem.ItemOrd].DefaultCellStyle.Format = "0.##";
@@ -778,9 +816,9 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTrfUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
 
             dgv.Columns[daltrfHist.TrfID].HeaderText = "ID";
@@ -796,26 +834,48 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[daltrfHist.TrfAddedBy].HeaderText = "By";
             dgv.Columns[daltrfHist.TrfResult].HeaderText = "Result";
 
-            
+            dgv.Columns[daltrfHist.TrfID].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+            dgv.Columns[daltrfHist.TrfAddedDate].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+
+            dgv.Columns[daltrfHist.TrfUnit].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+            dgv.Columns[daltrfHist.TrfNote].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.Columns[daltrfHist.TrfNote].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+
             dgv.Columns[daltrfHist.TrfID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfAddedDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //dgv.Columns[daltrfHist.TrfItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
             dgv.Columns[daltrfHist.TrfFrom].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
             dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            //dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
 
+            //dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+            dgv.Columns[daltrfHist.TrfNote].MinimumWidth = 200;
+            dgv.Columns[daltrfHist.TrfQty].MinimumWidth = 80;
+            dgv.Columns[daltrfHist.TrfFrom].MinimumWidth = 100;
+            dgv.Columns[daltrfHist.TrfTo].MinimumWidth = 100;
+            dgv.Columns[daltrfHist.TrfDate].MinimumWidth = 100;
+            dgv.Columns[daltrfHist.TrfItemCode].Width = 0;
+            dgv.Columns[daltrfHist.TrfItemName].Width = 0;
+            dgv.Columns[daltrfHist.TrfResult].Width = 0;
             dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Format = "0.##";
+
             dgv.Columns[daltrfHist.TrfAddedBy].Visible = false;
+            //dgv.Columns[daltrfHist.TrfItemCode].Visible = false;
+            //dgv.Columns[daltrfHist.TrfItemName].Visible = false;
+            //dgv.Columns[daltrfHist.TrfResult].Visible = false;
             //dgv.Columns[daltrfHist.TrfResult].Visible = false;
 
             //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
-            
+
         }
         #endregion
 
@@ -871,7 +931,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dtFac = dalFac.nameSearch(factoryName);
 
-            if(dtFac.Rows.Count > 0)
+            if (dtFac.Rows.Count > 0)
             {
                 result = true;
             }
@@ -904,11 +964,11 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dtJoin = dalJoin.loadChildList(itemCode);
 
-            if(tool.getItemCat(itemCode) == text.Cat_Part)
+            if (tool.getItemCat(itemCode) == text.Cat_Part)
             {
                 if (dtJoin.Rows.Count > 0)
                 {
-                    foreach(DataRow row in dtJoin.Rows)
+                    foreach (DataRow row in dtJoin.Rows)
                     {
                         string ChildCode = row[dalJoin.JoinChild].ToString();
 
@@ -922,7 +982,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
             }
-           
+
 
             return false;
         }
@@ -956,19 +1016,23 @@ namespace FactoryManagementSoftware.UI
                     ActiveControl = label1;
                     Cursor = Cursors.Arrow; // change cursor to normal type
                 }
-                
+
             }
         }
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            timer1.Stop();
-            timer1.Start();
+            if (formLoaded)
+            {
+                timer1.Stop();
+                timer1.Start();
+            }
+
 
             //if (!string.IsNullOrEmpty(txtSearch.Text))
             //{
             //    Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                
+
             //    btn.Visible = true;
             //    loadItemList();
             //    loadTransferList();
@@ -978,7 +1042,7 @@ namespace FactoryManagementSoftware.UI
             //{
             //    btn.Visible = false;
             //}
-          
+
         }
 
 
@@ -996,7 +1060,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_SelectionChanged(object sender, EventArgs e)
         {
-           
+
             if (formLoaded && dgvItem.SelectedRows.Count > 0)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -1004,7 +1068,7 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex;
                 if (dgv.CurrentCell != null)
                 {
-                   rowIndex = dgv.CurrentCell.RowIndex;
+                    rowIndex = dgv.CurrentCell.RowIndex;
                 }
                 else
                 {
@@ -1042,7 +1106,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 Cursor = Cursors.Arrow; // change cursor to normal type 
             }
-           
+
         }
 
         private void dgvTrf_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -1055,7 +1119,7 @@ namespace FactoryManagementSoftware.UI
                 if (dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value != null)
                 {
                     int.TryParse(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString(), out (editingIndexNo));
-                } 
+                }
                 if (editingIndexNo != -1)
                 {
                     DataTable dt = dalChildTrf.indexSearch(editingIndexNo);
@@ -1105,16 +1169,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvItem_MouseClick(object sender, MouseEventArgs e)
         {
-            //var ht = dgvItem.HitTest(e.X, e.Y);
 
-            //if (ht.Type == DataGridViewHitTestType.None)
-            //{
-            //    ////clicked on grey area
-            //    //dgvItem.ClearSelection();              
-            //    //refreshDataList();
-            //    //txtSearch.Clear();
-            //}
-          
+
         }
 
         private void dgvFactoryStock_MouseClick(object sender, MouseEventArgs e)
@@ -1150,8 +1206,8 @@ namespace FactoryManagementSoftware.UI
             DataGridView dgv = dgvItem;
             int Permission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
             int rowIndex = dgv.CurrentCell.RowIndex;
-
-            if (rowIndex >= 0 && Permission >= MainDashboard.ACTION_LVL_TWO)
+            //&& Permission >= MainDashboard.ACTION_LVL_TWO
+            if (rowIndex >= 0 )
             {
                 try
                 {
@@ -1202,7 +1258,7 @@ namespace FactoryManagementSoftware.UI
 
                 refreshDataList();
                 //listPaintAndKeepSelected(dgvItem);
-                
+
             }
             catch (Exception ex)
             {
@@ -1212,13 +1268,13 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
-           
+
         }
-        
+
         //unselect data when click on empty space
         private void frmInOut_MouseClick(object sender, MouseEventArgs e)
         {
-           
+
         }
 
         //reset
@@ -1246,7 +1302,7 @@ namespace FactoryManagementSoftware.UI
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            }  
+            }
         }
 
         //show undo or redo menustrip
@@ -1277,6 +1333,8 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add("Redo").Name = "Redo";
                     }
 
+                    my_menu.Items.Add(text.Jump).Name = text.Jump;
+
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
@@ -1287,7 +1345,7 @@ namespace FactoryManagementSoftware.UI
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            } 
+            }
         }
 
         //undo/redo function
@@ -1300,46 +1358,74 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = dgvTrf.CurrentCell.RowIndex;
                 bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString()));
 
-                if (dgvItem.SelectedRows.Count <= 0)
-                {
-                    editingItemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
-                }
+                fromOrder = false;
 
-                if (!fromOrder)
+                if (e.ClickedItem.Name.ToString().Equals(text.Jump))
                 {
-                    if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
-                    {
-                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                        if (!undo(rowIndex))
-                        {
-                            MessageBox.Show("Failed to undo");
-                        }
-                    }
-                    else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
-                    {
-                        //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
-                        if (!redo(rowIndex))
-                        {
-                            MessageBox.Show("Failed to redo") ;
-                        }
-                    }
+                    string trfID = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString();
+
+                    txtJumpID.Text = trfID;
+
+                    formLoaded = false;
+
+                    txtSearch.Text = "Search";
+                    txtSearch.ForeColor = SystemColors.GrayText;
+
+                    cmbSearchCat.Text = text.Cmb_All;
+
+                    refreshDataList();
+
+                    formLoaded = true;
+
+                    JumpToSelectedTrfIDRow();
                 }
                 else
                 {
-                    MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                    if (dgvItem.SelectedRows.Count <= 0)
+                    {
+                        editingItemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
+                    }
+
+                    if (!fromOrder)
+                    {
+                        if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
+                        {
+                            //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                            if (!undo(rowIndex))
+                            {
+                                MessageBox.Show("Failed to undo");
+                            }
+                        }
+                        else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                        {
+                            //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                            if (!redo(rowIndex))
+                            {
+                                MessageBox.Show("Failed to redo");
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                    }
+
+
+
+                    string itemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
+
+                    loadStockList(itemCode);
+                    calTotalStock(itemCode);
                 }
-               
-                string itemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
-                loadStockList(itemCode);
-                calTotalStock(itemCode);
-               
+
                 //listPaintAndKeepSelected(dgvItem);
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
-            } 
+            }
         }
 
         private void dgvTrf_MouseClick(object sender, MouseEventArgs e)
@@ -1412,9 +1498,9 @@ namespace FactoryManagementSoftware.UI
 
                 string textFind = tool.getBetween(note, "[For Plan ", "]");
                 int planID = -1;
-                if(textFind != "" && int.TryParse(textFind, out planID))
+                if (textFind != "" && int.TryParse(textFind, out planID))
                 {
-                    if(planID != -1)
+                    if (planID != -1)
                     {
                         //update transferred qty
                         DataTable dt_MatPlan = dalMatPlan.Select();
@@ -1443,12 +1529,12 @@ namespace FactoryManagementSoftware.UI
                                 if (match)
                                 {
                                     //get plan id
-                                    
+
                                     float Transferred = float.TryParse(mat[dalMatPlan.Transferred].ToString(), out float l) ? Convert.ToSingle(mat[dalMatPlan.Transferred].ToString()) : 0;
 
                                     uMatPlan.mat_code = itemCode;
                                     uMatPlan.plan_id = planID;
-                                    uMatPlan.mat_transferred = Transferred - qty < 0? 0: Transferred - qty;
+                                    uMatPlan.mat_transferred = Transferred - qty < 0 ? 0 : Transferred - qty;
                                     uMatPlan.mat_preparing = checkingQty;
                                     uMatPlan.mat_from = orgFrom;
                                     uMatPlan.updated_date = DateTime.Now;
@@ -1552,7 +1638,7 @@ namespace FactoryManagementSoftware.UI
 
                                     uMatPlan.mat_code = itemCode;
                                     uMatPlan.plan_id = planID;
-                                    uMatPlan.mat_transferred = Transferred + qty ;
+                                    uMatPlan.mat_transferred = Transferred + qty;
                                     uMatPlan.mat_preparing = checkingQty;
                                     uMatPlan.mat_from = orgFrom;
                                     uMatPlan.updated_date = DateTime.Now;
@@ -1610,8 +1696,8 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 dgvTrf.Rows[rowIndex].Cells["trf_result"].Value = stockResult;
-            } 
-        }  
+            }
+        }
 
         private void deleteChildTransferRecord(int indexNo, string itemCode)
         {
@@ -1730,11 +1816,11 @@ namespace FactoryManagementSoftware.UI
         private void cmbTransHistDate_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (formLoaded)
-            {    
+            {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 DataGridView dgv = dgvItem;
                 int rowIndex;
-                if(dgv.CurrentCell != null)
+                if (dgv.CurrentCell != null)
                 {
                     rowIndex = dgv.CurrentCell.RowIndex;
                 }
@@ -1742,7 +1828,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     rowIndex = -1;
                 }
-                
+
                 if (rowIndex > 0)
                 {
                     editingItemCode = dgv.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgv.Rows[rowIndex].Cells["item_code"].Value.ToString();
@@ -1754,7 +1840,7 @@ namespace FactoryManagementSoftware.UI
                         dgvTotal.DataSource = null;
                     }
                     else
-                    { 
+                    {
                         loadTransferList(editingItemCode);
                     }
                 }
@@ -1765,12 +1851,12 @@ namespace FactoryManagementSoftware.UI
 
                 if (cmbTransHistDate.Text.Equals(All))
                 {
-                    
+
                     lastPastDay = -1;
                 }
-                else if(Convert.ToInt32(cmbTransHistDate.Text) != lastPastDay)
+                else if (Convert.ToInt32(cmbTransHistDate.Text) != lastPastDay)
                 {
-                   
+
                     lastPastDay = Convert.ToInt32(cmbTransHistDate.Text);
                 }
                 ActiveControl = label1;
@@ -1788,10 +1874,10 @@ namespace FactoryManagementSoftware.UI
                 txtSearch.Text = "Search";
                 txtSearch.ForeColor = SystemColors.GrayText;
 
-             
+
 
                 refreshDataList();
-                
+
             }
             catch (Exception ex)
             {
@@ -1802,10 +1888,10 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
         }
-   
+
         private void frmInOut_Shown(object sender, EventArgs e)
         {
-            
+
             dgvItem.ClearSelection();
             dgvTrf.ClearSelection();
             formLoaded = true;
@@ -1831,29 +1917,29 @@ namespace FactoryManagementSoftware.UI
             {
                 itemCode = dgv.Rows[row].Cells[daltrfHist.TrfItemCode].Value.ToString();
 
-                if (tool.ifGotChild(itemCode,dtJoin))
+                if (tool.ifGotChild(itemCode, dtJoin))
                 {
                     if (dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[text.Header_ItemDescription].Style = new DataGridViewCellStyle { ForeColor = Color.Purple, Font = new Font(dgv.Font, FontStyle.Underline) };
 
                     }
                     else if (!dalItem.checkIfAssembly(itemCode) && dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[text.Header_ItemDescription].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
 
                     }
                     else
                     {
                         //dgv.Rows[n].Cells[daltrfHist.TrfItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
-                        dgv.Rows[row].Cells[daltrfHist.TrfItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[text.Header_ItemDescription].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
                     if (itemCode.Substring(0, 3) == text.Inspection_Pass)
                     {
-                        dgv.Rows[row].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
+                        dgv.Rows[row].Cells[text.Header_ItemDescription].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
                 }
             }
@@ -1864,7 +1950,10 @@ namespace FactoryManagementSoftware.UI
                     if (dgv.Rows[row].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Undo"))
                     {
                         dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Red;
-                        dgv.Rows[row].DefaultCellStyle.Font = new Font(Font, FontStyle.Strikeout);
+
+                        dgv.Rows[row].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Strikeout);
+                        dgv.Rows[row].Cells[text.Header_ItemDescription].Style = new DataGridViewCellStyle { ForeColor = Color.Red, Font = new Font("Segoe UI", 7F, FontStyle.Strikeout) };
+
                     }
                     else if (dgv.Rows[row].Cells[daltrfHist.TrfResult].Value.ToString().Equals("Failed"))
                     {
@@ -1873,13 +1962,13 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Black;
-                        dgv.Rows[row].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
+                        //dgv.Rows[row].DefaultCellStyle.ForeColor = Color.Black;
+                        //dgv.Rows[row].DefaultCellStyle.Font = new Font(Font, FontStyle.Regular);
 
                         string from = dgv.Rows[row].Cells[daltrfHist.TrfFrom].Value.ToString();
                         string to = dgv.Rows[row].Cells[daltrfHist.TrfTo].Value.ToString();
 
-                        if(CheckIfTrfOutToCustomer(from, to))
+                        if (CheckIfTrfOutToCustomer(from, to))
                         {
                             dgv.Rows[row].Cells[daltrfHist.TrfQty].Style.BackColor = Color.FromArgb(255, 118, 117);
                         }
@@ -1947,13 +2036,13 @@ namespace FactoryManagementSoftware.UI
                         //dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Green, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
-                    else if(dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
+                    else if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))
                     {
                         //dgv.Rows[n].Cells[dalItem.ItemCode].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                         dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Blue, Font = new Font(dgv.Font, FontStyle.Underline) };
                     }
 
-                    if(itemCode.Length > 3)
+                    if (itemCode.Length > 3)
                     {
                         string test = itemCode.Substring(0, 3);
                         if (itemCode.Substring(0, 3) == text.Inspection_Pass)
@@ -1961,7 +2050,7 @@ namespace FactoryManagementSoftware.UI
                             dgv.Rows[n].Cells[dalItem.ItemName].Style = new DataGridViewCellStyle { ForeColor = Color.Peru, Font = new Font(dgv.Font, FontStyle.Underline) };
                         }
                     }
-                    
+
                 }
             }
 
@@ -1989,7 +2078,7 @@ namespace FactoryManagementSoftware.UI
 
         private void MyButtonHandler(object sender, EventArgs e)
         {
-           
+
 
             try
             {
@@ -2014,8 +2103,8 @@ namespace FactoryManagementSoftware.UI
         {
             btn.Visible = false;
             btn.Click += new EventHandler(MyButtonHandler);
-            btn.Size = new Size(txtSearch.ClientSize.Height-10, txtSearch.ClientSize.Height-10);
-            btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height)/2);
+            btn.Size = new Size(txtSearch.ClientSize.Height - 10, txtSearch.ClientSize.Height - 10);
+            btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height) / 2);
             btn.Cursor = Cursors.Default;
             btn.BackgroundImage = Properties.Resources.icons8_delete_filled_500;
             btn.BackgroundImageLayout = ImageLayout.Stretch;
@@ -2104,7 +2193,7 @@ namespace FactoryManagementSoftware.UI
             timer1.Stop();
             formLoaded = false;
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-            if (string.IsNullOrEmpty(txtSearch.Text)  || txtSearch.Text == "Search")
+            if (string.IsNullOrEmpty(txtSearch.Text) || txtSearch.Text == "Search")
             {
                 btn.Visible = false;
             }
@@ -2150,6 +2239,8 @@ namespace FactoryManagementSoftware.UI
 
         private void JumpToSelectedTrfIDRow()
         {
+
+
             int searchingID = int.TryParse(txtJumpID.Text, out searchingID) ? searchingID : -1;
 
             if (searchingID > 0)
@@ -2183,9 +2274,7 @@ namespace FactoryManagementSoftware.UI
 
         private void button2_Click(object sender, EventArgs e)
         {
-
             JumpToSelectedTrfIDRow();
-
         }
 
         private void txtJumpID_KeyUp(object sender, KeyEventArgs e)
@@ -2264,7 +2353,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool result = false;
             uItem.item_code = itemCode;
-            uItem.item_name = "("+text.Terminated.ToUpper()+")"+itemName;
+            uItem.item_name = "(" + text.Terminated.ToUpper() + ")" + itemName;
 
             uItem.item_updtd_date = DateTime.Now;
             uItem.item_updtd_by = MainDashboard.USER_ID;
@@ -2318,7 +2407,7 @@ namespace FactoryManagementSoftware.UI
                 DataGridView dgv = dgvItem;
 
                 int rowIndex = dgvItem.CurrentCell.RowIndex;
-                
+
                 string itemCode = dgv.Rows[rowIndex].Cells[dalItem.ItemCode].Value.ToString();
                 string itemName = dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value.ToString();
 
@@ -2328,7 +2417,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (clickedItem.Equals(text.Terminated))
                     {
-                        if(ItemTermination(itemCode, itemName))
+                        if (ItemTermination(itemCode, itemName))
                         {
                             dgv.Rows[rowIndex].Cells[dalItem.ItemName].Value = "(" + text.Terminated.ToUpper() + ")" + itemName;
                         }
@@ -2363,7 +2452,7 @@ namespace FactoryManagementSoftware.UI
 
         private void cbPlanDetail_CheckedChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         private void button3_Click(object sender, EventArgs e)

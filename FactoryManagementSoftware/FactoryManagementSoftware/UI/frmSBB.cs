@@ -557,10 +557,14 @@ namespace FactoryManagementSoftware.UI
             {
                 string itemCode = row[header_ItemCode].ToString();
 
+                if(itemCode == "(OK) CFEE 90")
+                {
+                    var checkpoint = 1;
+                }
                 
                 string parentCode = itemCode;
 
-                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9")
                 {
                     parentCode = GetChildCode(dt_JoinSelectWithChildCat, row[header_ItemCode].ToString());
                 }

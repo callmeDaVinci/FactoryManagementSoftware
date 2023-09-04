@@ -44,7 +44,7 @@ namespace FactoryManagementSoftware.UI
         joinBLL uJoin = new joinBLL();
 
         itemCustDAL dalItemCust = new itemCustDAL();
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         userDAL dalUser = new userDAL();
 
@@ -464,7 +464,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Join = dalJoin.SelectAll();
             DataTable dt_Item_Cust = dalItemCust.SelectAll();
-            DataTable dt_Cust = dalCust.Select();
+            DataTable dt_Cust = dalCust.CustIdNameSelect();
 
             string custName = cmbCust.Text;
             string custID = "-1";

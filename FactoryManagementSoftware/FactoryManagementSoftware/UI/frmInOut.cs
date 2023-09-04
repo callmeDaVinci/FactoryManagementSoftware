@@ -21,7 +21,7 @@ namespace FactoryManagementSoftware.UI
             {
                 InitializeComponent();
                 dt_Fac = dalFac.SelectDESC();
-                dt_Cust = dalCust.FullSelect();
+                dt_Cust = dalCust.CustSelectAll();
                 addDataToTrfHistDateCMB();
                 userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
@@ -81,7 +81,7 @@ namespace FactoryManagementSoftware.UI
         itemDAL dalItem = new itemDAL();
         itemBLL uItem = new itemBLL();
 
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         itemCatDAL dalItemCat = new itemCatDAL();
 
@@ -253,7 +253,7 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                 dt_Fac = dalFac.SelectDESC();
-                dt_Cust = dalCust.FullSelect();
+                dt_Cust = dalCust.CustSelectAll();
                 dtJoin = dalJoin.SelectwithChildInfo();
                 loadItemCategoryData();
                 itemListLoaded = false;

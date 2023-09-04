@@ -11,6 +11,8 @@ namespace FactoryManagementSoftware.UI
     {
         private string Unit;
         private int orderID;
+        private string DO_NUMBER = "";
+        private string LOT_NUMBER = "";
         private float maxReceiveQty;
         private string orderQty;
         private string receivedQty;
@@ -18,13 +20,15 @@ namespace FactoryManagementSoftware.UI
         private float overReceivedQty = 0;
         private string orderType ="";
         private bool actionEdit = false;
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         userDAL dalUser = new userDAL();
         Tool tool = new Tool();
 
         public frmOrderReceive(int id, string code,string name, float qty,float received, string unit, string type)
         {
             InitializeComponent();
+
+            FULLY_RECEIVED = false;
             orderType = type;
             txtItemCode.Text = code;
             txtItemName.Text = name;
@@ -36,10 +40,12 @@ namespace FactoryManagementSoftware.UI
             Unit = unit;
             orderID = id;
         }
-
-        public frmOrderReceive(int id, string code, string name, float orderedqty, float returnqty, float received, string unit)
+       
+        public frmOrderReceive(int id, string code, string name, float orderedqty, float returnqty, float received, string unit, string note)
         {
             InitializeComponent();
+            FULLY_RECEIVED = false;
+
             txtItemCode.Text = code;
             txtItemName.Text = name;
             txtUnit.Text = unit;
@@ -51,6 +57,9 @@ namespace FactoryManagementSoftware.UI
             Unit = unit;
             orderID = id;
             actionEdit = true;
+
+            txtDONumber.Text = ExtractDONumberOrLotNo(note, "D/O");
+            txtLotNO.Text = ExtractDONumberOrLotNo(note, "Lot No");
         }
 
         #region class object declare
@@ -94,7 +103,7 @@ namespace FactoryManagementSoftware.UI
 
             if(orderType.Equals("ZERO COST"))
             {
-                cmbFrom.Text = "Customer";
+                cmbFrom.Text = "Supplier";
                 cmbSubFrom.Text = "PMMA";
             }
             else
@@ -162,18 +171,35 @@ namespace FactoryManagementSoftware.UI
 
             return result;
         }
+        string ExtractDONumberOrLotNo(string note, string key)
+        {
+            // Split the note by semicolon
+            string[] entries = note.Split(';');
 
+            // Loop through each entry to find the key
+            foreach (string entry in entries)
+            {
+                if (entry.Contains(key))
+                {
+                    // Extract the value after the key and colon
+                    return entry.Split(new[] { ": " }, StringSplitOptions.None)[1].Trim();
+                }
+            }
+            return null; // Return null if the key is not found
+        }
+
+        static public bool FULLY_RECEIVED = false;
         private bool ifFullyReceived()
         {
-            bool result = false;
             float receivedNumber = Convert.ToSingle(txtQty.Text);
 
             if (receivedNumber >= maxReceiveQty)
             {
-                result = true;
+                FULLY_RECEIVED = true;
+                return true;
             }
 
-            return result;
+            return false;
         }
 
         private string getFactoryID(string factoryName)
@@ -250,13 +276,30 @@ namespace FactoryManagementSoftware.UI
 
             string locationTo = cmbTo.Text;
 
+            string note = "";
+            note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] [Order " + orderID + "]";
+
+            string DOAndLotInfo = "";
+
+            if(!string.IsNullOrEmpty(DO_NUMBER))
+            {
+                DOAndLotInfo += " D/O: " + DO_NUMBER + ";";
+            }
+
+            if (!string.IsNullOrEmpty(LOT_NUMBER))
+            {
+                DOAndLotInfo += " Lot No: " + LOT_NUMBER + ";";
+            }
+
+            note += DOAndLotInfo;
+
             utrfHist.trf_hist_item_code = txtItemCode.Text;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
             utrfHist.trf_hist_qty = Convert.ToSingle(txtQty.Text);
             utrfHist.trf_hist_unit = Unit;
             utrfHist.trf_hist_trf_date = Convert.ToDateTime(dtpTrfDate.Text);
-            utrfHist.trf_hist_note = "[" + dalUser.getUsername(MainDashboard.USER_ID) + "] OrderID: " +orderID + " Received";
+            utrfHist.trf_hist_note = note;
             utrfHist.trf_hist_added_date = DateTime.Now;
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
@@ -285,7 +328,7 @@ namespace FactoryManagementSoftware.UI
             uOrd.ord_pending = pending;
             uOrd.ord_received = receivedNumber;
             uOrd.ord_id = orderID;
-
+            
             if (!dalOrd.receivedUpdate(uOrd))
             {
                 MessageBox.Show("Failed to update order record.");
@@ -368,19 +411,27 @@ namespace FactoryManagementSoftware.UI
                 {
                     from = cmbSubFrom.Text;
                 }
+                string note = "";
+                LOT_NUMBER = txtLotNO.Text;
+                
+                DO_NUMBER = txtDONumber.Text;
 
-                string note = txtDONumber.Text;
-
-                if(!string.IsNullOrEmpty(note))
+                if (!string.IsNullOrEmpty(DO_NUMBER))
                 {
-                    note = "D/O: " + note;
+                    note = "D/O: " + DO_NUMBER +";";
                 }
 
-                if (!string.IsNullOrEmpty(txtLotNO.Text))
+                if (!string.IsNullOrEmpty(LOT_NUMBER))
                 {
-                    note = "Lot No: " + txtLotNO.Text;
-                }
+                    if(!string.IsNullOrEmpty(note))
+                    {
+                        note += " ";
+                    }
+                   
 
+                    note += "Lot No: " + LOT_NUMBER + ";";
+                }
+                
                 dalOrderAction.orderReceive(orderID, transferRecord("Passed"),txtQty.Text, from, cmbTo.Text, note);
                 
             }
@@ -447,14 +498,25 @@ namespace FactoryManagementSoftware.UI
             //errorProvider4.Clear();
             if (cmbFrom.Text.Equals("Customer"))
             {
-                DataTable dt = dalCust.FullSelect();
+                DataTable dt = dalCust.CustSelectAll();
                 loadLocationData(dt, cmbSubFrom, "cust_name");
+
+            }
+            else if (cmbFrom.Text.Equals("Supplier"))
+            {
+                DataTable dt = dalCust.SupplierSelectAll();
+                loadLocationData(dt, cmbSubFrom, "supplier_name");
 
             }
             else
             {
                 cmbSubFrom.DataSource = null;
             }
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            cmbSubFrom.SelectedIndex = -1;
         }
     }
 }

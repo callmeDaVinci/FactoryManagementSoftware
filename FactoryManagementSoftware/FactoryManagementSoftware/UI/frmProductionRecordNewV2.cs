@@ -76,8 +76,8 @@ namespace FactoryManagementSoftware.UI
         readonly private string header_Machine = "MAC.";
         readonly private string header_Factory = "FAC.";
         readonly private string header_JobNo = "JOB NO.";
-        readonly private string header_PartName = "NAME";
-        readonly private string header_PartCode = "CODE";
+        readonly private string header_PartName = "ITEM NAME";
+        readonly private string header_PartCode = "ITEM CODE";
         readonly private string header_Status = "STATUS";
         readonly private string header_SheetID = "SHEET ID";
         readonly private string header_ProductionDate = "PRO. DATE";
@@ -89,11 +89,11 @@ namespace FactoryManagementSoftware.UI
         readonly private string header_TotalProduced = "TOTAL PRODUCED";
         readonly private string header_TotalStockIn = "TOTAL STOCK IN";
 
-        readonly static public string header_PackagingCode = "CODE";
-        readonly static public string header_PackagingName = "NAME";
-        readonly static public string header_PackagingQty = "CARTON QTY";
-        readonly static public string header_PackagingMax = "PART QTY PER BOX";
-        readonly static public string header_PackagingStockOut = "STOCK OUT";
+        readonly static public string header_PackagingCode = "ITEM CODE";
+        readonly static public string header_PackagingName = "ITEM NAME";
+        readonly static public string header_PackagingQty = "Container Qty";
+        readonly static public string header_PackagingMax = "Qty / Container";
+        readonly static public string header_PackagingStockOut = "Container Stock Out";
 
         readonly private string text_RemoveRecord = "Remove from this list.";
         readonly private string text_ChangeJobNo = "Change Job To";
@@ -727,7 +727,7 @@ namespace FactoryManagementSoftware.UI
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "P")
+                        if (productionInfo[i].ToString() == "P" || productionInfo[i].ToString() == "J")
                         {
                             startCopy = true;
                         }
@@ -837,7 +837,7 @@ namespace FactoryManagementSoftware.UI
 
                     for (int i = 0; i < productionInfo.Length; i++)
                     {
-                        if (productionInfo[i].ToString() == "P")
+                        if (productionInfo[i].ToString() == "P" || productionInfo[i].ToString() == "J")
                         {
                             startCopy = true;
                         }
@@ -5409,9 +5409,9 @@ namespace FactoryManagementSoftware.UI
                     my_menu.Items.Add(text.Defect_Burn_Mark).Name = text.Defect_Burn_Mark;
                     my_menu.Items.Add(text.Defect_Sink_Mark).Name = text.Defect_Sink_Mark;
                     my_menu.Items.Add(text.Defect_Colour_Out).Name = text.Defect_Colour_Out;
-                    my_menu.Items.Add(text.Defect_Hardness).Name = text.Defect_Hardness;
-                    my_menu.Items.Add(text.Defect_Scratches).Name = text.Defect_Scratches;
                     my_menu.Items.Add(text.Defect_Flow_Mark).Name = text.Defect_Flow_Mark;
+                    my_menu.Items.Add(text.Defect_Scratches).Name = text.Defect_Scratches;
+                    my_menu.Items.Add(text.Defect_Hardness).Name = text.Defect_Hardness;
                     my_menu.Items.Add(text.Defect_Silver_White_Mark).Name = text.Defect_Silver_White_Mark;
 
                     my_menu.Items.Add("15. Other").Name = "15. Other";

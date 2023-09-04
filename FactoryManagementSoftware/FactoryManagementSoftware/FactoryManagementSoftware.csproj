@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>537</ApplicationRevision>
+    <ApplicationRevision>540</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -173,7 +173,7 @@
   <ItemGroup>
     <Compile Include="BLL\CheckChildBLL.cs" />
     <Compile Include="BLL\childTrfHistBLL.cs" />
-    <Compile Include="BLL\custBLL.cs" />
+    <Compile Include="BLL\custSupplierBLL.cs" />
     <Compile Include="BLL\dataTrfBLL.cs" />
     <Compile Include="BLL\facBLL.cs" />
     <Compile Include="BLL\forecastBLL.cs" />
@@ -205,7 +205,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DAL\childTrfHistDAL.cs" />
-    <Compile Include="DAL\custDAL.cs" />
+    <Compile Include="DAL\custSupplierDAL.cs" />
     <Compile Include="DAL\dataDAL.cs" />
     <Compile Include="DAL\facDAL.cs" />
     <Compile Include="DAL\forecastDAL.cs" />
@@ -244,6 +244,18 @@
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSupplier.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSupplier.Designer.cs">
+      <DependentUpon>frmSupplier.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmInOutVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInOutVer2.Designer.cs">
+      <DependentUpon>frmInOutVer2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSBBBodyCalculation.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -279,12 +291,6 @@
     </Compile>
     <Compile Include="UI\frmMacScheduleExcelDownload.Designer.cs">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\frmInOut_NEW.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\frmInOut_NEW.Designer.cs">
-      <DependentUpon>frmInOut_NEW.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmItemMasterList.cs">
       <SubType>Form</SubType>
@@ -1105,6 +1111,13 @@
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSupplier.resx">
+      <DependentUpon>frmSupplier.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmInOutVer2.resx">
+      <DependentUpon>frmInOutVer2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBBodyCalculation.resx">
       <DependentUpon>frmSBBBodyCalculation.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -1123,9 +1136,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmMacScheduleExcelDownload.resx">
       <DependentUpon>frmMacScheduleExcelDownload.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmInOut_NEW.resx">
-      <DependentUpon>frmInOut_NEW.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmItemMasterList.resx">
       <DependentUpon>frmItemMasterList.cs</DependentUpon>

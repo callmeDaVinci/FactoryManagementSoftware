@@ -299,6 +299,8 @@ namespace FactoryManagementSoftware.UI
             float orderQty = 0;
             float receivedQty = 0;
             int trfId = -1;
+            string note = "";
+
             //string trfDate = "";
 
             DataTable dt = dalOrderAction.SelectByActionID(actionID);
@@ -314,6 +316,8 @@ namespace FactoryManagementSoftware.UI
                         returnQty = Convert.ToSingle(action["action_detail"]);
                     }
                     trfId = action["trf_id"] == DBNull.Value ? 0 : Convert.ToInt32(action["trf_id"]);
+
+                    note = action["note"].ToString();
                 }
             }
 
@@ -331,17 +335,119 @@ namespace FactoryManagementSoftware.UI
                 }
             }
             //call receive form
-            frmOrderReceive frm = new frmOrderReceive(orderID, itemCode, itemName, orderQty, returnQty, receivedQty, unit);
+            frmOrderReceive frm = new frmOrderReceive(orderID, itemCode, itemName, orderQty, returnQty, receivedQty, unit, note);
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();//stock in
 
             if(editSuccess)
             {
                 editSuccess = false;
-                actionUndo(actionID, orderID);
+                actionUndo(actionID, orderID,frmOrderReceive.FULLY_RECEIVED);
             }
         }
 
+        private void actionUndo(int actionID, int orderID, bool fully_Received)
+        {
+            //stock out,deactivate
+            //reload list
+            bool success = false;
+            string to = "", from = "";
+            string itemCode = "";
+            string unit = "";
+            float returnQty = 0;
+            float orderQty = 0;
+            float receivedQty = 0;
+            int trfId = 0;
+
+            DataTable dt = dalOrderAction.SelectByActionID(actionID);
+
+            if (dt.Rows.Count > 0)
+            {
+                foreach (DataRow action in dt.Rows)
+                {
+                    to = action["action_to"].ToString();
+                    from = action["action_from"].ToString();
+
+                    if (float.TryParse(action["action_detail"].ToString(), out returnQty))
+                    {
+                        returnQty = Convert.ToSingle(action["action_detail"]);
+                    }
+
+                    trfId = action["trf_id"] == DBNull.Value ? 0 : Convert.ToInt32(action["trf_id"]);
+                }
+            }
+
+            DataTable dtOrder = dalOrder.Select(orderID);
+
+            if (dtOrder.Rows.Count > 0)
+            {
+                foreach (DataRow order in dtOrder.Rows)
+                {
+                    itemCode = order["ord_item_code"].ToString();
+                    unit = order["ord_unit"].ToString();
+                    orderQty = Convert.ToSingle(order["ord_qty"]);
+                    receivedQty = Convert.ToSingle(order["ord_received"]);
+                }
+            }
+
+            uStock.stock_item_code = itemCode;
+            uStock.stock_fac_id = Convert.ToInt32(getFactoryID(to));
+            uStock.stock_qty = getQty(itemCode, to) - returnQty;
+            uStock.stock_unit = unit;
+            uStock.stock_updtd_date = DateTime.Now;
+            uStock.stock_updtd_by = 0;
+
+            if (IfExists(itemCode, to))
+            {
+                success = dalStock.Update(uStock);
+            }
+            else
+            {
+                success = dalStock.Insert(uStock);
+            }
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to updated stock");
+            }
+            else
+            {
+                if (from.Equals(tool.getCustName(1)))
+                {
+                    uItem.item_code = itemCode;
+                    uItem.item_last_pmma_qty = dalItem.getLastPMMAQty(itemCode);
+                    uItem.item_pmma_qty = dalItem.getPMMAQty(itemCode) - returnQty;
+                    uItem.item_updtd_date = uStock.stock_updtd_date;
+                    uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                    bool itemPMMMAQtyUpdateSuccess = dalItem.UpdatePMMAQty(uItem);
+
+                    if (!itemPMMMAQtyUpdateSuccess)
+                    {
+                        MessageBox.Show("Failed to updated item pmma qty(@item dal)");
+                    }
+
+                }
+
+                frmOrder.receivedReturn = true;
+                dalItem.orderAdd(itemCode, returnQty.ToString());//add order qty to item
+
+                if (!fully_Received)
+                {
+                    uOrder.ord_id = orderID;
+                    uOrder.ord_status = "PENDING";
+                    dalOrder.statusUpdate(uOrder);
+                }
+
+                orderRecordUpdate(orderID, orderQty, receivedQty - returnQty);
+                dalOrderAction.deactivate(actionID);
+
+                //transferRecord("Passed", itemCode, to, returnQty.ToString(), unit);
+                tool.changeTransferRecord("Undo", trfId);
+
+                loadActionHistory(orderID);
+            }
+        }
         private void actionUndo(int actionID, int orderID)
         {
             //stock out,deactivate
@@ -427,9 +533,11 @@ namespace FactoryManagementSoftware.UI
 
                 frmOrder.receivedReturn = true;
                 dalItem.orderAdd(itemCode, returnQty.ToString());//add order qty to item
+
                 uOrder.ord_id = orderID;
                 uOrder.ord_status = "PENDING";
                 dalOrder.statusUpdate(uOrder);
+
                 orderRecordUpdate(orderID, orderQty, receivedQty - returnQty);
                 dalOrderAction.deactivate(actionID);
 

@@ -92,8 +92,8 @@ namespace FactoryManagementSoftware.UI
         itemForecastDAL dalItemForecast = new itemForecastDAL();
         itemForecastBLL uItemForecast = new itemForecastBLL();
 
-        custBLL uCust = new custBLL();
-        custDAL dalCust = new custDAL();
+        custSupplierBLL uCust = new custSupplierBLL();
+        custSupplierDAL dalCust = new custSupplierDAL();
 
         orderActionBLL uOrderAction = new orderActionBLL();
         orderActionDAL dalOrderAction = new orderActionDAL();

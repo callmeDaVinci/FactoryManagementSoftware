@@ -24,7 +24,7 @@ namespace FactoryManagementSoftware.Module
     {
         #region Variable
 
-        custDAL dalCust = new custDAL();
+        custSupplierDAL dalCust = new custSupplierDAL();
         facDAL dalFac = new facDAL();
         itemCatDAL dalItemCat = new itemCatDAL();
         itemDAL dalItem = new itemDAL();
@@ -2790,7 +2790,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadCustomerToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
             cmb.DataSource = distinctTable;
@@ -2800,7 +2800,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadMainCustomerAndAllToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
 
 
             foreach (DataRow row in dt.Rows)
@@ -2834,7 +2834,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadMainCustomerToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
           
 
             foreach (DataRow row in dt.Rows)
@@ -2862,7 +2862,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadCustomerAndALLWithoutOtherToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
 
             //DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
 
@@ -2903,7 +2903,7 @@ namespace FactoryManagementSoftware.Module
 
         public void loadCustomerWithoutOtherToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
 
@@ -2977,7 +2977,7 @@ namespace FactoryManagementSoftware.Module
 
         public void LoadCustomerAndAllToComboBox(ComboBox cmb)
         {
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.Rows.Add("All");
             distinctTable.DefaultView.Sort = "cust_name ASC";
@@ -2989,7 +2989,7 @@ namespace FactoryManagementSoftware.Module
         public void LoadCustomerAndAllToComboBoxSBB(ComboBox cmb)
         {
             Text text = new Text();
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.Rows.Add("All");
             distinctTable.DefaultView.Sort = "cust_name ASC";
@@ -3009,7 +3009,7 @@ namespace FactoryManagementSoftware.Module
         public void LoadCustomerToComboBoxSBB(ComboBox cmb)
         {
             Text text = new Text();
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
             distinctTable.DefaultView.Sort = "cust_name ASC";
 
@@ -3049,7 +3049,7 @@ namespace FactoryManagementSoftware.Module
         {
             bool result = false;
 
-            DataTable dt = dalCust.FullSelect();
+            DataTable dt = dalCust.CustSelectAll();
            
             foreach(DataRow row in dt.Rows)
             {
@@ -3216,7 +3216,7 @@ namespace FactoryManagementSoftware.Module
         {
             string custName = "";
 
-            DataTable dtCust = dalCust.idSearch(custID.ToString());
+            DataTable dtCust = dalCust.custIDSearch(custID.ToString());
 
             foreach (DataRow Cust in dtCust.Rows)
             {
