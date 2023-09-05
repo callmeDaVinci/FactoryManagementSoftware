@@ -75,6 +75,12 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_Month].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
                 dgv.Columns[text.Header_NewValue].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                if(dgv.Columns.Contains(text.Header_ItemNameAndCode))
+                {
+                    dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                }
             }
 
         }

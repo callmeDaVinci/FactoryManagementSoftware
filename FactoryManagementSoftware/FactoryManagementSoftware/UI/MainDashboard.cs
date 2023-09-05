@@ -556,7 +556,7 @@ namespace FactoryManagementSoftware.UI
                 if (!inOutFormOpen)
                 {
                     frmLoading.ShowLoadingScreen();
-                    frmInOut frm = new frmInOut();
+                    frmInOutVer2 frm = new frmInOutVer2();
                     frm.MdiParent = this;
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.WindowState = FormWindowState.Maximized;
@@ -566,9 +566,9 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    if (Application.OpenForms.OfType<frmInOut>().Count() == 1)
+                    if (Application.OpenForms.OfType<frmInOutVer2>().Count() == 1)
                     {
-                        Application.OpenForms.OfType<frmInOut>().First().BringToFront();
+                        Application.OpenForms.OfType<frmInOutVer2>().First().BringToFront();
                     }
                 }
             }

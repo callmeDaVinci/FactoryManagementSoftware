@@ -536,21 +536,67 @@ namespace FactoryManagementSoftware.UI
             // Accept changes to the original DataTable
             dt.AcceptChanges();
 
-            // Sort the DataTable based on the MacLocationName and MacName
-            dt.DefaultView.Sort = dalMac.MacLocationName+" ASC,"+ dalMac.MacName+" ASC";
+            // Convert DataTable to Enumerable
+            var rows = dt.AsEnumerable();
 
-            // Create a new DataTable based on the sorted DataView
-            DataTable dtSorted = dt.DefaultView.ToTable();
+            // Group by MacLocationName and then sort within each group by MacName
+            var grouped = rows.GroupBy(row => row.Field<string>(dalMac.MacLocationName))
+                              .OrderBy(g => int.TryParse(g.Key, out int loc) ? loc : int.MaxValue);
 
-            // Optionally, you can copy the sorted rows to your 'sortedDt' DataTable if you want to keep using it
-            foreach (DataRow row in dtSorted.Rows)
+            foreach (var group in grouped)
             {
-                DataRow newRow = sortedDt.NewRow();
-                newRow.ItemArray = row.ItemArray;
-                sortedDt.Rows.Add(newRow);
+                var sortedGroup = group.OrderBy(row => int.TryParse(row.Field<string>(dalMac.MacName), out int macName) ? macName : int.MaxValue)
+                                        .ThenBy(row => row.Field<string>(dalMac.MacName), new NaturalStringComparer());
+
+                foreach (var row in sortedGroup)
+                {
+                    DataRow newRow = sortedDt.NewRow();
+                    newRow.ItemArray = row.ItemArray;
+                    sortedDt.Rows.Add(newRow);
+                }
             }
 
             return sortedDt;
+        }
+
+        public class NaturalStringComparer : IComparer<string>
+        {
+            public int Compare(string x, string y)
+            {
+                if (x == null || y == null)
+                {
+                    return 0;
+                }
+
+                // Regex that separates the string into groups of digits and non-digits
+                var xParts = Regex.Split(x, @"(\d+)");
+                var yParts = Regex.Split(y, @"(\d+)");
+
+                for (int i = 0; i < Math.Min(xParts.Length, yParts.Length); i++)
+                {
+                    // If both parts are numeric, compare as integers
+                    if (int.TryParse(xParts[i], out int xInt) && int.TryParse(yParts[i], out int yInt))
+                    {
+                        int numCompare = xInt.CompareTo(yInt);
+                        if (numCompare != 0)
+                        {
+                            return numCompare;
+                        }
+                    }
+                    else // Else compare as strings
+                    {
+                        int stringCompare = string.Compare(xParts[i], yParts[i], StringComparison.Ordinal);
+                        if (stringCompare != 0)
+                        {
+                            return stringCompare;
+                        }
+                    }
+                }
+
+                // If we get here, the common parts of both strings are equal,
+                // so whichever string is longer should be considered "larger."
+                return x.Length.CompareTo(y.Length);
+            }
         }
 
 

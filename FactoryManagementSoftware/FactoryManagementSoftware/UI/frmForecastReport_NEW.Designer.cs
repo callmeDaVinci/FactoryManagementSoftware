@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
+            this.lblForecastHistoryNotification = new System.Windows.Forms.Label();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox8 = new System.Windows.Forms.GroupBox();
@@ -125,7 +126,6 @@
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.lblForecastHistoryNotification = new System.Windows.Forms.Label();
             this.tlpForecastReport.SuspendLayout();
             this.groupBox4.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -176,6 +176,21 @@
             this.tlpForecastReport.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpForecastReport.Size = new System.Drawing.Size(1318, 691);
             this.tlpForecastReport.TabIndex = 164;
+            // 
+            // lblForecastHistoryNotification
+            // 
+            this.lblForecastHistoryNotification.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblForecastHistoryNotification.AutoSize = true;
+            this.lblForecastHistoryNotification.BackColor = System.Drawing.Color.Yellow;
+            this.lblForecastHistoryNotification.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblForecastHistoryNotification.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
+            this.lblForecastHistoryNotification.ForeColor = System.Drawing.Color.Red;
+            this.lblForecastHistoryNotification.Location = new System.Drawing.Point(3, 2);
+            this.lblForecastHistoryNotification.Name = "lblForecastHistoryNotification";
+            this.lblForecastHistoryNotification.Size = new System.Drawing.Size(188, 15);
+            this.lblForecastHistoryNotification.TabIndex = 169;
+            this.lblForecastHistoryNotification.Text = "Forecast and Order Update Record";
+            this.lblForecastHistoryNotification.Click += new System.EventHandler(this.label13_Click);
             // 
             // groupBox4
             // 
@@ -738,14 +753,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 507);
@@ -1592,21 +1607,6 @@
             this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // lblForecastHistoryNotification
-            // 
-            this.lblForecastHistoryNotification.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblForecastHistoryNotification.AutoSize = true;
-            this.lblForecastHistoryNotification.BackColor = System.Drawing.Color.Yellow;
-            this.lblForecastHistoryNotification.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblForecastHistoryNotification.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
-            this.lblForecastHistoryNotification.ForeColor = System.Drawing.Color.Red;
-            this.lblForecastHistoryNotification.Location = new System.Drawing.Point(3, 2);
-            this.lblForecastHistoryNotification.Name = "lblForecastHistoryNotification";
-            this.lblForecastHistoryNotification.Size = new System.Drawing.Size(188, 15);
-            this.lblForecastHistoryNotification.TabIndex = 169;
-            this.lblForecastHistoryNotification.Text = "Forecast and Order Update Record";
-            this.lblForecastHistoryNotification.Click += new System.EventHandler(this.label13_Click);
             // 
             // frmForecastReport_NEW
             // 

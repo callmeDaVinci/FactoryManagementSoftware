@@ -701,7 +701,7 @@ namespace FactoryManagementSoftware.UI
                 if (string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
                 {
                     //show all item from the database
-                    if (!cmbTransHistDate.Text.Equals(All))
+                    if (!cmbTransHistDate.Text.Equals(All) && !string.IsNullOrEmpty(cmbTransHistDate.Text))
                     {
                         dt = daltrfHist.pastAddedSearch(Convert.ToInt32(cmbTransHistDate.Text));
                     }
@@ -780,44 +780,48 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTrfUIEdit(DataGridView dgv)
         {
-            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
+            if(dgv != null)
+            {
+                dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
 
-            dgv.Columns[daltrfHist.TrfID].HeaderText = "ID";
-            dgv.Columns[daltrfHist.TrfAddedDate].HeaderText = "Added_Date";
-            dgv.Columns[daltrfHist.TrfDate].HeaderText = "Trf_Date";
-            dgv.Columns[daltrfHist.TrfItemCode].HeaderText = "Code";
-            dgv.Columns[daltrfHist.TrfItemName].HeaderText = "Name";
-            dgv.Columns[daltrfHist.TrfFrom].HeaderText = "From";
-            dgv.Columns[daltrfHist.TrfTo].HeaderText = "To";
-            dgv.Columns[daltrfHist.TrfQty].HeaderText = "Qty";
-            dgv.Columns[daltrfHist.TrfUnit].HeaderText = "Unit";
-            dgv.Columns[daltrfHist.TrfNote].HeaderText = "Note";
-            dgv.Columns[daltrfHist.TrfAddedBy].HeaderText = "By";
-            dgv.Columns[daltrfHist.TrfResult].HeaderText = "Result";
+                dgv.Columns[daltrfHist.TrfID].HeaderText = "ID";
+                dgv.Columns[daltrfHist.TrfAddedDate].HeaderText = "Added_Date";
+                dgv.Columns[daltrfHist.TrfDate].HeaderText = "Trf_Date";
+                dgv.Columns[daltrfHist.TrfItemCode].HeaderText = "Code";
+                dgv.Columns[daltrfHist.TrfItemName].HeaderText = "Name";
+                dgv.Columns[daltrfHist.TrfFrom].HeaderText = "From";
+                dgv.Columns[daltrfHist.TrfTo].HeaderText = "To";
+                dgv.Columns[daltrfHist.TrfQty].HeaderText = "Qty";
+                dgv.Columns[daltrfHist.TrfUnit].HeaderText = "Unit";
+                dgv.Columns[daltrfHist.TrfNote].HeaderText = "Note";
+                dgv.Columns[daltrfHist.TrfAddedBy].HeaderText = "By";
+                dgv.Columns[daltrfHist.TrfResult].HeaderText = "Result";
 
-            
-            dgv.Columns[daltrfHist.TrfID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfAddedDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dgv.Columns[daltrfHist.TrfFrom].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
-            dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Format = "0.##";
-            dgv.Columns[daltrfHist.TrfAddedBy].Visible = false;
-            //dgv.Columns[daltrfHist.TrfResult].Visible = false;
+                dgv.Columns[daltrfHist.TrfID].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfAddedDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfDate].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfItemCode].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgv.Columns[daltrfHist.TrfFrom].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfQty].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfUnit].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfNote].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfAddedBy].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
+                dgv.Columns[daltrfHist.TrfResult].AutoSizeMode = DataGridViewAutoSizeColumnMode.DisplayedCells;
 
-            //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
-            
+                dgv.Columns[daltrfHist.TrfQty].DefaultCellStyle.Format = "0.##";
+                dgv.Columns[daltrfHist.TrfAddedBy].Visible = false;
+                //dgv.Columns[daltrfHist.TrfResult].Visible = false;
+
+                //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
+            }
+
+
         }
         #endregion
 

@@ -721,7 +721,7 @@ namespace FactoryManagementSoftware.UI
                 if (string.IsNullOrEmpty(cmbSearchCat.Text) || cmbSearchCat.Text.Equals("All"))
                 {
                     //show all item from the database
-                    if (!cmbTransHistDate.Text.Equals(All))
+                    if (!cmbTransHistDate.Text.Equals(All) && !string.IsNullOrEmpty(cmbTransHistDate.Text))
                     {
                         dt = daltrfHist.pastAddedSearch(Convert.ToInt32(cmbTransHistDate.Text));
                     }

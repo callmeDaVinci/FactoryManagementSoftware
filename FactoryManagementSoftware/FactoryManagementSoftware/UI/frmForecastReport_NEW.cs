@@ -8214,6 +8214,7 @@ namespace FactoryManagementSoftware.UI
                     frmLoading.CloseForm();
                     frmForecastEditRecord frm = new frmForecastEditRecord(DT_FOREACST_EDIT_RECORD);
                     frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.Size = new Size(1100, 600);
                     frm.ShowDialog();
 
                     ForecastHistoryCheckedHabitUpdate(latestHistoryID);
