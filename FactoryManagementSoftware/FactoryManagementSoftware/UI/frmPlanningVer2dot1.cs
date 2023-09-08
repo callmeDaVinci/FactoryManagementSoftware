@@ -568,7 +568,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_TargetQty].HeaderCell.Style.BackColor = Color.FromArgb(255, 153, 153);
 
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
 
@@ -622,7 +622,7 @@ namespace FactoryManagementSoftware.UI
                 //dgv.Columns[text.Header_MouldCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
 
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
                 dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
                 dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
@@ -2009,10 +2009,13 @@ namespace FactoryManagementSoftware.UI
 
             LoadSingleMaterialList();
 
+            double pwPerShot = double.TryParse(row[dalItem.ItemProPWShot].ToString(), out double x) ? x : 0;
+            double rwPerShot = double.TryParse(row[dalItem.ItemProRWShot].ToString(), out  x) ? x : 0;
+
             newRow[text.Header_Cavity] = row[dalItem.ItemCavity].ToString();
             newRow[text.Header_ProCT] = row[dalItem.ItemProCTTo].ToString();
-            newRow[text.Header_ProPwShot] = row[dalItem.ItemProPWShot].ToString();
-            newRow[text.Header_ProRwShot] = row[dalItem.ItemProRWShot].ToString();
+            newRow[text.Header_ProPwShot] = pwPerShot.ToString("0.##");
+            newRow[text.Header_ProRwShot] = rwPerShot.ToString("0.##");
 
             newRow[text.Header_TargetQty] = targetQty;
 

@@ -4315,32 +4315,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSBB_Shown(object sender, EventArgs e)
         {
-            ////TempChildStdPackingUpload();
-            //Loaded = false;
-            //SuspendLayout();
-            ////SBBItemUpload();
-
-            //LayoutPanelDisplay(false);
-
-            ////ShowDataSourceUI();
-            //dtpDate1.Value = DateTime.Now;
-
-            //LoadTypeCMB(cmbType);
-            //LoadStockLocationCMB(cmbStockLocation);
-
-            //RefreshPage();
-
-            //Loaded = true;
-
-            //dgvStockAlert.ClearSelection();
-            //dgvUsage.ClearSelection();
-
-            ////var now = DateTime.Now;
-            ////var startOfMonth = new DateTime(now.Year, now.Month, 1);
-            //LayoutPanelDisplay(true);
-
-
-            //ResumeLayout();
+            
 
             dgvStockAlert.ClearSelection();
             dgvUsage.ClearSelection();

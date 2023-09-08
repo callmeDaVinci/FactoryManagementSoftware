@@ -120,11 +120,11 @@ namespace FactoryManagementSoftware.UI
             {
                 int containerBalQty = (int)(balqty * (double.TryParse(txtBodyPcsPerContainer.Text, out i) ? i : 0));
 
-                lblContainerBalQty.Text = balqty + " = " + containerBalQty.ToString() + " pcs";
+                lblMaxBody.Text = balqty + " = " + containerBalQty.ToString() + " pcs";
             }
             else
             {
-                lblContainerBalQty.Text = "-";
+                lblMaxBody.Text = "-";
             }
 
             balqty = (double.TryParse(txtBagQty.Text, out  i) ? i : 0) % 1;
@@ -153,13 +153,21 @@ namespace FactoryManagementSoftware.UI
                 double goodsPerBag = double.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
 
                 double containerQty = double.TryParse(txtContainerQty.Text, out double x) ? x : 0;
+                double bodyPcs = double.TryParse(txtBodyPcs.Text, out x) ? x : 0;
+
+                double totalBodyPcs = bodyPerContainer * containerQty + bodyPcs;
 
                 // bag qty = pcs/ctn x ctn qty / ratio / pcs/bag
-                double bagQty = bodyPerContainer * containerQty / BODY_QTY_PER_GOODS / goodsPerBag;
+                double bagQty = totalBodyPcs / BODY_QTY_PER_GOODS / goodsPerBag;
 
-                txtBagQty.Text = bagQty.ToString("0.##");
+                double goodsPcs = totalBodyPcs / BODY_QTY_PER_GOODS;
 
-                balQtyUpdate();
+                double balGoodsQty = goodsPcs - (int)bagQty* goodsPerBag;
+
+                txtBagQty.Text = bagQty.ToString("0");
+                txtGoodsPcs.Text = balGoodsQty.ToString("0");
+
+                //balQtyUpdate();
 
 
                 DATA_UPDATING = false;
@@ -179,11 +187,18 @@ namespace FactoryManagementSoftware.UI
                 double goodsPerBag = double.TryParse(txtGoodsPcsPerBag.Text, out i) ? i : 0;
 
                 double bagQty = double.TryParse(txtBagQty.Text, out i) ? i : 0;
+                double goodsPCs = double.TryParse(txtGoodsPcs.Text, out i) ? i : 0;
+
+                double totalGoodsQty = bagQty * goodsPerBag + goodsPCs;
 
                 // ctn qty = bag qty x ratio x pcs/bag / pcs/ctn
-                double containerQty = bagQty * BODY_QTY_PER_GOODS * goodsPerBag / bodyPerContainer;
+                double containerQty = totalGoodsQty * BODY_QTY_PER_GOODS / bodyPerContainer;
+                double bodyPcs = totalGoodsQty * BODY_QTY_PER_GOODS;
 
-                txtContainerQty.Text = containerQty.ToString("0.##");
+                double balBodyQty = bodyPcs - (int)containerQty * bodyPerContainer;
+
+                txtContainerQty.Text = containerQty.ToString("0");
+                txtBodyPcs.Text = balBodyQty.ToString("0");
 
                 double balqty = containerQty % 1;
 
@@ -193,14 +208,14 @@ namespace FactoryManagementSoftware.UI
                 {
                     int containerBalQty = (int)(balqty * (double.TryParse(txtBodyPcsPerContainer.Text, out  i) ? i : 0));
 
-                    lblContainerBalQty.Text = balqty + " = " +containerBalQty.ToString() + " pcs";
+                    lblMaxBody.Text = balqty + " = " +containerBalQty.ToString() + " pcs";
                 }
                 else
                 {
-                    lblContainerBalQty.Text = "-";
+                    lblMaxBody.Text = "-";
                 }
 
-                balQtyUpdate();
+                //balQtyUpdate();
 
 
                 DATA_UPDATING = false;
@@ -318,6 +333,41 @@ namespace FactoryManagementSoftware.UI
             {
                 e.Handled = true;
             }
+        }
+
+        private void txtBodyPcs_TextChanged(object sender, EventArgs e)
+        {
+            ContainerToBagConvert();
+        }
+
+        private void txtGoodsPcs_TextChanged(object sender, EventArgs e)
+        {
+            BagToContainerConvert();
+
+        }
+
+        private void lblMaxBody_Click(object sender, EventArgs e)
+        {
+            DATA_UPDATING = true;
+
+            double bodyPerContainer = double.TryParse(txtBodyPcsPerContainer.Text, out double i) ? i : 0;
+            double bodyStock = double.TryParse(txtBodyStockPcsQty.Text, out i) ? i : 0;
+
+            int ContainerQty = (int) (bodyStock / bodyPerContainer);
+
+            int balBodyPcs = (int)bodyStock - ContainerQty * (int)bodyPerContainer;
+
+            txtContainerQty.Text = ContainerQty.ToString("0");
+
+            txtBodyPcs.Text = balBodyPcs.ToString("0");
+            DATA_UPDATING = false;
+            ContainerToBagConvert();
+
+        }
+
+        private void lblBagBalQty_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

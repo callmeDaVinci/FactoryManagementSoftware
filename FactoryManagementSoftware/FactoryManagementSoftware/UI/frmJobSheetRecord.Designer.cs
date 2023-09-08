@@ -996,7 +996,6 @@
             this.txtNote.Name = "txtNote";
             this.txtNote.Size = new System.Drawing.Size(511, 157);
             this.txtNote.TabIndex = 14;
-            this.txtNote.Text = "dsds";
             this.txtNote.TextChanged += new System.EventHandler(this.txtNote_TextChanged);
             // 
             // tableLayoutPanel10

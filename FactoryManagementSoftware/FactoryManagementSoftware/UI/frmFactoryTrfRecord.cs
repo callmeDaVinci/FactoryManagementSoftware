@@ -44,8 +44,8 @@ namespace FactoryManagementSoftware.UI
 
         private void loadTransferList()
         {
-            string itemCode = frmInOut.editingItemCode;
-            string facName = frmInOut.editingFacName;
+            string itemCode = frmInOutVer2.editingItemCode;
+            string facName = frmInOutVer2.editingFacName;
             DataTable dt = daltrfHist.facSearch(itemCode,facName);
 
             dgvTrf.Rows.Clear();

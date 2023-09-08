@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvCarton = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddItem = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnSaveAndClose = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.label3 = new System.Windows.Forms.Label();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
@@ -41,8 +43,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSaveAndClose = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnAddItem = new Guna.UI.WinForms.GunaGradientButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvCarton)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
@@ -57,34 +57,35 @@
             this.dgvCarton.AllowUserToOrderColumns = true;
             this.dgvCarton.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvCarton.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvCarton.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvCarton.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvCarton.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCarton.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCarton.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCarton.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvCarton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCarton.GridColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvCarton.Location = new System.Drawing.Point(3, 73);
+            this.dgvCarton.Location = new System.Drawing.Point(0, 70);
+            this.dgvCarton.Margin = new System.Windows.Forms.Padding(0);
             this.dgvCarton.MultiSelect = false;
             this.dgvCarton.Name = "dgvCarton";
             this.dgvCarton.RowHeadersVisible = false;
             this.dgvCarton.RowHeadersWidth = 51;
             this.dgvCarton.RowTemplate.Height = 50;
             this.dgvCarton.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvCarton.Size = new System.Drawing.Size(919, 272);
+            this.dgvCarton.Size = new System.Drawing.Size(925, 278);
             this.dgvCarton.TabIndex = 255;
             this.dgvCarton.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvCarton_CellClick);
             this.dgvCarton.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvCarton_CellMouseDown);
@@ -109,6 +110,72 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(925, 60);
             this.tableLayoutPanel1.TabIndex = 262;
+            // 
+            // btnAddItem
+            // 
+            this.btnAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddItem.AnimationHoverSpeed = 0.07F;
+            this.btnAddItem.AnimationSpeed = 0.03F;
+            this.btnAddItem.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddItem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddItem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddItem.BorderColor = System.Drawing.Color.Black;
+            this.btnAddItem.BorderSize = 1;
+            this.btnAddItem.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAddItem.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnAddItem.ForeColor = System.Drawing.Color.Black;
+            this.btnAddItem.Image = null;
+            this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnAddItem.Location = new System.Drawing.Point(615, 20);
+            this.btnAddItem.Margin = new System.Windows.Forms.Padding(0);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAddItem.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAddItem.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAddItem.OnHoverImage = null;
+            this.btnAddItem.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAddItem.Radius = 2;
+            this.btnAddItem.Size = new System.Drawing.Size(150, 40);
+            this.btnAddItem.TabIndex = 266;
+            this.btnAddItem.Text = "Add To List";
+            this.btnAddItem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            // 
+            // btnSaveAndClose
+            // 
+            this.btnSaveAndClose.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSaveAndClose.AnimationHoverSpeed = 0.07F;
+            this.btnSaveAndClose.AnimationSpeed = 0.03F;
+            this.btnSaveAndClose.BackColor = System.Drawing.Color.Transparent;
+            this.btnSaveAndClose.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnSaveAndClose.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnSaveAndClose.BorderColor = System.Drawing.Color.Black;
+            this.btnSaveAndClose.BorderSize = 1;
+            this.btnSaveAndClose.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnSaveAndClose.FocusedColor = System.Drawing.Color.Empty;
+            this.btnSaveAndClose.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnSaveAndClose.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnSaveAndClose.Image = null;
+            this.btnSaveAndClose.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnSaveAndClose.Location = new System.Drawing.Point(775, 20);
+            this.btnSaveAndClose.Margin = new System.Windows.Forms.Padding(0);
+            this.btnSaveAndClose.Name = "btnSaveAndClose";
+            this.btnSaveAndClose.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnSaveAndClose.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnSaveAndClose.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnSaveAndClose.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnSaveAndClose.OnHoverImage = null;
+            this.btnSaveAndClose.OnPressedColor = System.Drawing.Color.Black;
+            this.btnSaveAndClose.Radius = 2;
+            this.btnSaveAndClose.Size = new System.Drawing.Size(150, 40);
+            this.btnSaveAndClose.TabIndex = 266;
+            this.btnSaveAndClose.Text = "Save";
+            this.btnSaveAndClose.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnSaveAndClose.Click += new System.EventHandler(this.button1_Click);
             // 
             // tableLayoutPanel2
             // 
@@ -228,72 +295,6 @@
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(985, 408);
             this.tableLayoutPanel4.TabIndex = 265;
-            // 
-            // btnSaveAndClose
-            // 
-            this.btnSaveAndClose.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSaveAndClose.AnimationHoverSpeed = 0.07F;
-            this.btnSaveAndClose.AnimationSpeed = 0.03F;
-            this.btnSaveAndClose.BackColor = System.Drawing.Color.Transparent;
-            this.btnSaveAndClose.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnSaveAndClose.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnSaveAndClose.BorderColor = System.Drawing.Color.Black;
-            this.btnSaveAndClose.BorderSize = 1;
-            this.btnSaveAndClose.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnSaveAndClose.FocusedColor = System.Drawing.Color.Empty;
-            this.btnSaveAndClose.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnSaveAndClose.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnSaveAndClose.Image = null;
-            this.btnSaveAndClose.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSaveAndClose.Location = new System.Drawing.Point(775, 20);
-            this.btnSaveAndClose.Margin = new System.Windows.Forms.Padding(0);
-            this.btnSaveAndClose.Name = "btnSaveAndClose";
-            this.btnSaveAndClose.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnSaveAndClose.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnSaveAndClose.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnSaveAndClose.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnSaveAndClose.OnHoverImage = null;
-            this.btnSaveAndClose.OnPressedColor = System.Drawing.Color.Black;
-            this.btnSaveAndClose.Radius = 2;
-            this.btnSaveAndClose.Size = new System.Drawing.Size(150, 40);
-            this.btnSaveAndClose.TabIndex = 266;
-            this.btnSaveAndClose.Text = "Save";
-            this.btnSaveAndClose.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnSaveAndClose.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // btnAddItem
-            // 
-            this.btnAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddItem.AnimationHoverSpeed = 0.07F;
-            this.btnAddItem.AnimationSpeed = 0.03F;
-            this.btnAddItem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddItem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddItem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddItem.BorderColor = System.Drawing.Color.Black;
-            this.btnAddItem.BorderSize = 1;
-            this.btnAddItem.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnAddItem.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.btnAddItem.ForeColor = System.Drawing.Color.Black;
-            this.btnAddItem.Image = null;
-            this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddItem.Location = new System.Drawing.Point(615, 20);
-            this.btnAddItem.Margin = new System.Windows.Forms.Padding(0);
-            this.btnAddItem.Name = "btnAddItem";
-            this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnAddItem.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnAddItem.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnAddItem.OnHoverImage = null;
-            this.btnAddItem.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAddItem.Radius = 2;
-            this.btnAddItem.Size = new System.Drawing.Size(150, 40);
-            this.btnAddItem.TabIndex = 266;
-            this.btnAddItem.Text = "Add To List";
-            this.btnAddItem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
             // 
             // frmCartonSetting
             // 

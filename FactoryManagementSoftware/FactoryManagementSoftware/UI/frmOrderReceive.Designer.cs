@@ -69,6 +69,7 @@
             this.label3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblAddSupplier = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             this.tableLayoutPanel12.SuspendLayout();
@@ -579,11 +580,13 @@
             // 
             // tableLayoutPanel16
             // 
-            this.tableLayoutPanel16.ColumnCount = 3;
+            this.tableLayoutPanel16.ColumnCount = 4;
             this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel16.Controls.Add(this.label3, 2, 0);
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 15F));
+            this.tableLayoutPanel16.Controls.Add(this.lblAddSupplier, 2, 0);
+            this.tableLayoutPanel16.Controls.Add(this.label3, 3, 0);
             this.tableLayoutPanel16.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel16.Location = new System.Drawing.Point(2, 2);
@@ -641,6 +644,20 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 41F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(428, 76);
             this.tableLayoutPanel5.TabIndex = 119;
+            // 
+            // lblAddSupplier
+            // 
+            this.lblAddSupplier.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblAddSupplier.AutoSize = true;
+            this.lblAddSupplier.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblAddSupplier.Font = new System.Drawing.Font("Segoe UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))));
+            this.lblAddSupplier.Location = new System.Drawing.Point(220, 12);
+            this.lblAddSupplier.Margin = new System.Windows.Forms.Padding(3);
+            this.lblAddSupplier.Name = "lblAddSupplier";
+            this.lblAddSupplier.Size = new System.Drawing.Size(78, 17);
+            this.lblAddSupplier.TabIndex = 140;
+            this.lblAddSupplier.Text = "Add Supplier";
+            this.lblAddSupplier.Click += new System.EventHandler(this.label4_Click);
             // 
             // frmOrderReceive
             // 
@@ -730,5 +747,6 @@
         private System.Windows.Forms.Label lblDONumber;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblAddSupplier;
     }
 }

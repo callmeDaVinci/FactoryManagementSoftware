@@ -118,6 +118,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_Fac, typeof(string));
             dt.Columns.Add(text.Header_MacID, typeof(int));
+            dt.Columns.Add(text.Header_MacName, typeof(string));
             dt.Columns.Add(text.Header_JobNo, typeof(int));
             dt.Columns.Add(text.Header_Status, typeof(string));
             dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
@@ -189,6 +190,7 @@ namespace FactoryManagementSoftware.UI
 
             //dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+            dgv.Columns[text.Header_MacID].Visible = false;
             dgv.Columns[text.Header_QCPassedQty].Visible = false;
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_ItemCode].Visible = false;
@@ -419,6 +421,8 @@ namespace FactoryManagementSoftware.UI
                     DataRow dt_Row = dt.NewRow();
 
                     dt_Row[text.Header_MacID] = row[dalPlan.machineID];
+                    dt_Row[text.Header_MacName] = row[dalMac.MacName];
+
                     dt_Row[text.Header_Fac] = row[dalMac.MacLocationName];
                     dt_Row[text.Header_JobNo] = row[dalPlan.jobNo];
 
@@ -462,6 +466,9 @@ namespace FactoryManagementSoftware.UI
                 //    lblRemoveCompleted.Show();
                 //    lblClearList.Show();
                 //}
+
+                dt.DefaultView.Sort = text.Header_MacName + " ASC, " + text.Header_JobNo + " ASC," + text.Header_Status + " ASC" ; 
+                dt = dt.DefaultView.ToTable();
 
                 dgv.DataSource = dt;
                 dgvActiveJobListStyleEdit(dgv);
@@ -741,10 +748,11 @@ namespace FactoryManagementSoftware.UI
         }
         private void LoadCheckedStatus(string jobNo, string planStatus)
         {
-            if(planStatus == text.planning_status_completed)
+            if(planStatus.ToUpper() == text.planning_status_completed.ToUpper())
             {
                 
                 DataTable dt = dalPlan.idSearch(jobNo);
+
                 foreach (DataRow row in dt.Rows)
                 {
                     if (jobNo == row[dalPlan.jobNo].ToString())
@@ -753,6 +761,7 @@ namespace FactoryManagementSoftware.UI
 
                         cbFinalDataReview.Visible = true;
                         lblFinalDataReview.Visible = true;
+
                         if (Checked)
                         {
                             stopCheckedChange = true;
@@ -1270,7 +1279,7 @@ namespace FactoryManagementSoftware.UI
             
             if (dalPlan.CheckedUpdate(uPlan))
             {
-                if (planStatus == text.planning_status_completed)
+                if (planStatus.ToUpper() == text.planning_status_completed.ToUpper())
                 {
                     uPlan.recording = !Checked;
 
@@ -1305,7 +1314,7 @@ namespace FactoryManagementSoftware.UI
                 int userPermission = dalUser.getPermissionLevel(userID);
                 string userName = dalUser.getUsername(userID);
                 DateTime dateNow = DateTime.Now;
-                bool valid = userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 6;
+                bool valid = userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 8 || userID == 13;
                 bool checkedStatus = cbFinalDataReview.Checked;
 
 
@@ -1633,6 +1642,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
            
+        }
+
+        private void frmProductionRecordVer3_Shown(object sender, EventArgs e)
+        {
+            LoadPage();
         }
     }
 }

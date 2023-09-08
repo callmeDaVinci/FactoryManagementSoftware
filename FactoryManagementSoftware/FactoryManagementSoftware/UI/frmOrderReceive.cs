@@ -2,7 +2,9 @@
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System;
+using System.Configuration;
 using System.Data;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 
 namespace FactoryManagementSoftware.UI
@@ -111,13 +113,21 @@ namespace FactoryManagementSoftware.UI
                 cmbFrom.Text = "Supplier";
                 cmbSubFrom.SelectedIndex = -1;
             }
-
                 
             DataTable dt = dalFac.NewSelectASC();
             //DataTable dt = dalFac.SelectDESC();
             DataTable distinctTable = dt.DefaultView.ToTable(true, "fac_name");
             cmbTo.DataSource = distinctTable;
             cmbTo.DisplayMember = "fac_name";
+
+            Text text = new Text();
+
+            string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //if Semenyih
+            if (myconnstrng == text.DB_Semenyih)
+            {
+                cmbTo.Text = text.Factory_Semenyih;
+            }
         }
         
         #endregion
@@ -495,6 +505,8 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbFrom_SelectedIndexChanged(object sender, EventArgs e)
         {
+            lblAddSupplier.Visible = false;
+
             //errorProvider4.Clear();
             if (cmbFrom.Text.Equals("Customer"))
             {
@@ -504,6 +516,8 @@ namespace FactoryManagementSoftware.UI
             }
             else if (cmbFrom.Text.Equals("Supplier"))
             {
+                lblAddSupplier.Visible = true;
+
                 DataTable dt = dalCust.SupplierSelectAll();
                 loadLocationData(dt, cmbSubFrom, "supplier_name");
 
@@ -517,6 +531,20 @@ namespace FactoryManagementSoftware.UI
         private void label3_Click(object sender, EventArgs e)
         {
             cmbSubFrom.SelectedIndex = -1;
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            frmSupplier frm = new frmSupplier();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();
+
+            if (cmbFrom.Text.Equals("Supplier"))
+            {
+                DataTable dt = dalCust.SupplierSelectAll();
+                loadLocationData(dt, cmbSubFrom, "supplier_name");
+
+            }
         }
     }
 }

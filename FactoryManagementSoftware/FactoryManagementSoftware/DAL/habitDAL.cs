@@ -448,6 +448,44 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        public bool HabitInsertAndHistoryRecordWithUserID(habitBLL u)
+        {
+            DataTable dt_Record = HabitSearch(u.belong_to, u.habit_name, u.added_by);
+            DateTime date = DateTime.Now;
+            string oldData = "NULL";
+            bool success = false;
+
+            if (dt_Record.Rows.Count > 0)
+            {
+                //update
+                u.updated_date = u.added_date;
+                u.updated_by = u.added_by;
+
+                foreach (DataRow row in dt_Record.Rows)
+                {
+                    oldData = row[HabitData].ToString();
+                }
+                success = Update(u);
+            }
+            else
+            {
+                //insert
+                success = Insert(u);
+            }
+
+            if (!success)
+            {
+                MessageBox.Show("Failed to insert habit data!");
+                tool.historyRecord(text.System, "Failed to insert habit data! (habitDAL : 364)", date, MainDashboard.USER_ID);
+            }
+            else
+            {
+                tool.historyRecord(text.habit_insert, "[" + u.belong_to + "]" + u.habit_name + ": " + oldData + " --> " + u.habit_data, date, MainDashboard.USER_ID);
+            }
+
+            return success;
+        }
+
         #endregion
     }
 }

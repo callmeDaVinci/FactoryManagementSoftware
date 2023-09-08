@@ -536,13 +536,7 @@ namespace FactoryManagementSoftware.UI
             loadItemCategoryData();
 
             TrfSuccess = false;
-            if (!string.IsNullOrEmpty(frmInOut.editingItemCode))
-            {
-                cmbTrfItemCat.Text = frmInOut.editingItemCat;
-                cmbTrfItemName.Text = frmInOut.editingItemName;
-                cmbTrfItemCode.Text = frmInOut.editingItemCode;
-            }
-            else if (!string.IsNullOrEmpty(frmInOutVer2.editingItemCode))
+            if (!string.IsNullOrEmpty(frmInOutVer2.editingItemCode))
             {
                 cmbTrfItemCat.Text = frmInOutVer2.editingItemCat;
                 cmbTrfItemName.Text = frmInOutVer2.editingItemName;
@@ -1850,7 +1844,7 @@ namespace FactoryManagementSoftware.UI
             if (result.Equals("Passed"))
             {
                 updateSuccess = true;
-                frmInOut.editingItemCode = itemCode;
+                //frmInOut.editingItemCode = itemCode;
                 frmInOutVer2.editingItemCode = itemCode;
             }
             else

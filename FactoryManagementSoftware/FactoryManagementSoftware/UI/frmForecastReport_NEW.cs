@@ -435,8 +435,8 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[headerPartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
                 dgv.Columns[headerPartName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-                dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-                dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[headerRawMat].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+                dgv.Columns[headerColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
 
                
                 dgv.Columns[headerPartWeight].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
@@ -7910,8 +7910,12 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private int LAST_CHECKED_ID = -1;
+
         private bool ForecastEditRecordChecked()
         {
+            LAST_CHECKED_ID = -1;
+
             FORECAST_HISTORY_NEW = false;
 
             DB_FOREACST_HISTORY = dalHistory.ForecastEditHistorySelect();//393
@@ -7944,6 +7948,9 @@ namespace FactoryManagementSoftware.UI
                         if(forecast_History_ID > habit_History_ID)
                         {
                             FORECAST_HISTORY_NEW = true;
+
+                            LAST_CHECKED_ID = habit_History_ID;
+
                             return true;
                         }
                     }
@@ -8212,7 +8219,7 @@ namespace FactoryManagementSoftware.UI
 
                     DT_FOREACST_EDIT_RECORD = RemoveDuplicateRows(DT_FOREACST_EDIT_RECORD);
                     frmLoading.CloseForm();
-                    frmForecastEditRecord frm = new frmForecastEditRecord(DT_FOREACST_EDIT_RECORD);
+                    frmForecastEditRecord frm = new frmForecastEditRecord(DT_FOREACST_EDIT_RECORD, LAST_CHECKED_ID);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.Size = new Size(1100, 600);
                     frm.ShowDialog();
@@ -8692,7 +8699,7 @@ namespace FactoryManagementSoftware.UI
                 uHabit.added_date = DateTime.Now;
                 uHabit.added_by = MainDashboard.USER_ID;
 
-                dalHabit.HabitInsertAndHistoryRecord(uHabit);
+                dalHabit.HabitInsertAndHistoryRecordWithUserID(uHabit);
             }
         }
 

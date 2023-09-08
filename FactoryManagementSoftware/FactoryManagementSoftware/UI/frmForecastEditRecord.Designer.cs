@@ -31,8 +31,8 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
-            this.dgvForecastRecord = new System.Windows.Forms.DataGridView();
             this.lblPart = new System.Windows.Forms.Label();
+            this.dgvForecastRecord = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel10.SuspendLayout();
             this.tlpForecastReport.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvForecastRecord)).BeginInit();
@@ -71,6 +71,17 @@
             this.tlpForecastReport.Size = new System.Drawing.Size(864, 479);
             this.tlpForecastReport.TabIndex = 164;
             // 
+            // lblPart
+            // 
+            this.lblPart.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblPart.AutoSize = true;
+            this.lblPart.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPart.Location = new System.Drawing.Point(3, 9);
+            this.lblPart.Name = "lblPart";
+            this.lblPart.Size = new System.Drawing.Size(231, 17);
+            this.lblPart.TabIndex = 170;
+            this.lblPart.Text = "BLOWER OUTLET UNIT (V96LAR000)";
+            // 
             // dgvForecastRecord
             // 
             this.dgvForecastRecord.AllowUserToAddRows = false;
@@ -96,22 +107,12 @@
             this.dgvForecastRecord.Name = "dgvForecastRecord";
             this.dgvForecastRecord.RowHeadersVisible = false;
             this.dgvForecastRecord.RowHeadersWidth = 51;
-            this.dgvForecastRecord.RowTemplate.Height = 30;
+            this.dgvForecastRecord.RowTemplate.Height = 40;
             this.dgvForecastRecord.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvForecastRecord.Size = new System.Drawing.Size(858, 441);
             this.dgvForecastRecord.TabIndex = 152;
+            this.dgvForecastRecord.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvForecastRecord_CellFormatting);
             this.dgvForecastRecord.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvForecastRecord_DataBindingComplete);
-            // 
-            // lblPart
-            // 
-            this.lblPart.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblPart.AutoSize = true;
-            this.lblPart.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPart.Location = new System.Drawing.Point(3, 9);
-            this.lblPart.Name = "lblPart";
-            this.lblPart.Size = new System.Drawing.Size(231, 17);
-            this.lblPart.TabIndex = 170;
-            this.lblPart.Text = "BLOWER OUTLET UNIT (V96LAR000)";
             // 
             // frmForecastEditRecord
             // 

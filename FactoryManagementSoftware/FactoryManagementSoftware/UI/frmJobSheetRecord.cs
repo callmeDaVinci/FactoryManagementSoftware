@@ -1873,7 +1873,7 @@ namespace FactoryManagementSoftware.UI
                 DT_CARTON = NewCartonTable();
             }
 
-            frmCartonSetting frm = new frmCartonSetting(DT_CARTON)
+            frmCartonSetting frm = new frmCartonSetting(DT_CARTON,ITEM_CODE,ITEM_NAME)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };

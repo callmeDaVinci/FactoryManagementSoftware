@@ -44,6 +44,28 @@ namespace FactoryManagementSoftware
 
         }
 
+        readonly private string PARENT_CODE;
+        readonly private string PARENT_NAME;
+
+        public frmCartonSetting(DataTable dt, string parentCode, string parentName)
+        {
+            InitializeComponent();
+
+            dgvCarton.DataSource = dt;
+
+            if (dt != null && dt.Rows.Count > 0)
+            {
+                dgvCartonEdit(dgvCarton);
+            }
+
+            PARENT_CODE = parentCode;
+            PARENT_NAME = parentName;
+
+
+            LoadCMBData();
+
+        }
+
         private void LoadCMBData()
         {
             tool.loadItemCategoryDataToComboBox(cmbCategory, text.Cat_Carton);
@@ -212,7 +234,7 @@ namespace FactoryManagementSoftware
 
                 newRow[text.Header_ItemName] = itemName;
                 newRow[text.Header_ItemCode] = itemCode;
-                newRow[text.Header_Container_Stock_Out] = true;
+                newRow[text.Header_Container_Stock_Out] = false;
 
                 dt.Rows.Add(newRow);
 
@@ -417,9 +439,13 @@ namespace FactoryManagementSoftware
             //check if all filled
             _DT_CARTON = (DataTable)dgvCarton.DataSource;
 
-            bool emplyCellFound = false;
+            bool emptyCellFound = false;
 
-            for(int i =0; i < dgvCarton.Rows.Count; i++)
+            bool toUpdateDefaultPackagingData = false;
+
+           
+            
+            for (int i =0; i < dgvCarton.Rows.Count; i++)
             {
                 string max = dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Value.ToString();
                 string qty = dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Value.ToString();
@@ -427,7 +453,7 @@ namespace FactoryManagementSoftware
                 if (string.IsNullOrEmpty(max))
                 {
                     dgvCarton.Rows[i].Cells[text.Header_Qty_Per_Container].Style.BackColor = Color.LightYellow;
-                    emplyCellFound = true;
+                    emptyCellFound = true;
                 }
                 else
                 {
@@ -437,15 +463,52 @@ namespace FactoryManagementSoftware
                 if (string.IsNullOrEmpty(qty))
                 {
                     dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.LightYellow;
-                    emplyCellFound = true;
+                    emptyCellFound = true;
                 }
                 else
                 {
                     dgvCarton.Rows[i].Cells[text.Header_Container_Qty].Style.BackColor = Color.White;
                 }
+
+                if(i == 0 && !emptyCellFound && !string.IsNullOrEmpty(PARENT_CODE) && !string.IsNullOrEmpty(PARENT_NAME))
+                {
+                    //ask user if want to update item group setting
+                    string message = "Do you want to update the default packaging data?\n(Only the data in the first row will be updated.)";
+
+                    DialogResult dialogResult = MessageBox.Show(message, "Message",
+                                                      MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    toUpdateDefaultPackagingData = dialogResult == DialogResult.Yes;
+
+                    joinBLL uJoin = new joinBLL();
+
+                    uJoin.join_parent_code = PARENT_CODE;
+                    uJoin.join_parent_name = PARENT_NAME;
+                    uJoin.join_child_code = dgvCarton.Rows[0].Cells[text.Header_ItemCode].Value.ToString();
+                    uJoin.join_child_name = dgvCarton.Rows[0].Cells[text.Header_ItemName].Value.ToString();
+
+                    int pcsPerPackaging = int.TryParse(dgvCarton.Rows[0].Cells[text.Header_Qty_Per_Container].Value.ToString(), out int x) ? x : 0;
+
+                    uJoin.join_qty = 1;
+                    uJoin.join_max = pcsPerPackaging;
+                    uJoin.join_max = pcsPerPackaging;
+
+                    uJoin.join_main_carton = true;
+                    uJoin.join_stock_out = bool.TryParse(dgvCarton.Rows[0].Cells[text.Header_Container_Stock_Out].Value.ToString(), out bool t) ? t : false; 
+
+                    frmJoinEdit frm = new frmJoinEdit(uJoin, true, 1);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.ShowDialog();//Item Edit
+
+                    if (frmJoinEdit.DATA_UPDATED)
+                    {
+                    }
+                }
+              
             }
 
-            if(emplyCellFound)
+
+            if(emptyCellFound)
             {
                 MessageBox.Show("Please fill in the empty cell.");
             }

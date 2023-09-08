@@ -36,6 +36,24 @@ namespace FactoryManagementSoftware.UI
             dgvForecastRecord.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
         }
 
+        private int LAST_CHECKED_ID = -1;
+
+        public frmForecastEditRecord(DataTable dt, int oldCheckedID)
+        {
+            InitializeComponent();
+            ALL_EDIT_HISTORY_MODE = true;
+            LAST_CHECKED_ID = oldCheckedID;
+
+            lblPart.Text = "";
+
+            tool.DoubleBuffered(dgvForecastRecord, true);
+            dgvForecastRecord.DataSource = dt;
+
+            DgvForecastReportUIEdit(dgvForecastRecord);
+
+            dgvForecastRecord.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+        }
+
         public frmForecastEditRecord(DataTable dt, string itemCode)
         {
             InitializeComponent();
@@ -132,6 +150,29 @@ namespace FactoryManagementSoftware.UI
         {
             BoldLatestForecast(dgvForecastRecord);
 
+        }
+
+        private void dgvForecastRecord_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+
+            if(ALL_EDIT_HISTORY_MODE && LAST_CHECKED_ID > 0)
+            {
+                int colIndex = e.ColumnIndex;
+                int rowIndex = e.RowIndex;
+
+                string colName = dgvForecastRecord.Columns[colIndex].Name;
+
+                if (Name == text.Header_ID)
+                {
+                    int id = int.TryParse(dgvForecastRecord.Rows[rowIndex].Cells[colIndex].Value.ToString(), out int i)? i : 0;
+
+                    if(id > LAST_CHECKED_ID)
+                    {
+                        dgvForecastRecord.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.Yellow;
+                    }
+                }
+            }
+         
         }
     }
 }
