@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bgWorker = new System.ComponentModel.BackgroundWorker();
             this.tlpForecastReport = new System.Windows.Forms.TableLayoutPanel();
             this.lblForecastHistoryNotification = new System.Windows.Forms.Label();
@@ -753,14 +753,14 @@
             this.dgvForecastReport.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.Raised;
             this.dgvForecastReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvForecastReport.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 8F);
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvForecastReport.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvForecastReport.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvForecastReport.GridColor = System.Drawing.Color.White;
             this.dgvForecastReport.Location = new System.Drawing.Point(3, 507);
@@ -1106,14 +1106,14 @@
             this.cbIncludeMacRecord.Checked = true;
             this.cbIncludeMacRecord.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbIncludeMacRecord.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbIncludeMacRecord.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeMacRecord.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbIncludeMacRecord.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeMacRecord.Location = new System.Drawing.Point(258, 109);
+            this.cbIncludeMacRecord.Location = new System.Drawing.Point(11, 55);
             this.cbIncludeMacRecord.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeMacRecord.Name = "cbIncludeMacRecord";
-            this.cbIncludeMacRecord.Size = new System.Drawing.Size(149, 21);
+            this.cbIncludeMacRecord.Size = new System.Drawing.Size(95, 19);
             this.cbIncludeMacRecord.TabIndex = 171;
-            this.cbIncludeMacRecord.Text = "Include Mac. Record";
+            this.cbIncludeMacRecord.Text = "Mac. Record";
             this.cbIncludeMacRecord.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbIncludeMacRecord.UseVisualStyleBackColor = true;
             // 
@@ -1123,14 +1123,14 @@
             this.cbShowProDayNeeded.Checked = true;
             this.cbShowProDayNeeded.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowProDayNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbShowProDayNeeded.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbShowProDayNeeded.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowProDayNeeded.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowProDayNeeded.Location = new System.Drawing.Point(258, 84);
+            this.cbShowProDayNeeded.Location = new System.Drawing.Point(154, 55);
             this.cbShowProDayNeeded.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowProDayNeeded.Name = "cbShowProDayNeeded";
-            this.cbShowProDayNeeded.Size = new System.Drawing.Size(165, 21);
+            this.cbShowProDayNeeded.Size = new System.Drawing.Size(117, 19);
             this.cbShowProDayNeeded.TabIndex = 170;
-            this.cbShowProDayNeeded.Text = "Show Pro. Day Needed";
+            this.cbShowProDayNeeded.Text = "Pro. Day Needed";
             this.cbShowProDayNeeded.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowProDayNeeded.UseVisualStyleBackColor = true;
             // 
@@ -1140,12 +1140,12 @@
             this.cbSpecialTypeColorMode.Checked = true;
             this.cbSpecialTypeColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSpecialTypeColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbSpecialTypeColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSpecialTypeColorMode.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbSpecialTypeColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(258, 54);
+            this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(307, 55);
             this.cbSpecialTypeColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSpecialTypeColorMode.Name = "cbSpecialTypeColorMode";
-            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(156, 21);
+            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(142, 19);
             this.cbSpecialTypeColorMode.TabIndex = 169;
             this.cbSpecialTypeColorMode.Text = "Special Type Coloring";
             this.cbSpecialTypeColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1167,12 +1167,12 @@
             this.cbRepeatedColorMode.Checked = true;
             this.cbRepeatedColorMode.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRepeatedColorMode.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbRepeatedColorMode.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbRepeatedColorMode.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRepeatedColorMode.Location = new System.Drawing.Point(258, 25);
+            this.cbRepeatedColorMode.Location = new System.Drawing.Point(258, 105);
             this.cbRepeatedColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRepeatedColorMode.Name = "cbRepeatedColorMode";
-            this.cbRepeatedColorMode.Size = new System.Drawing.Size(169, 21);
+            this.cbRepeatedColorMode.Size = new System.Drawing.Size(153, 19);
             this.cbRepeatedColorMode.TabIndex = 168;
             this.cbRepeatedColorMode.Text = "Repeated Row Coloring";
             this.cbRepeatedColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1211,14 +1211,14 @@
             // 
             this.cbIncludeTerminated.AutoSize = true;
             this.cbIncludeTerminated.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeTerminated.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbIncludeTerminated.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 25);
             this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeTerminated.Name = "cbIncludeTerminated";
-            this.cbIncludeTerminated.Size = new System.Drawing.Size(169, 21);
+            this.cbIncludeTerminated.Size = new System.Drawing.Size(115, 19);
             this.cbIncludeTerminated.TabIndex = 165;
-            this.cbIncludeTerminated.Text = "Include Terminated Item";
+            this.cbIncludeTerminated.Text = "Terminated Item";
             this.cbIncludeTerminated.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbIncludeTerminated.UseVisualStyleBackColor = true;
             this.cbIncludeTerminated.CheckedChanged += new System.EventHandler(this.cbIncludeTerminated_CheckedChanged);
@@ -1227,14 +1227,14 @@
             // 
             this.cbIncludeProInfo.AutoSize = true;
             this.cbIncludeProInfo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbIncludeProInfo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbIncludeProInfo.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbIncludeProInfo.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbIncludeProInfo.Location = new System.Drawing.Point(11, 54);
+            this.cbIncludeProInfo.Location = new System.Drawing.Point(154, 27);
             this.cbIncludeProInfo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeProInfo.Name = "cbIncludeProInfo";
-            this.cbIncludeProInfo.Size = new System.Drawing.Size(121, 21);
+            this.cbIncludeProInfo.Size = new System.Drawing.Size(71, 19);
             this.cbIncludeProInfo.TabIndex = 166;
-            this.cbIncludeProInfo.Text = "Include Pro Info";
+            this.cbIncludeProInfo.Text = "Pro Info";
             this.cbIncludeProInfo.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbIncludeProInfo.UseVisualStyleBackColor = true;
             this.cbIncludeProInfo.CheckedChanged += new System.EventHandler(this.cbIncludeProInfo_CheckedChanged);
@@ -1245,12 +1245,12 @@
             this.cbRemoveNoOrderItem.Checked = true;
             this.cbRemoveNoOrderItem.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbRemoveNoOrderItem.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbRemoveNoOrderItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbRemoveNoOrderItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 109);
+            this.cbRemoveNoOrderItem.Location = new System.Drawing.Point(11, 105);
             this.cbRemoveNoOrderItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbRemoveNoOrderItem.Name = "cbRemoveNoOrderItem";
-            this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(181, 21);
+            this.cbRemoveNoOrderItem.Size = new System.Drawing.Size(165, 19);
             this.cbRemoveNoOrderItem.TabIndex = 167;
             this.cbRemoveNoOrderItem.Text = "Remove No Forecast Item";
             this.cbRemoveNoOrderItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1261,14 +1261,14 @@
             // 
             this.cbWithSubMat.AutoSize = true;
             this.cbWithSubMat.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.cbWithSubMat.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbWithSubMat.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbWithSubMat.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbWithSubMat.Location = new System.Drawing.Point(11, 84);
+            this.cbWithSubMat.Location = new System.Drawing.Point(307, 23);
             this.cbWithSubMat.Margin = new System.Windows.Forms.Padding(2);
             this.cbWithSubMat.Name = "cbWithSubMat";
-            this.cbWithSubMat.Size = new System.Drawing.Size(145, 21);
+            this.cbWithSubMat.Size = new System.Drawing.Size(100, 19);
             this.cbWithSubMat.TabIndex = 156;
-            this.cbWithSubMat.Text = "Show Sub Materials";
+            this.cbWithSubMat.Text = "Sub Materials";
             this.cbWithSubMat.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbWithSubMat.UseVisualStyleBackColor = true;
             this.cbWithSubMat.CheckedChanged += new System.EventHandler(this.cbWithSubMat_CheckedChanged);
@@ -1301,7 +1301,7 @@
             this.cmbSummaryMonthBalSort.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSummaryMonthBalSort.Font = new System.Drawing.Font("Segoe UI", 6F);
             this.cmbSummaryMonthBalSort.FormattingEnabled = true;
-            this.cmbSummaryMonthBalSort.Location = new System.Drawing.Point(123, 48);
+            this.cmbSummaryMonthBalSort.Location = new System.Drawing.Point(129, 50);
             this.cmbSummaryMonthBalSort.Name = "cmbSummaryMonthBalSort";
             this.cmbSummaryMonthBalSort.Size = new System.Drawing.Size(62, 20);
             this.cmbSummaryMonthBalSort.TabIndex = 169;
@@ -1318,9 +1318,9 @@
             this.cbShowInsufficientOnly.Location = new System.Drawing.Point(14, 160);
             this.cbShowInsufficientOnly.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowInsufficientOnly.Name = "cbShowInsufficientOnly";
-            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(148, 19);
+            this.cbShowInsufficientOnly.Size = new System.Drawing.Size(116, 19);
             this.cbShowInsufficientOnly.TabIndex = 171;
-            this.cbShowInsufficientOnly.Text = "Show Insufficient Only";
+            this.cbShowInsufficientOnly.Text = "Insufficient Only";
             this.cbShowInsufficientOnly.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowInsufficientOnly.UseVisualStyleBackColor = true;
             // 
@@ -1335,9 +1335,9 @@
             this.cbShowToOrderItem.Location = new System.Drawing.Point(14, 134);
             this.cbShowToOrderItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowToOrderItem.Name = "cbShowToOrderItem";
-            this.cbShowToOrderItem.Size = new System.Drawing.Size(138, 19);
+            this.cbShowToOrderItem.Size = new System.Drawing.Size(109, 19);
             this.cbShowToOrderItem.TabIndex = 170;
-            this.cbShowToOrderItem.Text = "Show To Order Items";
+            this.cbShowToOrderItem.Text = "Purchase Items";
             this.cbShowToOrderItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowToOrderItem.UseVisualStyleBackColor = true;
             this.cbShowToOrderItem.CheckedChanged += new System.EventHandler(this.cbShowToOrderItem_CheckedChanged);
@@ -1353,9 +1353,9 @@
             this.cbShowToAssemblyItem.Location = new System.Drawing.Point(14, 106);
             this.cbShowToAssemblyItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowToAssemblyItem.Name = "cbShowToAssemblyItem";
-            this.cbShowToAssemblyItem.Size = new System.Drawing.Size(159, 19);
+            this.cbShowToAssemblyItem.Size = new System.Drawing.Size(112, 19);
             this.cbShowToAssemblyItem.TabIndex = 170;
-            this.cbShowToAssemblyItem.Text = "Show To Assembly Items";
+            this.cbShowToAssemblyItem.Text = "Assembly Items";
             this.cbShowToAssemblyItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowToAssemblyItem.UseVisualStyleBackColor = true;
             this.cbShowToAssemblyItem.CheckedChanged += new System.EventHandler(this.cbShowToAssemblyItem_CheckedChanged);
@@ -1371,9 +1371,9 @@
             this.cbShowToProduceItem.Location = new System.Drawing.Point(14, 78);
             this.cbShowToProduceItem.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbShowToProduceItem.Name = "cbShowToProduceItem";
-            this.cbShowToProduceItem.Size = new System.Drawing.Size(152, 19);
+            this.cbShowToProduceItem.Size = new System.Drawing.Size(107, 19);
             this.cbShowToProduceItem.TabIndex = 169;
-            this.cbShowToProduceItem.Text = "Show To Produce Items";
+            this.cbShowToProduceItem.Text = "Injection Items";
             this.cbShowToProduceItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowToProduceItem.UseVisualStyleBackColor = true;
             this.cbShowToProduceItem.CheckedChanged += new System.EventHandler(this.cbShowToProduceItem_CheckedChanged);
@@ -1533,7 +1533,7 @@
             this.cmbSoryBy.FormattingEnabled = true;
             this.cmbSoryBy.Location = new System.Drawing.Point(12, 44);
             this.cmbSoryBy.Name = "cmbSoryBy";
-            this.cmbSoryBy.Size = new System.Drawing.Size(118, 20);
+            this.cmbSoryBy.Size = new System.Drawing.Size(204, 20);
             this.cmbSoryBy.TabIndex = 147;
             this.cmbSoryBy.SelectedIndexChanged += new System.EventHandler(this.cmbSoryBy_SelectedIndexChanged);
             // 
@@ -1541,7 +1541,7 @@
             // 
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label2.Location = new System.Drawing.Point(9, 23);
+            this.label2.Location = new System.Drawing.Point(9, 28);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(51, 15);
             this.label2.TabIndex = 146;
@@ -1551,11 +1551,11 @@
             // 
             this.label1.AutoSize = true;
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Underline);
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(108, 30);
+            this.label1.Location = new System.Drawing.Point(184, 27);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(25, 12);
+            this.label1.Size = new System.Drawing.Size(32, 15);
             this.label1.TabIndex = 148;
             this.label1.Text = "clear";
             this.label1.Click += new System.EventHandler(this.label1_Click);
@@ -1563,7 +1563,7 @@
             // txtAlertLevel
             // 
             this.txtAlertLevel.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.txtAlertLevel.Location = new System.Drawing.Point(146, 47);
+            this.txtAlertLevel.Location = new System.Drawing.Point(12, 124);
             this.txtAlertLevel.Margin = new System.Windows.Forms.Padding(2);
             this.txtAlertLevel.Name = "txtAlertLevel";
             this.txtAlertLevel.Size = new System.Drawing.Size(86, 21);
@@ -1576,7 +1576,7 @@
             // 
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label3.Location = new System.Drawing.Point(144, 33);
+            this.label3.Location = new System.Drawing.Point(10, 110);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(73, 15);
             this.label3.TabIndex = 150;

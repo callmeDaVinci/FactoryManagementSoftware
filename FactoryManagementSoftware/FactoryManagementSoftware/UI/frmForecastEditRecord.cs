@@ -50,7 +50,7 @@ namespace FactoryManagementSoftware.UI
             dgvForecastRecord.DataSource = dt;
 
             DgvForecastReportUIEdit(dgvForecastRecord);
-
+            
             dgvForecastRecord.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
         }
 
@@ -146,33 +146,45 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void HighlightNewUpdates(DataGridView dgv)
+        {
+
+            if (dgv != null && ALL_EDIT_HISTORY_MODE)
+            {
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    int id = int.TryParse(row.Cells[text.Header_ID].Value.ToString(), out int i) ? i : 0;
+                    int rowindex = row.Index;
+
+                    if (id > LAST_CHECKED_ID && LAST_CHECKED_ID > 0)
+                    {
+                        dgvForecastRecord.Rows[rowindex].Cells[text.Header_ItemNameAndCode].Style.BackColor = Color.Yellow;
+                        dgvForecastRecord.Rows[rowindex].Cells[text.Header_NewValue].Style.BackColor = Color.Yellow;
+
+                    }
+                   
+                }
+            }
+        }
         private void dgvForecastRecord_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
         {
-            BoldLatestForecast(dgvForecastRecord);
+            if(ALL_EDIT_HISTORY_MODE)
+            {
+                HighlightNewUpdates(dgvForecastRecord);
+            }
+            else
+            {
+                BoldLatestForecast(dgvForecastRecord);
+
+            }
 
         }
 
         private void dgvForecastRecord_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
 
-            if(ALL_EDIT_HISTORY_MODE && LAST_CHECKED_ID > 0)
-            {
-                int colIndex = e.ColumnIndex;
-                int rowIndex = e.RowIndex;
+          
 
-                string colName = dgvForecastRecord.Columns[colIndex].Name;
-
-                if (Name == text.Header_ID)
-                {
-                    int id = int.TryParse(dgvForecastRecord.Rows[rowIndex].Cells[colIndex].Value.ToString(), out int i)? i : 0;
-
-                    if(id > LAST_CHECKED_ID)
-                    {
-                        dgvForecastRecord.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.Yellow;
-                    }
-                }
-            }
-         
         }
     }
 }
