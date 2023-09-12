@@ -213,7 +213,7 @@ namespace FactoryManagementSoftware.DAL
                                 habit_data=@habit_data,
                                 updated_date=@updated_date,
                                 updated_by=@updated_by
-                                WHERE belong_to=@belong_to AND habit_name=@habit_name";
+                                WHERE belong_to=@belong_to AND habit_name=@habit_name ";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
@@ -250,6 +250,53 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool UpdateByAddedUser(habitBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_habit SET
+                                habit_data=@habit_data,
+                                updated_date=@updated_date,
+                                updated_by=@updated_by
+                                WHERE belong_to=@belong_to AND habit_name=@habit_name AND added_by=@updated_by";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@belong_to", u.belong_to);
+                cmd.Parameters.AddWithValue("@habit_name", u.habit_name);
+                cmd.Parameters.AddWithValue("@habit_data", u.habit_data);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Search
@@ -465,7 +512,7 @@ namespace FactoryManagementSoftware.DAL
                 {
                     oldData = row[HabitData].ToString();
                 }
-                success = Update(u);
+                success = UpdateByAddedUser(u);
             }
             else
             {

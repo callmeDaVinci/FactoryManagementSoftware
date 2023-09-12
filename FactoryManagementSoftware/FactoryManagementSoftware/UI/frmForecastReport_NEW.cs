@@ -1711,7 +1711,7 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = "SORT BY";
-            cmb.SelectedIndex = -1;
+            cmb.Text = headerBal3;
         }
 
         
@@ -4522,74 +4522,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private DataTable NewSorting(DataTable dt)
-        {
-            string keywords = cmbSoryBy.Text;
-            if (cmbSoryBy.SelectedIndex == -1 || string.IsNullOrEmpty(keywords))
-            {
-                return dt.Copy();
-            }
-
-            DataTable dt_Copy = dt.Clone();
-            bool spaceAdded = false;
-
-            foreach (DataRow row in dt.Rows)
-            {
-                string itemType = row[headerType].ToString();
-                double sortingTarget = double.TryParse(row[keywords].ToString(), out double tempValue) ? tempValue : 0;
-
-                if (itemType == typeParent && !spaceAdded)
-                {
-                    dt_Copy.Rows.Add();
-                    spaceAdded = true;
-                }
-
-                if (itemType == typeSingle || itemType == typeParent)
-                {
-                    InsertRow(dt_Copy, row, sortingTarget, itemType);
-                }
-            }
-
-            RemoveEmptyLastRow(dt_Copy);
-            return dt_Copy;
-        }
-
-        private void InsertRow(DataTable dt_Copy, DataRow originalRow, double sortingTarget, string itemType)
-        {
-            bool dataInserted = false;
-
-            for (int i = 0; i < dt_Copy.Rows.Count; i++)
-            {
-                DataRow row = dt_Copy.Rows[i];
-                string targetType = row[headerType].ToString();
-                double targetValue = double.TryParse(row[cmbSoryBy.Text].ToString(), out double tempValue) ? tempValue : 0;
-                bool shouldInsert = cbDescending.Checked ? sortingTarget > targetValue : sortingTarget < targetValue;
-
-                if (itemType == targetType && shouldInsert)
-                {
-                    DataRow newRow = dt_Copy.NewRow();
-                    newRow.ItemArray = originalRow.ItemArray;
-                    dt_Copy.Rows.InsertAt(newRow, i);
-                    dataInserted = true;
-                    break;
-                }
-            }
-
-            if (!dataInserted)
-            {
-                dt_Copy.ImportRow(originalRow);
-            }
-        }
-
-        private void RemoveEmptyLastRow(DataTable dt)
-        {
-            if (dt.Rows.Count > 0 && string.IsNullOrEmpty(dt.Rows[^1][headerPartCode].ToString()))
-            {
-                dt.Rows.RemoveAt(dt.Rows.Count - 1);
-                dt.AcceptChanges();
-            }
-        }
-
         private DataTable Sorting(DataTable dt)
         {
             string keywords = cmbSoryBy.Text;
@@ -4611,6 +4543,7 @@ namespace FactoryManagementSoftware.UI
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     dataInserted = false;
+
                     double sortingTarget_1 = double.TryParse(dt.Rows[i][keywords].ToString(), out sortingTarget_1) ? sortingTarget_1 : 0;
                     string itemType_1 = dt.Rows[i][headerType].ToString();
 
@@ -4620,6 +4553,7 @@ namespace FactoryManagementSoftware.UI
                     //{
                     //    float test = 0;
                     //}
+                    #region add divider seperate single item and group item
 
                     if (itemType_1.Equals(typeParent) && !spaceAdded)
                     {
@@ -4633,78 +4567,84 @@ namespace FactoryManagementSoftware.UI
                         spaceAdded = true;
                     }
 
+                    #endregion
+                    
                     if (itemType_1.Equals(typeSingle) || itemType_1.Equals(typeParent))
                     {
                         for (int j = 0; j < dt_Copy.Rows.Count; j++)
                         {
-
-                            bool waitingToInsert = false;
                             string itemType_2 = dt_Copy.Rows[j][headerType].ToString();
-                            double sortingTarget_2 = double.TryParse(dt_Copy.Rows[j][keywords].ToString(), out sortingTarget_2) ? sortingTarget_2 : 0;
-                           
-                            if (cbDescending.Checked)
-                            {
-                                waitingToInsert = sortingTarget_1 > sortingTarget_2;
-                            }
-                            else
-                            {
-                                waitingToInsert = sortingTarget_1 < sortingTarget_2;
-                            }
 
-                            if (itemType_1.Equals(itemType_2) && itemType_1.Equals(typeSingle))
+                            if (itemType_1.Equals(itemType_2))
                             {
-                                if (waitingToInsert)
+                                double sortingTarget_2 = double.TryParse(dt_Copy.Rows[j][keywords].ToString(), out sortingTarget_2) ? sortingTarget_2 : 0;
+
+                                bool waitingToInsert = cbDescending.Checked ? sortingTarget_1 > sortingTarget_2 : sortingTarget_1 < sortingTarget_2;
+
+                                //if (cbDescending.Checked)
+                                //{
+                                //    waitingToInsert = sortingTarget_1 > sortingTarget_2;
+                                //}
+                                //else
+                                //{
+                                //    waitingToInsert = sortingTarget_1 < sortingTarget_2;
+                                //}
+
+                                if(waitingToInsert)
                                 {
-                                    //insert
-                                    DataRow insertingRow = dt_Copy.NewRow();
-
-                                    insertingRow.ItemArray = dt.Rows[i].ItemArray;
-
-                                    dt_Copy.Rows.InsertAt(insertingRow, j);
-                                    dataInserted = true;
-                                    break;
-                                }
-                            }
-
-                            else if (itemType_1.Equals(itemType_2) && itemType_1.Equals(typeParent))
-                            {
-                                if (waitingToInsert)
-                                {
-                                    //insert
-                                    DataRow insertingRow = dt_Copy.NewRow();
-
-                                    insertingRow.ItemArray = dt.Rows[i].ItemArray;
-
-                                    dt_Copy.Rows.InsertAt(insertingRow, j);
-
-                                    int tempIndex = j;
-
-                                    for (int k = i + 1; k < dt.Rows.Count; k++)
+                                    if (itemType_1.Equals(typeSingle))
                                     {
-                                        tempIndex++;
-                                        string _type = dt.Rows[k][headerType].ToString();
+                                        //insert
+                                        DataRow insertingRow = dt_Copy.NewRow();
 
-                                        if (_type.Equals(typeParent))
-                                        {
-                                            //dt_Copy.Rows.Add(dt_Copy.NewRow());
-                                            break;
-                                        }
-                                        else
-                                        {
-                                            insertingRow = dt_Copy.NewRow();
+                                        insertingRow.ItemArray = dt.Rows[i].ItemArray;
 
-                                            insertingRow.ItemArray = dt.Rows[k].ItemArray;
-
-                                            dt_Copy.Rows.InsertAt(insertingRow, tempIndex);
-
-                                        }
+                                        dt_Copy.Rows.InsertAt(insertingRow, j);
+                                        dataInserted = true;
+                                        break;
                                     }
 
+                                    else
+                                    {
+                                        //insert
+                                        DataRow insertingRow = dt_Copy.NewRow();
 
-                                    dataInserted = true;
-                                    break;
+                                        insertingRow.ItemArray = dt.Rows[i].ItemArray;
+
+                                        dt_Copy.Rows.InsertAt(insertingRow, j);
+
+                                        int tempIndex = j;
+
+                                        for (int k = i + 1; k < dt.Rows.Count; k++)
+                                        {
+                                            tempIndex++;
+                                            string _type = dt.Rows[k][headerType].ToString();
+
+                                            if (_type.Equals(typeParent))
+                                            {
+                                                //dt_Copy.Rows.Add(dt_Copy.NewRow());
+                                                break;
+                                            }
+                                            else
+                                            {
+                                                insertingRow = dt_Copy.NewRow();
+
+                                                insertingRow.ItemArray = dt.Rows[k].ItemArray;
+
+                                                dt_Copy.Rows.InsertAt(insertingRow, tempIndex);
+                                            }
+                                        }
+
+
+                                        dataInserted = true;
+                                        break;
+                                    }
                                 }
+                               
                             }
+                            
+
+                          
                         }
 
                         if (!dataInserted)

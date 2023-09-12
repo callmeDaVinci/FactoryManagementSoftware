@@ -424,6 +424,11 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_Plan.Rows)
             {
+                if(row[dalPlan.jobNo].ToString() == "12687")
+                {
+                    var checkpoint = 1;
+                }
+
                 bool match = true;
 
                 #region Recording Filtering

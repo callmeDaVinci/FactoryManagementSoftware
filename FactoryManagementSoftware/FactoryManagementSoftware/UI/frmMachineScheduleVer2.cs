@@ -3565,7 +3565,7 @@ namespace FactoryManagementSoftware.UI
                     uPlanning.machine_id = macID;
                     uPlanning.machine_name = macName;
 
-                    JOB_UPDATED = dalPlanningAction.JobDateAndMachineUpdate(uPlanning, macName, oriStart, oriEnd, familyJobNo);
+                    JOB_UPDATED = dalPlanningAction.JobDateRecordingAndMachineUpdate(uPlanning, macName, oriStart, oriEnd, familyJobNo);
 
                     if (JOB_UPDATED)
                     {
@@ -3603,7 +3603,7 @@ namespace FactoryManagementSoftware.UI
                                 uPlanning.plan_id = jobNo_FamilyMember;
                                 uPlanning.plan_note = remark;
 
-                                JOB_UPDATED = dalPlanningAction.JobDateAndMachineUpdate(uPlanning, macName, oriStart, oriEnd, familyJobNo);
+                                JOB_UPDATED = dalPlanningAction.JobDateRecordingAndMachineUpdate(uPlanning, macName, oriStart, oriEnd, familyJobNo);
 
                                 if (JOB_UPDATED)
                                 {
@@ -5546,6 +5546,11 @@ private void dgvMacSchedule_MouseClick(object sender, MouseEventArgs e)
             {
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
+        }
+
+        private void dgvMacSchedule_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
         }
     }
 }
