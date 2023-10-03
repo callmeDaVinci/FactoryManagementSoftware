@@ -843,7 +843,7 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool();
+                Tool tool = new Tool();
                 tool.saveToText(ex);
             }
             finally

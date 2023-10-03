@@ -1397,21 +1397,67 @@ namespace FactoryManagementSoftware.UI
                 int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
                 int fullBoxQty = int.TryParse(txtFullBoxQty.Text, out fullBoxQty) ? fullBoxQty : 0;
 
-                if (DT_CARTON != null && DT_CARTON.Rows.Count >= 2)
+
+                if(totalStockIn > 0)
                 {
-
-                    foreach (DataRow row in DT_CARTON.Rows)
+                    if (DT_CARTON != null && DT_CARTON.Rows.Count >= 2)
                     {
-                        string packingCode = row[text.Header_ItemCode].ToString();
 
-                        string itemType = packingCode.Substring(0, 3);
+                        foreach (DataRow row in DT_CARTON.Rows)
+                        {
+                            string packingCode = row[text.Header_ItemCode].ToString();
 
-                        int boxQty = Convert.ToInt32(row[text.Header_Container_Qty].ToString());
-                        int maxQty = Convert.ToInt32(row[text.Header_Qty_Per_Container].ToString());
+                            string itemType = packingCode.Substring(0, 3);
 
-                        bool cartonStockOut = bool.TryParse(row[text.Header_Container_Stock_Out].ToString(), out cartonStockOut) ? cartonStockOut : true;
+                            int boxQty = Convert.ToInt32(row[text.Header_Container_Qty].ToString());
+                            int maxQty = Convert.ToInt32(row[text.Header_Qty_Per_Container].ToString());
 
-                        if (!string.IsNullOrEmpty(packingCode) && boxQty > 0 && cartonStockOut)
+                            bool cartonStockOut = bool.TryParse(row[text.Header_Container_Stock_Out].ToString(), out cartonStockOut) ? cartonStockOut : true;
+
+                            if (!string.IsNullOrEmpty(packingCode) && boxQty > 0 && cartonStockOut)
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = packingCode;
+                                dt_Row[header_Cat] = tool.getItemCat(packingCode);
+
+                                dt_Row[header_From] = factory;
+                                dt_Row[header_To] = text.Production;
+
+                                dt_Row[header_Qty] = boxQty;
+                                dt_Row[text.Header_JobNo] = JOB_NO;
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+
+                                dt.Rows.Add(dt_Row);
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        bool cartonStockOut = true;
+                        string packingCode = "";
+
+                        if (DT_CARTON != null)
+                        {
+                            foreach (DataRow row in DT_CARTON.Rows)
+                            {
+                                packingCode = row[text.Header_ItemCode].ToString();
+                                cartonStockOut = bool.TryParse(row[text.Header_Container_Stock_Out].ToString(), out cartonStockOut) ? cartonStockOut : true;
+                            }
+                        }
+
+
+                        if (!string.IsNullOrEmpty(packingCode) && fullBoxQty > 0 && cartonStockOut)
                         {
                             dt_Row = dt.NewRow();
                             dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
@@ -1421,7 +1467,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[header_From] = factory;
                             dt_Row[header_To] = text.Production;
 
-                            dt_Row[header_Qty] = boxQty;
+                            dt_Row[header_Qty] = fullBoxQty;
                             dt_Row[text.Header_JobNo] = JOB_NO;
 
                             if (cbMorning.Checked)
@@ -1433,209 +1479,171 @@ namespace FactoryManagementSoftware.UI
                                 dt_Row[header_Shift] = "N";
                             }
 
-
                             dt.Rows.Add(dt_Row);
                         }
 
                     }
+
+                    if (!string.IsNullOrEmpty(ITEM_CODE))
+                    {
+                        string ProductionOrAssembly = text.Production;
+                        string StockInItemCode = ITEM_CODE;
+
+                        if (totalStockIn > 0)
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = StockInItemCode;
+                            dt_Row[header_Cat] = text.Cat_Part;
+
+                            dt_Row[header_From] = ProductionOrAssembly;
+                            dt_Row[header_To] = factory;
+
+                            dt_Row[header_Qty] = totalStockIn;
+                            dt_Row[text.Header_JobNo] = JOB_NO;
+
+                            if (cbMorning.Checked)
+                            {
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
+                            }
+
+                            dt.Rows.Add(dt_Row);
+                        }
+
+                        if (directStockIn > 0)
+                        {
+                            //dt_Row = dt.NewRow();
+                            //dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            //dt_Row[header_ItemCode] = StockInItemCode;
+                            //dt_Row[header_Cat] = text.Cat_Part;
+
+                            //dt_Row[header_From] = ProductionOrAssembly;
+                            //dt_Row[header_To] = factory;
+
+                            //dt_Row[header_Qty] = directStockIn;
+                            //dt_Row[text.Header_JobNo] = JOB_NO;
+
+                            //if (planStatus == text.planning_status_completed)
+                            //{
+                            //    if (cbMorning.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "MB";
+                            //    }
+                            //    else if (cbNight.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "NB";
+                            //    }
+                            //}
+                            //else
+                            //{
+                            //    if (cbMorning.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "M";
+                            //    }
+                            //    else if (cbNight.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "N";
+                            //    }
+                            //}
+
+
+                            //dt.Rows.Add(dt_Row);
+                        }
+
+                        if (totalShot > 0)
+                        {
+                            //float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
+                            //float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
+
+                            //float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
+
+                            //float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
+
+                            //if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
+                            //{
+                            //    dt_Row = dt.NewRow();
+                            //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            //    dt_Row[header_ItemCode] = RAW_MAT_CODE;
+                            //    dt_Row[header_Cat] = text.Cat_RawMat;
+
+                            //    dt_Row[header_From] = factory;
+                            //    dt_Row[header_To] = text.Production;
+
+
+                            //    dt_Row[header_Qty] = raw_Material_Used_kg;
+
+                            //    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                            //    if (cbMorning.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "M";
+                            //    }
+                            //    else if (cbNight.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "N";
+                            //    }
+
+                            //    dt.Rows.Add(dt_Row);
+                            //}
+
+                            //if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
+                            //{
+                            //    dt_Row = dt.NewRow();
+                            //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+
+                            //    dt_Row[header_ItemCode] = COLOR_MAT_CODE;
+
+                            //    dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
+
+                            //    dt_Row[header_From] = factory;
+                            //    dt_Row[header_To] = text.Production;
+
+
+                            //    dt_Row[header_Qty] = color_Material_Used_kg;
+
+                            //    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                            //    if (cbMorning.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "M";
+                            //    }
+                            //    else if (cbNight.Checked)
+                            //    {
+                            //        dt_Row[header_Shift] = "N";
+                            //    }
+
+                            //    dt.Rows.Add(dt_Row);
+                            //}
+
+                        }
+                    }
+
+                    #region process to in/out edit page
+
+                    frmInOutEdit frm = new frmInOutEdit(dt, true);
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+                    frm.WindowState = FormWindowState.Normal;
+                    frm.ShowDialog();//Item Edit
+
+                    if (!frmInOutEdit.TrfSuccess)
+                    {
+                        MessageBox.Show("Transfer failed or cancelled!");
+                    }
+                    else
+                    {
+                        Close();
+                    }
+
+                    #endregion
                 }
                 else
                 {
-                    bool cartonStockOut = true;
-                    string packingCode = "";
-
-                    if (DT_CARTON != null)
-                    {
-                        foreach (DataRow row in DT_CARTON.Rows)
-                        {
-                            packingCode = row[text.Header_ItemCode].ToString();
-                            cartonStockOut = bool.TryParse(row[text.Header_Container_Stock_Out].ToString(), out cartonStockOut) ? cartonStockOut : true;
-                        }
-                    }
-
-
-                    if (!string.IsNullOrEmpty(packingCode) && fullBoxQty > 0 && cartonStockOut)
-                    {
-                        dt_Row = dt.NewRow();
-                        dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                        dt_Row[header_ItemCode] = packingCode;
-                        dt_Row[header_Cat] = tool.getItemCat(packingCode);
-
-                        dt_Row[header_From] = factory;
-                        dt_Row[header_To] = text.Production;
-
-                        dt_Row[header_Qty] = fullBoxQty;
-                        dt_Row[text.Header_JobNo] = JOB_NO;
-
-                        if (cbMorning.Checked)
-                        {
-                            dt_Row[header_Shift] = "M";
-                        }
-                        else if (cbNight.Checked)
-                        {
-                            dt_Row[header_Shift] = "N";
-                        }
-
-                        dt.Rows.Add(dt_Row);
-                    }
-
+                    MessageBox.Show("no stock update needed.");
                 }
-
-                if (!string.IsNullOrEmpty(ITEM_CODE))
-                {
-                    string ProductionOrAssembly = text.Production;
-                    string StockInItemCode = ITEM_CODE;
-
-                    if (totalStockIn > 0)
-                    {
-                        dt_Row = dt.NewRow();
-                        dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                        dt_Row[header_ItemCode] = StockInItemCode;
-                        dt_Row[header_Cat] = text.Cat_Part;
-
-                        dt_Row[header_From] = ProductionOrAssembly;
-                        dt_Row[header_To] = factory;
-
-                        dt_Row[header_Qty] = totalStockIn;
-                        dt_Row[text.Header_JobNo] = JOB_NO;
-
-                        if (cbMorning.Checked)
-                        {
-                            dt_Row[header_Shift] = "M";
-                        }
-                        else if (cbNight.Checked)
-                        {
-                            dt_Row[header_Shift] = "N";
-                        }
-
-                        dt.Rows.Add(dt_Row);
-                    }
-
-                    if (directStockIn > 0)
-                    {
-                        //dt_Row = dt.NewRow();
-                        //dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                        //dt_Row[header_ItemCode] = StockInItemCode;
-                        //dt_Row[header_Cat] = text.Cat_Part;
-
-                        //dt_Row[header_From] = ProductionOrAssembly;
-                        //dt_Row[header_To] = factory;
-
-                        //dt_Row[header_Qty] = directStockIn;
-                        //dt_Row[text.Header_JobNo] = JOB_NO;
-
-                        //if (planStatus == text.planning_status_completed)
-                        //{
-                        //    if (cbMorning.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "MB";
-                        //    }
-                        //    else if (cbNight.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "NB";
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //    if (cbMorning.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "M";
-                        //    }
-                        //    else if (cbNight.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "N";
-                        //    }
-                        //}
-
-
-                        //dt.Rows.Add(dt_Row);
-                    }
-
-                    if (totalShot > 0)
-                    {
-                        //float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
-                        //float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
-
-                        //float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
-
-                        //float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
-
-                        //if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
-                        //{
-                        //    dt_Row = dt.NewRow();
-                        //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                        //    dt_Row[header_ItemCode] = RAW_MAT_CODE;
-                        //    dt_Row[header_Cat] = text.Cat_RawMat;
-
-                        //    dt_Row[header_From] = factory;
-                        //    dt_Row[header_To] = text.Production;
-
-
-                        //    dt_Row[header_Qty] = raw_Material_Used_kg;
-
-                        //    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                        //    if (cbMorning.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "M";
-                        //    }
-                        //    else if (cbNight.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "N";
-                        //    }
-
-                        //    dt.Rows.Add(dt_Row);
-                        //}
-
-                        //if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
-                        //{
-                        //    dt_Row = dt.NewRow();
-                        //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-
-                        //    dt_Row[header_ItemCode] = COLOR_MAT_CODE;
-
-                        //    dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
-
-                        //    dt_Row[header_From] = factory;
-                        //    dt_Row[header_To] = text.Production;
-
-
-                        //    dt_Row[header_Qty] = color_Material_Used_kg;
-
-                        //    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                        //    if (cbMorning.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "M";
-                        //    }
-                        //    else if (cbNight.Checked)
-                        //    {
-                        //        dt_Row[header_Shift] = "N";
-                        //    }
-
-                        //    dt.Rows.Add(dt_Row);
-                        //}
-
-                    }
-                }
-
-                #region process to in/out edit page
-
-                frmInOutEdit frm = new frmInOutEdit(dt, true);
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Normal;
-                frm.ShowDialog();//Item Edit
-
-                if (!frmInOutEdit.TrfSuccess)
-                {
-                    MessageBox.Show("Transfer failed or cancelled!");
-                }
-                else
-                {
-                    Close();
-                }
-                
-                #endregion
             }
         }
 

@@ -924,6 +924,110 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void LoadMaterialFormulaList(string itemCode)
+        {
+            if (DT_ITEM == null)
+            {
+                DT_ITEM = dalItem.Select();
+            }
+
+            DataTable dt_RawMat = NewRawMaterialList();
+
+            DataTable dt_MatFormula = dalItem.ItemMaterialFormulaSelect();
+
+            int rawIndex = 1;
+            string rawMaterialCode = "";
+
+            foreach (DataRow row in DT_ITEM.Rows)
+            {
+                if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                {
+
+                    string rawMaterial = row[dalItem.ItemMaterial].ToString();
+                    rawMaterialCode = rawMaterial;
+
+                    var newRawRow = dt_RawMat.NewRow();
+
+                    newRawRow[text.Header_Selection] = true;
+                    newRawRow[text.Header_Index] = rawIndex++;
+                    newRawRow[text.Header_ItemDescription] = rawMaterial;
+                    newRawRow[text.Header_ItemCode] = rawMaterial;
+                    newRawRow[text.Header_KGPERBAG] = 25;
+
+                    dt_RawMat.Rows.Add(newRawRow);
+
+
+                    
+
+                    //Load Color Material Info
+                    string colorMaterial = row[dalItem.ItemMBatch].ToString();
+                    string colorName = row[dalItem.ItemColor].ToString();
+                    decimal colorRate = decimal.TryParse(row[dalItem.ItemMBRate].ToString(), out colorRate) ? colorRate : 0;
+
+                    if (colorRate < 1)
+                    {
+                        colorRate *= 100;
+                    }
+
+                    colorRate = decimal.Round(colorRate, 0);
+
+                    lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
+                    COLOR_MAT_CODE = colorMaterial;
+                    txtItemColor.Text = colorName;
+                    txtColorMatUsage.Text = colorRate.ToString();
+
+
+                    break;
+
+                }
+            }
+
+
+            //get material formula data
+            foreach (DataRow row in dt_MatFormula.Rows)
+            {
+                if(itemCode == row[dalItem.ItemCode].ToString())
+                {
+                    if(rawMaterialCode != row[dalItem.MatCode].ToString())
+                    {
+                        var newRawRow = dt_RawMat.NewRow();
+
+                        newRawRow[text.Header_Selection] = true;
+                        newRawRow[text.Header_Index] = rawIndex++;
+                        newRawRow[text.Header_ItemDescription] = row[dalItem.MatCode].ToString();
+                        newRawRow[text.Header_ItemCode] = row[dalItem.MatCode].ToString();
+                        newRawRow[text.Header_KGPERBAG] = string.IsNullOrEmpty(row[dalItem.KGPerBag].ToString())? "25" : row[dalItem.KGPerBag].ToString();
+                        newRawRow[text.Header_Ratio] = row[dalItem.MatRatio].ToString();
+
+                        dt_RawMat.Rows.Add(newRawRow);
+                    }
+                    else
+                    {
+                        foreach(DataRow rowRaw in dt_RawMat.Rows)
+                        {
+                            if (rawMaterialCode == rowRaw[text.Header_ItemCode].ToString())
+                            {
+                                rowRaw[text.Header_KGPERBAG] = string.IsNullOrEmpty(row[dalItem.KGPerBag].ToString()) ? "25" : row[dalItem.KGPerBag].ToString();
+                                rowRaw[text.Header_Ratio] = row[dalItem.MatRatio].ToString();
+                            }
+                        }
+                    }
+                }
+            }
+
+            dgvRawMatList.DataSource = dt_RawMat;
+            RawMatRatioAdjustment();
+
+            dgvUIEdit(dgvRawMatList);
+            RawMatListCellFormatting(dgvRawMatList);
+            dgvRawMatList.ClearSelection();
+
+            if (dgvRawMatList.Rows.Count >= 1)
+            {
+                dgvRawMatList.Rows[0].Cells[text.Header_RoundUp_ToBag].Value = true;
+            }
+        }
+
         private void LoadEditingMaterialList()
         {
             MATERIAL_DATA_UPDATING = true;
@@ -1504,7 +1608,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             PRO_INFO_LOADING = false;
-            LoadSingleMaterialList(itemCode);
+            LoadMaterialFormulaList(itemCode);
 
             string ItemListTitle = "Item List";
 
@@ -1600,7 +1704,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             PRO_INFO_LOADING = false;
-            LoadSingleMaterialList(itemCode);
+
+            LoadMaterialFormulaList(itemCode);
 
             string ItemListTitle = "Item List";
 
@@ -1649,6 +1754,8 @@ namespace FactoryManagementSoftware.UI
             {
                 int selectedRowCount = 0;
 
+                int totalPercentage = 0;
+
                 foreach (DataGridViewRow row in dgvRawMatList.Rows)
                 {
                     bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
@@ -1656,6 +1763,7 @@ namespace FactoryManagementSoftware.UI
                     if (selection)
                     {
                         selectedRowCount++;
+                        totalPercentage += int.TryParse(row.Cells[text.Header_Ratio].Value.ToString(), out int ratio) ? ratio : 0;
                     }
                 }
 
@@ -1681,38 +1789,42 @@ namespace FactoryManagementSoftware.UI
                 int avgRatio = 0;
                 int firstRatio = 0;
 
-                if(selectedRowCount > 0)
+                if(totalPercentage != 100)
                 {
-                     avgRatio = 100 / selectedRowCount;
-
-                     firstRatio = 100 - (avgRatio * (selectedRowCount - 1));
-                }
-              
-
-                bool firstselectedRowDataUpdated = false;
-
-                for (int i = 0; i < dgvRawMatList.Rows.Count; i++)
-                {
-                    bool selection = bool.TryParse(dgvRawMatList.Rows[i].Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
-
-                    if (selection)
+                    if (selectedRowCount > 0)
                     {
-                        if (!firstselectedRowDataUpdated)
-                        {
-                            dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = firstRatio;
+                        avgRatio = 100 / selectedRowCount;
 
-                            firstselectedRowDataUpdated = true;
+                        firstRatio = 100 - (avgRatio * (selectedRowCount - 1));
+                    }
+
+
+                    bool firstselectedRowDataUpdated = false;
+
+                    for (int i = 0; i < dgvRawMatList.Rows.Count; i++)
+                    {
+                        bool selection = bool.TryParse(dgvRawMatList.Rows[i].Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
+
+                        if (selection)
+                        {
+                            if (!firstselectedRowDataUpdated)
+                            {
+                                dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = firstRatio;
+
+                                firstselectedRowDataUpdated = true;
+                            }
+                            else
+                            {
+                                dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = avgRatio;
+                            }
                         }
                         else
                         {
-                            dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = avgRatio;
+                            dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = 0;
                         }
                     }
-                    else
-                    {
-                        dgvRawMatList.Rows[i].Cells[text.Header_Ratio].Value = 0;
-                    }
                 }
+              
 
                 CalculateMaxShot();
             }
@@ -6665,6 +6777,8 @@ namespace FactoryManagementSoftware.UI
 
                     uItem.item_updtd_date = DateTime.Now;
                     uItem.item_updtd_by = MainDashboard.USER_ID;
+                    uItem.added_date = uItem.item_updtd_date;
+                    uItem.added_by = MainDashboard.USER_ID;
 
                     foreach (DataGridViewRow row in dgv.Rows)
                     {
@@ -6687,6 +6801,20 @@ namespace FactoryManagementSoftware.UI
                                 if (dalItem.rawMatUpdateAndHistoryRecord(uItem))
                                 {
                                     MessageBox.Show(itemCode + "'s raw material info updated!");
+
+                                    dalItem.ItemMaterialFormulaRemove(uItem);
+
+                                    //save item material formula
+                                    foreach (DataGridViewRow rowMat in dgvRawMatList.Rows)
+                                    {
+                                        uItem.mat_code = rowMat.Cells[text.Header_ItemCode].Value.ToString();
+                                        uItem.mat_ratio = float.TryParse(rowMat.Cells[text.Header_Ratio].Value.ToString(), out float f) ? f : 0;
+                                        uItem.kg_per_bag = float.TryParse(rowMat.Cells[text.Header_KGPERBAG].Value.ToString(), out f) ? f : 25;
+                                        uItem.mat_formula_group = 1;
+
+                                        dalItem.ItemMaterialFormulaInsert(uItem);
+
+                                    }
                                 }
                              
                             }
@@ -6697,12 +6825,17 @@ namespace FactoryManagementSoftware.UI
 
                                 return;
                             }
+
+                           
                         }
                         else
                         {
                             MessageBox.Show("Invalid Item Code found!");
                         }
                     }
+
+
+                    
                 }
                 else
                 {

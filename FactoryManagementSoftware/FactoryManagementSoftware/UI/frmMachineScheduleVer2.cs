@@ -1065,6 +1065,7 @@ namespace FactoryManagementSoftware.UI
         }
         private void New_LoadMacSchedule()
         {
+            lblSmallFontRow.Visible = true;
             if (DATE_COLLISION_FOUND || DATA_TO_UPDATE)
             {
                 string message = "You have unsaved changes!\n\nAre you sure you want to process to load Machine Schedule ?";
@@ -5551,6 +5552,44 @@ private void dgvMacSchedule_MouseClick(object sender, MouseEventArgs e)
         private void dgvMacSchedule_CellMouseDoubleClick(object sender, DataGridViewCellMouseEventArgs e)
         {
 
+        }
+
+        private void dgvSmallView(DataGridView dgv)
+        {
+            frmLoading.ShowLoadingScreen();
+            foreach (DataGridViewRow row in dgv.Rows)
+            {
+                if (!string.IsNullOrEmpty(row.Cells[text.Header_ItemCode].Value.ToString()))
+                    row.Height = 38;  
+            }
+
+            dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            dgv.DefaultCellStyle.Font = new Font("Segoe UI", 7.5F, FontStyle.Regular);
+
+            //dgv.Columns[text.Header_Job_Purpose].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+            //dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
+            //dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_TargetQty].DefaultCellStyle.Font = new Font("Segoe UI", 11F, FontStyle.Regular);
+            //dgv.Columns[text.Header_RawMat_Qty].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_JobNo].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_ProducedQty].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+            //dgv.Columns[text.Header_ColorMat_KG].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+
+            frmLoading.CloseForm();
+
+            lblSmallFontRow.Visible = false;
+        }
+        private void label7_Click(object sender, EventArgs e)
+        {
+            dgvSmallView(dgvMacSchedule);
+        }
+
+        private void label7_Click_1(object sender, EventArgs e)
+        {
+            MainDashboard.MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = true;
+            MainDashboard.OpenOldVersionMachineSchedule();
+            Close();
         }
     }
 }

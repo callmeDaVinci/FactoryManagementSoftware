@@ -43,7 +43,7 @@ namespace FactoryManagementSoftware.UI
 
             if (userPermission >= MainDashboard.ACTION_LVL_TWO)
             {
-                btnPlan.Show();
+                //btnPlan.Show();
             }
             else
             {
@@ -3547,6 +3547,11 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-      
+        private void label7_Click(object sender, EventArgs e)
+        {
+            MainDashboard.MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = false;
+            MainDashboard.OpenNewVersionMachineSchedule();
+            Close();
+        }
     }
 }

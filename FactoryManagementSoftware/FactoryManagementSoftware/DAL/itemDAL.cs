@@ -60,6 +60,9 @@ namespace FactoryManagementSoftware.DAL
         public string ItemUpdateDate { get; } = "item_updtd_date";
         public string ItemUpdateBy { get; } = "item_updtd_by";
 
+        public string AddedDate { get; } = "added_date";
+        public string AddedBy { get; } = "added_by";
+
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
 
@@ -89,6 +92,11 @@ namespace FactoryManagementSoftware.DAL
         public string ItemRWShot { get; } = "item_rw_shot";
         public string MouldDefaultSelection { get; } = "default_selection";
         public string Removed { get; } = "removed";
+        public string MatCode { get; } = "mat_code";
+        public string MatRatio { get; } = "mat_ratio";
+        public string MatGroup { get; } = "group_no";
+        public string KGPerBag { get; } = "kg_per_bag";
+
 
 
         #endregion
@@ -172,6 +180,39 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable ItemMaterialFormulaSelect()
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+            try
+            {
+                //sql query to get data from database
+                String sql = "SELECT * FROM tbl_item_mat_formula ORDER BY item_code ASC";
+
+                //for executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+            }
+            catch (Exception ex)
+            {
+                //throw message if any error occurs
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
         public DataTable MouldItemNonRemovedSelect()
         {
             //static methodd to connect database
@@ -789,6 +830,70 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_added_by", u.item_added_by);
                 cmd.Parameters.AddWithValue("@item_assembly", u.item_assembly);
                 cmd.Parameters.AddWithValue("@item_production", u.item_production);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemMaterialFormulaInsert(itemBLL u)
+        {
+
+            
+
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"INSERT INTO tbl_item_mat_formula 
+                            (" + ItemCode + ","
+                            + MatCode + ","
+                            + MatRatio + ","
+                            + MatGroup + ","
+                            + KGPerBag + ","
+                            + AddedDate + ","
+                            + AddedBy + ") VALUES" +
+                            "(@item_code," +
+                            "@mat_code," +
+                            "@mat_ratio," +
+                            "@mat_formula_group," +
+                            "@kg_per_bag," +
+                            "@added_date," +
+                            "@added_by)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@mat_code", u.mat_code);
+                cmd.Parameters.AddWithValue("@mat_ratio", u.mat_ratio);
+                cmd.Parameters.AddWithValue("@kg_per_bag", u.kg_per_bag);
+                cmd.Parameters.AddWithValue("@mat_formula_group", u.mat_formula_group);
+                cmd.Parameters.AddWithValue("@added_date", u.added_date);
+                cmd.Parameters.AddWithValue("@added_by", u.added_by);
 
                 conn.Open();
 
@@ -2795,6 +2900,46 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Delete data from Database
+
+        public bool ItemMaterialFormulaRemove(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "DELETE FROM tbl_item_mat_formula WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+         
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool MouldItemRemove(itemBLL u)
         {

@@ -164,7 +164,7 @@ namespace FactoryManagementSoftware.UI
 
                 double balGoodsQty = goodsPcs - (int)bagQty* goodsPerBag;
 
-                txtBagQty.Text = bagQty.ToString("0");
+                txtBagQty.Text = ((int)bagQty).ToString();
                 txtGoodsPcs.Text = balGoodsQty.ToString("0");
 
                 //balQtyUpdate();
@@ -197,7 +197,7 @@ namespace FactoryManagementSoftware.UI
 
                 double balBodyQty = bodyPcs - (int)containerQty * bodyPerContainer;
 
-                txtContainerQty.Text = containerQty.ToString("0");
+                txtContainerQty.Text = ((int)containerQty).ToString();
                 txtBodyPcs.Text = balBodyQty.ToString("0");
 
                 double balqty = containerQty % 1;

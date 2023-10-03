@@ -279,6 +279,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerPartName, typeof(string));
             dt.Columns.Add(headerPartCode, typeof(string));
             dt.Columns.Add(headerColorMat, typeof(string));
+            dt.Columns.Add(text.Header_ColorMatCode, typeof(string));
             dt.Columns.Add(headerPartWeight, typeof(string));
 
             if(cbIncludeProInfo.Checked)
@@ -397,6 +398,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 dgv.Columns[headerPartCode].Frozen = true;
+                dgv.Columns[text.Header_ColorMatCode].Visible = false;
 
                 dgv.Columns[headerBal1].HeaderCell.Style.BackColor = Color.LightYellow;
                 dgv.Columns[headerBal1].DefaultCellStyle.BackColor = Color.LightYellow;
@@ -1711,7 +1713,7 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = "SORT BY";
-            cmb.Text = headerBal3;
+            cmb.SelectedIndex = -1;
         }
 
         
@@ -2478,6 +2480,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[text.Header_ColorMatCode] = row[dalItem.ItemMBatch].ToString();
+
                         dt_Row[headerPartWeight] = (uData.pw_per_shot / uData.cavity).ToString("0.##") + " (" + (uData.rw_per_shot / uData.cavity).ToString("0.##") + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
@@ -2623,6 +2627,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[text.Header_ColorMatCode] = row[dalItem.ItemMBatch].ToString();
                         dt_Row[headerPartWeight] = (uData.pw_per_shot / uData.cavity).ToString("0.##") + " (" + (uData.rw_per_shot / uData.cavity).ToString("0.##") + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
@@ -4142,6 +4147,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[text.Header_ColorMatCode] = row[dalItem.ItemMBatch].ToString();
                         dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
@@ -4294,6 +4300,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uData.part_code;
                         dt_Row[headerPartName] = uData.part_name;
                         dt_Row[headerColorMat] = uData.color_mat;
+                        dt_Row[text.Header_ColorMatCode] = row[dalItem.ItemMBatch].ToString();
                         dt_Row[headerPartWeight] = uData.pw_per_shot / uData.cavity + " (" + (uData.rw_per_shot / uData.cavity) + ")";
                         dt_Row[headerReadyStock] = uData.ready_stock;
                         dt_Row[headerEstimate] = uData.estimate;
@@ -5628,6 +5635,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerPartCode] = uChildData.part_code;
                         dt_Row[headerPartName] = uChildData.part_name;
                         dt_Row[headerColorMat] = uChildData.color_mat;
+                        dt_Row[text.Header_ColorMatCode] = row_Item[dalItem.ItemMBatch].ToString();
                         dt_Row[headerPartWeight] = (uChildData.pw_per_shot / uChildData.cavity).ToString("0.##") + " (" + (uChildData.rw_per_shot / uChildData.cavity).ToString("0.##") + ")";
 
 
@@ -7490,6 +7498,14 @@ namespace FactoryManagementSoftware.UI
                     if(currentHeader == headerReadyStock)
                     {
                         ShowStockLocation(dgv.Rows[rowIndex].Cells[headerPartCode].Value.ToString());
+                    }
+                    else if (currentHeader == headerRawMat)
+                    {
+                        ShowStockLocation(dgv.Rows[rowIndex].Cells[headerRawMat].Value.ToString());
+                    }
+                    else if (currentHeader == headerColorMat)
+                    {
+                        ShowStockLocation(dgv.Rows[rowIndex].Cells[text.Header_ColorMatCode].Value.ToString());
                     }
                     else
                     {

@@ -11,6 +11,9 @@ namespace FactoryManagementSoftware.BLL
         public int item_ready_stock { get; set; }
         public int standard_packing_qty { get; set; }
 
+        public string mat_code { get; set; }//item category
+        public float mat_ratio { get; set; }
+
         public string item_cat { get; set; }//item category
         public string item_material { get; set; } = null;//item raw material
         public string item_recycle { get; set; } = null;
@@ -63,6 +66,11 @@ namespace FactoryManagementSoftware.BLL
 
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }
+
+        public DateTime added_date { get; set; }
+        public int added_by { get; set; }
+        public int mat_formula_group { get; set; }
+        public float kg_per_bag { get; set; }
 
         public int item_added_by { get; set; }
         public DateTime item_updtd_date { get; set; }

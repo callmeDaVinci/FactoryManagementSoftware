@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.btnExcel = new System.Windows.Forms.Button();
@@ -78,6 +78,7 @@
             this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -109,14 +110,14 @@
             this.dgvSchedule.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvSchedule.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.Gainsboro;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.Gainsboro;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Courier New", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvSchedule.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvSchedule.GridColor = System.Drawing.Color.Black;
             this.dgvSchedule.Location = new System.Drawing.Point(3, 251);
@@ -180,6 +181,7 @@
             this.btnPlan.TabIndex = 112;
             this.btnPlan.Text = "PLANNING";
             this.btnPlan.UseVisualStyleBackColor = false;
+            this.btnPlan.Visible = false;
             this.btnPlan.Click += new System.EventHandler(this.btnPlan_Click);
             // 
             // btnFilterApply
@@ -685,6 +687,7 @@
             this.btnMatList.TabIndex = 118;
             this.btnMatList.Text = "PREPARATION";
             this.btnMatList.UseVisualStyleBackColor = false;
+            this.btnMatList.Visible = false;
             this.btnMatList.Click += new System.EventHandler(this.btnMatList_Click);
             // 
             // tableLayoutPanel8
@@ -706,22 +709,24 @@
             // 
             this.tlpMainSchedule.ColumnCount = 1;
             this.tlpMainSchedule.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpMainSchedule.Controls.Add(this.label7, 0, 5);
             this.tlpMainSchedule.Controls.Add(this.tlpButton, 0, 0);
             this.tlpMainSchedule.Controls.Add(this.dgvSchedule, 0, 4);
             this.tlpMainSchedule.Controls.Add(this.groupBox1, 0, 1);
             this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel8, 0, 2);
             this.tlpMainSchedule.Controls.Add(this.tableLayoutPanel10, 0, 3);
             this.tlpMainSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpMainSchedule.Location = new System.Drawing.Point(20, 20);
-            this.tlpMainSchedule.Margin = new System.Windows.Forms.Padding(20);
+            this.tlpMainSchedule.Location = new System.Drawing.Point(20, 10);
+            this.tlpMainSchedule.Margin = new System.Windows.Forms.Padding(20, 10, 20, 10);
             this.tlpMainSchedule.Name = "tlpMainSchedule";
-            this.tlpMainSchedule.RowCount = 5;
+            this.tlpMainSchedule.RowCount = 6;
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 120F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainSchedule.Size = new System.Drawing.Size(1308, 681);
+            this.tlpMainSchedule.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpMainSchedule.Size = new System.Drawing.Size(1308, 701);
             this.tlpMainSchedule.TabIndex = 117;
             // 
             // tableLayoutPanel10
@@ -837,6 +842,22 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1348, 721);
             this.tableLayoutPanel7.TabIndex = 168;
             // 
+            // label7
+            // 
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label7.AutoSize = true;
+            this.label7.BackColor = System.Drawing.Color.Transparent;
+            this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label7.ForeColor = System.Drawing.Color.Gray;
+            this.label7.Location = new System.Drawing.Point(1203, 685);
+            this.label7.Margin = new System.Windows.Forms.Padding(0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(105, 12);
+            this.label7.TabIndex = 171;
+            this.label7.Text = "Switch To New Version";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
             // frmMachineSchedule
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
@@ -873,6 +894,7 @@
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tlpMainSchedule.ResumeLayout(false);
+            this.tlpMainSchedule.PerformLayout();
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -930,5 +952,6 @@
         private System.Windows.Forms.Label lblTotalUsed;
         private System.Windows.Forms.Label lblTotalToUse;
         private System.Windows.Forms.Label lblMatStock;
+        private System.Windows.Forms.Label label7;
     }
 }

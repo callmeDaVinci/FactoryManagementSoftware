@@ -45,7 +45,7 @@ namespace FactoryManagementSoftware.UI
 
 
         static public int USER_ID = -1;
-
+        static public bool MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = false;
         static public readonly int ACTION_LVL_ONE = 1;
         static public readonly int ACTION_LVL_TWO = 2;
         static public readonly int ACTION_LVL_THREE = 3;
@@ -55,14 +55,16 @@ namespace FactoryManagementSoftware.UI
         userDAL dalUser = new userDAL();
         Text text = new Text();
         Tool tool = new Tool();
-        
+
+        public static MainDashboard Instance { get; private set; }
 
         public MainDashboard(int userID)
         {
 
             InitializeComponent();
+            Instance = this;
             USER_ID = userID;
-
+            MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = false;
             int userPermission = dalUser.getPermissionLevel(USER_ID);
             string userName = dalUser.getUsername(USER_ID);
 
@@ -678,47 +680,55 @@ namespace FactoryManagementSoftware.UI
 
         private void productionToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (!NEWProductionFormOpen)
-            //{
-            //    frmLoading.ShowLoadingScreen();
-            //    frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
-            //    {
-            //        MdiParent = this,
-            //        StartPosition = FormStartPosition.CenterScreen,
-            //        WindowState = FormWindowState.Maximized
-            //    };
-            //    frm.Show();
-            //    NEWProductionFormOpen = true;
-            //    frmLoading.CloseForm();
-            //}
-            //else
-            //{
-            //    if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
-            //    {
-            //        Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
-            //    }
-            //}
+            if(MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION)
+            {
+                if (!ProductionFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmMachineSchedule frm = new frmMachineSchedule
+                    {
+                        MdiParent = this,
+                        StartPosition = FormStartPosition.CenterScreen,
+                        WindowState = FormWindowState.Maximized
+                    };
+                    frm.Show();
+                    ProductionFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
+                    {
+                        Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+                    }
+                }
+            }
+            else
+            {
+                if (!NEWProductionFormOpen)
+                {
+                    frmLoading.ShowLoadingScreen();
+                    frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+                    {
+                        MdiParent = this,
+                        StartPosition = FormStartPosition.CenterScreen,
+                        WindowState = FormWindowState.Maximized
+                    };
+                    frm.Show();
+                    NEWProductionFormOpen = true;
+                    frmLoading.CloseForm();
+                }
+                else
+                {
+                    if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+                    {
+                        Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+                    }
+                }
+            }
+          
 
-            //if (!ProductionFormOpen)
-            //{
-            //    frmLoading.ShowLoadingScreen();
-            //    frmMachineSchedule frm = new frmMachineSchedule
-            //    {
-            //        MdiParent = this,
-            //        StartPosition = FormStartPosition.CenterScreen,
-            //        WindowState = FormWindowState.Maximized
-            //    };
-            //    frm.Show();
-            //    ProductionFormOpen = true;
-            //    frmLoading.CloseForm();
-            //}
-            //else
-            //{
-            //    if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
-            //    {
-            //        Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
-            //    }
-            //}
+           
         }
 
         private void dAILYToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1247,6 +1257,54 @@ namespace FactoryManagementSoftware.UI
                     Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
                 }
 
+            }
+        }
+
+        static public void OpenOldVersionMachineSchedule()
+        {
+            if (!ProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineSchedule frm = new frmMachineSchedule
+                {
+                    MdiParent = Instance,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                ProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineSchedule>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineSchedule>().First().BringToFront();
+                }
+            }
+        }
+
+        static public void OpenNewVersionMachineSchedule()
+        {
+            if (!NEWProductionFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
+                {
+                    MdiParent = Instance,
+                    StartPosition = FormStartPosition.CenterScreen,
+                    WindowState = FormWindowState.Maximized
+                };
+                frm.Show();
+                NEWProductionFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmMachineScheduleVer2>().Count() >= 1)
+                {
+                    Application.OpenForms.OfType<frmMachineScheduleVer2>().First().BringToFront();
+                }
             }
         }
 
