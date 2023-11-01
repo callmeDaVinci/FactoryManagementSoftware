@@ -11,6 +11,7 @@ namespace FactoryManagementSoftware.DAL
     {
         #region data string name getter
         public string jobNo { get; } = "plan_id";
+        public string ProductionRemark { get; } = "production_remark";
         public string planAddedDate { get; } = "plan_added_date";
         public string planAddedBy { get; } = "plan_added_by";
         public string planUpdatedDate { get; } = "plan_updated_date";
@@ -743,6 +744,55 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Checked", u.Checked);
                 cmd.Parameters.AddWithValue("@CheckedBy", u.CheckedBy);
                 cmd.Parameters.AddWithValue("@CheckedDate", u.CheckedDate);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool CheckedRemarkUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                checked=@Checked,
+                                production_remark=@CheckedRemark,
+                                check_by=@CheckedBy,
+                                check_date=@CheckedDate
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@Checked", u.Checked);
+                cmd.Parameters.AddWithValue("@CheckedBy", u.CheckedBy);
+                cmd.Parameters.AddWithValue("@CheckedDate", u.CheckedDate);
+                cmd.Parameters.AddWithValue("@CheckedRemark", u.CheckedRemark);
 
                 conn.Open();
 

@@ -426,7 +426,13 @@ namespace FactoryManagementSoftware.UI
                     {
                         int n = dgvFactoryStock.Rows.Add();
                         dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+
+                        float facStock = Convert.ToSingle(stock["stock_qty"].ToString());
+                        facStock = (float)Math.Truncate(facStock * 1000) / 1000;
+
+                        string facStock_string = facStock.ToString("0.##");
+
+                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = facStock_string;
 
                     }
 
@@ -469,7 +475,7 @@ namespace FactoryManagementSoftware.UI
 
             dgvTotal.Rows.Clear();
             dgvTotal.Rows.Add();
-            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.00");
+            dgvTotal.Rows[0].Cells["Total"].Value = totalStock.ToString("0.##");
             dgvTotal.ClearSelection();
 
 
@@ -587,6 +593,24 @@ namespace FactoryManagementSoftware.UI
 
                     string itemDescription = tool.getItemNameAndCodeString(itemCode, itemName);
                     row[text.Header_ItemDescription] = itemDescription;
+
+                    if(sortedDt.Columns.Contains(daltrfHist.Balance))
+                    {
+                        float balance = float.TryParse(row[daltrfHist.Balance].ToString(), out balance) ? balance : 0;
+
+                        balance = (float)Math.Truncate(balance * 1000) / 1000;
+
+                        row[text.Header_Balance] = balance.ToString("0.##");
+                    }
+
+                    if (sortedDt.Columns.Contains(daltrfHist.TrfQty))
+                    {
+                        float trfqty = Convert.ToSingle(row[daltrfHist.TrfQty].ToString());
+
+                        trfqty = (float)Math.Truncate(trfqty * 1000) / 1000;
+
+                        row[daltrfHist.TrfQty] = trfqty.ToString("0.##");
+                    }
 
                 }
 
@@ -756,6 +780,16 @@ namespace FactoryManagementSoftware.UI
 
                     string itemDescription = tool.getItemNameAndCodeString(itemCode, itemName);
                     row[text.Header_ItemDescription] = itemDescription;
+
+                    if(dt.Columns.Contains(daltrfHist.Balance))
+                    {
+                        float balance = Convert.ToSingle(row[daltrfHist.Balance].ToString());
+
+                        balance = (float)Math.Truncate(balance * 1000) / 1000;
+
+                        row[text.Header_Balance] = balance.ToString("0.##");
+                    }
+                  
 
                 }
 
@@ -2148,7 +2182,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00#");
                         dgv.Rows[rowIndex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
 
                         loadStockList(editingItemCode);

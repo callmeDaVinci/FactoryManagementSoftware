@@ -377,7 +377,7 @@ namespace FactoryManagementSoftware.UI
 
                     if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
                     {
-                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out (qty));
+                        float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out qty);
                     }
 
                     if (qty < 0)
@@ -419,7 +419,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         int n = dgvFactoryStock.Rows.Add();
                         dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00");
+                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = Convert.ToSingle(stock["stock_qty"]).ToString("0.00#");
 
                     }
 
@@ -1036,7 +1036,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00");
+                        dgv.Rows[rowIndex].Cells[dalItem.ItemStock].Value = dalItem.getStockQty(editingItemCode).ToString("0.00#");
                         dgv.Rows[rowIndex].Cells[dalItem.ItemOrd].Value = dalItem.getOrderQty(editingItemCode);
 
                         loadStockList(editingItemCode);

@@ -735,7 +735,7 @@ namespace FactoryManagementSoftware.UI
         {
             myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-            if (myconnstrng == text.DB_JunPC || myconnstrng == text.DB_Semenyih)
+            if (myconnstrng == text.DB_Semenyih)
             {
                 if (!NewDailyJobSheetFormOpenVer3)
                 {
@@ -1377,6 +1377,63 @@ namespace FactoryManagementSoftware.UI
                 {
                     Application.OpenForms.OfType<frmSupplier>().First().BringToFront();
                 }
+            }
+        }
+
+        private void semenyihToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+            if (!NewDailyJobSheetFormOpenVer3)
+            {
+                frmLoading.ShowLoadingScreen();
+
+                frmProductionRecordVer3 frm = new frmProductionRecordVer3();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+
+                NewDailyJobSheetFormOpenVer3 = true;
+
+                frmLoading.CloseForm();
+
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordVer3>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
+                }
+
+            }
+
+          
+        }
+
+        private void oUGToolStripMenuItem_Click_1(object sender, EventArgs e)
+        {
+            if (!NewDailyJobSheetFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+
+                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                NewDailyJobSheetFormOpen = true;
+
+                frmLoading.CloseForm();
+
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
+                }
+
             }
         }
     }

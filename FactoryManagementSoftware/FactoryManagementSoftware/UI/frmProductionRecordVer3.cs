@@ -1304,10 +1304,11 @@ namespace FactoryManagementSoftware.UI
 
                 DT_JOB_DAILY_RECORD = dalProRecord.Select();
             }
-
         }
+        
         private void cbFinalDataReview_CheckedChanged(object sender, EventArgs e)
         {
+
             if(!stopCheckedChange && loaded)
             {
                 int userID = MainDashboard.USER_ID;

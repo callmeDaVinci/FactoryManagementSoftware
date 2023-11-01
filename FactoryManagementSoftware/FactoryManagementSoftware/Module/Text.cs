@@ -47,6 +47,7 @@ namespace FactoryManagementSoftware.Module
 
         public string AddItem { get; } = "AddItem";
         public string AddTransaction { get; } = "Add New Transaction";
+        public string UsingRecycledMaterial { get; } = "Using Recycled Material";
         public string ItemEdit { get; } = "ItemEdit";
         public string ItemDelete { get; } = "ItemDelete";
 
@@ -244,6 +245,7 @@ namespace FactoryManagementSoftware.Module
         
         public string Factory_Store { get; } = "STORE";
         public string Factory_Semenyih { get; } = "Semenyih";
+        public string Factory_OUG { get; } = "OUG";
         public string Factory_Bina { get; } = "BINA";
 
 
@@ -401,6 +403,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_In_KG_Piece { get; } = "IN(KG/PIECE)";
         public string Header_Used_KG_Piece { get; } = "USED(KG/PIECE)";
         public string Header_DirectOut_KG_Piece { get; } = "DIRECT OUT(KG/PIECE)";
+        public string Header_Balance { get; } = "balance";
         public string Header_BalStock { get; } = "Bal. Stock";
         public string Header_ReadyStock { get; } = "Ready Stock";
         public string Header_ReservedForOtherJobs { get; } = "Reserved For Other Jobs";

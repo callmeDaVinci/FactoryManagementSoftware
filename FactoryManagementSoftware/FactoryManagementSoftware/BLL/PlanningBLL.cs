@@ -76,6 +76,7 @@ namespace FactoryManagementSoftware.BLL
 
         public DateTime CheckedDate { get; set; }
         public int CheckedBy { get; set; }
+        public string CheckedRemark { get; set; }
 
 
 

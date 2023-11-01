@@ -4,7 +4,9 @@ using FactoryManagementSoftware.UI;
 using System;
 using System.Configuration;
 using System.Data;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.SqlClient;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
 //using static System.Net.Mime.MediaTypeNames;
 
@@ -2543,12 +2545,28 @@ namespace FactoryManagementSoftware.DAL
             float totalStock = 0;
             facStockDAL dalStock = new facStockDAL();
             itemBLL uItem = new itemBLL();
+            facStockDAL dalFacStock = new facStockDAL();
 
             DataTable dtStock = dalStock.Select(itemCode);
 
             foreach (DataRow stock in dtStock.Rows)
             {
-                totalStock += Convert.ToSingle(stock["stock_qty"].ToString());
+                decimal facStock = Convert.ToDecimal(stock["stock_qty"].ToString());
+
+                decimal multiplied = facStock * 10000m;
+                decimal integerPart = Math.Truncate(multiplied);
+
+                if(multiplied != integerPart)
+                {
+                    facStock = Math.Truncate(facStock * 1000) / 1000;
+
+                    if(!dalFacStock.facStockSet(stock["fac_id"].ToString(), itemCode,(float)facStock, stock["stock_unit"].ToString()))
+                    {
+                        MessageBox.Show("Failed to make decimal error correction, please contact Jun Ong.");
+                    }
+                }
+
+                totalStock += (float) facStock;
             }
 
             //Update data
