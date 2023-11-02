@@ -7693,11 +7693,16 @@ namespace FactoryManagementSoftware.UI
 
                 
                 int monthFrom_INT = int.TryParse(cmbForecastFrom.Text, out monthFrom_INT) ? monthFrom_INT : 0;
+
+                monthFrom_INT = DateTime.ParseExact(cmbForecastFrom.Text, "MMMM", CultureInfo.CurrentCulture).Month;
+
                 int monthTo_INT = int.TryParse(cmbForecastTo.Text, out monthTo_INT) ? monthTo_INT : 0;
+
+                monthTo_INT = DateTime.ParseExact(cmbForecastTo.Text, "MMMM", CultureInfo.CurrentCulture).Month;
 
                 int yearFrom_INT = DateTime.Now.Year;
 
-                int yearTo_INT = monthTo_INT < monthFrom_INT ? yearFrom_INT++ : yearFrom_INT;
+                int yearTo_INT = monthTo_INT < monthFrom_INT ? yearFrom_INT+1 : yearFrom_INT;
 
                 DateTime Start = DateTime.Parse(1 + cmbForecastFrom.Text + yearFrom_INT);
                 DateTime End = DateTime.Parse(1 + cmbForecastTo.Text + yearTo_INT);
@@ -7861,7 +7866,7 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_Description] = Desciption;
                         newRow[text.Header_EditedBy] = new userDAL().getUsername(int.TryParse(row[dalHistory.HistoryBy].ToString(), out int userId) ? userId : 0);
                         newRow[text.Header_Customer] = historyCustomer;
-                        newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+                        newRow[text.Header_Month] = HistoryDate.ToString("yyyy/MM");
 
                         value = value.Replace(" ", "");
 
