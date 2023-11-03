@@ -2855,29 +2855,91 @@ namespace FactoryManagementSoftware.UI
 
                         if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
                         {
-                            dt_Row = dt.NewRow();
-                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                            dt_Row[header_ItemCode] = RAW_MAT_CODE;
-                            dt_Row[header_Cat] = text.Cat_RawMat;
-
-                            dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
-                            dt_Row[header_To] = text.Production;
-
-
-                            dt_Row[header_Qty] = raw_Material_Used_kg;
-
-                            dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
-
-                            if (cbMorning.Checked)
+                            if(RAW_MAT_CODE == "TPE TSL H50 + H80" ||  RAW_MAT_CODE == "TPE TSL H60 + H80")
                             {
-                                dt_Row[header_Shift] = "M";
-                            }
-                            else if (cbNight.Checked)
-                            {
-                                dt_Row[header_Shift] = "N";
-                            }
+                                string mixRawMat1 = "TPE TSL H50";
 
-                            dt.Rows.Add(dt_Row);
+                                if (RAW_MAT_CODE == "TPE TSL H60 + H80")
+                                {
+                                    mixRawMat1 = "TPE TSL 60N";
+                                }
+                                string mixRawMat2 = "TPE TSL H80";
+
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+
+
+                                dt_Row[header_ItemCode] = mixRawMat1;
+                                dt_Row[header_Cat] = text.Cat_RawMat;
+
+                                dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                                dt_Row[header_To] = text.Production;
+
+                                dt_Row[header_Qty] = (float)Math.Round(raw_Material_Used_kg / 2, 2);
+
+                                dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+                                dt.Rows.Add(dt_Row);
+
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = mixRawMat2;
+                                dt_Row[header_Cat] = text.Cat_RawMat;
+
+                                dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                                dt_Row[header_To] = text.Production;
+
+                                dt_Row[header_Qty] = (float)Math.Round(raw_Material_Used_kg / 2, 2);
+
+                                dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+                                dt.Rows.Add(dt_Row);
+                            }
+                            else
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = RAW_MAT_CODE;
+                                dt_Row[header_Cat] = text.Cat_RawMat;
+
+                                dt_Row[header_From] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_Factory].Value.ToString();
+                                dt_Row[header_To] = text.Production;
+
+
+                                dt_Row[header_Qty] = raw_Material_Used_kg;
+
+                                dt_Row[header_JobNo] = dgvItemList.Rows[dgvItemList.CurrentCell.RowIndex].Cells[header_JobNo].Value.ToString();
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+                                dt.Rows.Add(dt_Row);
+                            }
+                          
                         }
 
                         if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
