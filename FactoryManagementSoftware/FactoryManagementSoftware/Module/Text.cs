@@ -557,6 +557,7 @@ namespace FactoryManagementSoftware.Module
         public string str_InsufficientQty { get; } = " INSUFFICIENT QTY";
         public string str_RequiredQty { get; } = " REQUIRED QTY";
 
+        public string job_end_production { get; } = "[END PRODUCTION]";
 
         public string Header_Data { get; } = "DATA DB";
         public string Header_DataName { get; } = "DATA";

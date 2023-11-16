@@ -735,7 +735,7 @@ namespace FactoryManagementSoftware.UI
         {
             myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-            if (myconnstrng == text.DB_Semenyih)
+            if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
             {
                 if (!NewDailyJobSheetFormOpenVer3)
                 {

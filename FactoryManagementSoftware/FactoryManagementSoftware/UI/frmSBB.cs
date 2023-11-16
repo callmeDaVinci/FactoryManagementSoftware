@@ -2099,7 +2099,10 @@ namespace FactoryManagementSoftware.UI
 
 
             dt_SBBCustSearchWithTypeAndSize = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);//26
+
+            if(dt_SBBCustSearchWithTypeAndSize.Rows.Count > 0)
             dt_SBBCustSearchWithTypeAndSize.DefaultView.Sort = dalSBB.TypeName + " ASC," + dalSBB.SizeNumerator + " ASC," + dalSBB.SizeWeight + "1 ASC";
+
             dt_SBBCustSearchWithTypeAndSize = dt_SBBCustSearchWithTypeAndSize.DefaultView.ToTable();
 
             if(dt_Item == null || dt_Item.Rows.Count < 0)
@@ -3697,19 +3700,19 @@ namespace FactoryManagementSoftware.UI
             //}
 
 
-            int count = Application.OpenForms.OfType<frmSBBDOListVer2>().Count();
+            int count = Application.OpenForms.OfType<frmSBBDOListVer3>().Count();
 
 
             if (count == 1)
             {
                 //Form is already open
-                Application.OpenForms.OfType<frmSBBDOListVer2>().First().BringToFront();
-                Application.OpenForms.OfType<frmSBBDOListVer2>().First().WindowState = FormWindowState.Normal;
+                Application.OpenForms.OfType<frmSBBDOListVer3>().First().BringToFront();
+                Application.OpenForms.OfType<frmSBBDOListVer3>().First().WindowState = FormWindowState.Normal;
             }
             else
             {
                 // Form is not open
-                frmSBBDOListVer2 frm = new frmSBBDOListVer2
+                frmSBBDOListVer3 frm = new frmSBBDOListVer3
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };

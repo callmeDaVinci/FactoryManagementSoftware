@@ -1129,7 +1129,7 @@
             this.btnSave.Radius = 2;
             this.btnSave.Size = new System.Drawing.Size(200, 40);
             this.btnSave.TabIndex = 16;
-            this.btnSave.Text = "Save Only";
+            this.btnSave.Text = "Save";
             this.btnSave.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 

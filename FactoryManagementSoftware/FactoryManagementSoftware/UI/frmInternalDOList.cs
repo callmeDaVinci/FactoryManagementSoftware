@@ -18,22 +18,19 @@ using System.Configuration;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSBBDOListVer2 : Form
+    public partial class frmInternalDOList : Form
     {
-        public frmSBBDOListVer2()
+        public frmInternalDOList()
         {
             InitializeComponent();
 
-            tool.DoubleBuffered(dgvDOList, true);
+            tool.DoubleBuffered(dgvInternalTransferList, true);
             tool.DoubleBuffered(dgvItemList, true);
 
             btnFilter.Text = text_HideFilter;
            
 
-            LoadCustomerList();
-
-           
-
+            //LoadCustomerList();
         }
 
         #region variable/object declare
@@ -55,8 +52,8 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
 
-        readonly string text_ShowFilter = "SHOW FILTER...";
-        readonly string text_HideFilter = "HIDE FILTER";
+        readonly string text_ShowFilter = "Show Filter"; //SHOW FILTER...
+        readonly string text_HideFilter = "Hide Filter";//HIDE FILTER
         readonly string text_CompleteDO = "Complete D/O";
         readonly string text_InCompleteDO = "D/O Incomplete";
         readonly string text_ChangeDeliveredDate = "Change Delivered Date";
@@ -290,7 +287,7 @@ namespace FactoryManagementSoftware.UI
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
 
-            if (dgv == dgvDOList)
+            if (dgv == dgvInternalTransferList)
             {
                 dgv.Columns[header_PODate].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[header_PONo].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
@@ -389,17 +386,17 @@ namespace FactoryManagementSoftware.UI
             {
                 // DataTable dt = (DataTable)dgvPOList.DataSource;
                 int rowIndex = e.RowIndex;
-                DataGridView dgv = dgvDOList;
+                DataGridView dgv = dgvInternalTransferList;
                 //dgvItemList.DataSource = null;
 
                 if (rowIndex >= 0)
                 {
                     string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
 
-                    if (dataType == DataType_InProgress)
-                        btnRemove.Visible = true;
-                    else
-                        btnRemove.Visible = false;
+                    //if (dataType == DataType_InProgress)
+                    //    btnRemove.Visible = true;
+                    //else
+                    //    btnRemove.Visible = false;
 
                     string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
 
@@ -459,7 +456,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     dgvItemList.DataSource = null;
                     btnEdit.Visible = false;
-                    btnRemove.Visible = false;
+                    //btnRemove.Visible = false;
                 }
             }
           
@@ -472,7 +469,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool ifDOSelected()
         {
-            DataTable dt = (DataTable)dgvDOList.DataSource;
+            DataTable dt = (DataTable)dgvInternalTransferList.DataSource;
 
             if (dt.Columns.Contains(header_Selected))
             {
@@ -498,10 +495,10 @@ namespace FactoryManagementSoftware.UI
 
             btnAddNewDO.Visible = false;
             btnEdit.Visible = false;
-            btnRemove.Text = text_CancelSelectingMode;
-            btnRemove.Visible = true;
+            //btnRemove.Text = text_CancelSelectingMode;
+           // btnRemove.Visible = true;
 
-            DataTable dt = (DataTable)dgvDOList.DataSource;
+            DataTable dt = (DataTable)dgvInternalTransferList.DataSource;
 
             if (!dt.Columns.Contains(header_Selected))
             {
@@ -636,7 +633,7 @@ namespace FactoryManagementSoftware.UI
           
 
             btnEdit.Visible = false;
-            btnRemove.Visible = false;
+            //btnRemove.Visible = false;
             dgvItemList.DataSource = null;
             ShowingDO = "";
 
@@ -754,9 +751,9 @@ namespace FactoryManagementSoftware.UI
             dt.DefaultView.Sort = header_DONo + " DESC";
             dt = dt.DefaultView.ToTable();
 
-            dgvDOList.DataSource = dt;
-            DgvUIEdit(dgvDOList);
-            dgvDOList.ClearSelection();
+            dgvInternalTransferList.DataSource = dt;
+            DgvUIEdit(dgvInternalTransferList);
+            dgvInternalTransferList.ClearSelection();
             lblSubList.Text = text_DOItemList;
           
             Focus();
@@ -1601,7 +1598,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             int rowIndex = dgv.CurrentCell.RowIndex;
 
@@ -1637,7 +1634,7 @@ namespace FactoryManagementSoftware.UI
 
         private void DOListUI()
         {
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
             DataTable dt = (DataTable)dgv.DataSource;
 
             if (DOSelectingMode)
@@ -1654,13 +1651,13 @@ namespace FactoryManagementSoftware.UI
                 btnAddNewDO.Visible = false;// btnAddNewDO.Visible = true;
 
                 btnEdit.Visible = false;
-                btnRemove.Text = text_RemoveDO;
-                btnRemove.Visible = false;
+                //btnRemove.Text = text_RemoveDO;
+                //btnRemove.Visible = false;
                 btnExcel.Enabled = true;
                 btnExcel.Text = text_Excel;
                
 
-                dgvDOList.ClearSelection();
+                dgvInternalTransferList.ClearSelection();
 
                 DOSelectingMode = false;
             }
@@ -1669,7 +1666,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnRemove_Click(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             if(DOSelectingMode)
             {
@@ -1717,7 +1714,7 @@ namespace FactoryManagementSoftware.UI
                 try
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                    DataGridView dgv = dgvDOList;
+                    DataGridView dgv = dgvInternalTransferList;
                     //dgvItemList.DataSource = null;
 
                     //handle the row selection on right click
@@ -1807,7 +1804,7 @@ namespace FactoryManagementSoftware.UI
 
         private void GetMasterList()
         {
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             DataTable dt_DO = dalSPP.DOWithInfoSelect();
 
@@ -2033,7 +2030,7 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             int rowIndex = dgv.CurrentCell.RowIndex;
 
@@ -2127,7 +2124,7 @@ namespace FactoryManagementSoftware.UI
             bool dateChanged = true;
 
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
             
             
             //get delivered date
@@ -2228,7 +2225,7 @@ namespace FactoryManagementSoftware.UI
         private void CompleteDO(int rowIndex)
         {
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
 
             string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
@@ -2402,7 +2399,7 @@ namespace FactoryManagementSoftware.UI
         private void CompleteDOWithoutTransfer(int rowIndex)
         {
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
             string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
@@ -2454,7 +2451,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool success = true;
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
             string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
@@ -2559,7 +2556,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool success = true;
             
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             string doNo = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
             string poNoString = dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString();
@@ -2630,7 +2627,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool success = true;
             DataTable dt_Item = (DataTable)dgvItemList.DataSource;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
             DateTime updatedDate = DateTime.Now;
             int updatedBy = MainDashboard.USER_ID;
 
@@ -2727,7 +2724,7 @@ namespace FactoryManagementSoftware.UI
             int count = 0;
             string firstDONumber = "DO", lastDONumber = DateTime.Now.ToShortDateString();
 
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
             DataTable dt_DOList = (DataTable)dgv.DataSource;
 
             if (dt_DOList.Columns.Contains(header_Selected))
@@ -4142,7 +4139,7 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(areaDeliveryTo).Cells;
             DOFormat.Merge();
-            DOFormat.Value = "DELIVER TO:";
+            DOFormat.Value = "DELIVERY TO:";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
             DOFormat.Font.Size = 9;
@@ -4526,7 +4523,7 @@ namespace FactoryManagementSoftware.UI
             string DODate_String = DODate.ToString("dd/MM/yyyy");
 
             #region export excel
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             DataTable dt_DOList = (DataTable)dgv.DataSource;
 
@@ -4966,7 +4963,7 @@ namespace FactoryManagementSoftware.UI
             string DODate_String = DODate.ToString("dd/MM/yyyy");
 
             #region export excel
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             DataTable dt_DOList = (DataTable)dgv.DataSource;
 
@@ -6417,7 +6414,7 @@ namespace FactoryManagementSoftware.UI
             string DODate_String = DODate.ToString("dd/MM/yyyy");
 
             #region export excel
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             DataTable dt_DOList = (DataTable)dgv.DataSource;
 
@@ -7002,9 +6999,9 @@ namespace FactoryManagementSoftware.UI
         {
             //dgvNewStock.Columns.Remove(headerParentColor);
             //dgvNewStock.Columns.Remove(headerRepeat);
-            dgvDOList.SelectAll();
+            dgvInternalTransferList.SelectAll();
             //dgvNewStock.sele
-            DataObject dataObj = dgvDOList.GetClipboardContent();
+            DataObject dataObj = dgvInternalTransferList.GetClipboardContent();
             if (dataObj != null)
                 Clipboard.SetDataObject(dataObj);
         }
@@ -7032,7 +7029,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvDOList_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowIndex = e.RowIndex;
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
 
             if (rowIndex >= 0 && dgv.SelectedRows.Count > 0)
             {
@@ -7052,7 +7049,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ColorDONoByStatus()
         {
-            DataGridView dgv = dgvDOList;
+            DataGridView dgv = dgvInternalTransferList;
             dgv.SuspendLayout();
 
             for (int i = 0; i < dgv.Rows.Count; i++)
@@ -7098,7 +7095,6 @@ namespace FactoryManagementSoftware.UI
         private void frmSPPDOList_FormClosed(object sender, FormClosedEventArgs e)
         {
             Cursor = Cursors.Arrow;
-            frmSBB.Reload();
         }
 
         private void frmSBBDOListVer2_Shown(object sender, EventArgs e)
@@ -7109,8 +7105,8 @@ namespace FactoryManagementSoftware.UI
 
             cmbCustomer.Text = "ALL";
 
-            ResetDBDOInfoList();
-            LoadDOList();
+            //ResetDBDOInfoList();
+            //LoadDOList();
             FormLoaded = true;
 
             //int id =  dalTrfHist.GetLastInsertedID();

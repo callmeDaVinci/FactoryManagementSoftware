@@ -109,7 +109,7 @@
             this.dgvRecordHistory.AllowUserToDeleteRows = false;
             this.dgvRecordHistory.AllowUserToOrderColumns = true;
             this.dgvRecordHistory.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvRecordHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+            this.dgvRecordHistory.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
             dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -139,7 +139,7 @@
             this.dgvRecordHistory.RowHeadersWidth = 51;
             this.dgvRecordHistory.RowTemplate.Height = 60;
             this.dgvRecordHistory.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvRecordHistory.Size = new System.Drawing.Size(799, 437);
+            this.dgvRecordHistory.Size = new System.Drawing.Size(748, 400);
             this.dgvRecordHistory.TabIndex = 154;
             this.dgvRecordHistory.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvRecordHistory_CellFormatting);
             this.dgvRecordHistory.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvRecordHistory_CellMouseDown);
@@ -211,7 +211,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(542, 680);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(508, 643);
             this.tableLayoutPanel2.TabIndex = 259;
             // 
             // tlpItemSelectionTitle
@@ -230,7 +230,7 @@
             this.tlpItemSelectionTitle.Name = "tlpItemSelectionTitle";
             this.tlpItemSelectionTitle.RowCount = 1;
             this.tlpItemSelectionTitle.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItemSelectionTitle.Size = new System.Drawing.Size(542, 46);
+            this.tlpItemSelectionTitle.Size = new System.Drawing.Size(508, 46);
             this.tlpItemSelectionTitle.TabIndex = 262;
             // 
             // button2
@@ -268,7 +268,7 @@
             this.btnAddJob.ForeColor = System.Drawing.Color.Black;
             this.btnAddJob.Image = null;
             this.btnAddJob.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddJob.Location = new System.Drawing.Point(433, 7);
+            this.btnAddJob.Location = new System.Drawing.Point(399, 7);
             this.btnAddJob.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
             this.btnAddJob.Name = "btnAddJob";
             this.btnAddJob.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -304,7 +304,7 @@
             this.dgvActiveJobList.AllowUserToDeleteRows = false;
             this.dgvActiveJobList.AllowUserToOrderColumns = true;
             this.dgvActiveJobList.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
-            this.dgvActiveJobList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(53)))), ((int)(((byte)(53)))));
+            this.dgvActiveJobList.BackgroundColor = System.Drawing.Color.WhiteSmoke;
             this.dgvActiveJobList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
             dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle11.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
@@ -335,7 +335,7 @@
             this.dgvActiveJobList.RowHeadersWidth = 51;
             this.dgvActiveJobList.RowTemplate.Height = 60;
             this.dgvActiveJobList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvActiveJobList.Size = new System.Drawing.Size(526, 617);
+            this.dgvActiveJobList.Size = new System.Drawing.Size(492, 580);
             this.dgvActiveJobList.TabIndex = 262;
             this.dgvActiveJobList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvActiveJobList_CellMouseDown);
             this.dgvActiveJobList.SelectionChanged += new System.EventHandler(this.dgvActiveJobList_SelectionChanged);
@@ -355,7 +355,7 @@
             this.tlpMainPanel.Name = "tlpMainPanel";
             this.tlpMainPanel.RowCount = 1;
             this.tlpMainPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMainPanel.Size = new System.Drawing.Size(1373, 680);
+            this.tlpMainPanel.Size = new System.Drawing.Size(1288, 643);
             this.tlpMainPanel.TabIndex = 260;
             this.tlpMainPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.tlpMainPanel_Paint);
             this.tlpMainPanel.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpMainPanel_MouseClick);
@@ -369,7 +369,7 @@
             this.tableLayoutPanel27.Controls.Add(this.tableLayoutPanel28, 0, 0);
             this.tableLayoutPanel27.Controls.Add(this.tlpButton, 0, 3);
             this.tableLayoutPanel27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel27.Location = new System.Drawing.Point(558, 0);
+            this.tableLayoutPanel27.Location = new System.Drawing.Point(524, 0);
             this.tableLayoutPanel27.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 4;
@@ -377,7 +377,7 @@
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
-            this.tableLayoutPanel27.Size = new System.Drawing.Size(815, 680);
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(764, 643);
             this.tableLayoutPanel27.TabIndex = 262;
             // 
             // tableLayoutPanel3
@@ -411,7 +411,7 @@
             this.tableLayoutPanel3.Controls.Add(this.label4, 7, 1);
             this.tableLayoutPanel3.Controls.Add(this.txtPendingStockIn, 7, 2);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 500);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 463);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 4;
@@ -419,7 +419,7 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(815, 80);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(764, 80);
             this.tableLayoutPanel3.TabIndex = 322;
             this.tableLayoutPanel3.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tableLayoutPanel3_MouseClick);
             // 
@@ -431,7 +431,7 @@
             this.lblFinalDataReviewString.Location = new System.Drawing.Point(137, 37);
             this.lblFinalDataReviewString.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.lblFinalDataReviewString.Name = "lblFinalDataReviewString";
-            this.lblFinalDataReviewString.Size = new System.Drawing.Size(15, 19);
+            this.lblFinalDataReviewString.Size = new System.Drawing.Size(14, 19);
             this.lblFinalDataReviewString.TabIndex = 324;
             this.lblFinalDataReviewString.Text = "-";
             // 
@@ -454,7 +454,7 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label2.Location = new System.Drawing.Point(208, 14);
+            this.label2.Location = new System.Drawing.Point(157, 14);
             this.label2.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(111, 19);
@@ -479,11 +479,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtRejectRate.BackColor = System.Drawing.Color.White;
             this.txtRejectRate.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtRejectRate.Location = new System.Drawing.Point(708, 37);
+            this.txtRejectRate.Location = new System.Drawing.Point(657, 37);
             this.txtRejectRate.Name = "txtRejectRate";
             this.txtRejectRate.Size = new System.Drawing.Size(94, 30);
             this.txtRejectRate.TabIndex = 320;
-            this.txtRejectRate.Text = "0%";
+            this.txtRejectRate.Text = "0";
             this.txtRejectRate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label6
@@ -492,12 +492,12 @@
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label6.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label6.Location = new System.Drawing.Point(708, 14);
+            this.label6.Location = new System.Drawing.Point(657, 14);
             this.label6.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(76, 19);
+            this.label6.Size = new System.Drawing.Size(91, 19);
             this.label6.TabIndex = 321;
-            this.label6.Text = "Reject Rate";
+            this.label6.Text = "Reject Rate %";
             // 
             // txtTotalMaxOutputQty
             // 
@@ -505,7 +505,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtTotalMaxOutputQty.BackColor = System.Drawing.Color.White;
             this.txtTotalMaxOutputQty.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtTotalMaxOutputQty.Location = new System.Drawing.Point(208, 37);
+            this.txtTotalMaxOutputQty.Location = new System.Drawing.Point(157, 37);
             this.txtTotalMaxOutputQty.Name = "txtTotalMaxOutputQty";
             this.txtTotalMaxOutputQty.Size = new System.Drawing.Size(114, 30);
             this.txtTotalMaxOutputQty.TabIndex = 264;
@@ -519,7 +519,7 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label1.Location = new System.Drawing.Point(338, 14);
+            this.label1.Location = new System.Drawing.Point(287, 14);
             this.label1.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(100, 19);
@@ -530,9 +530,9 @@
             // 
             this.txtQtyStockedIn.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtQtyStockedIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(255)))), ((int)(((byte)(180)))));
+            this.txtQtyStockedIn.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(241)))), ((int)(((byte)(218)))));
             this.txtQtyStockedIn.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtQtyStockedIn.Location = new System.Drawing.Point(338, 37);
+            this.txtQtyStockedIn.Location = new System.Drawing.Point(287, 37);
             this.txtQtyStockedIn.Name = "txtQtyStockedIn";
             this.txtQtyStockedIn.Size = new System.Drawing.Size(114, 30);
             this.txtQtyStockedIn.TabIndex = 313;
@@ -544,9 +544,9 @@
             // 
             this.txtRejectedQty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtRejectedQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(147)))), ((int)(((byte)(168)))));
+            this.txtRejectedQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
             this.txtRejectedQty.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtRejectedQty.Location = new System.Drawing.Point(598, 37);
+            this.txtRejectedQty.Location = new System.Drawing.Point(547, 37);
             this.txtRejectedQty.Name = "txtRejectedQty";
             this.txtRejectedQty.Size = new System.Drawing.Size(94, 30);
             this.txtRejectedQty.TabIndex = 317;
@@ -559,7 +559,7 @@
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label5.Location = new System.Drawing.Point(598, 14);
+            this.label5.Location = new System.Drawing.Point(547, 14);
             this.label5.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(87, 19);
@@ -572,7 +572,7 @@
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label4.Location = new System.Drawing.Point(468, 14);
+            this.label4.Location = new System.Drawing.Point(417, 14);
             this.label4.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(111, 19);
@@ -585,7 +585,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.txtPendingStockIn.BackColor = System.Drawing.Color.White;
             this.txtPendingStockIn.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPendingStockIn.Location = new System.Drawing.Point(468, 37);
+            this.txtPendingStockIn.Location = new System.Drawing.Point(417, 37);
             this.txtPendingStockIn.Name = "txtPendingStockIn";
             this.txtPendingStockIn.Size = new System.Drawing.Size(114, 30);
             this.txtPendingStockIn.TabIndex = 315;
@@ -607,7 +607,7 @@
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 46F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel28.Size = new System.Drawing.Size(815, 500);
+            this.tableLayoutPanel28.Size = new System.Drawing.Size(764, 463);
             this.tableLayoutPanel28.TabIndex = 263;
             // 
             // tableLayoutPanel1
@@ -625,7 +625,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(815, 46);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(764, 46);
             this.tableLayoutPanel1.TabIndex = 263;
             // 
             // label81
@@ -659,21 +659,21 @@
             this.tlpButton.BackColor = System.Drawing.Color.White;
             this.tlpButton.ColumnCount = 5;
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 193F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.Controls.Add(this.btnEditJobSheet, 1, 1);
             this.tlpButton.Controls.Add(this.btnAddJobSheet, 3, 1);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpButton.Location = new System.Drawing.Point(0, 600);
+            this.tlpButton.Location = new System.Drawing.Point(0, 563);
             this.tlpButton.Margin = new System.Windows.Forms.Padding(0);
             this.tlpButton.Name = "tlpButton";
             this.tlpButton.RowCount = 3;
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpButton.Size = new System.Drawing.Size(815, 80);
+            this.tlpButton.Size = new System.Drawing.Size(764, 80);
             this.tlpButton.TabIndex = 262;
             this.tlpButton.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tlpButton_MouseClick);
             // 
@@ -693,7 +693,7 @@
             this.btnEditJobSheet.ForeColor = System.Drawing.Color.Black;
             this.btnEditJobSheet.Image = null;
             this.btnEditJobSheet.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnEditJobSheet.Location = new System.Drawing.Point(490, 20);
+            this.btnEditJobSheet.Location = new System.Drawing.Point(396, 20);
             this.btnEditJobSheet.Margin = new System.Windows.Forms.Padding(0);
             this.btnEditJobSheet.Name = "btnEditJobSheet";
             this.btnEditJobSheet.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -703,9 +703,9 @@
             this.btnEditJobSheet.OnHoverImage = null;
             this.btnEditJobSheet.OnPressedColor = System.Drawing.Color.Black;
             this.btnEditJobSheet.Radius = 2;
-            this.btnEditJobSheet.Size = new System.Drawing.Size(150, 40);
+            this.btnEditJobSheet.Size = new System.Drawing.Size(193, 40);
             this.btnEditJobSheet.TabIndex = 224;
-            this.btnEditJobSheet.Text = "Edit Job Sheet";
+            this.btnEditJobSheet.Text = "View/Edit Job Sheet";
             this.btnEditJobSheet.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnEditJobSheet.Click += new System.EventHandler(this.btnEditJobSheet_Click);
             // 
@@ -725,7 +725,7 @@
             this.btnAddJobSheet.ForeColor = System.Drawing.Color.White;
             this.btnAddJobSheet.Image = null;
             this.btnAddJobSheet.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddJobSheet.Location = new System.Drawing.Point(655, 20);
+            this.btnAddJobSheet.Location = new System.Drawing.Point(604, 20);
             this.btnAddJobSheet.Margin = new System.Windows.Forms.Padding(0);
             this.btnAddJobSheet.Name = "btnAddJobSheet";
             this.btnAddJobSheet.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -757,7 +757,7 @@
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(1433, 740);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(1348, 703);
             this.tableLayoutPanel15.TabIndex = 261;
             this.tableLayoutPanel15.MouseClick += new System.Windows.Forms.MouseEventHandler(this.tableLayoutPanel15_MouseClick);
             // 
@@ -770,8 +770,8 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(235)))), ((int)(((byte)(240)))), ((int)(((byte)(253)))));
-            this.ClientSize = new System.Drawing.Size(1433, 740);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.ClientSize = new System.Drawing.Size(1348, 703);
             this.Controls.Add(this.tableLayoutPanel15);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);

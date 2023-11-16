@@ -6298,6 +6298,7 @@ namespace FactoryManagementSoftware.UI
                 ItemSearchUIReset();
 
                 ProPlanningSearchReset();
+                DT_ITEM = dalItem.Select();
                 ShowSummaryForecastReport();
                 if (dgvForecastReport.DataSource != null)
                     lblProductionPlanningMode.Visible = true;
@@ -6628,6 +6629,19 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
+        private string GetItemCode(string input)
+        {
+            int lastOpenParenthesis = input.LastIndexOf('(');
+            int lastCloseParenthesis = input.LastIndexOf(')');
+
+            if (lastOpenParenthesis == -1 || lastCloseParenthesis == -1 || lastCloseParenthesis < lastOpenParenthesis)
+            {
+                return "Invalid input"; // Or throw an exception based on your error handling policy
+            }
+
+            return input.Substring(lastOpenParenthesis + 1, lastCloseParenthesis - lastOpenParenthesis - 1).Trim();
+        }
+
         public void ForecastEditRecord(string customer, string itemcode)
         {
             historyDAL dalHistory = new historyDAL();
@@ -6748,42 +6762,44 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-
-                    string historyItemNameRemoved = historyItem.Replace(itemName,"");
-                    string historyItemCode = "";
-
-                    if(historyItemNameRemoved.Replace(" ","") =="()" && itemcode == itemName)
+                    if (historyItem.Contains("WASHER-25MM"))
                     {
-                        historyItemCode = itemcode;
+                        var checkpoint = 0;
                     }
-                    else
-                    {
-                        bool gettingCodeInfo = false;
-                        for (int i = 0; i < historyItemNameRemoved.Length - 1; i++)
-                        {
-                            if (gettingCodeInfo)
-                            {
-                                historyItemCode += historyItemNameRemoved[i].ToString();
-                            }
 
-                            if (historyItemNameRemoved[i].ToString() == "(")
-                            {
-                                gettingCodeInfo = true;
-                            }
+                    //string historyItemNameRemoved = historyItem.Replace(itemName,"");
+                    string historyItemNameRemoved = GetItemCode(historyItem);
+                    
+                    string historyItemCode = GetItemCode(historyItem);
 
-                        }
-                    }
-                   
+                    //if (historyItemNameRemoved.Replace(" ","") =="()" && itemcode == itemName)
+                    //{
+                    //    historyItemCode = itemcode;
+                    //}
+                    //else
+                    //{
+                    //    bool gettingCodeInfo = false;
+                    //    for (int i = 0; i < historyItemNameRemoved.Length - 1; i++)
+                    //    {
+                    //        if (gettingCodeInfo)
+                    //        {
+                    //            historyItemCode += historyItemNameRemoved[i].ToString();
+                    //        }
+
+                    //        if (historyItemNameRemoved[i].ToString() == "(")
+                    //        {
+                    //            gettingCodeInfo = true;
+                    //        }
+
+                    //    }
+                    //}
+
 
                     //date inspection
                     bool dataMatched = true;
 
                     //dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
 
-                    if(historyItem.Contains("CABINET BEAT STUD(TABLE DRAWER)"))
-                    {
-                        var checkpoint = 0;
-                    }
 
                     dataMatched = historyItemCode == itemcode ? dataMatched : false;
 

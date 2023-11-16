@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.DAL
         public string planItemCavity { get; } = "plan_item_cavity";
 
         public string productionPurpose { get; } = "production_purpose";
+        public string productionNote { get; } = "production_note";
 
         public string partCode { get; } = "part_code";
 

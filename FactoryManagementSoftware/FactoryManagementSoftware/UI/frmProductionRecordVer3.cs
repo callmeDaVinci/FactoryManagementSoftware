@@ -608,11 +608,12 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private string SELECTED_JOB_STATUS = "";
 
         private void LoadJobDailyRecord()
         {
             LOADING_JOB_RECORD = true;
-
+            SELECTED_JOB_STATUS = "";
             DataGridView dgv = dgvActiveJobList;
 
             int itemRow = -1;
@@ -621,7 +622,6 @@ namespace FactoryManagementSoftware.UI
             {
                 itemRow = dgvActiveJobList.CurrentCell.RowIndex;
             }
-            
 
             if(itemRow >= 0)
             {
@@ -630,6 +630,8 @@ namespace FactoryManagementSoftware.UI
                 string JobNo = dgv.Rows[itemRow].Cells[text.Header_JobNo].Value.ToString();
                 string planStatus = dgv.Rows[itemRow].Cells[text.Header_Status].Value.ToString();
                 macID = int.TryParse(dgv.Rows[itemRow].Cells[text.Header_MacID].Value.ToString(), out macID) ? macID : 0;
+
+                SELECTED_JOB_STATUS = planStatus;
 
                 DataTable dt = NewJobDailyRecordTable();
                 DataRow dt_Row;
@@ -672,6 +674,7 @@ namespace FactoryManagementSoftware.UI
 
                         int maxQty = totalShot * cavity;
 
+                        string jobNote = row[dalProRecord.Note].ToString();
                         dt_Row[text.Header_SheetID] = row[dalProRecord.SheetID].ToString();
                         dt_Row[text.Header_Shift] = row[dalProRecord.Shift].ToString();
                         dt_Row[text.Header_ProductionDate] = row[dalProRecord.ProDate].ToString();
@@ -689,7 +692,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[text.Header_StockIn_Container] = row[dalProRecord.FullBox].ToString();
                         dt_Row[text.Header_StockIn_Balance_Qty] = row[dalProRecord.directIn].ToString();
                         dt_Row[text.Header_Qty_Per_Container] = row[dalProRecord.PackagingQty];
-                        dt_Row[text.Header_Remark] = row[dalProRecord.Note];
+                        dt_Row[text.Header_Remark] = jobNote;
 
                         if (row[dalProRecord.TimeStart] is DateTime TimeStart)
                         {
@@ -709,6 +712,12 @@ namespace FactoryManagementSoftware.UI
 
                         //if(dt.Rows.Count > 0)
                         //dt.Rows[dt.Rows.Count - 1][header_TotalProduced] = DBNull.Value;
+
+
+                        if(jobNote.ToUpper().Contains(text.job_end_production))
+                        {
+                            SELECTED_JOB_STATUS = text.planning_status_completed;
+                        }
 
                         dt.Rows.Add(dt_Row);
                         
@@ -1237,7 +1246,28 @@ namespace FactoryManagementSoftware.UI
 
             int maxOutputQty_INT = int.TryParse(maxOutputQty, out maxOutputQty_INT) ? maxOutputQty_INT : 0;
             int stockInQty = int.TryParse(totalStockIn, out stockInQty) ? stockInQty : 0;
-            txtPendingStockIn.Text = (maxOutputQty_INT - stockInQty).ToString();
+
+            int diff = maxOutputQty_INT - stockInQty;
+
+            if (SELECTED_JOB_STATUS == text.planning_status_completed)
+            {
+                diff = diff < 0 ? 0 : diff;
+                txtPendingStockIn.Text = "0";
+                txtRejectedQty.Text = diff.ToString();
+
+                if (maxOutputQty_INT > 0)
+                    txtRejectRate.Text = ((decimal) diff / maxOutputQty_INT * 100).ToString("0.##");
+
+
+            }
+            else
+            {
+                txtPendingStockIn.Text = diff.ToString();
+                txtRejectedQty.Text = "0";
+                txtRejectRate.Text = "0";
+
+            }
+
 
             if (totalStockIn != maxOutputQty)
             {
@@ -1466,7 +1496,7 @@ namespace FactoryManagementSoftware.UI
 
             if (JobRecordSelectedIndex == -1)
             {
-                MessageBox.Show("Please select a job record to edit.");
+                MessageBox.Show("Please select a job record to view/edit.");
             }
             else
             {
@@ -1602,14 +1632,44 @@ namespace FactoryManagementSoftware.UI
             dgvRecordHistory.ClearSelection();
         }
 
+        private void PendingOrRejectRateUpdate()
+        {
+            string maxOutputQty = txtTotalMaxOutputQty.Text;
+            string totalStockIn = txtQtyStockedIn.Text;
+
+            int maxOutputQty_INT = int.TryParse(maxOutputQty, out maxOutputQty_INT) ? maxOutputQty_INT : 0;
+            int stockInQty = int.TryParse(totalStockIn, out stockInQty) ? stockInQty : 0;
+
+            int diff = maxOutputQty_INT - stockInQty;
+
+            if (SELECTED_JOB_STATUS == text.planning_status_completed )
+            {
+                diff = diff < 0 ? 0 : diff;
+                txtPendingStockIn.Text = "0";
+                txtRejectedQty.Text = diff.ToString();
+
+                if(maxOutputQty_INT > 0)
+                    txtRejectRate.Text = ((decimal) diff / maxOutputQty_INT * 100).ToString("0.##");
+
+            }
+            else
+            {
+                txtPendingStockIn.Text = diff.ToString();
+                txtRejectedQty.Text = "0";
+                txtRejectRate.Text = "0";
+
+            }
+        }
         private void txtQtyStockedIn_TextChanged_1(object sender, EventArgs e)
         {
             int maxQty = int.TryParse(txtTotalMaxOutputQty.Text, out maxQty) ? maxQty : 0;
             int stockedIn = int.TryParse(txtQtyStockedIn.Text, out stockedIn) ? stockedIn : 0;
 
-            int pendingStockIn = maxQty - stockedIn;
+            //int pendingStockIn = maxQty - stockedIn;
 
-            txtPendingStockIn.Text = pendingStockIn.ToString();
+            //txtPendingStockIn.Text = pendingStockIn.ToString();
+
+            PendingOrRejectRateUpdate();
         }
 
         private void txtTotalMaxOutputQty_TextChanged_1(object sender, EventArgs e)
@@ -1617,9 +1677,10 @@ namespace FactoryManagementSoftware.UI
             int maxQty = int.TryParse(txtTotalMaxOutputQty.Text, out maxQty) ? maxQty : 0;
             int stockedIn = int.TryParse(txtQtyStockedIn.Text, out stockedIn) ? stockedIn : 0;
 
-            int pendingStockIn = maxQty - stockedIn;
+            //int pendingStockIn = maxQty - stockedIn;
 
-            txtPendingStockIn.Text = pendingStockIn.ToString();
+            //txtPendingStockIn.Text = pendingStockIn.ToString();
+            PendingOrRejectRateUpdate();
         }
 
         private void dgvRecordHistory_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)

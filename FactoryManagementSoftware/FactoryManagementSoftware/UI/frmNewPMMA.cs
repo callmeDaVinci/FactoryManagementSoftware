@@ -886,10 +886,10 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow row in dt_MatUsed.Rows)
                 {
                     float Out = row[text.Header_TotalMaterialUsed_KG_Piece] == DBNull.Value ? -1 : (float)Math.Round(Convert.ToDouble(row[text.Header_TotalMaterialUsed_KG_Piece]), 2);
+                    string matCode = row[text.Header_MatCode].ToString();
 
-                    if (Out != -1)
+                    if (Out != -1 && !string.IsNullOrEmpty(matCode))
                     {
-                        string matCode = row[text.Header_MatCode].ToString();
                         float adjustQty = 0;
                         string note = "";
                         DataRow MatData = getPMMADataRow(matCode, month, year, dt_PMMA);

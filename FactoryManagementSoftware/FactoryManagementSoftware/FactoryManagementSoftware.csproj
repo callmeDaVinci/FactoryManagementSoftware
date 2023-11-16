@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>572</ApplicationRevision>
+    <ApplicationRevision>574</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -244,11 +244,23 @@
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSBBDOListVer3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSBBDOListVer3.Designer.cs">
+      <DependentUpon>frmSBBDOListVer3.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmReadSemenyihData.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="UI\frmReadSemenyihData.Designer.cs">
       <DependentUpon>frmReadSemenyihData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmInternalDOList.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInternalDOList.Designer.cs">
+      <DependentUpon>frmInternalDOList.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSupplier.cs">
       <SubType>Form</SubType>
@@ -1117,8 +1129,14 @@
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSBBDOListVer3.resx">
+      <DependentUpon>frmSBBDOListVer3.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmReadSemenyihData.resx">
       <DependentUpon>frmReadSemenyihData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmInternalDOList.resx">
+      <DependentUpon>frmInternalDOList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSupplier.resx">
       <DependentUpon>frmSupplier.cs</DependentUpon>

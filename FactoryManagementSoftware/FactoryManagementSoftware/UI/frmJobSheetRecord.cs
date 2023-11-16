@@ -1114,16 +1114,12 @@ namespace FactoryManagementSoftware.UI
 
                     if(stockUpdateRequired && CheckIfPreviousRecordExist())
                     {
-                        string message = "A stock record already exists for this Job Sheet. Proceeding with this 'Save Only' action will undo the existing stock record.\r\nAre you sure you want to continue?";
+                        string message = "A stock record already exists for this Job Sheet.\n\r Do you want to  undo the existing stock record?";
 
                         DialogResult dialogResult = MessageBox.Show(message, "Message",
                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-                        if (dialogResult != DialogResult.Yes)
-                        {
-                            return false;
-                        }
-                        else
+                        if (dialogResult == DialogResult.Yes)
                         {
                             UndoPreviousRecordIfExist();
                         }
@@ -1840,11 +1836,11 @@ namespace FactoryManagementSoftware.UI
 
             if (cbEndProduction.Checked)
             {
-                txtNote.Text = txtNote.Text + "[END PRODUCTION]";
+                txtNote.Text = text.job_end_production + txtNote.Text ;
             }
             else
             {
-                txtNote.Text = txtNote.Text.Replace("[END PRODUCTION]", "");
+                txtNote.Text = txtNote.Text.Replace(text.job_end_production, "");
             }
         }
 

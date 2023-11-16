@@ -2802,16 +2802,19 @@ namespace FactoryManagementSoftware.Module
         {
             DataTable dt = dalCust.CustSelectAll();
 
-
-            foreach (DataRow row in dt.Rows)
+            if(dt.Columns.Contains("cust_main"))
             {
-                bool mainCustomer = bool.TryParse(row["cust_main"].ToString(), out bool i) ? i : false;
-
-                if (!mainCustomer || row["cust_name"].ToString().Equals("OTHER"))
+                foreach (DataRow row in dt.Rows)
                 {
-                    row.Delete();
+                    bool mainCustomer = bool.TryParse(row["cust_main"].ToString(), out bool i) ? i : false;
+
+                    if (!mainCustomer || row["cust_name"].ToString().Equals("OTHER"))
+                    {
+                        row.Delete();
+                    }
                 }
             }
+            
 
             dt.AcceptChanges();
 
