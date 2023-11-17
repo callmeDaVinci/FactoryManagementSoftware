@@ -2310,6 +2310,7 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = dgvTransfer;
             int n;
+
             if(dgvEdit)
             {
                 n = selectedRow;
@@ -2430,8 +2431,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         factoryName = cmbTrfTo.Text;
                     }
-                    if(!dgvEdit)
-                    childStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(trfQty), -1);
+                    if(!dgvEdit && cbItemGroupAutoOut.Checked)
+                        childStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(trfQty), -1);
 
                 }
                 isInpectionItem = false;
@@ -2453,7 +2454,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (tool.ifGotChildIncludedPackaging(cmbTrfItemCode.Text)) //&& dalItem.checkIfProduction(cmbTrfItemCode.Text)
                 {
-                    if (!dgvEdit)
+                    if (!dgvEdit && cbItemGroupAutoOut.Checked)
                         productionChildStockOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text), -1,"");
                 }
                 //productionAutoOut(factoryName, cmbTrfItemCode.Text, Convert.ToSingle(txtTrfQty.Text));

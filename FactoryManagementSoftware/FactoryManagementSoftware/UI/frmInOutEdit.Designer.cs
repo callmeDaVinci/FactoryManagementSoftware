@@ -74,6 +74,7 @@
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStdPacking = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbItemGroupAutoOut = new System.Windows.Forms.CheckBox();
             this.btnEdit = new Guna.UI.WinForms.GunaGradientButton();
             this.btnDelete = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -517,7 +518,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 248F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
             this.tableLayoutPanel5.Controls.Add(this.btnIn, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOut, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -555,7 +556,7 @@
             this.btnIn.OnHoverImage = null;
             this.btnIn.OnPressedColor = System.Drawing.Color.Black;
             this.btnIn.Radius = 2;
-            this.btnIn.Size = new System.Drawing.Size(63, 34);
+            this.btnIn.Size = new System.Drawing.Size(62, 34);
             this.btnIn.TabIndex = 232;
             this.btnIn.Text = "In";
             this.btnIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -577,7 +578,7 @@
             this.btnOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnOut.Image = null;
             this.btnOut.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnOut.Location = new System.Drawing.Point(76, 5);
+            this.btnOut.Location = new System.Drawing.Point(75, 5);
             this.btnOut.Margin = new System.Windows.Forms.Padding(5);
             this.btnOut.Name = "btnOut";
             this.btnOut.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -587,7 +588,7 @@
             this.btnOut.OnHoverImage = null;
             this.btnOut.OnPressedColor = System.Drawing.Color.Black;
             this.btnOut.Radius = 2;
-            this.btnOut.Size = new System.Drawing.Size(64, 34);
+            this.btnOut.Size = new System.Drawing.Size(63, 34);
             this.btnOut.TabIndex = 232;
             this.btnOut.Text = "Out";
             this.btnOut.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -609,7 +610,7 @@
             this.btnSwitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnSwitch.Image = null;
             this.btnSwitch.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSwitch.Location = new System.Drawing.Point(150, 5);
+            this.btnSwitch.Location = new System.Drawing.Point(148, 5);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 5, 3, 5);
             this.btnSwitch.Name = "btnSwitch";
             this.btnSwitch.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -619,7 +620,7 @@
             this.btnSwitch.OnHoverImage = null;
             this.btnSwitch.OnPressedColor = System.Drawing.Color.Black;
             this.btnSwitch.Radius = 2;
-            this.btnSwitch.Size = new System.Drawing.Size(241, 34);
+            this.btnSwitch.Size = new System.Drawing.Size(243, 34);
             this.btnSwitch.TabIndex = 232;
             this.btnSwitch.Text = "Internal Transfer";
             this.btnSwitch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -708,6 +709,7 @@
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel12.Controls.Add(this.cbItemGroupAutoOut, 3, 0);
             this.tableLayoutPanel12.Controls.Add(this.btnEdit, 3, 1);
             this.tableLayoutPanel12.Controls.Add(this.btnDelete, 1, 1);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -719,6 +721,20 @@
             this.tableLayoutPanel12.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel12.Size = new System.Drawing.Size(400, 103);
             this.tableLayoutPanel12.TabIndex = 122;
+            // 
+            // cbItemGroupAutoOut
+            // 
+            this.cbItemGroupAutoOut.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.cbItemGroupAutoOut.AutoSize = true;
+            this.cbItemGroupAutoOut.Checked = true;
+            this.cbItemGroupAutoOut.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbItemGroupAutoOut.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbItemGroupAutoOut.Location = new System.Drawing.Point(275, 3);
+            this.cbItemGroupAutoOut.Name = "cbItemGroupAutoOut";
+            this.cbItemGroupAutoOut.Size = new System.Drawing.Size(122, 23);
+            this.cbItemGroupAutoOut.TabIndex = 231;
+            this.cbItemGroupAutoOut.Text = "ItemGroupOut";
+            this.cbItemGroupAutoOut.UseVisualStyleBackColor = true;
             // 
             // btnEdit
             // 
@@ -1152,6 +1168,7 @@
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel12.ResumeLayout(false);
+            this.tableLayoutPanel12.PerformLayout();
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -1235,5 +1252,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpMainPanel;
         private System.Windows.Forms.TableLayoutPanel tlpEditPanel;
         private Guna.UI.WinForms.GunaGradientButton btnShowHideEditPanel;
+        private System.Windows.Forms.CheckBox cbItemGroupAutoOut;
     }
 }

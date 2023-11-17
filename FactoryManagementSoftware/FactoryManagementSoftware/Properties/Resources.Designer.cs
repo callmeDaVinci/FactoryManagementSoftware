@@ -1044,6 +1044,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap SBB_DELIVERY_ORDER_LOGO {
+            get {
+                object obj = ResourceManager.GetObject("SBB_DELIVERY_ORDER_LOGO", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap socket {
             get {
                 object obj = ResourceManager.GetObject("socket", resourceCulture);
