@@ -6762,13 +6762,9 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
-                    if (historyItem.Contains("WASHER-25MM"))
-                    {
-                        var checkpoint = 0;
-                    }
-
+                
                     //string historyItemNameRemoved = historyItem.Replace(itemName,"");
-                    string historyItemNameRemoved = GetItemCode(historyItem);
+                    //string historyItemNameRemoved = GetItemCode(historyItem);
                     
                     string historyItemCode = GetItemCode(historyItem);
 
@@ -6800,17 +6796,7 @@ namespace FactoryManagementSoftware.UI
 
                     //dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
 
-
                     dataMatched = historyItemCode == itemcode ? dataMatched : false;
-
-                    //if (row[dalHistory.HistoryID].ToString() == "344618")
-                    //{
-                    //    var checkpoint = 0;
-                    //}
-                    //if (dataMatched)
-                    //{
-                    //    var checkpoint = 0;
-                    //}
 
                     dataMatched = historyCustomer == customer ? dataMatched : false;
 

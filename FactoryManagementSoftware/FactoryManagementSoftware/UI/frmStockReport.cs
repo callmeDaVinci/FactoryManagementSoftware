@@ -86,7 +86,6 @@ namespace FactoryManagementSoftware.UI
 
             InitializeComponent();
             lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
-            dt_Stock = NewStockTable();
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
@@ -127,29 +126,18 @@ namespace FactoryManagementSoftware.UI
                 {
                     facName = stock["fac_name"].ToString();
 
-                    if(facName == text.Factory_Semenyih)
-                    {
-                        string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
-
-                        if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
-                        {
-                            dt.Columns.Add(facName, typeof(float));
-                        }
-                    }
-                   else
+                    if(facName != text.Factory_Semenyih || facName == text.Factory_Semenyih && cbShowSemenyihStock.Checked)
                     {
                         dt.Columns.Add(facName, typeof(float));
                     }
-
-                    
                 }
             }
 
             dt.Columns.Add(headerTotal, typeof(float));
             dt.Columns.Add(headerUnit, typeof(string));
 
-            dt.Columns.Add(headerParentColor, typeof(string));
-            dt.Columns.Add(headerRepeat, typeof(int));
+            //dt.Columns.Add(headerParentColor, typeof(string));
+            //dt.Columns.Add(headerRepeat, typeof(int));
 
             return dt;
         }
@@ -191,6 +179,13 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvNewStock, true);
             cmbType.Text = text.Cmb_All;
 
+            Cursor = Cursors.WaitCursor;
+
+            LoadStockReport();
+
+            ShowOrHideFilter(false);
+
+            Cursor = Cursors.Arrow;
 
             dgvNewStock.ClearSelection();
 
@@ -320,11 +315,12 @@ namespace FactoryManagementSoftware.UI
             public_SecondSubIndexNO = 0;
 
             bool gotData = true;
-            dt_Stock.Clear();
+
+            dt_Stock = NewStockTable();
+
 
             DataTable DB_Item = dalItem.Select();
-            //DB_Item.DefaultView.Sort = "item_name ASC";
-            //DB_Item = DB_Item.DefaultView.ToTable();
+            dt_PublicItemInfo = DB_Item;
 
             DataTable dt_ItemInfo = dalItem.Select();
             DataTable dt_AllStockData = dalStock.Select();
@@ -338,7 +334,6 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                //load material data
                 foreach (DataRow item in DB_Item.Rows)
                 {
                     string itemCode = item[dalItem.ItemCode].ToString();
@@ -357,18 +352,18 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            dt_PublicItemInfo = dalItem.Select();
             dgvNewStock.DataSource = null;
 
-            DataTable dt_StockRemovedFlag;
+            //DataTable dt_StockRemovedFlag;
 
             if (dt_Stock.Rows.Count > 0)
             {
-                dt_StockRemovedFlag = dt_Stock.Copy();
-                dt_StockRemovedFlag.Columns.Remove(headerParentColor);
-                dt_StockRemovedFlag.Columns.Remove(headerRepeat);
+                //dt_StockRemovedFlag = dt_Stock.Copy();
+                //dt_StockRemovedFlag.Columns.Remove(headerParentColor);
+                //dt_StockRemovedFlag.Columns.Remove(headerRepeat);
 
-                dgvNewStock.DataSource = dt_StockRemovedFlag;
+                //dgvNewStock.DataSource = dt_StockRemovedFlag;
+                dgvNewStock.DataSource = dt_Stock;
                 dgvStockUIEdit(dgvNewStock);
                 //dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
                 dgvNewStock.ClearSelection();
@@ -448,7 +443,7 @@ namespace FactoryManagementSoftware.UI
             DataRow dtStock_row;
 
             dtStock_row = dt_Stock.NewRow();
-            dtStock_row[headerIndex] = public_IndexNO + public_SubIndexNO/10 + public_SecondSubIndexNO/100;
+            dtStock_row[headerIndex] = public_IndexNO;
             dtStock_row[text.Header_Category] = itemCat;
 
             dtStock_row[headerName] = itemName;
@@ -456,66 +451,84 @@ namespace FactoryManagementSoftware.UI
             dtStock_row[headerTotal] = stockQty;
             string factoryName = "";
 
+            float TotalStockExcludedSemenyih = 0;
+
+
             if (dt_StockData.Rows.Count > 0)
             {
                 foreach (DataRow stock in dt_StockData.Rows)
                 {
                      factoryName = stock[tool.headerFacName].ToString();
 
-                    if(factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)//MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC
+                    bool canDisplayStockData = factoryName != text.Factory_Semenyih || (factoryName == text.Factory_Semenyih && cbShowSemenyihStock.Checked);
+
+                    if(canDisplayStockData)
                     {
                         float qty = Convert.ToSingle(stock[tool.headerReadyStock]);
                         qty = (float)Math.Round(qty * 100f) / 100f;
 
                         dtStock_row[factoryName] = qty;
                         dtStock_row[headerUnit] = stock[tool.headerUnit].ToString();
+
+                        if(factoryName != text.Factory_Semenyih)
+                        {
+                            TotalStockExcludedSemenyih += qty;
+                        }
                     }
                    
                 }
             }
 
+            if(cbExcludeSemenyihStockFromTotal.Checked)
+            {
+                dtStock_row[headerTotal] = TotalStockExcludedSemenyih;
+            }
+
             factoryName = "";
-            if (ifGotChild(itemCode))
-            {
-                DataRow dt_Row = tool.getDataRowFromDataTable(dt_PublicItemInfo, itemCode);
+            dt_Stock.Rows.Add(dtStock_row);
 
-                int assembly = Convert.ToInt16(dt_Row[dalItem.ItemAssemblyCheck]);
-                int production = Convert.ToInt16(dt_Row[dalItem.ItemProductionCheck]);
+            #region old function
+            //if (ifGotChild(itemCode))
+            //{
+            //    DataRow dt_Row = tool.getDataRowFromDataTable(dt_PublicItemInfo, itemCode);
 
-                if (assembly == 1 && production == 1)
-                {
-                    dtStock_row[headerParentColor] = ProductionAndAssemblyColor;
-                }
-                else if (assembly != 1 && production == 1)
-                {
-                    dtStock_row[headerParentColor] = ProductionColor;
-                }
-                else if (assembly == 1 && production != 1)
-                {
-                    dtStock_row[headerParentColor] = AssemblyColor;
-                }
+            //    int assembly = Convert.ToInt16(dt_Row[dalItem.ItemAssemblyCheck]);
+            //    int production = Convert.ToInt16(dt_Row[dalItem.ItemProductionCheck]);
 
-                if (itemCode.Substring(0, 3) == text.Inspection_Pass)
-                {
-                    dtStock_row[headerParentColor] = InspectionColor;
-                }
-            }
+            //    if (assembly == 1 && production == 1)
+            //    {
+            //        dtStock_row[headerParentColor] = ProductionAndAssemblyColor;
+            //    }
+            //    else if (assembly != 1 && production == 1)
+            //    {
+            //        dtStock_row[headerParentColor] = ProductionColor;
+            //    }
+            //    else if (assembly == 1 && production != 1)
+            //    {
+            //        dtStock_row[headerParentColor] = AssemblyColor;
+            //    }
 
-            //check if repeat
-            if(ifRepeat(itemCode) && (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC))
-            {
-                dtStock_row[headerRepeat] = 1;
+            //    if (itemCode.Substring(0, 3) == text.Inspection_Pass)
+            //    {
+            //        dtStock_row[headerParentColor] = InspectionColor;
+            //    }
+            //}
 
-                if (cbShowDuplicateData.Checked)
-                    dt_Stock.Rows.Add(dtStock_row);
-            }
-            else if(factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
-            {
-                dtStock_row[headerRepeat] = 0;
-                dt_Stock.Rows.Add(dtStock_row);
-            }
-        
-           
+            ////check if repeat
+            //if (ifRepeat(itemCode) && (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC))
+            //{
+            //    dtStock_row[headerRepeat] = 1;
+
+            //    if (cbShowDuplicateData.Checked)
+            //        dt_Stock.Rows.Add(dtStock_row);
+            //}
+            //else if (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
+            //{
+            //    dtStock_row[headerRepeat] = 0;
+            //    dt_Stock.Rows.Add(dtStock_row);
+            //}
+            #endregion
+
         }
 
         private void addRowtoDataTable(DataTable dt_StockData, string itemCode, string itemName, float stockQty)
@@ -1623,59 +1636,38 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void btnCheck_Click(object sender, EventArgs e)
+        private void LoadStockReport()
         {
             if (Validation())
             {
-                frmLoading.ShowLoadingScreen();
                 lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
 
-                if (cmbType.Text.Equals(text.Cmb_All))
-                {
-                    LoadAllStockData();
-                }
-                else if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                {
-                    LoadPartStockData();
-                }
-                else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                {
-                    newLoadMaterialStockData();
-                }
+                LoadAllStockData();
+
+                //if (cmbType.Text.Equals(text.Cmb_All))
+                //{
+                //    LoadAllStockData();
+                //}
+                //else if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                //{
+                //    LoadPartStockData();
+                //}
+                //else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                //{
+                //    newLoadMaterialStockData();
+                //}
 
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
 
             }
-            //try
-            //{
-            //    if (Validation())
-            //    {
-            //        frmLoading.ShowLoadingScreen();
-            //        lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
-            //        Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-            //        if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-            //        {
-            //            LoadPartStockData();                     
-            //        }
-            //        else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-            //        {
-            //            newLoadMaterialStockData();
-            //        }
-
-            //        Cursor = Cursors.Arrow; // change cursor to normal type
-            //    }
-               
-            //}
-            //catch (Exception ex)
-            //{
-            //    tool.saveToTextAndMessageToUser(ex);
-            //}
-
-            frmLoading.CloseForm();
+        }
+        private void btnCheck_Click(object sender, EventArgs e)
+        {
+            LoadStockReport();
         }
 
         public void StartForm()
@@ -1686,6 +1678,64 @@ namespace FactoryManagementSoftware.UI
         private void cbShowDuplicateData_CheckedChanged(object sender, EventArgs e)
         {
             dgvNewStock.DataSource = null;
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            ShowOrHideFilter();
+        }
+
+        readonly string text_ShowFilter = "Show Filter"; //SHOW FILTER...
+        readonly string text_HideFilter = "Hide Filter";//HIDE FILTER
+
+        private void ShowOrHideFilter()
+        {
+            string filterText = btnFilter.Text;
+
+            if (filterText == text_ShowFilter)
+            {
+                btnFilter.Text = text_HideFilter;
+
+                tlpMainLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 125f);
+            }
+            else
+            {
+                btnFilter.Text = text_ShowFilter;
+
+                tlpMainLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            }
+        }
+
+        private void ShowOrHideFilter(bool show)
+        {
+            string filterText = btnFilter.Text;
+
+            if (show)
+            {
+                btnFilter.Text = text_HideFilter;
+
+                tlpMainLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 125f);
+            }
+            else
+            {
+                btnFilter.Text = text_ShowFilter;
+
+                tlpMainLayout.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            }
+        }
+
+        private void cbShowSemenyihStock_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!cbShowSemenyihStock.Checked)
+            {
+                cbExcludeSemenyihStockFromTotal.Checked = false;
+                cbExcludeSemenyihStockFromTotal.Visible = false;
+            }
+            else
+            {
+                cbExcludeSemenyihStockFromTotal.Checked = true;
+                cbExcludeSemenyihStockFromTotal.Visible = true;
+            }
         }
 
         private void dgvNewStock_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -1727,12 +1777,10 @@ namespace FactoryManagementSoftware.UI
 
             if(date != DateTime.Today)
             {
-                lblInfo.Visible = false;
                 lblUpdatedTime.Visible = false;
             }
             else
             {
-                lblInfo.Visible = true;
                 lblUpdatedTime.Visible = true;
                 lblUpdatedTime.Text = DateTime.Now.ToLongTimeString();
             }
@@ -1747,7 +1795,7 @@ namespace FactoryManagementSoftware.UI
         {
             int rowIndex = e.RowIndex;
 
-            if(rowIndex < 0)
+            if(rowIndex > 0)
             {
                 string itemCode = dgvNewStock.Rows[rowIndex].Cells[headerCode].Value == DBNull.Value ? null : dgvNewStock.Rows[rowIndex].Cells[headerCode].Value.ToString();
 

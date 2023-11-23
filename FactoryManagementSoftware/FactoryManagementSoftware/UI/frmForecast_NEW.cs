@@ -983,6 +983,19 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string GetItemCode(string input)
+        {
+            int lastOpenParenthesis = input.LastIndexOf('(');
+            int lastCloseParenthesis = input.LastIndexOf(')');
+
+            if (lastOpenParenthesis == -1 || lastCloseParenthesis == -1 || lastCloseParenthesis < lastOpenParenthesis)
+            {
+                return "Invalid input"; // Or throw an exception based on your error handling policy
+            }
+
+            return input.Substring(lastOpenParenthesis + 1, lastCloseParenthesis - lastOpenParenthesis - 1).Trim();
+        }
+
         public void NewForecastEditRecord(string customer, string yearFrom, string monthFrom, string yearTo, string monthTo, string itemcode)
         {
             historyDAL dalHistory = new historyDAL();
@@ -1015,6 +1028,11 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow row in DB_History.Rows)
                 {
                     string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    if(historyDetail.Contains("V10RFP000_1"))
+                    {
+                        var checkpoint = 0;
+                    }
 
                     //get month and year and customer data
                     string historyCustomer = "";
@@ -1067,7 +1085,8 @@ namespace FactoryManagementSoftware.UI
                         if (historyDetail[i].ToString() == "_")
                         {
                             gettingCustomerInfo = false;
-                            gettingMonthAndYearInfo = true;
+
+                            gettingMonthAndYearInfo = string.IsNullOrEmpty(historyMonthAndYear);
                         }
 
                         if (gettingCustomerInfo)
@@ -1093,10 +1112,16 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
+
+                    string historyItemCode = GetItemCode(historyItem);
+
                     //date inspection
                     bool dataMatched = true;
 
-                    dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+                    //dataMatched = historyItem.Contains(itemcode) ? dataMatched : false;
+
+                    dataMatched = historyItemCode == itemcode ? dataMatched : false;
+
                     dataMatched = historyCustomer == customer ? dataMatched : false;
 
 
@@ -1127,7 +1152,8 @@ namespace FactoryManagementSoftware.UI
                         newRow[text.Header_Description] = Desciption; 
                         newRow[text.Header_EditedBy] = new userDAL().getUsername(int.TryParse(row[dalHistory.HistoryBy].ToString(), out int userId)? userId : 0);
                         newRow[text.Header_Customer] = historyCustomer;
-                        newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+                        //newRow[text.Header_Month] = HistoryDate.ToString("MM/yyyy");
+                        newRow[text.Header_Month] = HistoryDate.ToString("yyyy/MM");
 
                         value = value.Replace(" ", "");
 

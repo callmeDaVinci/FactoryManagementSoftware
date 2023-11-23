@@ -89,6 +89,7 @@ namespace FactoryManagementSoftware.Module
 (Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
 
         public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
+        public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
 
         #endregion
 
@@ -155,6 +156,9 @@ namespace FactoryManagementSoftware.Module
         #region SBB ITEM TYPE
 
         public string SBB_TYPE_EQUAL { get; } = "EQUAL";
+        public string SBB_TYPE_SPRAYJET{ get; } = "SPRAY JET";
+        public string SBB_TYPE_SPRAYJETSMALL{ get; } = "SPRAY JET SMALL";
+        public string SBB_TYPE_SPRAYJETBIG{ get; } = "SPRAY JET BIG";
         public string SBB_TYPE_MTA { get; } = "MTA";
         public string SBB_TYPE_FTA { get; } = "FTA";
         public string SBB_TYPE_ENDCAP { get; } = "END CAP";
@@ -289,6 +293,7 @@ namespace FactoryManagementSoftware.Module
         public string Unit_Bag{ get; } = "bag";
         public string Unit_Millimetre { get; } = "mm";
         public string Unit_Inch { get; } = "in";
+        public string Unit_Degree { get; } = "°";
         public string Unit_Roll { get; } = "roll";
         #endregion
 
@@ -578,6 +583,10 @@ namespace FactoryManagementSoftware.Module
         public string SPP_BrandName { get; } = "SPP";
         public string SBB_BrandName { get; } = "SBB";
 
+
+        public string SprayJet_Short { get; } = "SJ";
+        public string SprayJetSmall_Short { get; } = "SJS";
+        public string SprayJetBig_Short { get; } = "SJB";
         public string EqualElbow_Short { get; } = "EE";
         public string EqualSocket_Short { get; } = "ES";
         public string EqualTee_Short { get; } = "ET";
@@ -615,6 +624,9 @@ namespace FactoryManagementSoftware.Module
 
         #region SPP/SBB TYPE
         public string Type_EqualSocket { get; } = "EQUAL SOCKET";
+        public string Type_SprayJet { get; } = "SPRAY JET";
+        public string Type_SprayJetSmall { get; } = "SPRAY JET SMALL";
+        public string Type_SprayJetBig { get; } = "SPRAY JET BIG";
         public string Type_EqualElbow { get; } = "EQUAL ELBOW";
         public string Type_EqualTee { get; } = "EQUAL TEE";
         public string Type_Bush { get; } = "BUSH";

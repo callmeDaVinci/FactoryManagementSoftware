@@ -79,6 +79,7 @@ namespace FactoryManagementSoftware.UI
             dt_Unit.Columns.Add("UNIT");
             dt_Unit.Rows.Add(text.Unit_Millimetre);
             dt_Unit.Rows.Add(text.Unit_Inch);
+            dt_Unit.Rows.Add(text.Unit_Degree);
 
             cmbUnit.DataSource = dt_Unit;
             cmbUnit.DisplayMember = "UNIT";
