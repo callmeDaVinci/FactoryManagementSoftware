@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>577</ApplicationRevision>
+    <ApplicationRevision>582</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -244,6 +244,18 @@
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmDOManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOManagement.Designer.cs">
+      <DependentUpon>frmDOManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDOEditing.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOEditing.Designer.cs">
+      <DependentUpon>frmDOEditing.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmSBBDOListVer3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -445,12 +457,6 @@
     </Compile>
     <Compile Include="UI\FinexWill.Designer.cs">
       <DependentUpon>FinexWill.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\frmFinex.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\frmFinex.Designer.cs">
-      <DependentUpon>frmFinex.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSBBMouldEdit.cs">
       <SubType>Form</SubType>
@@ -1129,6 +1135,12 @@
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOManagement.resx">
+      <DependentUpon>frmDOManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOEditing.resx">
+      <DependentUpon>frmDOEditing.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDOListVer3.resx">
       <DependentUpon>frmSBBDOListVer3.cs</DependentUpon>
     </EmbeddedResource>
@@ -1230,9 +1242,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\FinexWill.resx">
       <DependentUpon>FinexWill.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmFinex.resx">
-      <DependentUpon>frmFinex.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBMouldEdit.resx">
       <DependentUpon>frmSBBMouldEdit.cs</DependentUpon>
@@ -1670,6 +1679,8 @@
     <None Include="Resources\icons8-less-than-25.png" />
     <None Include="Resources\icons8-more-than-25.png" />
     <None Include="Resources\SBB DELIVERY ORDER LOGO.png" />
+    <None Include="Resources\icons8-search-500.png" />
+    <None Include="Resources\icons8-pencil-100.png" />
     <Content Include="Resources\sbbdeliveryorderwithrectacgle.png" />
     <Content Include="SBB logo.ico" />
     <Content Include="sp logo 2023.ico" />

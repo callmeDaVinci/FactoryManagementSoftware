@@ -39,9 +39,9 @@
             this.btnApply = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.cbNewFormat = new System.Windows.Forms.CheckBox();
             this.cbOldFormat = new System.Windows.Forms.CheckBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -222,9 +222,21 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "D/O FORMAT";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.label2.ForeColor = System.Drawing.Color.Green;
+            this.label2.Location = new System.Drawing.Point(33, 88);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(202, 15);
+            this.label2.TabIndex = 233;
+            this.label2.Text = "(Effective from 1st Dec 2023 Delivery)";
+            // 
             // cbNewFormat
             // 
             this.cbNewFormat.AutoSize = true;
+            this.cbNewFormat.Enabled = false;
             this.cbNewFormat.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbNewFormat.Location = new System.Drawing.Point(15, 66);
             this.cbNewFormat.Name = "cbNewFormat";
@@ -239,6 +251,7 @@
             this.cbOldFormat.AutoSize = true;
             this.cbOldFormat.Checked = true;
             this.cbOldFormat.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbOldFormat.Enabled = false;
             this.cbOldFormat.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbOldFormat.Location = new System.Drawing.Point(15, 28);
             this.cbOldFormat.Name = "cbOldFormat";
@@ -247,17 +260,6 @@
             this.cbOldFormat.Text = "Old Format";
             this.cbOldFormat.UseVisualStyleBackColor = true;
             this.cbOldFormat.CheckedChanged += new System.EventHandler(this.cbOldFormat_CheckedChanged);
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label2.ForeColor = System.Drawing.Color.Green;
-            this.label2.Location = new System.Drawing.Point(33, 88);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(184, 15);
-            this.label2.TabIndex = 233;
-            this.label2.Text = "(Effective from Dec 2023 Delivery)";
             // 
             // frmExportSetting
             // 

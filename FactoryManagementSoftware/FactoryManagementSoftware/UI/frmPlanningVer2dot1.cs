@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
@@ -6915,6 +6914,11 @@ namespace FactoryManagementSoftware.UI
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
             }
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

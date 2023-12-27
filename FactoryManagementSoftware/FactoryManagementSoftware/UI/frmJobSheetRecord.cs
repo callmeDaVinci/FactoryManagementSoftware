@@ -1192,6 +1192,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.note = note;
                 uProRecord.directIn = balPieceStockIn;
                 uProRecord.parent_code = "";
+                uProRecord.production_operator = txtOperator.Text;
 
                 int userID = MainDashboard.USER_ID;
 

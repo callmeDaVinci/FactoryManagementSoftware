@@ -594,6 +594,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_pencil_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_pencil_100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_planner_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-planner-96", resourceCulture);
@@ -717,6 +727,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_refresh_480 {
             get {
                 object obj = ResourceManager.GetObject("icons8-refresh-480", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_search_500 {
+            get {
+                object obj = ResourceManager.GetObject("icons8_search_500", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1087,16 +1107,6 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap tee_64px {
             get {
                 object obj = ResourceManager.GetObject("tee.64px", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap WillCoverImage {
-            get {
-                object obj = ResourceManager.GetObject("WillCoverImage", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

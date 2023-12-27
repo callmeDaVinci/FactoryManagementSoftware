@@ -5141,6 +5141,12 @@ namespace FactoryManagementSoftware.UI
 
             }
 
+            if (monthEnd < monthStart)
+            {
+                yearEnd++;
+
+            }
+
             return Tuple.Create(monthStart,yearStart,monthEnd,yearEnd);
         }
 
@@ -6631,15 +6637,41 @@ namespace FactoryManagementSoftware.UI
 
         private string GetItemCode(string input)
         {
-            int lastOpenParenthesis = input.LastIndexOf('(');
-            int lastCloseParenthesis = input.LastIndexOf(')');
+            //int lastOpenParenthesis = input.LastIndexOf('(');
+            //int lastCloseParenthesis = input.LastIndexOf(')');
 
-            if (lastOpenParenthesis == -1 || lastCloseParenthesis == -1 || lastCloseParenthesis < lastOpenParenthesis)
+            //if (lastOpenParenthesis == -1 || lastCloseParenthesis == -1 || lastCloseParenthesis < lastOpenParenthesis)
+            //{
+            //    return "Invalid input"; // Or throw an exception based on your error handling policy
+            //}
+
+            //return input.Substring(lastOpenParenthesis + 1, lastCloseParenthesis - lastOpenParenthesis - 1).Trim();
+
+            int openParenthesisCount = 0;
+            int closeParenthesisIndex = -1;
+
+            // Start from the end of the string
+            for (int i = input.Length - 1; i >= 0; i--)
             {
-                return "Invalid input"; // Or throw an exception based on your error handling policy
+                if (input[i] == ')')
+                {
+                    if (openParenthesisCount == 0)
+                    {
+                        closeParenthesisIndex = i;
+                    }
+                    openParenthesisCount++;
+                }
+                else if (input[i] == '(')
+                {
+                    openParenthesisCount--;
+                    if (openParenthesisCount == 0)
+                    {
+                        return input.Substring(i + 1, closeParenthesisIndex - i - 1).Trim();
+                    }
+                }
             }
 
-            return input.Substring(lastOpenParenthesis + 1, lastCloseParenthesis - lastOpenParenthesis - 1).Trim();
+            return "Invalid input"; // Or throw an exception based on your error handling policy
         }
 
         public void ForecastEditRecord(string customer, string itemcode)
@@ -6684,6 +6716,11 @@ namespace FactoryManagementSoftware.UI
                 foreach (DataRow row in DB_History.Rows)
                 {
                     string historyDetail = row[dalHistory.HistoryDetail].ToString();
+
+                    if(historyDetail.Contains("PLASTIC CAP/PLASTIC GROUT VENT(SAFETY)") && historyDetail.Contains(customer))
+                    {
+                        var checkpoint = 1;
+                    }
 
                     //get month and year and customer data
                     string historyCustomer = "";

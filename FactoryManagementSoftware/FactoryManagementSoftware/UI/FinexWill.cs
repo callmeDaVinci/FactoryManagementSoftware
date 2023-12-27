@@ -4716,15 +4716,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
 
-            #region LOGO
-
-            string tempPath = Path.GetTempFileName();
-            Resources.WillCoverImage.Save(tempPath + "will cover image.png");
-            string filePath = tempPath + "will cover image.png";
-
-            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 0, 0, -1, 772);
-
-            #endregion
+       
         }
 
         private void CoverNameInsert(Worksheet xlWorkSheet, string Name)

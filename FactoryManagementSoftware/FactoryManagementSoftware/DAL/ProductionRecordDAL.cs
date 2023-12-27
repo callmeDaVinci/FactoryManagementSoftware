@@ -717,6 +717,7 @@ namespace FactoryManagementSoftware.DAL
                             + TimeStart + ","
                             + TimeEnd + ","
                             + Shift + ","
+                            + ProOperator + ","
                             + ProLotNo + ","
                             + MacNo + ","
                             + RawMatLotNo + ","
@@ -744,6 +745,7 @@ namespace FactoryManagementSoftware.DAL
                             "@production_time_start," +
                             "@production_time_end," +
                             "@shift," +
+                            "@production_operator," +
                             "@production_lot_no," +
                             "@mac_no," +
                             "@raw_mat_lot_no," +
@@ -774,6 +776,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_time_start", u.production_time_start);
                 cmd.Parameters.AddWithValue("@production_time_end", u.production_time_end);
                 cmd.Parameters.AddWithValue("@shift", u.shift);
+                cmd.Parameters.AddWithValue("@production_operator", u.production_operator);
                 cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
                 cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
                 cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);
@@ -1195,6 +1198,7 @@ namespace FactoryManagementSoftware.DAL
                             + TimeStart + "=@production_time_start,"
                             + TimeEnd + "=@production_time_end,"
                             + Shift + "=@shift,"
+                            + ProOperator + "=@production_operator,"
                             + ProLotNo + "=@production_lot_no,"
                             + MacNo + "=@mac_no,"
                             + RawMatLotNo + "=@raw_mat_lot_no,"
@@ -1227,6 +1231,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_time_start", u.production_time_start);
                 cmd.Parameters.AddWithValue("@production_time_end", u.production_time_end);
                 cmd.Parameters.AddWithValue("@shift", u.shift);
+                cmd.Parameters.AddWithValue("@production_operator", u.production_operator);
                 cmd.Parameters.AddWithValue("@production_lot_no", u.production_lot_no);
                 cmd.Parameters.AddWithValue("@mac_no", u.mac_no);
                 cmd.Parameters.AddWithValue("@raw_mat_lot_no", u.raw_mat_lot_no);

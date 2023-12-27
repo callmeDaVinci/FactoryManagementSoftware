@@ -197,7 +197,11 @@ namespace FactoryManagementSoftware.UI
                 string typeName = row[dalSPP.TypeName].ToString();
 
                 int pcsStock = readyStock;
-                int bagStock = pcsStock / qtyPerBag;
+
+                int bagStock = 0;
+
+                if(qtyPerBag >0)    
+                bagStock = pcsStock / qtyPerBag;
 
 
                 string sizeString = "";
