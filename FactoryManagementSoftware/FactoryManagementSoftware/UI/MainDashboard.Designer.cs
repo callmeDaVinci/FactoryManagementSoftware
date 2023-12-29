@@ -411,6 +411,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainDashboard_FormClosed);
             this.Load += new System.EventHandler(this.MainDashboard_Load);
+            this.Shown += new System.EventHandler(this.MainDashboard_Shown);
             this.Move += new System.EventHandler(this.MainDashboard_Move);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();

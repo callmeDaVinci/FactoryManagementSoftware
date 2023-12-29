@@ -3833,14 +3833,13 @@ namespace FactoryManagementSoftware.UI
                 u.stock_updtd_date = Convert.ToDateTime(row["stock_updtd_date"]);
                 u.stock_updtd_by = Convert.ToInt32(row["stock_updtd_by"]);
 
-                // Check the fac_id and update stock_qty accordingly
-                if (u.stock_fac_id != 10)
+                // Check if item_cat is "Part" and fac_id is 10
+                if ( u.stock_fac_id == 10)
                 {
-                    u.stock_qty = 0;
+                    dalItem.SemenyihClearStockupdateTotalStock(u.stock_item_code, u.stock_qty);
                 }
 
-                // Call your existing method to update the record
-                dalStock.SemenyihClearStockUpdate(u);
+
             }
         }
 

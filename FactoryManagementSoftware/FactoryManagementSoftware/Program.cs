@@ -23,7 +23,8 @@ namespace FactoryManagementSoftware
             Application.SetCompatibleTextRenderingDefault(false);
 
             //Application.Run(new frmSBBBodyCalculation());
-
+            //Application.Run(new frmMaterialAlertNotice());
+            
             //Application.Run(new frmDOManagement());
             //Application.Run(new frmDOEditing());
 
@@ -31,9 +32,9 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmReadSemenyihData());
 
-            Application.Run(new MainDashboard(1));
+            //Application.Run(new MainDashboard(1));
 
-          //Application.Run(new frmLogIn());
+          Application.Run(new frmLogIn());
 
         }
 

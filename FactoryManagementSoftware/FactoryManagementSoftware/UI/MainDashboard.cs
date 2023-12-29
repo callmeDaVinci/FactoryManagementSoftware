@@ -573,6 +573,7 @@ namespace FactoryManagementSoftware.UI
                         Application.OpenForms.OfType<frmInOutVer2>().First().BringToFront();
                     }
                 }
+
             }
 
 
@@ -1435,6 +1436,22 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+        }
+
+        private void MainDashboard_Shown(object sender, EventArgs e)
+        {
+            if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+            {
+               
+            }
+            else
+            {
+
+                frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
+                frm2.StartPosition = FormStartPosition.CenterScreen;
+                frm2.Show();
+            }
+
         }
     }
 }

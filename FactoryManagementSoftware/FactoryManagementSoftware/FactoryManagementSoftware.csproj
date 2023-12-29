@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>582</ApplicationRevision>
+    <ApplicationRevision>586</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -255,6 +255,12 @@
     </Compile>
     <Compile Include="UI\frmDOEditing.Designer.cs">
       <DependentUpon>frmDOEditing.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmMaterialAlertNotice.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmMaterialAlertNotice.Designer.cs">
+      <DependentUpon>frmMaterialAlertNotice.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmSBBDOListVer3.cs">
       <SubType>Form</SubType>
@@ -1140,6 +1146,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDOEditing.resx">
       <DependentUpon>frmDOEditing.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmMaterialAlertNotice.resx">
+      <DependentUpon>frmMaterialAlertNotice.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBDOListVer3.resx">
       <DependentUpon>frmSBBDOListVer3.cs</DependentUpon>

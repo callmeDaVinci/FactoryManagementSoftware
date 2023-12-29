@@ -42,6 +42,7 @@
             this.cbInjectionPartOnly = new System.Windows.Forms.CheckBox();
             this.cmbCategory = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.txtPartName = new FactoryManagementSoftware.CustomTextBox();
             this.lblPartCode = new System.Windows.Forms.Label();
             this.lblPartName = new System.Windows.Forms.Label();
             this.cmbPartCode = new System.Windows.Forms.ComboBox();
@@ -80,7 +81,6 @@
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.txtPartName = new FactoryManagementSoftware.CustomTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -253,6 +253,20 @@
             this.label1.Size = new System.Drawing.Size(65, 15);
             this.label1.TabIndex = 114;
             this.label1.Text = "CATEGORY";
+            // 
+            // txtPartName
+            // 
+            this.txtPartName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtPartName.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.txtPartName.Location = new System.Drawing.Point(14, 93);
+            this.txtPartName.Name = "txtPartName";
+            this.txtPartName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtPartName.Size = new System.Drawing.Size(356, 23);
+            this.txtPartName.TabIndex = 107;
+            this.txtPartName.Values = null;
+            this.txtPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
+            this.txtPartName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPartName_KeyDown);
             // 
             // lblPartCode
             // 
@@ -934,20 +948,6 @@
             // 
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
-            // 
-            // txtPartName
-            // 
-            this.txtPartName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPartName.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.txtPartName.Location = new System.Drawing.Point(14, 93);
-            this.txtPartName.Name = "txtPartName";
-            this.txtPartName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtPartName.Size = new System.Drawing.Size(356, 23);
-            this.txtPartName.TabIndex = 107;
-            this.txtPartName.Values = null;
-            this.txtPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
-            this.txtPartName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtPartName_KeyDown);
             // 
             // frmItemSearch
             // 

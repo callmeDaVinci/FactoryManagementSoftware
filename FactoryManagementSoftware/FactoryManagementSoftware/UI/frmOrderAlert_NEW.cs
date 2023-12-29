@@ -690,10 +690,19 @@ namespace FactoryManagementSoftware.UI
                     {
                         string matType = row[text.Header_Type].ToString();
                         string stock = row[text.Header_ReadyStock].ToString();
+                        string itemCode = row[text.Header_PartCode].ToString();
 
                         if (matType == Material_Type && stock != "-1")
                         {
-                            dt_MaterialList.ImportRow(row);
+                            if (cbZeroCostOnly.Checked && itemCode == "XTW4+10EEJ")
+                            {
+                                
+                            }
+                            else
+                            {
+                                dt_MaterialList.ImportRow(row);
+
+                            }
                         }
                     }
                 }
@@ -1403,6 +1412,8 @@ namespace FactoryManagementSoftware.UI
 
                     string RawMaterial = ProductRow[dalItem.ItemMaterial].ToString();
                     string ColorMaterial = ProductRow[dalItem.ItemMBatch].ToString();
+
+
 
                     int childIndex = index *1000 + 1;
 
