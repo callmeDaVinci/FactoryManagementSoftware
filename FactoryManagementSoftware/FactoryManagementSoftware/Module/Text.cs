@@ -362,7 +362,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_EfficiencyRate { get; } = "Efficiency %"; 
         public string Header_TotalStockIn { get; } = "Stock In Qty";
         public string Header_TargetQty { get; } = "Target Qty";
-        public string Header_Qty { get; } = "Quantity";
+        public string Header_Qty { get; } = "QUANTITY";
         public string Header_AutoQtyAdjustment { get; } = "MAX Qty";
         public string Header_Job_Purpose { get; } = "Job Purpose";
 

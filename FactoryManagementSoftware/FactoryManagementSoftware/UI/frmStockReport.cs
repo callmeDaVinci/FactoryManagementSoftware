@@ -294,8 +294,8 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 dt_StockRemovedFlag = dt_Stock.Copy();
-                dt_StockRemovedFlag.Columns.Remove(headerParentColor);
-                dt_StockRemovedFlag.Columns.Remove(headerRepeat);
+                //dt_StockRemovedFlag.Columns.Remove(headerParentColor);
+                //dt_StockRemovedFlag.Columns.Remove(headerRepeat);
 
                 //dt_Stock.DefaultView.Sort = headerIndex+" ASC";
                 dgvNewStock.DataSource = dt_StockRemovedFlag;
@@ -363,6 +363,14 @@ namespace FactoryManagementSoftware.UI
                 //dt_StockRemovedFlag.Columns.Remove(headerRepeat);
 
                 //dgvNewStock.DataSource = dt_StockRemovedFlag;
+
+                DateTime date = Convert.ToDateTime(dtpEndDate.Value).Date;
+
+                if (date < DateTime.Today)
+                {
+                    dt_Stock = calculateOldStock(dt_Stock);
+                }
+
                 dgvNewStock.DataSource = dt_Stock;
                 dgvStockUIEdit(dgvNewStock);
                 //dgvNewStock.AlternatingRowsDefaultCellStyle.BackColor = Color.FromArgb(245, 247, 255);
@@ -591,14 +599,14 @@ namespace FactoryManagementSoftware.UI
             //check if repeat
             if (ifRepeat(itemCode) && (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC))
             {
-                dtStock_row[headerRepeat] = 1;
+                //dtStock_row[headerRepeat] = 1;
 
                 if (cbShowDuplicateData.Checked)
                     dt_Stock.Rows.Add(dtStock_row);
             }
             else if (factoryName != text.Factory_Semenyih || MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
             {
-                dtStock_row[headerRepeat] = 0;
+                //dtStock_row[headerRepeat] = 0;
                 dt_Stock.Rows.Add(dtStock_row);
             }
 
@@ -795,21 +803,23 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_TrfHist;
 
-            if (!cbIncludeSubMat.Checked)
-            {
-                if (cmbType.Text.Equals(CMBPartHeader))
-                {
-                    dt_TrfHist = dalTrfHist.rangePartTrfSearch(startDate, endDate);
-                }
-                else
-                {
-                    dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
-                }
-            }
-            else
-            {
-                dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
-            }
+            //if (!cbIncludeSubMat.Checked)
+            //{
+            //    if (cmbType.Text.Equals(CMBPartHeader))
+            //    {
+            //        dt_TrfHist = dalTrfHist.rangePartTrfSearch(startDate, endDate);
+            //    }
+            //    else
+            //    {
+            //        dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
+            //    }
+            //}
+            //else
+            //{
+            //    dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
+            //}
+
+            dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
 
             DataTable dt_Fac = dalFac.SelectDESC();
 
@@ -844,15 +854,15 @@ namespace FactoryManagementSoftware.UI
                                 row[to] = newQty;
                             }
                             
-                            if(row[headerRepeat] != null)
-                            {
-                                int i = Convert.ToInt16(row[headerRepeat]);
+                            //if(row[headerRepeat] != null)
+                            //{
+                            //    int i = Convert.ToInt16(row[headerRepeat]);
 
-                                if(i == 1)
-                                {
-                                    //row2.Delete();
-                                }
-                            }
+                            //    if(i == 1)
+                            //    {
+                            //        //row2.Delete();
+                            //    }
+                            //}
 
                         }
                         else if (tool.IfFactoryExists(dt_Fac,from) && !tool.IfFactoryExists(dt_Fac,to))
@@ -873,15 +883,15 @@ namespace FactoryManagementSoftware.UI
 
                             }
 
-                            if (row[headerRepeat] != null)
-                            {
-                                int i = Convert.ToInt16(row[headerRepeat]);
+                            //if (row[headerRepeat] != null)
+                            //{
+                            //    int i = Convert.ToInt16(row[headerRepeat]);
 
-                                if (i == 1)
-                                {
-                                    //row2.Delete();
-                                }
-                            }
+                            //    if (i == 1)
+                            //    {
+                            //        //row2.Delete();
+                            //    }
+                            //}
                         }
                         else if (!tool.IfFactoryExists(dt_Fac,from) && tool.IfFactoryExists(dt_Fac,to))
                         {
@@ -902,15 +912,15 @@ namespace FactoryManagementSoftware.UI
                                 row[headerTotal] = oldTotal - trfQty;
                             }
 
-                            if (row[headerRepeat] != null)
-                            {
-                                int i = Convert.ToInt16(row[headerRepeat]);
+                            //if (row[headerRepeat] != null)
+                            //{
+                            //    int i = Convert.ToInt16(row[headerRepeat]);
 
-                                if (i == 1)
-                                {
-                                    //row2.Delete();
-                                }
-                            }
+                            //    if (i == 1)
+                            //    {
+                            //        //row2.Delete();
+                            //    }
+                            //}
                         }
                     }
                 }
@@ -1644,20 +1654,20 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
 
-                LoadAllStockData();
+                //LoadAllStockData();
 
-                //if (cmbType.Text.Equals(text.Cmb_All))
-                //{
-                //    LoadAllStockData();
-                //}
-                //else if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                //{
-                //    LoadPartStockData();
-                //}
-                //else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
-                //{
-                //    newLoadMaterialStockData();
-                //}
+                if (cmbType.Text.Equals(text.Cmb_All))
+                {
+                    LoadAllStockData();
+                }
+                else if (cmbType.Text.Equals(CMBPartHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                {
+                    LoadPartStockData();
+                }
+                else if (cmbType.Text.Equals(CMBMaterialHeader) && !string.IsNullOrEmpty(cmbSubType.Text))
+                {
+                    newLoadMaterialStockData();
+                }
 
 
                 Cursor = Cursors.Arrow; // change cursor to normal type

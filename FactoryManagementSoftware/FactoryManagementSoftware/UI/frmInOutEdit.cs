@@ -3815,5 +3815,60 @@ namespace FactoryManagementSoftware.UI
             SHOW_EDIT_PANEL = !SHOW_EDIT_PANEL;
             showEditPanel(SHOW_EDIT_PANEL);
         }
+
+        public void UpdateStockBasedOnFacId()
+        {
+            facStockDAL dalStock = new facStockDAL();
+            DataTable dt_Stock = dalStock.Select(); // Replace with your actual method to get the data from tbl_stock
+
+            foreach (DataRow row in dt_Stock.Rows)
+            {
+                facStockBLL u = new facStockBLL();
+
+                u.stock_item_code = row["stock_item_code"].ToString();
+                u.stock_fac_id = Convert.ToInt32(row["stock_fac_id"]);
+                u.stock_qty = Convert.ToSingle(row["stock_qty"]);
+                u.stock_unit = row["stock_unit"].ToString();
+                u.stock_cat = row["stock_qty"].ToString();
+                u.stock_updtd_date = Convert.ToDateTime(row["stock_updtd_date"]);
+                u.stock_updtd_by = Convert.ToInt32(row["stock_updtd_by"]);
+
+                // Check the fac_id and update stock_qty accordingly
+                if (u.stock_fac_id != 10)
+                {
+                    u.stock_qty = 0;
+                }
+
+                // Call your existing method to update the record
+                dalStock.SemenyihClearStockUpdate(u);
+            }
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+           
+                
+        }
+
+        private void label16_DoubleClick(object sender, EventArgs e)
+        {
+            if (DateTime.Now.Date == new DateTime(2023, 12, 29))
+            {
+                frmVerification frm = new frmVerification(text.PW_TopManagement);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();
+
+                if (frmVerification.PASSWORD_MATCHED)
+                {
+                    frmLoading.ShowLoadingScreen();
+
+                    UpdateStockBasedOnFacId();
+
+                    frmLoading.CloseForm();
+                }
+
+            }
+        }
     }
 }

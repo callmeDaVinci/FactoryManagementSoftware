@@ -28,7 +28,7 @@ namespace FactoryManagementSoftware
             // 
             // _listBox
             // 
-            this._listBox.ItemHeight = 16;
+            this._listBox.ItemHeight = 20;
             this._listBox.Location = new System.Drawing.Point(0, 0);
             this._listBox.Name = "_listBox";
             this._listBox.Size = new System.Drawing.Size(120, 84);

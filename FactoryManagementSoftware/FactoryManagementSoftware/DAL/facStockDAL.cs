@@ -275,6 +275,53 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+        public bool SemenyihClearStockUpdate(facStockBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "UPDATE tbl_stock SET stock_qty=@stock_qty, stock_cat=@stock_cat, stock_unit=@stock_unit, stock_updtd_date=@stock_updtd_date, stock_updtd_by=@stock_updtd_by WHERE stock_item_code=@stock_item_code AND stock_fac_id=@stock_fac_id";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@stock_item_code", u.stock_item_code);
+                cmd.Parameters.AddWithValue("@stock_fac_id", u.stock_fac_id);
+                cmd.Parameters.AddWithValue("@stock_qty", u.stock_qty);
+                cmd.Parameters.AddWithValue("@stock_cat", u.stock_cat);
+                cmd.Parameters.AddWithValue("@stock_unit", u.stock_unit);
+                cmd.Parameters.AddWithValue("@stock_updtd_date", u.stock_updtd_date);
+                cmd.Parameters.AddWithValue("@stock_updtd_by", u.stock_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                    dalItem.SemenyihClearStockupdateTotalStock(u.stock_item_code, u.stock_qty);
+
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
         public bool Update(facStockBLL u)
         {
             bool isSuccess = false;

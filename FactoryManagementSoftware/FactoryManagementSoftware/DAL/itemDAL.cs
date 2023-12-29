@@ -2540,6 +2540,24 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
+        public bool SemenyihClearStockupdateTotalStock(string itemCode, float SMYStock)
+        {
+            facStockDAL dalStock = new facStockDAL();
+            itemBLL uItem = new itemBLL();
+            facStockDAL dalFacStock = new facStockDAL();
+
+            //Update data
+            uItem.item_code = itemCode;
+            uItem.item_qty = SMYStock;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+            //Updating data into database
+            bool success = qtyUpdate(uItem);
+
+            return success;
+        }
+
         public bool updateTotalStock(string itemCode)
         {
             float totalStock = 0;

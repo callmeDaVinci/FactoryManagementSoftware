@@ -91,7 +91,6 @@
             this.cmbType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbType.Enabled = false;
             this.cmbType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cmbType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbType.FormattingEnabled = true;
@@ -120,7 +119,6 @@
             this.cmbSubType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.cmbSubType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbSubType.Enabled = false;
             this.cmbSubType.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cmbSubType.ForeColor = System.Drawing.SystemColors.InfoText;
             this.cmbSubType.FormattingEnabled = true;
@@ -139,7 +137,6 @@
             // 
             this.dtpEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.dtpEndDate.Enabled = false;
             this.dtpEndDate.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.dtpEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpEndDate.Location = new System.Drawing.Point(3, 24);

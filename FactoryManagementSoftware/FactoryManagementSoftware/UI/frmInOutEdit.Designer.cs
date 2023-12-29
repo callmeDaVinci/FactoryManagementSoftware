@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblUnit = new System.Windows.Forms.Label();
             this.lblCategory = new System.Windows.Forms.Label();
             this.cmbTrfFromCategory = new System.Windows.Forms.ComboBox();
@@ -395,14 +395,14 @@
             this.dgvTransfer.AllowUserToResizeRows = false;
             this.dgvTransfer.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvTransfer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTransfer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTransfer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvTransfer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTransfer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTransfer.GridColor = System.Drawing.SystemColors.Control;
@@ -447,6 +447,8 @@
             this.label16.Size = new System.Drawing.Size(94, 17);
             this.label16.TabIndex = 105;
             this.label16.Text = "Red: Stock Out";
+            this.label16.Click += new System.EventHandler(this.label16_Click);
+            this.label16.DoubleClick += new System.EventHandler(this.label16_DoubleClick);
             // 
             // label17
             // 
@@ -518,7 +520,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 252F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
             this.tableLayoutPanel5.Controls.Add(this.btnIn, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOut, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -556,7 +558,7 @@
             this.btnIn.OnHoverImage = null;
             this.btnIn.OnPressedColor = System.Drawing.Color.Black;
             this.btnIn.Radius = 2;
-            this.btnIn.Size = new System.Drawing.Size(61, 34);
+            this.btnIn.Size = new System.Drawing.Size(60, 34);
             this.btnIn.TabIndex = 232;
             this.btnIn.Text = "In";
             this.btnIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -578,7 +580,7 @@
             this.btnOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnOut.Image = null;
             this.btnOut.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnOut.Location = new System.Drawing.Point(74, 5);
+            this.btnOut.Location = new System.Drawing.Point(73, 5);
             this.btnOut.Margin = new System.Windows.Forms.Padding(5);
             this.btnOut.Name = "btnOut";
             this.btnOut.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -588,7 +590,7 @@
             this.btnOut.OnHoverImage = null;
             this.btnOut.OnPressedColor = System.Drawing.Color.Black;
             this.btnOut.Radius = 2;
-            this.btnOut.Size = new System.Drawing.Size(62, 34);
+            this.btnOut.Size = new System.Drawing.Size(60, 34);
             this.btnOut.TabIndex = 232;
             this.btnOut.Text = "Out";
             this.btnOut.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -610,7 +612,7 @@
             this.btnSwitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnSwitch.Image = null;
             this.btnSwitch.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSwitch.Location = new System.Drawing.Point(146, 5);
+            this.btnSwitch.Location = new System.Drawing.Point(143, 5);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 5, 3, 5);
             this.btnSwitch.Name = "btnSwitch";
             this.btnSwitch.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -620,7 +622,7 @@
             this.btnSwitch.OnHoverImage = null;
             this.btnSwitch.OnPressedColor = System.Drawing.Color.Black;
             this.btnSwitch.Radius = 2;
-            this.btnSwitch.Size = new System.Drawing.Size(245, 34);
+            this.btnSwitch.Size = new System.Drawing.Size(248, 34);
             this.btnSwitch.TabIndex = 232;
             this.btnSwitch.Text = "Internal Transfer";
             this.btnSwitch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
