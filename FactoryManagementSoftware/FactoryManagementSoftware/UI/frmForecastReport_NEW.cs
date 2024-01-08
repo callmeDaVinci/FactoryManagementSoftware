@@ -5125,9 +5125,9 @@ namespace FactoryManagementSoftware.UI
             int year = DateTime.Now.Year;
 
             int monthStart = 1;
-            int yearStart = 2023;
+            int yearStart = year;
             int monthEnd = 1;
-            int yearEnd = 2023;
+            int yearEnd = year;
 
             if (cmbForecastFrom.SelectedIndex != -1)
             {

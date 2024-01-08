@@ -363,6 +363,16 @@ namespace FactoryManagementSoftware.Module
         public string Header_TotalStockIn { get; } = "Stock In Qty";
         public string Header_TargetQty { get; } = "Target Qty";
         public string Header_Qty { get; } = "QUANTITY";
+
+        public string Header_TotalQty { get; } = "Total Qty";
+        public string Header_TotalQtyUnit { get; } = "Total Qty Unit";
+
+        public string Header_QtyPerBox { get; } = "Qty Per Box";
+        public string Header_BoxQty { get; } = "Box Qty";
+        public string Header_BoxUnit { get; } = "Box Unit";
+       
+
+
         public string Header_AutoQtyAdjustment { get; } = "MAX Qty";
         public string Header_Job_Purpose { get; } = "Job Purpose";
 
@@ -425,6 +435,10 @@ namespace FactoryManagementSoftware.Module
 
 
         public string Header_Unit { get; } = "UNIT";
+        public string Header_SearchMode { get; } = "SearchMode";
+        public string Header_DescriptionIncludeCategory { get; } = "DescriptionIncludeCategory";
+        public string Header_DescriptionIncludePackaging { get; } = "DescriptionIncludePackaging";
+        public string Header_DescriptionIncludeRemark { get; } = "DescriptionIncludeRemark";
 
 
         public string Header_Percentage { get; } = "%";

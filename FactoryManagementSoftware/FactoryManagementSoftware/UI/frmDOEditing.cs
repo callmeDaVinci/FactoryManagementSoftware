@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
@@ -9,9 +8,6 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System.Linq;
 using System.Threading;
-using static Syncfusion.XlsIO.Parser.Biff_Records.PivotTable.PivotViewItemRecord;
-using System.Web.UI.Design;
-using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -51,17 +47,32 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Qty, typeof(decimal));
             dt.Columns.Add(text.Header_Unit, typeof(string));
 
+            dt.Columns.Add(text.Header_SearchMode, typeof(bool));
+            dt.Columns.Add(text.Header_ItemName, typeof(string));
+
+            dt.Columns.Add(text.Header_TotalQty, typeof(string));
+            dt.Columns.Add(text.Header_TotalQtyUnit, typeof(string));
+            dt.Columns.Add(text.Header_QtyPerBox, typeof(string));
+            dt.Columns.Add(text.Header_BoxQty, typeof(string));
+            dt.Columns.Add(text.Header_BoxUnit, typeof(string));
+            dt.Columns.Add(text.Header_Balance, typeof(string));
+
+            dt.Columns.Add(text.Header_Remark, typeof(string));
+
+            dt.Columns.Add(text.Header_DescriptionIncludeCategory, typeof(bool));
+            dt.Columns.Add(text.Header_DescriptionIncludePackaging, typeof(bool));
+            dt.Columns.Add(text.Header_DescriptionIncludeRemark, typeof(bool));
+
+
             return dt;
         }
 
         private void dgvUIEdit(DataGridView dgv)
         {
-            //dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            //int smallColumnWidth = 60;
 
             if (dgv == dgvDOItemList)
             {
-                dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
@@ -69,138 +80,29 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemCode].MinimumWidth = 100;
 
 
-                // Enable wrap mode for the header description
-                dgv.Columns[text.Header_Description].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleLeft;
-                dgv.Columns[text.Header_Description].HeaderCell.Style.WrapMode = DataGridViewTriState.True;
+                dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
                 dgv.Columns[text.Header_Description].MinimumWidth = 100;
+                dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                dgv.Columns[text.Header_SearchMode].Visible = false;
+                dgv.Columns[text.Header_ItemName].Visible = false;
+                dgv.Columns[text.Header_TotalQty].Visible = false;
+                dgv.Columns[text.Header_TotalQtyUnit].Visible = false;
+                dgv.Columns[text.Header_QtyPerBox].Visible = false;
+                dgv.Columns[text.Header_BoxQty].Visible = false;
+                dgv.Columns[text.Header_BoxUnit].Visible = false;
+                dgv.Columns[text.Header_Balance].Visible = false;
+                dgv.Columns[text.Header_Remark].Visible = false;
+                dgv.Columns[text.Header_Balance].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
+
             }
-
-
-
-            //else if (dgv == dgvRawMatList)
-            //{
-            //    //dgv.Columns[text.Header_MouldCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //    dgv.Columns[text.Header_Qty_Required_Bag].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_Qty_Required_KG].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_KGPERBAG].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-            //    dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-
-            //    dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-            //    dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            //    dgv.Columns[text.Header_Selection].Width = smallColumnWidth;
-            //    dgv.Columns[text.Header_RoundUp_ToBag].Width = smallColumnWidth;
-            //    dgv.Columns[text.Header_Index].Width = smallColumnWidth;
-            //    dgv.Columns[text.Header_Qty_Required_KG].Width = smallColumnWidth;
-            //    dgv.Columns[text.Header_KGPERBAG].Width = smallColumnWidth;
-            //    dgv.Columns[text.Header_Qty_Required_Bag].Width = smallColumnWidth;
-
-            //    dgv.Columns[text.Header_ItemCode].Visible = false;
-            //    dgv.Columns[text.Header_ItemName].Visible = false;
-            //    dgv.Columns[text.Header_Remark].Visible = false;
-
-            //    //int itemListRowHeight = dgv.ColumnHeadersHeight + dgv.Rows.Cast<DataGridViewRow>().Sum(r => r.Height);
-
-            //    //if (itemListRowHeight < 192)
-            //    //{
-            //    //    tlpMatSelection.RowStyles[1].SizeType = SizeType.Absolute;
-            //    //    tlpMatSelection.RowStyles[1].Height = itemListRowHeight;
-            //    //}
-
-            //}
-            //else if (dgv == dgvStockCheck)
-            //{
-            //    dgv.Columns[text.Header_Index].HeaderCell.Style.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //    dgv.Columns[text.Header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-
-
-            //    dgv.Columns[text.Header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_Type].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-
-            //    //dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-            //    dgv.Columns[text.Header_Index].Width = smallColumnWidth;
-            //    //int columnWidth = 60;
-
-            //    //dgv.Columns[text.Header_ReadyStock].Width = columnWidth;
-            //    //dgv.Columns[text.Header_ReservedForOtherJobs].Width = columnWidth;
-            //    //dgv.Columns[text.Header_RequiredForCurrentJob].Width = columnWidth;
-            //    //dgv.Columns[text.Header_BalStock].Width = columnWidth;
-
-            //    dgv.Columns[text.Header_ItemCode].Visible = false;
-            //    dgv.Columns[text.Header_ItemName].Visible = false;
-            //}
-            //else if (dgv == dgvMacSchedule)
-            //{
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_ItemDescription].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_ItemDescription].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_ItemDescription].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //    dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_RawMat_1].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_RawMat_1].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-            //    dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_ColorMat].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
-            //    dgv.Columns[text.Header_ColorMat].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-            //    dgv.Columns[text.Header_Status].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-            //    dgv.Columns[text.Header_Status].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-            //    dgv.Columns[text.Header_MacName].DefaultCellStyle.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
-
-
-            //    dgv.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-            //    dgv.Columns[text.Header_DateStart].MinimumWidth = 120;
-            //    dgv.Columns[text.Header_EstDateEnd].MinimumWidth = 120;
-
-
-            //    dgv.Columns[text.Header_Fac].Width = smallColumnWidth - 10;
-            //    dgv.Columns[text.Header_MacName].Width = smallColumnWidth - 10;
-            //    dgv.Columns[text.Header_Status].Width = smallColumnWidth;
-            //    //dgv.Columns[text.Header_DateStart].Width = smallColumnWidth + 5;
-            //    //dgv.Columns[text.Header_EstDateEnd].Width = smallColumnWidth + 5;
-
-            //    dgv.Columns[text.Header_ItemCode].Visible = false;
-            //    dgv.Columns[text.Header_ItemName].Visible = false;
-            //    dgv.Columns[text.Header_MacID].Visible = false;
-            //    dgv.Columns[text.Header_FacID].Visible = false;
-            //    dgv.Columns[text.Header_Ori_Status].Visible = false;
-            //    dgv.Columns[text.Header_Ori_DateStart].Visible = false;
-            //    dgv.Columns[text.Header_Ori_EstDateEnd].Visible = false;
-            //    //dgv.Columns[text.Header_Remark].Visible = false;
-            //    dgv.Columns[text.Header_ColorMatCode].Visible = false;
-            //    dgv.Columns[text.Header_JobNo].Visible = false;
-
-            //    dgv.Columns[text.Header_FamilyWithJobNo].Visible = false;
-            //    dgv.Columns[text.Header_ProductionDay].Visible = false;
-            //    dgv.Columns[text.Header_ProductionHour].Visible = false;
-            //    dgv.Columns[text.Header_ProductionHourPerDay].Visible = false;
-
-            //}
         }
 
         #endregion
@@ -322,6 +224,8 @@ namespace FactoryManagementSoftware.UI
                 #region Case 2: Item List
                 case 2:
 
+                    DO_ITEM_EDIT_MODE = false;
+                    EDITING_INDEX = -1;
                     circleLabelStep1.Text = tickText;
                     circleLabelStep1.CircleBackColor = circleLabelCompletedBackColor;
 
@@ -466,6 +370,7 @@ namespace FactoryManagementSoftware.UI
                 SEARCH_ICON_UPDATING = false;
 
                 searchTypeUpdate();
+                InitialNameTextBox();
 
             }
 
@@ -485,6 +390,8 @@ namespace FactoryManagementSoftware.UI
                 SEARCH_ICON_UPDATING = false;
 
                 searchTypeUpdate();
+                InitialNameTextBox();
+
             }
 
         }
@@ -548,12 +455,24 @@ namespace FactoryManagementSoftware.UI
 
         private void txtNumericWithDecimal_KeyPress(object sender, KeyPressEventArgs e)
         {
-            // Allow only digits, control characters, and a single decimal point
-            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar) && (e.KeyChar != '.' || (sender as TextBox).Text.IndexOf('.') > -1))
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
             {
-                e.Handled = true; // Ignore the character
+                e.Handled = true;
             }
         }
+
+        private void totalQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+            else if (e.KeyChar == '.' && txtTotalQty.Text.Contains('.'))
+            {
+                e.Handled = true;
+            }
+        }
+
 
         private void totalQtyCalculation()
         {
@@ -755,26 +674,191 @@ namespace FactoryManagementSoftware.UI
             return true;
         }
 
-
-        private void AddItem(string itemCode, string description, decimal quantity, string unit)
+        private void ItemFieldReset()
         {
-            // Create a new row in the DataTable
-            DataRow newRow = DT_ITEM_LIST.NewRow();
+            txtItemDescription.Text = null;
+            ITEM_CODE = "";
+            txtBoxQty.Text = "";
+            txtBalanceQty.Text = "";
+            txtQtyPerBox.Text = "";
+            txtTotalQty.Text = "";
+            txtRemark.Text = "";
+            txtItemCodePreview.Text = "";
+            txtQtyPreview.Text = "";
 
-            // Assign values to each column in the DataRow
-            newRow[text.Header_ItemCode] = itemCode;
-            newRow[text.Header_Description] = description;
-            newRow[text.Header_Qty] = quantity;
-            newRow[text.Header_Unit] = unit;
+            btnCancelItemEdit.Visible = false;
+            btnAddItem.Text = BUTTON_ADDTOLIST_TEXT;
+        }
 
-            // Add the new row to the DataTable
-            DT_ITEM_LIST.Rows.Add(newRow);
-
-            if (dgvDOItemList.DataSource != DT_ITEM_LIST)
+        private bool ItemFieldInspection()
+        {
+            if (string.IsNullOrEmpty(txtItemDescription.Text) || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
             {
+                errorProvider1.SetError(cbItemCustom, "Description Required");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtTotalQty.Text) || txtTotalQty.Text == "0")
+            { 
+                errorProvider2.SetError(lblTotalQty, "Total Qty Required");
+                return false;
+            }
+
+
+            return true;
+        }
+
+        private void AddItem()
+        {
+            if(ItemFieldInspection())
+            {
+                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
+
+                if (TotalQty <= -1)
+                {
+                    errorProvider2.SetError(lblTotalQty, "Invalid!");
+                    return;
+                }
+
+                // Create a new row in the DataTable
+                DataRow newRow = DT_ITEM_LIST.NewRow();
+
+                // Assign values to each column in the DataRow
+                newRow[text.Header_ItemCode] = txtItemCodePreview.Text;
+                newRow[text.Header_Description] = txtDescriptionPreview.Text;
+                newRow[text.Header_Qty] = TotalQty;
+                newRow[text.Header_Unit] = txtTotalQtyUnit.Text;
+
+                newRow[text.Header_SearchMode] = cbItemSearch.Checked;
+                newRow[text.Header_ItemName] = txtItemDescription.Text;
+
+                newRow[text.Header_TotalQty] = txtTotalQty.Text;
+                newRow[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
+                newRow[text.Header_QtyPerBox] = txtQtyPerBox.Text;
+                newRow[text.Header_BoxQty] = txtBoxQty.Text;
+                newRow[text.Header_BoxUnit] = txtBoxUnit.Text;
+                newRow[text.Header_Balance] = txtBalanceQty.Text;
+
+                newRow[text.Header_Remark] = txtRemark.Text;
+
+                newRow[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
+                newRow[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
+                newRow[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
+
+
+
+                int index = 1;
+
+                if (DT_ITEM_LIST.Rows.Count > 0)
+                {
+                    index = int.TryParse(DT_ITEM_LIST.Rows[DT_ITEM_LIST.Rows.Count - 1][text.Header_Index].ToString(), out int i) ? i + 1 : index;
+                }
+
+                newRow[text.Header_Index] = index;
+
+
+                // Add the new row to the DataTable
+                DT_ITEM_LIST.Rows.Add(newRow);
+
+                //if (dgvDOItemList.DataSource != DT_ITEM_LIST)
+                //{
+                //    dgvDOItemList.DataSource = DT_ITEM_LIST;
+                //}
+                dgvDOItemList.DataSource = null;
+
                 dgvDOItemList.DataSource = DT_ITEM_LIST;
+
+                ItemFieldReset();
+
+                dgvUIEdit(dgvDOItemList);
+                dgvDOItemList.ClearSelection();
+            }
+           
+        }
+
+        private void UpdateItem(int rowIndex)
+        {
+            if (ItemFieldInspection())
+            {
+                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
+
+                if (TotalQty <= -1)
+                {
+                    errorProvider2.SetError(lblTotalQty, "Invalid!");
+                    return;
+                }
+
+                if (rowIndex < 0 || rowIndex >= DT_ITEM_LIST.Rows.Count)
+                {
+                    MessageBox.Show("Invalid row index.");
+                    return;
+                }
+
+                DataRow rowToUpdate = DT_ITEM_LIST.Rows[rowIndex];
+
+                // Assign updated values to the row
+                rowToUpdate[text.Header_ItemCode] = txtItemCodePreview.Text;
+                rowToUpdate[text.Header_Description] = txtDescriptionPreview.Text;
+                rowToUpdate[text.Header_Qty] = TotalQty;
+                rowToUpdate[text.Header_Unit] = txtTotalQtyUnit.Text;
+
+                rowToUpdate[text.Header_SearchMode] = cbItemSearch.Checked;
+                rowToUpdate[text.Header_ItemName] = txtItemDescription.Text;
+
+                rowToUpdate[text.Header_TotalQty] = txtTotalQty.Text;
+                rowToUpdate[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
+                rowToUpdate[text.Header_QtyPerBox] = txtQtyPerBox.Text;
+                rowToUpdate[text.Header_BoxQty] = txtBoxQty.Text;
+                rowToUpdate[text.Header_BoxUnit] = txtBoxUnit.Text;
+                rowToUpdate[text.Header_Balance] = txtBalanceQty.Text;
+
+                rowToUpdate[text.Header_Remark] = txtRemark.Text;
+
+                rowToUpdate[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
+                rowToUpdate[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
+                rowToUpdate[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
+
+                dgvDOItemList.DataSource = null;
+                dgvDOItemList.DataSource = DT_ITEM_LIST;
+
+                ItemFieldReset();
+                dgvUIEdit(dgvDOItemList);
+                dgvDOItemList.ClearSelection();
             }
         }
+
+        private void GetDataFromList(int rowIndex)
+        {
+            DataTable dt = (DataTable)dgvDOItemList.DataSource;
+
+            cbItemSearch.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_SearchMode].ToString(), out bool search) ? search : true;
+            txtItemDescription.Text = dt.Rows[rowIndex][text.Header_ItemName].ToString();
+
+            ITEM_CODE = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
+            txtItemCodePreview.Text = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
+
+
+            txtTotalQty.Text = dt.Rows[rowIndex][text.Header_TotalQty].ToString();
+            txtTotalQtyUnit.Text = dt.Rows[rowIndex][text.Header_TotalQtyUnit].ToString();
+            txtQtyPerBox.Text = dt.Rows[rowIndex][text.Header_QtyPerBox].ToString();
+            txtBoxQty.Text = dt.Rows[rowIndex][text.Header_BoxQty].ToString();
+            txtBoxUnit.Text = dt.Rows[rowIndex][text.Header_BoxUnit].ToString();
+            txtBalanceQty.Text = dt.Rows[rowIndex][text.Header_Balance].ToString();
+
+            txtRemark.Text = dt.Rows[rowIndex][text.Header_Remark].ToString();
+
+            cbDescriptionIncludeCategory.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeCategory].ToString(), out bool includeCategory) ? includeCategory : false;
+            cbDescriptionIncludePackaging.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludePackaging].ToString(), out bool includePackaging) ? includePackaging : false;
+            cbDescriptionIncludeRemark.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeRemark].ToString(), out bool includeRemark) ? includeRemark : false;
+
+            txtDescriptionPreview.Text = dt.Rows[rowIndex][text.Header_Description].ToString();
+
+            DO_ITEM_EDIT_MODE = true;
+            btnAddItem.Text = BUTTON_UPDATETOLIST_TEXT;
+            btnCancelItemEdit.Visible = true;
+
+        }
+
 
 
         #endregion
@@ -791,55 +875,37 @@ namespace FactoryManagementSoftware.UI
 
         private void InitialNameTextBox()
         {
-            DT_ITEM_SOURCE = dalItem.Select();
-
-            DT_ITEM_SOURCE.Columns.Add(header_MasterCode, typeof(string));
-
-            var masterCodes = new List<string>();
-
-            foreach (DataRow row in DT_ITEM_SOURCE.Rows)
+            if(cbItemSearch.Checked)
             {
-                var category = row[dalItem.ItemCat].ToString();
-                var itemName = row[dalItem.ItemName].ToString();
-                var itemCode = row[dalItem.ItemCode].ToString();
+                DT_ITEM_SOURCE = dalItem.Select();
 
-                var masterCode = $"[{category}] {itemName}";
+                DT_ITEM_SOURCE.Columns.Add(header_MasterCode, typeof(string));
 
-                if (itemName != itemCode)
+                var masterCodes = new List<string>();
+
+                foreach (DataRow row in DT_ITEM_SOURCE.Rows)
                 {
-                    masterCode += $" ({itemCode})";
+                    var category = row[dalItem.ItemCat].ToString();
+                    var itemName = row[dalItem.ItemName].ToString();
+                    var itemCode = row[dalItem.ItemCode].ToString();
+
+                    var masterCode = $"[{category}] {itemName}";
+
+                    if (itemName != itemCode)
+                    {
+                        masterCode += $" ({itemCode})";
+                    }
+
+                    row[header_MasterCode] = masterCode;
+                    masterCodes.Add(masterCode);
                 }
 
-                row[header_MasterCode] = masterCode;
-                masterCodes.Add(masterCode);
+                txtItemDescription.Values = masterCodes.ToArray();
             }
-
-            txtItemDescription.Values = masterCodes.ToArray();
-
-            //DT_ITEM_SOURCE = dalItem.Select();
-
-            //DT_ITEM_SOURCE.Columns.Add(header_MasterCode, typeof(string));
-
-            //string[] stringArray = new string[DT_ITEM_SOURCE.Rows.Count];
-
-            //for (int i = 0; i < DT_ITEM_SOURCE.Rows.Count; i++)
-            //{
-            //    string category = DT_ITEM_SOURCE.Rows[i][dalItem.ItemCat].ToString();
-            //    string itemName = DT_ITEM_SOURCE.Rows[i][dalItem.ItemName].ToString();
-            //    string itemCode = DT_ITEM_SOURCE.Rows[i][dalItem.ItemCode].ToString();
-
-            //    string masterCode = "[" + category + "] " + itemName;
-
-            //    if(itemName != itemCode)
-            //    {
-            //        masterCode += " (" + itemCode + ")";
-            //    }
-            //    DT_ITEM_SOURCE.Rows[i][header_MasterCode] = masterCode;
-
-            //    stringArray[i] = masterCode;
-            //}
-
-            //txtItemDescription.Values = stringArray;
+            else
+            {
+                txtItemDescription.Values = null;
+            }
         }
 
 
@@ -877,9 +943,114 @@ namespace FactoryManagementSoftware.UI
             itemCodePreviewUpdate();
         }
 
+        bool DO_ITEM_EDIT_MODE = false;
+        private int EDITING_INDEX = -1;
+        private string BUTTON_ADDTOLIST_TEXT = "Add to List";
+        private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
+
         private void btnNewJob_Click(object sender, EventArgs e)
         {
-            AddItem(ITEM_CODE,txtDescriptionPreview.Text,decimal.Parse(txtTotalQty.Text),txtTotalQtyUnit.Text);
+            if(!DO_ITEM_EDIT_MODE)
+            {
+                AddItem();
+
+            }
+            else
+            {
+                //UPDATE ITEM
+                if (MessageBox.Show("Confirm to make changes?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    UpdateItem(EDITING_INDEX);
+                }
+            }
+        }
+
+        private void txtQtyPerBox_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+            else if (e.KeyChar == '.' && txtQtyPerBox.Text.Contains('.'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void txtBoxQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+           
+        }
+
+        private void txtBalanceQty_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+            else if (e.KeyChar == '.' && txtBalanceQty.Text.Contains('.'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void btnItemRemove_Click(object sender, EventArgs e)
+        {
+            if (dgvDOItemList.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no rows in the Item List.");
+                return;
+            }
+
+
+            if (dgvDOItemList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a row to remove.");
+                return;
+            }
+
+            int rowIndex = dgvDOItemList.SelectedRows[0].Index;
+            if (MessageBox.Show("Are you sure you want to remove this item?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                dgvDOItemList.Rows.RemoveAt(rowIndex);
+
+                for (int i = rowIndex; i < dgvDOItemList.Rows.Count; i++)
+                {
+                    dgvDOItemList.Rows[i].Cells[text.Header_Index].Value = i + 1;
+                }
+            }
+        }
+
+        
+        private void btnItemEdit_Click(object sender, EventArgs e)
+        {
+            if (dgvDOItemList.Rows.Count == 0)
+            {
+                MessageBox.Show("There are no rows in the Item List.");
+                return;
+            }
+
+
+            if (dgvDOItemList.SelectedRows.Count == 0)
+            {
+                MessageBox.Show("Please select a row to edit.");
+                return;
+            }
+            EDITING_INDEX = dgvDOItemList.SelectedRows[0].Index;
+            GetDataFromList(EDITING_INDEX);
+        }
+
+        private void btnCancelItemEdit_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to cancel this editing?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
+            {
+                ItemFieldReset();
+                dgvDOItemList.ClearSelection();
+            }
         }
     }
 }

@@ -78,7 +78,7 @@
             this.dgvAlertSummary.RowHeadersWidth = 51;
             this.dgvAlertSummary.RowTemplate.Height = 60;
             this.dgvAlertSummary.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlertSummary.Size = new System.Drawing.Size(863, 271);
+            this.dgvAlertSummary.Size = new System.Drawing.Size(1014, 392);
             this.dgvAlertSummary.TabIndex = 152;
             this.dgvAlertSummary.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvMatUsedReport_CellFormatting);
             this.dgvAlertSummary.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvAlertSummary_CellMouseDoubleClick);
@@ -112,7 +112,7 @@
             this.tlpMain.RowCount = 2;
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpMain.Size = new System.Drawing.Size(871, 313);
+            this.tlpMain.Size = new System.Drawing.Size(1022, 434);
             this.tlpMain.TabIndex = 166;
             // 
             // tableLayoutPanel2
@@ -126,7 +126,7 @@
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(901, 343);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1052, 464);
             this.tableLayoutPanel2.TabIndex = 167;
             // 
             // contextMenuStrip1
@@ -145,7 +145,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(901, 343);
+            this.ClientSize = new System.Drawing.Size(1052, 464);
             this.Controls.Add(this.tableLayoutPanel2);
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
