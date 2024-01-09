@@ -255,6 +255,12 @@ namespace FactoryManagementSoftware.UI
                 #region Case 3: Summary
                 case 3:
 
+                    this.Size = new Size(750, 900);
+                    this.Location = new Point(
+    (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+    (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+);
+
                     circleLabelStep1.Text = tickText;
                     circleLabelStep2.Text = tickText;
                     circleLabelStep1.CircleBackColor = circleLabelCompletedBackColor;
@@ -1051,6 +1057,32 @@ namespace FactoryManagementSoftware.UI
                 ItemFieldReset();
                 dgvDOItemList.ClearSelection();
             }
+        }
+
+        private bool DATA_SAVED = false;
+
+        private void frmDOEditing_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (!DATA_SAVED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Unsaved D/O data. Leave without saving? ", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+
+                }
+                else
+                {
+                    e.Cancel = true;
+                }
+
+            }
+        }
+
+        private void tableLayoutPanel27_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

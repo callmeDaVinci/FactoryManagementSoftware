@@ -31,16 +31,23 @@ namespace FactoryManagementSoftware.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDOEditing));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDOEditing));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel28 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpStepPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGroupBox2 = new Guna.UI.WinForms.GunaGroupBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.gunaGroupBox5 = new Guna.UI.WinForms.GunaGroupBox();
+            this.btnCancelItemEdit = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
             this.btnItemRemove = new Guna.UI.WinForms.GunaGradientButton();
             this.btnItemEdit = new Guna.UI.WinForms.GunaGradientButton();
             this.label14 = new System.Windows.Forms.Label();
+            this.txtItemDescription = new FactoryManagementSoftware.CustomTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dgvDOItemList = new System.Windows.Forms.DataGridView();
             this.btnAddItem = new Guna.UI.WinForms.GunaGradientButton();
@@ -138,23 +145,38 @@ namespace FactoryManagementSoftware.UI
             this.btnPreviousStep = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel59 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel62 = new System.Windows.Forms.TableLayoutPanel();
+            this.circleLabelStep3 = new FactoryManagementSoftware.UI.CircleLabel();
             this.lblStep3 = new System.Windows.Forms.Label();
             this.tableLayoutPanel61 = new System.Windows.Forms.TableLayoutPanel();
+            this.circleLabelStep2 = new FactoryManagementSoftware.UI.CircleLabel();
             this.lblStep2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep1 = new System.Windows.Forms.Label();
+            this.circleLabelStep1 = new FactoryManagementSoftware.UI.CircleLabel();
             this.btnSearch = new Guna.UI.WinForms.GunaGradientButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.btnCancelItemEdit = new Guna.UI.WinForms.GunaGradientButton();
-            this.txtItemDescription = new FactoryManagementSoftware.CustomTextBox();
-            this.circleLabelStep3 = new FactoryManagementSoftware.UI.CircleLabel();
-            this.circleLabelStep2 = new FactoryManagementSoftware.UI.CircleLabel();
-            this.circleLabelStep1 = new FactoryManagementSoftware.UI.CircleLabel();
+            this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.label24 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
+            this.label27 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel27 = new System.Windows.Forms.TableLayoutPanel();
+            this.label34 = new System.Windows.Forms.Label();
+            this.label35 = new System.Windows.Forms.Label();
+            this.label36 = new System.Windows.Forms.Label();
+            this.label37 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label25 = new System.Windows.Forms.Label();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
+            this.gunaGroupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.gunaGroupBox5.SuspendLayout();
             this.tableLayoutPanel20.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDOItemList)).BeginInit();
@@ -193,6 +215,9 @@ namespace FactoryManagementSoftware.UI
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
+            this.tableLayoutPanel24.SuspendLayout();
+            this.tableLayoutPanel25.SuspendLayout();
+            this.tableLayoutPanel27.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel28
@@ -221,8 +246,9 @@ namespace FactoryManagementSoftware.UI
             this.tlpStepPanel.AutoScroll = true;
             this.tlpStepPanel.ColumnCount = 3;
             this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpStepPanel.Controls.Add(this.gunaGroupBox2, 2, 0);
             this.tlpStepPanel.Controls.Add(this.gunaGroupBox5, 1, 0);
             this.tlpStepPanel.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlpStepPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -233,6 +259,86 @@ namespace FactoryManagementSoftware.UI
             this.tlpStepPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpStepPanel.Size = new System.Drawing.Size(1288, 553);
             this.tlpStepPanel.TabIndex = 228;
+            // 
+            // gunaGroupBox2
+            // 
+            this.gunaGroupBox2.AutoScroll = true;
+            this.gunaGroupBox2.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGroupBox2.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGroupBox2.BorderColor = System.Drawing.Color.Gainsboro;
+            this.gunaGroupBox2.BorderSize = 1;
+            this.gunaGroupBox2.Controls.Add(this.label25);
+            this.gunaGroupBox2.Controls.Add(this.tableLayoutPanel25);
+            this.gunaGroupBox2.Controls.Add(this.tableLayoutPanel24);
+            this.gunaGroupBox2.Controls.Add(this.label4);
+            this.gunaGroupBox2.Controls.Add(this.dataGridView1);
+            this.gunaGroupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGroupBox2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunaGroupBox2.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.gunaGroupBox2.Location = new System.Drawing.Point(45, 5);
+            this.gunaGroupBox2.Margin = new System.Windows.Forms.Padding(5);
+            this.gunaGroupBox2.Name = "gunaGroupBox2";
+            this.gunaGroupBox2.Padding = new System.Windows.Forms.Padding(8, 43, 8, 15);
+            this.gunaGroupBox2.Radius = 3;
+            this.gunaGroupBox2.Size = new System.Drawing.Size(1238, 543);
+            this.gunaGroupBox2.TabIndex = 261;
+            this.gunaGroupBox2.Text = "D/O Preview";
+            this.gunaGroupBox2.TextLocation = new System.Drawing.Point(10, 8);
+            // 
+            // label4
+            // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.label4.Location = new System.Drawing.Point(19, 510);
+            this.label4.Margin = new System.Windows.Forms.Padding(3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(71, 23);
+            this.label4.TabIndex = 293;
+            this.label4.Text = "Remark:";
+            // 
+            // dataGridView1
+            // 
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
+            this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
+            this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.dataGridView1.Location = new System.Drawing.Point(20, 235);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(5);
+            this.dataGridView1.MultiSelect = false;
+            this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.RowHeadersWidth = 51;
+            this.dataGridView1.RowTemplate.Height = 50;
+            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.dataGridView1.Size = new System.Drawing.Size(1190, 267);
+            this.dataGridView1.TabIndex = 253;
             // 
             // gunaGroupBox5
             // 
@@ -259,10 +365,42 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox5.Name = "gunaGroupBox5";
             this.gunaGroupBox5.Padding = new System.Windows.Forms.Padding(8, 43, 8, 15);
             this.gunaGroupBox5.Radius = 3;
-            this.gunaGroupBox5.Size = new System.Drawing.Size(1238, 543);
+            this.gunaGroupBox5.Size = new System.Drawing.Size(10, 543);
             this.gunaGroupBox5.TabIndex = 260;
             this.gunaGroupBox5.Text = "Item List Setting";
             this.gunaGroupBox5.TextLocation = new System.Drawing.Point(10, 8);
+            // 
+            // btnCancelItemEdit
+            // 
+            this.btnCancelItemEdit.AnimationHoverSpeed = 0.07F;
+            this.btnCancelItemEdit.AnimationSpeed = 0.03F;
+            this.btnCancelItemEdit.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancelItemEdit.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
+            this.btnCancelItemEdit.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
+            this.btnCancelItemEdit.BorderColor = System.Drawing.Color.Black;
+            this.btnCancelItemEdit.BorderSize = 1;
+            this.btnCancelItemEdit.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnCancelItemEdit.FocusedColor = System.Drawing.Color.Empty;
+            this.btnCancelItemEdit.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnCancelItemEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
+            this.btnCancelItemEdit.Image = null;
+            this.btnCancelItemEdit.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnCancelItemEdit.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnCancelItemEdit.Location = new System.Drawing.Point(218, 476);
+            this.btnCancelItemEdit.Name = "btnCancelItemEdit";
+            this.btnCancelItemEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnCancelItemEdit.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnCancelItemEdit.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnCancelItemEdit.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnCancelItemEdit.OnHoverImage = null;
+            this.btnCancelItemEdit.OnPressedColor = System.Drawing.Color.Black;
+            this.btnCancelItemEdit.Radius = 2;
+            this.btnCancelItemEdit.Size = new System.Drawing.Size(120, 43);
+            this.btnCancelItemEdit.TabIndex = 2018;
+            this.btnCancelItemEdit.Text = "Cancel";
+            this.btnCancelItemEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnCancelItemEdit.Visible = false;
+            this.btnCancelItemEdit.Click += new System.EventHandler(this.btnCancelItemEdit_Click);
             // 
             // tableLayoutPanel20
             // 
@@ -281,7 +419,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel20.Name = "tableLayoutPanel20";
             this.tableLayoutPanel20.RowCount = 1;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(664, 40);
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(0, 40);
             this.tableLayoutPanel20.TabIndex = 2017;
             // 
             // btnItemRemove
@@ -300,7 +438,7 @@ namespace FactoryManagementSoftware.UI
             this.btnItemRemove.ForeColor = System.Drawing.Color.White;
             this.btnItemRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnItemRemove.Image")));
             this.btnItemRemove.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemRemove.Location = new System.Drawing.Point(627, 3);
+            this.btnItemRemove.Location = new System.Drawing.Point(-36, 3);
             this.btnItemRemove.Name = "btnItemRemove";
             this.btnItemRemove.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
             this.btnItemRemove.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
@@ -330,7 +468,7 @@ namespace FactoryManagementSoftware.UI
             this.btnItemEdit.ForeColor = System.Drawing.Color.White;
             this.btnItemEdit.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_pencil_100;
             this.btnItemEdit.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemEdit.Location = new System.Drawing.Point(587, 3);
+            this.btnItemEdit.Location = new System.Drawing.Point(-76, 3);
             this.btnItemEdit.Name = "btnItemEdit";
             this.btnItemEdit.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
             this.btnItemEdit.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
@@ -357,6 +495,22 @@ namespace FactoryManagementSoftware.UI
             this.label14.TabIndex = 158;
             this.label14.Text = "Item List";
             // 
+            // txtItemDescription
+            // 
+            this.txtItemDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtItemDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtItemDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.txtItemDescription.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtItemDescription.Location = new System.Drawing.Point(43, 93);
+            this.txtItemDescription.Name = "txtItemDescription";
+            this.txtItemDescription.Size = new System.Drawing.Size(464, 20);
+            this.txtItemDescription.TabIndex = 2003;
+            this.txtItemDescription.Text = "Search (Item Name/Code)";
+            this.txtItemDescription.Values = null;
+            this.txtItemDescription.TextChanged += new System.EventHandler(this.txtItemDescription_TextChanged_1);
+            this.txtItemDescription.Enter += new System.EventHandler(this.txtItemDescription_Enter);
+            this.txtItemDescription.Leave += new System.EventHandler(this.txtItemDescription_Leave);
+            // 
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
@@ -377,26 +531,26 @@ namespace FactoryManagementSoftware.UI
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvDOItemList.Location = new System.Drawing.Point(549, 79);
+            this.dgvDOItemList.Location = new System.Drawing.Point(549, 82);
             this.dgvDOItemList.Margin = new System.Windows.Forms.Padding(5);
             this.dgvDOItemList.MultiSelect = false;
             this.dgvDOItemList.Name = "dgvDOItemList";
@@ -405,7 +559,7 @@ namespace FactoryManagementSoftware.UI
             this.dgvDOItemList.RowHeadersWidth = 51;
             this.dgvDOItemList.RowTemplate.Height = 50;
             this.dgvDOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOItemList.Size = new System.Drawing.Size(664, 447);
+            this.dgvDOItemList.Size = new System.Drawing.Size(0, 447);
             this.dgvDOItemList.TabIndex = 253;
             // 
             // btnAddItem
@@ -419,12 +573,12 @@ namespace FactoryManagementSoftware.UI
             this.btnAddItem.BorderSize = 1;
             this.btnAddItem.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnAddItem.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.btnAddItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnAddItem.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_more_than_25;
             this.btnAddItem.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddItem.Location = new System.Drawing.Point(347, 492);
+            this.btnAddItem.Location = new System.Drawing.Point(347, 476);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -433,7 +587,7 @@ namespace FactoryManagementSoftware.UI
             this.btnAddItem.OnHoverImage = null;
             this.btnAddItem.OnPressedColor = System.Drawing.Color.Black;
             this.btnAddItem.Radius = 2;
-            this.btnAddItem.Size = new System.Drawing.Size(165, 34);
+            this.btnAddItem.Size = new System.Drawing.Size(165, 43);
             this.btnAddItem.TabIndex = 2015;
             this.btnAddItem.Text = "Add to List";
             this.btnAddItem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -448,7 +602,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox6.Controls.Add(this.tableLayoutPanel26);
             this.gunaGroupBox6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunaGroupBox6.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gunaGroupBox6.Location = new System.Drawing.Point(37, 323);
+            this.gunaGroupBox6.Location = new System.Drawing.Point(37, 303);
             this.gunaGroupBox6.Name = "gunaGroupBox6";
             this.gunaGroupBox6.Padding = new System.Windows.Forms.Padding(8, 30, 8, 5);
             this.gunaGroupBox6.Radius = 3;
@@ -1399,7 +1553,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaTextBox1.PasswordChar = '\0';
             this.gunaTextBox1.Radius = 3;
             this.gunaTextBox1.SelectedText = "";
-            this.gunaTextBox1.Size = new System.Drawing.Size(1, 118);
+            this.gunaTextBox1.Size = new System.Drawing.Size(1, 264);
             this.gunaTextBox1.TabIndex = 247;
             this.gunaTextBox1.Text = "SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)\r\nNO.17, PT 2507, JLN HI-TECH 2,\r\nKAW. PER" +
     "IND. HI.TECH,\r\nJALAN SG. LALANG,\r\n43500 SEMENYIH, SELANGOR\r\n";
@@ -1426,7 +1580,7 @@ namespace FactoryManagementSoftware.UI
             this.txtSearch.PasswordChar = '\0';
             this.txtSearch.Radius = 3;
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(1, 118);
+            this.txtSearch.Size = new System.Drawing.Size(1, 264);
             this.txtSearch.TabIndex = 246;
             this.txtSearch.Text = "Not Applicable";
             // 
@@ -2083,14 +2237,14 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tlpButton.BackColor = System.Drawing.Color.White;
             this.tlpButton.ColumnCount = 8;
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 33F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
-            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 33F));
             this.tlpButton.Controls.Add(this.btnContinue, 3, 1);
             this.tlpButton.Controls.Add(this.btnAddAsDraft, 5, 1);
             this.tlpButton.Controls.Add(this.btnCancel, 4, 1);
@@ -2118,12 +2272,12 @@ namespace FactoryManagementSoftware.UI
             this.btnContinue.BorderSize = 1;
             this.btnContinue.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnContinue.FocusedColor = System.Drawing.Color.Empty;
-            this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnContinue.ForeColor = System.Drawing.Color.White;
             this.btnContinue.Image = ((System.Drawing.Image)(resources.GetObject("btnContinue.Image")));
             this.btnContinue.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnContinue.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnContinue.Location = new System.Drawing.Point(578, 10);
+            this.btnContinue.Location = new System.Drawing.Point(575, 10);
             this.btnContinue.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnContinue.Name = "btnContinue";
             this.btnContinue.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2132,8 +2286,8 @@ namespace FactoryManagementSoftware.UI
             this.btnContinue.OnHoverForeColor = System.Drawing.Color.White;
             this.btnContinue.OnHoverImage = null;
             this.btnContinue.OnPressedColor = System.Drawing.Color.Black;
-            this.btnContinue.Radius = 2;
-            this.btnContinue.Size = new System.Drawing.Size(180, 40);
+            this.btnContinue.Radius = 5;
+            this.btnContinue.Size = new System.Drawing.Size(180, 50);
             this.btnContinue.TabIndex = 223;
             this.btnContinue.Text = "Continue";
             this.btnContinue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -2152,12 +2306,12 @@ namespace FactoryManagementSoftware.UI
             this.btnAddAsDraft.BorderSize = 1;
             this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
             this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
             this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnAddAsDraft.Location = new System.Drawing.Point(928, 10);
+            this.btnAddAsDraft.Location = new System.Drawing.Point(925, 10);
             this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnAddAsDraft.Name = "btnAddAsDraft";
             this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2166,8 +2320,8 @@ namespace FactoryManagementSoftware.UI
             this.btnAddAsDraft.OnHoverForeColor = System.Drawing.Color.White;
             this.btnAddAsDraft.OnHoverImage = null;
             this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.Radius = 2;
-            this.btnAddAsDraft.Size = new System.Drawing.Size(180, 40);
+            this.btnAddAsDraft.Radius = 5;
+            this.btnAddAsDraft.Size = new System.Drawing.Size(180, 50);
             this.btnAddAsDraft.TabIndex = 224;
             this.btnAddAsDraft.Text = "Add as Draft";
             this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -2185,11 +2339,11 @@ namespace FactoryManagementSoftware.UI
             this.btnCancel.BorderSize = 1;
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnCancel.FocusedColor = System.Drawing.Color.Empty;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(778, 10);
+            this.btnCancel.Location = new System.Drawing.Point(775, 10);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2198,8 +2352,8 @@ namespace FactoryManagementSoftware.UI
             this.btnCancel.OnHoverForeColor = System.Drawing.Color.White;
             this.btnCancel.OnHoverImage = null;
             this.btnCancel.OnPressedColor = System.Drawing.Color.Black;
-            this.btnCancel.Radius = 2;
-            this.btnCancel.Size = new System.Drawing.Size(130, 40);
+            this.btnCancel.Radius = 5;
+            this.btnCancel.Size = new System.Drawing.Size(130, 50);
             this.btnCancel.TabIndex = 223;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -2217,12 +2371,12 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.BorderSize = 1;
             this.btnJobPublish.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnJobPublish.FocusedColor = System.Drawing.Color.Empty;
-            this.btnJobPublish.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnJobPublish.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnJobPublish.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnJobPublish.Image = null;
             this.btnJobPublish.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnJobPublish.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnJobPublish.Location = new System.Drawing.Point(1128, 10);
+            this.btnJobPublish.Location = new System.Drawing.Point(1125, 10);
             this.btnJobPublish.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnJobPublish.Name = "btnJobPublish";
             this.btnJobPublish.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2231,8 +2385,8 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.OnHoverForeColor = System.Drawing.Color.White;
             this.btnJobPublish.OnHoverImage = null;
             this.btnJobPublish.OnPressedColor = System.Drawing.Color.Black;
-            this.btnJobPublish.Radius = 2;
-            this.btnJobPublish.Size = new System.Drawing.Size(190, 40);
+            this.btnJobPublish.Radius = 5;
+            this.btnJobPublish.Size = new System.Drawing.Size(190, 50);
             this.btnJobPublish.TabIndex = 222;
             this.btnJobPublish.Text = "Add D/O";
             this.btnJobPublish.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -2251,11 +2405,11 @@ namespace FactoryManagementSoftware.UI
             this.btnPreviousStep.BorderSize = 1;
             this.btnPreviousStep.DialogResult = System.Windows.Forms.DialogResult.None;
             this.btnPreviousStep.FocusedColor = System.Drawing.Color.Empty;
-            this.btnPreviousStep.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.btnPreviousStep.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnPreviousStep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.btnPreviousStep.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviousStep.Image")));
             this.btnPreviousStep.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnPreviousStep.Location = new System.Drawing.Point(30, 10);
+            this.btnPreviousStep.Location = new System.Drawing.Point(33, 10);
             this.btnPreviousStep.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
             this.btnPreviousStep.Name = "btnPreviousStep";
             this.btnPreviousStep.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2264,8 +2418,8 @@ namespace FactoryManagementSoftware.UI
             this.btnPreviousStep.OnHoverForeColor = System.Drawing.Color.White;
             this.btnPreviousStep.OnHoverImage = null;
             this.btnPreviousStep.OnPressedColor = System.Drawing.Color.Black;
-            this.btnPreviousStep.Radius = 2;
-            this.btnPreviousStep.Size = new System.Drawing.Size(190, 40);
+            this.btnPreviousStep.Radius = 5;
+            this.btnPreviousStep.Size = new System.Drawing.Size(190, 50);
             this.btnPreviousStep.TabIndex = 225;
             this.btnPreviousStep.Text = "Previous Step";
             this.btnPreviousStep.Click += new System.EventHandler(this.btnPreviousStep_Click);
@@ -2273,11 +2427,11 @@ namespace FactoryManagementSoftware.UI
             // tableLayoutPanel59
             // 
             this.tableLayoutPanel59.ColumnCount = 5;
-            this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
             this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34F));
-            this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
+            this.tableLayoutPanel59.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 102F));
             this.tableLayoutPanel59.Controls.Add(this.tableLayoutPanel62, 3, 1);
             this.tableLayoutPanel59.Controls.Add(this.tableLayoutPanel61, 2, 1);
             this.tableLayoutPanel59.Controls.Add(this.tableLayoutPanel60, 1, 1);
@@ -2301,13 +2455,28 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel62.Controls.Add(this.circleLabelStep3, 0, 0);
             this.tableLayoutPanel62.Controls.Add(this.lblStep3, 1, 0);
             this.tableLayoutPanel62.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel62.Location = new System.Drawing.Point(910, 10);
+            this.tableLayoutPanel62.Location = new System.Drawing.Point(856, 10);
             this.tableLayoutPanel62.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel62.Name = "tableLayoutPanel62";
             this.tableLayoutPanel62.RowCount = 1;
             this.tableLayoutPanel62.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel62.Size = new System.Drawing.Size(340, 40);
+            this.tableLayoutPanel62.Size = new System.Drawing.Size(389, 40);
             this.tableLayoutPanel62.TabIndex = 188;
+            // 
+            // circleLabelStep3
+            // 
+            this.circleLabelStep3.AutoSize = true;
+            this.circleLabelStep3.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep3.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.circleLabelStep3.Location = new System.Drawing.Point(3, 3);
+            this.circleLabelStep3.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
+            this.circleLabelStep3.MaximumSize = new System.Drawing.Size(30, 30);
+            this.circleLabelStep3.Name = "circleLabelStep3";
+            this.circleLabelStep3.Size = new System.Drawing.Size(30, 30);
+            this.circleLabelStep3.TabIndex = 186;
+            this.circleLabelStep3.Text = "3";
+            this.circleLabelStep3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblStep3
             // 
@@ -2330,14 +2499,29 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel61.Controls.Add(this.circleLabelStep2, 0, 0);
             this.tableLayoutPanel61.Controls.Add(this.lblStep2, 1, 0);
             this.tableLayoutPanel61.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel61.Location = new System.Drawing.Point(580, 10);
+            this.tableLayoutPanel61.Location = new System.Drawing.Point(478, 10);
             this.tableLayoutPanel61.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel61.Name = "tableLayoutPanel61";
             this.tableLayoutPanel61.RowCount = 1;
             this.tableLayoutPanel61.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel61.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel61.Size = new System.Drawing.Size(330, 40);
+            this.tableLayoutPanel61.Size = new System.Drawing.Size(378, 40);
             this.tableLayoutPanel61.TabIndex = 187;
+            // 
+            // circleLabelStep2
+            // 
+            this.circleLabelStep2.AutoSize = true;
+            this.circleLabelStep2.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep2.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.circleLabelStep2.Location = new System.Drawing.Point(3, 3);
+            this.circleLabelStep2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
+            this.circleLabelStep2.MaximumSize = new System.Drawing.Size(30, 30);
+            this.circleLabelStep2.Name = "circleLabelStep2";
+            this.circleLabelStep2.Size = new System.Drawing.Size(30, 30);
+            this.circleLabelStep2.TabIndex = 185;
+            this.circleLabelStep2.Text = "2";
+            this.circleLabelStep2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // lblStep2
             // 
@@ -2360,12 +2544,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel60.Controls.Add(this.lblStep1, 1, 0);
             this.tableLayoutPanel60.Controls.Add(this.circleLabelStep1, 0, 0);
             this.tableLayoutPanel60.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel60.Location = new System.Drawing.Point(250, 10);
+            this.tableLayoutPanel60.Location = new System.Drawing.Point(100, 10);
             this.tableLayoutPanel60.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel60.Name = "tableLayoutPanel60";
             this.tableLayoutPanel60.RowCount = 1;
             this.tableLayoutPanel60.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel60.Size = new System.Drawing.Size(330, 40);
+            this.tableLayoutPanel60.Size = new System.Drawing.Size(378, 40);
             this.tableLayoutPanel60.TabIndex = 186;
             // 
             // lblStep1
@@ -2380,6 +2564,21 @@ namespace FactoryManagementSoftware.UI
             this.lblStep1.Size = new System.Drawing.Size(115, 23);
             this.lblStep1.TabIndex = 183;
             this.lblStep1.Text = "D/O Settings";
+            // 
+            // circleLabelStep1
+            // 
+            this.circleLabelStep1.AutoSize = true;
+            this.circleLabelStep1.BackColor = System.Drawing.Color.Transparent;
+            this.circleLabelStep1.CircleBackColor = System.Drawing.Color.White;
+            this.circleLabelStep1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.circleLabelStep1.Location = new System.Drawing.Point(3, 3);
+            this.circleLabelStep1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
+            this.circleLabelStep1.MaximumSize = new System.Drawing.Size(30, 30);
+            this.circleLabelStep1.Name = "circleLabelStep1";
+            this.circleLabelStep1.Size = new System.Drawing.Size(30, 30);
+            this.circleLabelStep1.TabIndex = 184;
+            this.circleLabelStep1.Text = "1";
+            this.circleLabelStep1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // btnSearch
             // 
@@ -2429,98 +2628,211 @@ namespace FactoryManagementSoftware.UI
             // 
             this.errorProvider3.ContainerControl = this;
             // 
-            // btnCancelItemEdit
+            // tableLayoutPanel24
             // 
-            this.btnCancelItemEdit.AnimationHoverSpeed = 0.07F;
-            this.btnCancelItemEdit.AnimationSpeed = 0.03F;
-            this.btnCancelItemEdit.BackColor = System.Drawing.Color.Transparent;
-            this.btnCancelItemEdit.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
-            this.btnCancelItemEdit.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
-            this.btnCancelItemEdit.BorderColor = System.Drawing.Color.Black;
-            this.btnCancelItemEdit.BorderSize = 1;
-            this.btnCancelItemEdit.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnCancelItemEdit.FocusedColor = System.Drawing.Color.Empty;
-            this.btnCancelItemEdit.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnCancelItemEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
-            this.btnCancelItemEdit.Image = null;
-            this.btnCancelItemEdit.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnCancelItemEdit.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancelItemEdit.Location = new System.Drawing.Point(218, 492);
-            this.btnCancelItemEdit.Name = "btnCancelItemEdit";
-            this.btnCancelItemEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnCancelItemEdit.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnCancelItemEdit.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnCancelItemEdit.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnCancelItemEdit.OnHoverImage = null;
-            this.btnCancelItemEdit.OnPressedColor = System.Drawing.Color.Black;
-            this.btnCancelItemEdit.Radius = 2;
-            this.btnCancelItemEdit.Size = new System.Drawing.Size(120, 34);
-            this.btnCancelItemEdit.TabIndex = 2018;
-            this.btnCancelItemEdit.Text = "Cancel";
-            this.btnCancelItemEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnCancelItemEdit.Visible = false;
-            this.btnCancelItemEdit.Click += new System.EventHandler(this.btnCancelItemEdit_Click);
+            this.tableLayoutPanel24.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.tableLayoutPanel24.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel24.ColumnCount = 2;
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel24.Controls.Add(this.label24, 0, 2);
+            this.tableLayoutPanel24.Controls.Add(this.label20, 0, 1);
+            this.tableLayoutPanel24.Controls.Add(this.label7, 0, 0);
+            this.tableLayoutPanel24.Location = new System.Drawing.Point(1052, 76);
+            this.tableLayoutPanel24.Name = "tableLayoutPanel24";
+            this.tableLayoutPanel24.RowCount = 3;
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 34F));
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel24.Size = new System.Drawing.Size(158, 74);
+            this.tableLayoutPanel24.TabIndex = 294;
             // 
-            // txtItemDescription
+            // label7
             // 
-            this.txtItemDescription.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtItemDescription.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtItemDescription.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.txtItemDescription.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtItemDescription.Location = new System.Drawing.Point(43, 93);
-            this.txtItemDescription.Name = "txtItemDescription";
-            this.txtItemDescription.Size = new System.Drawing.Size(464, 20);
-            this.txtItemDescription.TabIndex = 2003;
-            this.txtItemDescription.Text = "Search (Item Name/Code)";
-            this.txtItemDescription.Values = null;
-            this.txtItemDescription.TextChanged += new System.EventHandler(this.txtItemDescription_TextChanged_1);
-            this.txtItemDescription.Enter += new System.EventHandler(this.txtItemDescription_Enter);
-            this.txtItemDescription.Leave += new System.EventHandler(this.txtItemDescription_Leave);
+            this.label7.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label7.Location = new System.Drawing.Point(17, 6);
+            this.label7.Margin = new System.Windows.Forms.Padding(3);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 12);
+            this.label7.TabIndex = 295;
+            this.label7.Text = "NUMBER";
             // 
-            // circleLabelStep3
+            // label20
             // 
-            this.circleLabelStep3.AutoSize = true;
-            this.circleLabelStep3.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep3.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.circleLabelStep3.Location = new System.Drawing.Point(3, 3);
-            this.circleLabelStep3.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
-            this.circleLabelStep3.MaximumSize = new System.Drawing.Size(30, 30);
-            this.circleLabelStep3.Name = "circleLabelStep3";
-            this.circleLabelStep3.Size = new System.Drawing.Size(30, 30);
-            this.circleLabelStep3.TabIndex = 186;
-            this.circleLabelStep3.Text = "3";
-            this.circleLabelStep3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label20.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label20.Location = new System.Drawing.Point(26, 30);
+            this.label20.Margin = new System.Windows.Forms.Padding(3);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(27, 12);
+            this.label20.TabIndex = 296;
+            this.label20.Text = "DATE";
             // 
-            // circleLabelStep2
+            // label24
             // 
-            this.circleLabelStep2.AutoSize = true;
-            this.circleLabelStep2.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep2.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.circleLabelStep2.Location = new System.Drawing.Point(3, 3);
-            this.circleLabelStep2.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
-            this.circleLabelStep2.MaximumSize = new System.Drawing.Size(30, 30);
-            this.circleLabelStep2.Name = "circleLabelStep2";
-            this.circleLabelStep2.Size = new System.Drawing.Size(30, 30);
-            this.circleLabelStep2.TabIndex = 185;
-            this.circleLabelStep2.Text = "2";
-            this.circleLabelStep2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label24.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label24.AutoSize = true;
+            this.label24.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label24.Location = new System.Drawing.Point(25, 55);
+            this.label24.Margin = new System.Windows.Forms.Padding(3);
+            this.label24.Name = "label24";
+            this.label24.Size = new System.Drawing.Size(28, 12);
+            this.label24.TabIndex = 296;
+            this.label24.Text = "PAGE";
             // 
-            // circleLabelStep1
+            // tableLayoutPanel25
             // 
-            this.circleLabelStep1.AutoSize = true;
-            this.circleLabelStep1.BackColor = System.Drawing.Color.Transparent;
-            this.circleLabelStep1.CircleBackColor = System.Drawing.Color.White;
-            this.circleLabelStep1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.circleLabelStep1.Location = new System.Drawing.Point(3, 3);
-            this.circleLabelStep1.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
-            this.circleLabelStep1.MaximumSize = new System.Drawing.Size(30, 30);
-            this.circleLabelStep1.Name = "circleLabelStep1";
-            this.circleLabelStep1.Size = new System.Drawing.Size(30, 30);
-            this.circleLabelStep1.TabIndex = 184;
-            this.circleLabelStep1.Text = "1";
-            this.circleLabelStep1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.tableLayoutPanel25.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutPanel25.ColumnCount = 1;
+            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel25.Controls.Add(this.tableLayoutPanel27, 0, 1);
+            this.tableLayoutPanel25.Controls.Add(this.label27, 0, 0);
+            this.tableLayoutPanel25.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.tableLayoutPanel25.Location = new System.Drawing.Point(20, 76);
+            this.tableLayoutPanel25.Name = "tableLayoutPanel25";
+            this.tableLayoutPanel25.RowCount = 2;
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel25.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel25.Size = new System.Drawing.Size(325, 147);
+            this.tableLayoutPanel25.TabIndex = 295;
+            // 
+            // label27
+            // 
+            this.label27.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label27.AutoSize = true;
+            this.label27.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label27.Location = new System.Drawing.Point(133, 5);
+            this.label27.Margin = new System.Windows.Forms.Padding(3);
+            this.label27.Name = "label27";
+            this.label27.Size = new System.Drawing.Size(58, 12);
+            this.label27.TabIndex = 295;
+            this.label27.Text = "DELIVER TO";
+            // 
+            // tableLayoutPanel27
+            // 
+            this.tableLayoutPanel27.ColumnCount = 1;
+            this.tableLayoutPanel27.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel27.Controls.Add(this.label34, 0, 6);
+            this.tableLayoutPanel27.Controls.Add(this.label35, 0, 5);
+            this.tableLayoutPanel27.Controls.Add(this.label36, 0, 4);
+            this.tableLayoutPanel27.Controls.Add(this.label37, 0, 3);
+            this.tableLayoutPanel27.Controls.Add(this.label38, 0, 2);
+            this.tableLayoutPanel27.Controls.Add(this.label39, 0, 1);
+            this.tableLayoutPanel27.Controls.Add(this.label40, 0, 0);
+            this.tableLayoutPanel27.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel27.Location = new System.Drawing.Point(1, 22);
+            this.tableLayoutPanel27.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel27.Name = "tableLayoutPanel27";
+            this.tableLayoutPanel27.RowCount = 7;
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 18F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(323, 124);
+            this.tableLayoutPanel27.TabIndex = 296;
+            this.tableLayoutPanel27.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel27_Paint);
+            // 
+            // label34
+            // 
+            this.label34.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label34.AutoSize = true;
+            this.label34.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label34.Location = new System.Drawing.Point(3, 111);
+            this.label34.Margin = new System.Windows.Forms.Padding(3);
+            this.label34.Name = "label34";
+            this.label34.Size = new System.Drawing.Size(62, 10);
+            this.label34.TabIndex = 300;
+            this.label34.Text = "03-8725 9657";
+            // 
+            // label35
+            // 
+            this.label35.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label35.AutoSize = true;
+            this.label35.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label35.Location = new System.Drawing.Point(3, 93);
+            this.label35.Margin = new System.Windows.Forms.Padding(3);
+            this.label35.Name = "label35";
+            this.label35.Size = new System.Drawing.Size(54, 12);
+            this.label35.TabIndex = 299;
+            this.label35.Text = "SELANGOR";
+            // 
+            // label36
+            // 
+            this.label36.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label36.AutoSize = true;
+            this.label36.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label36.Location = new System.Drawing.Point(3, 75);
+            this.label36.Margin = new System.Windows.Forms.Padding(3);
+            this.label36.Name = "label36";
+            this.label36.Size = new System.Drawing.Size(82, 12);
+            this.label36.TabIndex = 298;
+            this.label36.Text = "43500 SEMENYIH,";
+            // 
+            // label37
+            // 
+            this.label37.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label37.AutoSize = true;
+            this.label37.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label37.Location = new System.Drawing.Point(3, 57);
+            this.label37.Margin = new System.Windows.Forms.Padding(3);
+            this.label37.Name = "label37";
+            this.label37.Size = new System.Drawing.Size(88, 12);
+            this.label37.TabIndex = 297;
+            this.label37.Text = "JALAN SG.LALANG,";
+            // 
+            // label38
+            // 
+            this.label38.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label38.AutoSize = true;
+            this.label38.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label38.Location = new System.Drawing.Point(3, 39);
+            this.label38.Margin = new System.Windows.Forms.Padding(3);
+            this.label38.Name = "label38";
+            this.label38.Size = new System.Drawing.Size(100, 12);
+            this.label38.TabIndex = 297;
+            this.label38.Text = "KAW.PERIND.HI.TECH,";
+            // 
+            // label39
+            // 
+            this.label39.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label39.AutoSize = true;
+            this.label39.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.label39.Location = new System.Drawing.Point(3, 21);
+            this.label39.Margin = new System.Windows.Forms.Padding(3);
+            this.label39.Name = "label39";
+            this.label39.Size = new System.Drawing.Size(139, 12);
+            this.label39.TabIndex = 296;
+            this.label39.Text = "NO.17, PT2507, JLN HI-TECH 2,";
+            // 
+            // label40
+            // 
+            this.label40.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label40.AutoSize = true;
+            this.label40.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
+            this.label40.Location = new System.Drawing.Point(3, 3);
+            this.label40.Margin = new System.Windows.Forms.Padding(3);
+            this.label40.Name = "label40";
+            this.label40.Size = new System.Drawing.Size(227, 12);
+            this.label40.TabIndex = 295;
+            this.label40.Text = "SAFETY PLASTICS SDN. BHD. (SEMENYIH FAC.)";
+            // 
+            // label25
+            // 
+            this.label25.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label25.AutoSize = true;
+            this.label25.Font = new System.Drawing.Font("Segoe UI", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label25.Location = new System.Drawing.Point(142, -106);
+            this.label25.Margin = new System.Windows.Forms.Padding(3);
+            this.label25.Name = "label25";
+            this.label25.Size = new System.Drawing.Size(339, 23);
+            this.label25.TabIndex = 296;
+            this.label25.Text = "INTERNAL TRANSFER NOTE (FROM OUG)";
             // 
             // frmDOEditing
             // 
@@ -2534,8 +2846,12 @@ namespace FactoryManagementSoftware.UI
             this.Name = "frmDOEditing";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Injection Job Planning";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDOEditing_FormClosing);
             this.tableLayoutPanel28.ResumeLayout(false);
             this.tlpStepPanel.ResumeLayout(false);
+            this.gunaGroupBox2.ResumeLayout(false);
+            this.gunaGroupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.gunaGroupBox5.ResumeLayout(false);
             this.gunaGroupBox5.PerformLayout();
             this.tableLayoutPanel20.ResumeLayout(false);
@@ -2593,6 +2909,12 @@ namespace FactoryManagementSoftware.UI
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).EndInit();
+            this.tableLayoutPanel24.ResumeLayout(false);
+            this.tableLayoutPanel24.PerformLayout();
+            this.tableLayoutPanel25.ResumeLayout(false);
+            this.tableLayoutPanel25.PerformLayout();
+            this.tableLayoutPanel27.ResumeLayout(false);
+            this.tableLayoutPanel27.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2721,5 +3043,23 @@ namespace FactoryManagementSoftware.UI
         private Guna.UI.WinForms.GunaGradientButton btnItemEdit;
         private Guna.UI.WinForms.GunaGradientButton btnItemRemove;
         private Guna.UI.WinForms.GunaGradientButton btnCancelItemEdit;
+        private Guna.UI.WinForms.GunaGroupBox gunaGroupBox2;
+        private Label label4;
+        private DataGridView dataGridView1;
+        private TableLayoutPanel tableLayoutPanel25;
+        private TableLayoutPanel tableLayoutPanel27;
+        private Label label34;
+        private Label label35;
+        private Label label36;
+        private Label label37;
+        private Label label38;
+        private Label label39;
+        private Label label40;
+        private Label label27;
+        private TableLayoutPanel tableLayoutPanel24;
+        private Label label24;
+        private Label label20;
+        private Label label7;
+        private Label label25;
     }
 }
