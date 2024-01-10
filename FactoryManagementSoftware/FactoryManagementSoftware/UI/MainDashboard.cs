@@ -120,6 +120,15 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleparam = base.CreateParams;
+                handleparam.ExStyle |= 0x02000000;
+                return handleparam;
+            }
+        }
 
         private void itemToolStripMenuItem_Click(object sender, EventArgs e)
         {

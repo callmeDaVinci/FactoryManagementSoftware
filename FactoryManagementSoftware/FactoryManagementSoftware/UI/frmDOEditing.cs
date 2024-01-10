@@ -26,6 +26,16 @@ namespace FactoryManagementSoftware.UI
             InitialSetting();
         }
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams handleparam = base.CreateParams;
+                handleparam.ExStyle |= 0x02000000;
+                return handleparam;
+            }
+        }
+
         #region UI/UX
         private void InitialSetting()
         {
@@ -164,6 +174,8 @@ namespace FactoryManagementSoftware.UI
             lblStep3.Font = normalStepFont;
 
             tlpStepPanel.Visible = false;
+            tlpItemListSetting.Visible = false;
+            tlpDOPreview.Visible = false;
             btnCancel.Visible = false;
             btnAddAsDraft.Visible = false;
             btnJobPublish.Visible = false;
@@ -210,6 +222,12 @@ namespace FactoryManagementSoftware.UI
                 #region Case 1: D/O Settings
                 case 1:
 
+                    this.Size = new Size(1366, 750);
+                    this.Location = new Point(
+    (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+    (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+);
+
                     circleLabelStep1.CircleBackColor = CurrentStepColor;
                     lblStep1.Font = CurrentStepFont;
 
@@ -223,6 +241,15 @@ namespace FactoryManagementSoftware.UI
 
                 #region Case 2: Item List
                 case 2:
+
+
+                    this.Size = new Size(1366, 750);
+                    this.Location = new Point(
+    (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
+    (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
+);
+
+
 
                     DO_ITEM_EDIT_MODE = false;
                     EDITING_INDEX = -1;
@@ -248,6 +275,9 @@ namespace FactoryManagementSoftware.UI
                         //change to Item List Mode();
                     }
 
+
+                    tlpItemListSetting.Visible = true;
+
                     break;
 
                 #endregion
@@ -255,7 +285,8 @@ namespace FactoryManagementSoftware.UI
                 #region Case 3: Summary
                 case 3:
 
-                    this.Size = new Size(750, 900);
+
+                    this.Size = new Size(900, 1000);
                     this.Location = new Point(
     (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
     (Screen.PrimaryScreen.WorkingArea.Height - this.Height) / 2
@@ -289,11 +320,13 @@ namespace FactoryManagementSoftware.UI
 
                     LoadSummaryData();
 
+                    tlpDOPreview.Visible = true;
+
                     break;
                     #endregion
             }
 
-            System.Threading.Thread.Sleep(100);
+            //System.Threading.Thread.Sleep(100);
 
             tlpStepPanel.Visible = true;
 
@@ -301,6 +334,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnPreviousStep_Click(object sender, EventArgs e)
         {
+            //frmLoading.ShowLoadingScreen();
             CURRENT_STEP--;
 
             if (CURRENT_STEP < 1)
@@ -313,12 +347,18 @@ namespace FactoryManagementSoftware.UI
             }
 
             StepUIUpdates(CURRENT_STEP, false);
+
+
+            //System.Threading.Thread.Sleep(500);
+
+            //frmLoading.CloseForm();
         }
 
         private void btnContinue_Click(object sender, EventArgs e)
         {
             if (Validation(CURRENT_STEP))
             {
+                //frmLoading.ShowLoadingScreen();
                 CURRENT_STEP++;
 
                 if (CURRENT_STEP < 1)
@@ -331,6 +371,10 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 StepUIUpdates(CURRENT_STEP, true);
+
+                //System.Threading.Thread.Sleep(500);
+
+                //frmLoading.CloseForm();
             }
         }
 
@@ -1083,6 +1127,12 @@ namespace FactoryManagementSoftware.UI
         private void tableLayoutPanel27_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void txtTotalQtyUnit_TextChanged(object sender, EventArgs e)
+        {
+            UpdatePreviewDescription();
+            totalQtyPreviewUpdate();
         }
     }
 }

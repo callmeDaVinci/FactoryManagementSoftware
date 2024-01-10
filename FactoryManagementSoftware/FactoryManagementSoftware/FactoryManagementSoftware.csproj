@@ -238,6 +238,9 @@
     <Compile Include="UI\CircleLabel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\DBLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="UI\ExcelUpload.cs">
       <SubType>Form</SubType>
     </Compile>
