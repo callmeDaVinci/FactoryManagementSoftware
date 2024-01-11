@@ -49,6 +49,7 @@ namespace FactoryManagementSoftware.UI
         static public string editingItemCode;
         static public string editingItemName;
         static public string editingFacName;
+        static public DataTable editingItemTransferRecord;
         static public int editingIndexNo = -1;
         private bool formLoaded = false;
         private bool itemListLoaded = false;
@@ -1235,6 +1236,8 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
+        
         private void dgvItem_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             DataGridView dgv = dgvItem;
@@ -1248,6 +1251,7 @@ namespace FactoryManagementSoftware.UI
                     editingItemCat = dgv.Rows[rowIndex].Cells["item_cat"].Value == null ? "" : dgv.Rows[rowIndex].Cells["item_cat"].Value.ToString();
                     editingItemName = dgv.Rows[rowIndex].Cells["item_name"].Value == null ? "" : dgv.Rows[rowIndex].Cells["item_name"].Value.ToString();
                     editingItemCode = dgv.Rows[rowIndex].Cells["item_code"].Value == null ? "" : dgv.Rows[rowIndex].Cells["item_code"].Value.ToString();
+                    editingItemTransferRecord = (DataTable)dgvTrf.DataSource;
 
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                     frmInOutEdit frm = new frmInOutEdit();

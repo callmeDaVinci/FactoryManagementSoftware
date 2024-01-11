@@ -542,6 +542,90 @@ namespace FactoryManagementSoftware.UI
 
         #region load data
 
+        private bool GetLastTransferLocation(int transferMode)
+        {
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && frmInOutVer2.editingItemTransferRecord.Rows.Count > 0)
+            {
+                DataTable dt = frmInOutVer2.editingItemTransferRecord.Copy();
+                DataTable dtFac = dalFac.SelectASC();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row[daltrfHist.TrfItemCode].ToString();
+                    string validRecord = row[daltrfHist.TrfResult].ToString();
+
+                    if(itemCode == cmbTrfItemCode.Text && validRecord == text.Passed)
+                    {
+                        //check transfer mode
+                        string trfFrom = row[daltrfHist.TrfFrom].ToString();
+                        string trfTo = row[daltrfHist.TrfTo].ToString();
+
+                        bool fromFactory = tool.getFactoryID(trfFrom, dtFac) != -1;
+                        bool toFactory = tool.getFactoryID(trfTo, dtFac) != -1;
+
+                        //transfer Mode
+                        //0 : default, get last location from lastest transfer record
+                        //1 : stock in, get last in record ( from non factory to factory)
+                        //2 : stock out, get last out record ( from factory to non factory)
+                        //3 : stock internal transfer, get last internal transfer record ( from factory to factory)
+
+                        bool transferModeMatched = false;
+
+                        if(transferMode == 1)
+                        {
+                            transferModeMatched = !fromFactory && toFactory;
+                        }
+                        else if (transferMode == 2)
+                        {
+                            transferModeMatched = fromFactory && !toFactory;
+
+                        }
+                        else if (transferMode == 3)
+                        {
+                            transferModeMatched = fromFactory && toFactory;
+                        }
+                        else
+                        {
+                            transferModeMatched = true;
+                        }
+
+
+                        if(transferModeMatched)
+                        {
+                            //change location
+                            if (fromFactory)
+                            {
+                                cmbTrfFromCategory.Text = "Factory";
+                                cmbTrfFrom.Text = trfFrom;
+                            }
+                            else
+                            {
+                                cmbTrfFromCategory.Text = trfFrom; 
+                            }
+
+
+                            if (toFactory)
+                            {
+                                cmbTrfToCategory.Text = "Factory";
+                                cmbTrfTo.Text = trfTo;
+                            }
+                            else
+                            {
+                                cmbTrfToCategory.Text = trfTo;
+                            }
+
+                            //get unit
+                            cmbTrfQtyUnit.Text = row[daltrfHist.TrfUnit].ToString();
+
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         private void frmInOutEdit_Load(object sender, EventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -561,6 +645,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             loadLocationCategoryData();
+
+          
 
             txtTrfQty.Focus();
 
@@ -588,6 +674,8 @@ namespace FactoryManagementSoftware.UI
             {
                 StockTally(dt_StockTallyList);
             }
+
+
 
             Cursor = Cursors.Arrow; // change cursor to normal type
         }
@@ -3644,44 +3732,51 @@ namespace FactoryManagementSoftware.UI
 
         private void btnIN_Click(object sender, EventArgs e)
         {
+            
+                
+
             string itemCode = cmbTrfItemCode.Text;
 
             if (!string.IsNullOrEmpty(itemCode))
             {
-                if (tool.ifGotChild(itemCode))
+                    
+                if(!GetLastTransferLocation(1))
                 {
-                    if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))//assembly
+                    if (tool.ifGotChild(itemCode))
                     {
-                        cmbTrfFromCategory.Text = "Assembly";
-                        cmbTrfToCategory.Text = "Factory";
+                        if (dalItem.checkIfAssembly(itemCode) && !dalItem.checkIfProduction(itemCode))//assembly
+                        {
+                            cmbTrfFromCategory.Text = "Assembly";
+                            cmbTrfToCategory.Text = "Factory";
+                        }
+                        else//production
+                        {
+                            cmbTrfFromCategory.Text = "Production";
+                            cmbTrfToCategory.Text = "Factory";
+                        }
                     }
-                    else//production
+                    else if (dalItem.getCatName(itemCode).Equals("Part"))
                     {
                         cmbTrfFromCategory.Text = "Production";
                         cmbTrfToCategory.Text = "Factory";
                     }
-                }
-                else if (dalItem.getCatName(itemCode).Equals("Part"))
-                {
-                    cmbTrfFromCategory.Text = "Production";
-                    cmbTrfToCategory.Text = "Factory";
-                }
-                else
-                {
-                    if(dalMaterial.checkIfZeroCost(itemCode))
-                    {
-                        cmbTrfFromCategory.Text = "Customer";
-                        cmbTrfTo.Text = "PMMA";
-                        cmbTrfToCategory.Text = "Factory";
-                    }
                     else
                     {
-                        cmbTrfFromCategory.Text = "Supplier";
-                        cmbTrfToCategory.Text = "Factory";
+                        if (dalMaterial.checkIfZeroCost(itemCode))
+                        {
+                            cmbTrfFromCategory.Text = "Customer";
+                            cmbTrfTo.Text = "PMMA";
+                            cmbTrfToCategory.Text = "Factory";
+                        }
+                        else
+                        {
+                            cmbTrfFromCategory.Text = "Supplier";
+                            cmbTrfToCategory.Text = "Factory";
+                        }
                     }
+                    cmbTrfTo.SelectedIndex = -1;
                 }
-                cmbTrfTo.SelectedIndex = -1;
-
+              
             }
             else
             {
@@ -3696,36 +3791,37 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(itemCode))
             {
-                cmbTrfFromCategory.Text = "Factory";
-                cmbTrfFrom.SelectedIndex = -1;
-
-                if (dalItem.getCatName(itemCode).Equals("Part"))
-                {
-                    string customer = tool.getCustomerName(cmbTrfItemCode.Text);
-
-                    if (!customer.Equals(""))
-                    {
-                        cmbTrfToCategory.Text = "Customer";
-
-                        //DataTable dt = dalCust.Select();
-                        //loadLocationData(dt, cmbTrfTo, "cust_name");
-
-                        cmbTrfTo.Text = customer;
-                    }
-                    else
-                    {
-                        cmbTrfToCategory.SelectedIndex = -1;
-                    }
-                }
-                else
+                if (!GetLastTransferLocation(2))
                 {
                     cmbTrfFromCategory.Text = "Factory";
                     cmbTrfFrom.SelectedIndex = -1;
-                    cmbTrfToCategory.Text = "Production";
-                    cmbTrfTo.SelectedIndex = -1;
-                }
-                    
 
+                    if (dalItem.getCatName(itemCode).Equals("Part"))
+                    {
+                        string customer = tool.getCustomerName(cmbTrfItemCode.Text);
+
+                        if (!customer.Equals(""))
+                        {
+                            cmbTrfToCategory.Text = "Customer";
+
+                            //DataTable dt = dalCust.Select();
+                            //loadLocationData(dt, cmbTrfTo, "cust_name");
+
+                            cmbTrfTo.Text = customer;
+                        }
+                        else
+                        {
+                            cmbTrfToCategory.SelectedIndex = -1;
+                        }
+                    }
+                    else
+                    {
+                        cmbTrfFromCategory.Text = "Factory";
+                        cmbTrfFrom.SelectedIndex = -1;
+                        cmbTrfToCategory.Text = "Production";
+                        cmbTrfTo.SelectedIndex = -1;
+                    }
+                }
             }
             else
             {
@@ -3740,11 +3836,14 @@ namespace FactoryManagementSoftware.UI
 
             if (!string.IsNullOrEmpty(itemCode))
             {
-                cmbTrfFromCategory.Text = "Factory";
-                cmbTrfToCategory.Text = "Factory";
+                if (!GetLastTransferLocation(3))
+                {
+                    cmbTrfFromCategory.Text = "Factory";
+                    cmbTrfToCategory.Text = "Factory";
 
-                cmbTrfFrom.SelectedIndex = -1;
-                cmbTrfTo.SelectedIndex = -1;
+                    cmbTrfFrom.SelectedIndex = -1;
+                    cmbTrfTo.SelectedIndex = -1;
+                }
             }
             else
             {
@@ -3868,6 +3967,12 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+        }
+
+        private void frmInOutEdit_Shown(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
+                GetLastTransferLocation(0);
         }
     }
 }

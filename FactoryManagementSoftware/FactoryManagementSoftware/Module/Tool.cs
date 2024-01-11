@@ -4028,7 +4028,7 @@ namespace FactoryManagementSoftware.Module
 
             DataTable dtFac = dalFac.nameSearch(factoryName);
 
-            if(dtFac.Rows.Count > 0)
+            if (dtFac.Rows.Count > 0)
             {
                 foreach (DataRow fac in dtFac.Rows)
                 {
@@ -4040,6 +4040,27 @@ namespace FactoryManagementSoftware.Module
             {
                 return -1;
             }
+        }
+
+        public int getFactoryID(string factoryName, DataTable dtFac)
+        {
+            string factoryID = "";
+
+            if(dtFac.Rows.Count > 0)
+            {
+                foreach (DataRow fac in dtFac.Rows)
+                {
+                    string Name = fac["fac_name"].ToString();
+
+                    if(Name == factoryName)
+                    {
+                        factoryID = fac["fac_id"].ToString();
+                        return Convert.ToInt32(factoryID);
+                    }
+                }
+            }
+            
+            return -1;
         }
 
         public string getFactoryName(string factoryID)

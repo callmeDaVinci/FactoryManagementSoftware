@@ -742,6 +742,9 @@ namespace FactoryManagementSoftware.UI
 
         private bool ItemFieldInspection()
         {
+            errorProvider1.Clear();
+            errorProvider2.Clear();
+
             if (string.IsNullOrEmpty(txtItemDescription.Text) || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
             {
                 errorProvider1.SetError(cbItemCustom, "Description Required");
