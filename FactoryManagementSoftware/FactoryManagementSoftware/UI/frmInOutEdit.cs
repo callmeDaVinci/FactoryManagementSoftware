@@ -544,7 +544,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool GetLastTransferLocation(int transferMode)
         {
-            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && frmInOutVer2.editingItemTransferRecord.Rows.Count > 0)
+            if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && frmInOutVer2.editingItemTransferRecord != null && frmInOutVer2.editingItemTransferRecord.Rows.Count > 0)
             {
                 DataTable dt = frmInOutVer2.editingItemTransferRecord.Copy();
                 DataTable dtFac = dalFac.SelectASC();
@@ -2274,6 +2274,8 @@ namespace FactoryManagementSoftware.UI
                     cmbTrfQtyUnit.SelectedIndex = -1;
 
                 }
+
+                GetLastTransferLocation(0);
             }
             else if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 &&  cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {

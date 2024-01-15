@@ -171,6 +171,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\AddressBookBLL.cs" />
     <Compile Include="BLL\CheckChildBLL.cs" />
     <Compile Include="BLL\childTrfHistBLL.cs" />
     <Compile Include="BLL\custSupplierBLL.cs" />
@@ -224,6 +225,7 @@
     <Compile Include="DAL\facStockDAL.cs" />
     <Compile Include="DAL\orderActionDAL.cs" />
     <Compile Include="DAL\planningActionDAL.cs" />
+    <Compile Include="DAL\addressBookDAL.cs" />
     <Compile Include="DAL\planningDAL.cs" />
     <Compile Include="DAL\pmmaDAL.cs" />
     <Compile Include="DAL\pmmaDateDAL.cs" />

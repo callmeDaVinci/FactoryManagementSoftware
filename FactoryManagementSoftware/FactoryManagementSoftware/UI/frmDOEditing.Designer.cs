@@ -2073,7 +2073,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaTextBox1.PasswordChar = '\0';
             this.gunaTextBox1.Radius = 3;
             this.gunaTextBox1.SelectedText = "";
-            this.gunaTextBox1.Size = new System.Drawing.Size(1, 264);
+            this.gunaTextBox1.Size = new System.Drawing.Size(1, 252);
             this.gunaTextBox1.TabIndex = 247;
             this.gunaTextBox1.Text = "SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)\r\nNO.17, PT 2507, JLN HI-TECH 2,\r\nKAW. PER" +
     "IND. HI.TECH,\r\nJALAN SG. LALANG,\r\n43500 SEMENYIH, SELANGOR\r\n";
@@ -2100,7 +2100,7 @@ namespace FactoryManagementSoftware.UI
             this.txtSearch.PasswordChar = '\0';
             this.txtSearch.Radius = 3;
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(1, 264);
+            this.txtSearch.Size = new System.Drawing.Size(1, 252);
             this.txtSearch.TabIndex = 246;
             this.txtSearch.Text = "Not Applicable";
             // 

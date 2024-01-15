@@ -309,7 +309,7 @@ namespace FactoryManagementSoftware.DAL
 
             DataTable lastInsertedData = lastRecordSelect();
 
-            foreach(DataRow row in lastInsertedData.Rows)
+            foreach (DataRow row in lastInsertedData.Rows)
             {
                 PlanID = Convert.ToInt32(row[jobNo]);
             }
@@ -457,7 +457,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-      
+
         #endregion
 
         #region Update data in Database
@@ -469,39 +469,39 @@ namespace FactoryManagementSoftware.DAL
 
             try
             {
-             String sql = @"UPDATE tbl_plan
+                String sql = @"UPDATE tbl_plan
                             SET "
-                           + targetQty + "=@production_target_qty,"
-                           + ableQty + "=@production_able_produce_qty,"
-                           + productionDay + "=@production_day,"
-                           + productionHour + "=@production_hour,"
-                           + productionHourPerDay + "=@production_hour_per_day,"
-                           + materialCode + "=@material_code,"
-                           + materialBagQty_1 + "=@material_bag_qty,"
-                           + rawMaterialQty_1 + "=@raw_material_qty,"
-                           + rawMatRatio_1 + "=@raw_mat_ratio_1,"
-                           + materialCode2 + "=@material_code_2,"
-                           + materialBagQty_2 + "=@material_bag_qty_2,"
-                           + rawMaterialQty_2 + "=@raw_material_qty_2,"
-                           + rawMatRatio_2 + "=@raw_mat_ratio_2,"
-                           + colorMaterialCode + "=@color_material_code,"
-                           + colorMaterialUsage + "=@color_material_usage,"
-                           + colorMaterialQty + "=@color_material_qty,"
-                           + materialRecycleUse + "=@material_recycle_use,"
-                           + planCavity + "=@plan_cavity,"
-                           + planPW + "=@plan_pw,"
-                           + planRW + "=@plan_rw,"
-                           + planCT + "=@plan_ct,"
-                           + planNote + "=@plan_note,"
-                           + productionPurpose + "=@production_purpose,"
-                           + productionStartDate + "=@production_start_date,"
-                           + productionEndDate + "=@production_end_date,"
-                           + machineID + "=@machine_id,"
-                           + familyWith + "=@family_with,"
-                           + planStatus + "=@plan_status,"
-                           + planUpdatedDate + "=@plan_updated_date,"
-                           + planUpdatedby + "=@plan_updated_by" +
-                           " WHERE plan_id=@plan_id";
+                              + targetQty + "=@production_target_qty,"
+                              + ableQty + "=@production_able_produce_qty,"
+                              + productionDay + "=@production_day,"
+                              + productionHour + "=@production_hour,"
+                              + productionHourPerDay + "=@production_hour_per_day,"
+                              + materialCode + "=@material_code,"
+                              + materialBagQty_1 + "=@material_bag_qty,"
+                              + rawMaterialQty_1 + "=@raw_material_qty,"
+                              + rawMatRatio_1 + "=@raw_mat_ratio_1,"
+                              + materialCode2 + "=@material_code_2,"
+                              + materialBagQty_2 + "=@material_bag_qty_2,"
+                              + rawMaterialQty_2 + "=@raw_material_qty_2,"
+                              + rawMatRatio_2 + "=@raw_mat_ratio_2,"
+                              + colorMaterialCode + "=@color_material_code,"
+                              + colorMaterialUsage + "=@color_material_usage,"
+                              + colorMaterialQty + "=@color_material_qty,"
+                              + materialRecycleUse + "=@material_recycle_use,"
+                              + planCavity + "=@plan_cavity,"
+                              + planPW + "=@plan_pw,"
+                              + planRW + "=@plan_rw,"
+                              + planCT + "=@plan_ct,"
+                              + planNote + "=@plan_note,"
+                              + productionPurpose + "=@production_purpose,"
+                              + productionStartDate + "=@production_start_date,"
+                              + productionEndDate + "=@production_end_date,"
+                              + machineID + "=@machine_id,"
+                              + familyWith + "=@family_with,"
+                              + planStatus + "=@plan_status,"
+                              + planUpdatedDate + "=@plan_updated_date,"
+                              + planUpdatedby + "=@plan_updated_by" +
+                              " WHERE plan_id=@plan_id";
 
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -1255,7 +1255,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@production_hour_per_day", u.production_hour_per_day);
                 cmd.Parameters.AddWithValue("@production_start_date", u.production_start_date);
                 cmd.Parameters.AddWithValue("@production_end_date", u.production_end_date);
-                
+
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
 

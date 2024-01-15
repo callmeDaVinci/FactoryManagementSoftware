@@ -83,12 +83,12 @@ namespace FactoryManagementSoftware.UI
 
             if (userID > 0)
             {
-                if (string.IsNullOrEmpty(txtOldPassword.Text))
+                if (string.IsNullOrEmpty(txtOldPassword.Text) && !string.IsNullOrEmpty(txtNewPassword.Text)) 
                 {
                     result = false;
                     errorProvider5.SetError(lblOldPassword, "Password Required!");
                 }
-                else if(txtOldPassword.Text != uUser.user_password)
+                else if(txtOldPassword.Text != uUser.user_password && !string.IsNullOrEmpty(txtNewPassword.Text))
                 {
                     result = false;
                     errorProvider5.SetError(lblOldPassword, "Old password do not match!");
