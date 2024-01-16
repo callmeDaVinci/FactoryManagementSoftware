@@ -171,6 +171,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BLL\companyBLL.cs" />
+    <Compile Include="BLL\doFormatBLL.cs" />
     <Compile Include="BLL\AddressBookBLL.cs" />
     <Compile Include="BLL\CheckChildBLL.cs" />
     <Compile Include="BLL\childTrfHistBLL.cs" />
@@ -205,6 +207,8 @@
     <Compile Include="CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DAL\companyDAL.cs" />
+    <Compile Include="DAL\doFormatDAL.cs" />
     <Compile Include="DAL\childTrfHistDAL.cs" />
     <Compile Include="DAL\custSupplierDAL.cs" />
     <Compile Include="DAL\dataDAL.cs" />
@@ -248,6 +252,12 @@
     </Compile>
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDoFormat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDoFormat.Designer.cs">
+      <DependentUpon>frmDoFormat.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDOManagement.cs">
       <SubType>Form</SubType>
@@ -1145,6 +1155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDoFormat.resx">
+      <DependentUpon>frmDoFormat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDOManagement.resx">
       <DependentUpon>frmDOManagement.cs</DependentUpon>

@@ -198,10 +198,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(535, 17);
+            this.label2.Location = new System.Drawing.Point(535, 19);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(132, 19);
+            this.label2.Size = new System.Drawing.Size(122, 17);
             this.label2.TabIndex = 172;
             this.label2.Text = "SHIPPING ADDRESS";
             // 
@@ -238,10 +238,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 16);
+            this.label1.Location = new System.Drawing.Point(2, 18);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(99, 19);
+            this.label1.Size = new System.Drawing.Size(90, 17);
             this.label1.TabIndex = 166;
             this.label1.Text = "SHIPPING LIST";
             // 
@@ -327,9 +327,9 @@
             this.lblEditRoute.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblEditRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEditRoute.ForeColor = System.Drawing.Color.Blue;
-            this.lblEditRoute.Location = new System.Drawing.Point(295, 6);
+            this.lblEditRoute.Location = new System.Drawing.Point(300, 8);
             this.lblEditRoute.Name = "lblEditRoute";
-            this.lblEditRoute.Size = new System.Drawing.Size(84, 19);
+            this.lblEditRoute.Size = new System.Drawing.Size(79, 17);
             this.lblEditRoute.TabIndex = 173;
             this.lblEditRoute.Text = "EDIT ROUTE";
             this.lblEditRoute.Visible = false;
@@ -339,9 +339,9 @@
             this.lblRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRoute.AutoSize = true;
             this.lblRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoute.Location = new System.Drawing.Point(3, 6);
+            this.lblRoute.Location = new System.Drawing.Point(3, 8);
             this.lblRoute.Name = "lblRoute";
-            this.lblRoute.Size = new System.Drawing.Size(52, 19);
+            this.lblRoute.Size = new System.Drawing.Size(49, 17);
             this.lblRoute.TabIndex = 172;
             this.lblRoute.Text = "ROUTE";
             // 
@@ -350,9 +350,9 @@
             this.lblCountry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCountry.AutoSize = true;
             this.lblCountry.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCountry.Location = new System.Drawing.Point(395, 6);
+            this.lblCountry.Location = new System.Drawing.Point(395, 8);
             this.lblCountry.Name = "lblCountry";
-            this.lblCountry.Size = new System.Drawing.Size(78, 19);
+            this.lblCountry.Size = new System.Drawing.Size(72, 17);
             this.lblCountry.TabIndex = 14;
             this.lblCountry.Text = "COUNTRY*";
             // 
@@ -402,9 +402,9 @@
             this.lblShortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblShortName.AutoSize = true;
             this.lblShortName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShortName.Location = new System.Drawing.Point(471, 6);
+            this.lblShortName.Location = new System.Drawing.Point(471, 8);
             this.lblShortName.Name = "lblShortName";
-            this.lblShortName.Size = new System.Drawing.Size(100, 19);
+            this.lblShortName.Size = new System.Drawing.Size(94, 17);
             this.lblShortName.TabIndex = 172;
             this.lblShortName.Text = "SHORT NAME*";
             // 
@@ -424,9 +424,9 @@
             this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(3, 6);
+            this.lblName.Location = new System.Drawing.Point(3, 8);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(54, 19);
+            this.lblName.Size = new System.Drawing.Size(50, 17);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "NAME*";
             // 
@@ -469,7 +469,7 @@
             this.cbCustOwnDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbCustOwnDO.Location = new System.Drawing.Point(527, 28);
             this.cbCustOwnDO.Name = "cbCustOwnDO";
-            this.cbCustOwnDO.Size = new System.Drawing.Size(165, 23);
+            this.cbCustOwnDO.Size = new System.Drawing.Size(156, 21);
             this.cbCustOwnDO.TabIndex = 172;
             this.cbCustOwnDO.Text = "CUSTOMER OWN DO";
             this.cbCustOwnDO.UseVisualStyleBackColor = true;
@@ -480,9 +480,9 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(261, 6);
+            this.label3.Location = new System.Drawing.Point(261, 8);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(98, 19);
+            this.label3.Size = new System.Drawing.Size(94, 17);
             this.label3.TabIndex = 172;
             this.label3.Text = "TRANSPORTER";
             // 
@@ -501,9 +501,9 @@
             this.lblPhone1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPhone1.AutoSize = true;
             this.lblPhone1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone1.Location = new System.Drawing.Point(3, 6);
+            this.lblPhone1.Location = new System.Drawing.Point(3, 8);
             this.lblPhone1.Name = "lblPhone1";
-            this.lblPhone1.Size = new System.Drawing.Size(67, 19);
+            this.lblPhone1.Size = new System.Drawing.Size(62, 17);
             this.lblPhone1.TabIndex = 16;
             this.lblPhone1.Text = "PHONE 1";
             // 
@@ -564,9 +564,9 @@
             this.lblState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblState.AutoSize = true;
             this.lblState.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblState.Location = new System.Drawing.Point(395, 126);
+            this.lblState.Location = new System.Drawing.Point(395, 128);
             this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(50, 19);
+            this.lblState.Size = new System.Drawing.Size(47, 17);
             this.lblState.TabIndex = 10;
             this.lblState.Text = "STATE*";
             // 
@@ -575,9 +575,9 @@
             this.lblCity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCity.AutoSize = true;
             this.lblCity.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCity.Location = new System.Drawing.Point(395, 66);
+            this.lblCity.Location = new System.Drawing.Point(395, 68);
             this.lblCity.Name = "lblCity";
-            this.lblCity.Size = new System.Drawing.Size(43, 19);
+            this.lblCity.Size = new System.Drawing.Size(38, 17);
             this.lblCity.TabIndex = 8;
             this.lblCity.Text = "CITY*";
             // 
@@ -596,9 +596,9 @@
             this.lblAddress3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress3.AutoSize = true;
             this.lblAddress3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress3.Location = new System.Drawing.Point(3, 126);
+            this.lblAddress3.Location = new System.Drawing.Point(3, 128);
             this.lblAddress3.Name = "lblAddress3";
-            this.lblAddress3.Size = new System.Drawing.Size(190, 19);
+            this.lblAddress3.Size = new System.Drawing.Size(177, 17);
             this.lblAddress3.TabIndex = 205;
             this.lblAddress3.Text = "ADDRESS LINE 3 (OPTIONAL)";
             // 
@@ -607,9 +607,9 @@
             this.lblPostalCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPostalCode.AutoSize = true;
             this.lblPostalCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPostalCode.Location = new System.Drawing.Point(395, 6);
+            this.lblPostalCode.Location = new System.Drawing.Point(395, 8);
             this.lblPostalCode.Name = "lblPostalCode";
-            this.lblPostalCode.Size = new System.Drawing.Size(104, 19);
+            this.lblPostalCode.Size = new System.Drawing.Size(95, 17);
             this.lblPostalCode.TabIndex = 12;
             this.lblPostalCode.Text = "POSTAL CODE*";
             // 
@@ -628,9 +628,9 @@
             this.lblAddress2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress2.AutoSize = true;
             this.lblAddress2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress2.Location = new System.Drawing.Point(3, 66);
+            this.lblAddress2.Location = new System.Drawing.Point(3, 68);
             this.lblAddress2.Name = "lblAddress2";
-            this.lblAddress2.Size = new System.Drawing.Size(190, 19);
+            this.lblAddress2.Size = new System.Drawing.Size(177, 17);
             this.lblAddress2.TabIndex = 205;
             this.lblAddress2.Text = "ADDRESS LINE 2 (OPTIONAL)";
             // 
@@ -639,9 +639,9 @@
             this.lblAddress1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress1.AutoSize = true;
             this.lblAddress1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress1.Location = new System.Drawing.Point(3, 6);
+            this.lblAddress1.Location = new System.Drawing.Point(3, 8);
             this.lblAddress1.Name = "lblAddress1";
-            this.lblAddress1.Size = new System.Drawing.Size(117, 19);
+            this.lblAddress1.Size = new System.Drawing.Size(109, 17);
             this.lblAddress1.TabIndex = 204;
             this.lblAddress1.Text = "ADDRESS LINE 1*";
             // 
@@ -769,6 +769,7 @@
             this.dgvShippingList.Name = "dgvShippingList";
             this.dgvShippingList.ReadOnly = true;
             this.dgvShippingList.RowHeadersVisible = false;
+            this.dgvShippingList.RowHeadersWidth = 51;
             this.dgvShippingList.RowTemplate.Height = 50;
             this.dgvShippingList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvShippingList.Size = new System.Drawing.Size(517, 586);

@@ -9,7 +9,7 @@ namespace FactoryManagementSoftware.BLL
     public class AddressBookBLL
     {
         public int tbl_code { get; set; }
-        public int cust_tbl_code { get; set; }
+        public int company_tbl_code { get; set; }
         public int route_tbl_code { get; set; }
         public string full_name { get; set; }
         public string short_name { get; set; }
@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.BLL
         public string contact_name_2 { get; set; }
         public string email_address { get; set; }
         public string website { get; set; }
+        public string delivery_method_remark { get; set; }
         public string remark { get; set; }
         public bool isRemoved { get; set; }
         public int updated_by { get; set; }

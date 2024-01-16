@@ -18,7 +18,15 @@ namespace FactoryManagementSoftware.UI
         Tool tool = new Tool();
         Text text = new Text();
         itemDAL dalItem = new itemDAL();
+        doFormatDAL dalDoFormat = new doFormatDAL();
 
+        private string ITEM_CODE = "ITEM CODE";
+        private string ITEM_CATEGORY = "CATEGORY";
+        bool DO_ITEM_EDIT_MODE = false;
+        private int EDITING_INDEX = -1;
+        private string BUTTON_ADDTOLIST_TEXT = "Add to List";
+        private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
+        private bool DATA_SAVED = false;
 
         public frmDOEditing()
         {
@@ -35,6 +43,10 @@ namespace FactoryManagementSoftware.UI
                 return handleparam;
             }
         }
+
+
+
+        #endregion
 
         #region UI/UX
         private void InitialSetting()
@@ -114,6 +126,216 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        #endregion
+
+
+
+
+
+        #endregion
+
+        #region Logic
+
+        private void LoadSummaryData()
+        {
+
+        }
+
+        private bool Validation(int currentStep)
+        {
+            return true;
+        }
+
+        private void ItemFieldReset()
+        {
+            txtItemDescription.Text = null;
+            ITEM_CODE = "";
+            txtBoxQty.Text = "";
+            txtBalanceQty.Text = "";
+            txtQtyPerBox.Text = "";
+            txtTotalQty.Text = "";
+            txtRemark.Text = "";
+            txtItemCodePreview.Text = "";
+            txtQtyPreview.Text = "";
+
+            btnCancelItemEdit.Visible = false;
+            btnAddItem.Text = BUTTON_ADDTOLIST_TEXT;
+        }
+
+        private bool ItemFieldInspection()
+        {
+            errorProvider1.Clear();
+            errorProvider2.Clear();
+
+            if (string.IsNullOrEmpty(txtItemDescription.Text) || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
+            {
+                errorProvider1.SetError(cbItemCustom, "Description Required");
+                return false;
+            }
+
+            if (string.IsNullOrEmpty(txtTotalQty.Text) || txtTotalQty.Text == "0")
+            {
+                errorProvider2.SetError(lblTotalQty, "Total Qty Required");
+                return false;
+            }
+
+
+            return true;
+        }
+
+        private void AddItem()
+        {
+            if (ItemFieldInspection())
+            {
+                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
+
+                if (TotalQty <= -1)
+                {
+                    errorProvider2.SetError(lblTotalQty, "Invalid!");
+                    return;
+                }
+
+                // Create a new row in the DataTable
+                DataRow newRow = DT_ITEM_LIST.NewRow();
+
+                // Assign values to each column in the DataRow
+                newRow[text.Header_ItemCode] = txtItemCodePreview.Text;
+                newRow[text.Header_Description] = txtDescriptionPreview.Text;
+                newRow[text.Header_Qty] = TotalQty;
+                newRow[text.Header_Unit] = txtTotalQtyUnit.Text;
+
+                newRow[text.Header_SearchMode] = cbItemSearch.Checked;
+                newRow[text.Header_ItemName] = txtItemDescription.Text;
+
+                newRow[text.Header_TotalQty] = txtTotalQty.Text;
+                newRow[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
+                newRow[text.Header_QtyPerBox] = txtQtyPerBox.Text;
+                newRow[text.Header_BoxQty] = txtBoxQty.Text;
+                newRow[text.Header_BoxUnit] = txtBoxUnit.Text;
+                newRow[text.Header_Balance] = txtBalanceQty.Text;
+
+                newRow[text.Header_Remark] = txtRemark.Text;
+
+                newRow[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
+                newRow[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
+                newRow[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
+
+
+
+                int index = 1;
+
+                if (DT_ITEM_LIST.Rows.Count > 0)
+                {
+                    index = int.TryParse(DT_ITEM_LIST.Rows[DT_ITEM_LIST.Rows.Count - 1][text.Header_Index].ToString(), out int i) ? i + 1 : index;
+                }
+
+                newRow[text.Header_Index] = index;
+
+
+                // Add the new row to the DataTable
+                DT_ITEM_LIST.Rows.Add(newRow);
+
+                //if (dgvDOItemList.DataSource != DT_ITEM_LIST)
+                //{
+                //    dgvDOItemList.DataSource = DT_ITEM_LIST;
+                //}
+                dgvDOItemList.DataSource = null;
+
+                dgvDOItemList.DataSource = DT_ITEM_LIST;
+
+                ItemFieldReset();
+
+                dgvUIEdit(dgvDOItemList);
+                dgvDOItemList.ClearSelection();
+            }
+
+        }
+
+        private void UpdateItem(int rowIndex)
+        {
+            if (ItemFieldInspection())
+            {
+                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
+
+                if (TotalQty <= -1)
+                {
+                    errorProvider2.SetError(lblTotalQty, "Invalid!");
+                    return;
+                }
+
+                if (rowIndex < 0 || rowIndex >= DT_ITEM_LIST.Rows.Count)
+                {
+                    MessageBox.Show("Invalid row index.");
+                    return;
+                }
+
+                DataRow rowToUpdate = DT_ITEM_LIST.Rows[rowIndex];
+
+                // Assign updated values to the row
+                rowToUpdate[text.Header_ItemCode] = txtItemCodePreview.Text;
+                rowToUpdate[text.Header_Description] = txtDescriptionPreview.Text;
+                rowToUpdate[text.Header_Qty] = TotalQty;
+                rowToUpdate[text.Header_Unit] = txtTotalQtyUnit.Text;
+
+                rowToUpdate[text.Header_SearchMode] = cbItemSearch.Checked;
+                rowToUpdate[text.Header_ItemName] = txtItemDescription.Text;
+
+                rowToUpdate[text.Header_TotalQty] = txtTotalQty.Text;
+                rowToUpdate[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
+                rowToUpdate[text.Header_QtyPerBox] = txtQtyPerBox.Text;
+                rowToUpdate[text.Header_BoxQty] = txtBoxQty.Text;
+                rowToUpdate[text.Header_BoxUnit] = txtBoxUnit.Text;
+                rowToUpdate[text.Header_Balance] = txtBalanceQty.Text;
+
+                rowToUpdate[text.Header_Remark] = txtRemark.Text;
+
+                rowToUpdate[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
+                rowToUpdate[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
+                rowToUpdate[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
+
+                dgvDOItemList.DataSource = null;
+                dgvDOItemList.DataSource = DT_ITEM_LIST;
+
+                ItemFieldReset();
+                dgvUIEdit(dgvDOItemList);
+                dgvDOItemList.ClearSelection();
+            }
+        }
+
+        private void GetDataFromList(int rowIndex)
+        {
+            DataTable dt = (DataTable)dgvDOItemList.DataSource;
+
+            cbItemSearch.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_SearchMode].ToString(), out bool search) ? search : true;
+            txtItemDescription.Text = dt.Rows[rowIndex][text.Header_ItemName].ToString();
+
+            ITEM_CODE = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
+            txtItemCodePreview.Text = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
+
+
+            txtTotalQty.Text = dt.Rows[rowIndex][text.Header_TotalQty].ToString();
+            txtTotalQtyUnit.Text = dt.Rows[rowIndex][text.Header_TotalQtyUnit].ToString();
+            txtQtyPerBox.Text = dt.Rows[rowIndex][text.Header_QtyPerBox].ToString();
+            txtBoxQty.Text = dt.Rows[rowIndex][text.Header_BoxQty].ToString();
+            txtBoxUnit.Text = dt.Rows[rowIndex][text.Header_BoxUnit].ToString();
+            txtBalanceQty.Text = dt.Rows[rowIndex][text.Header_Balance].ToString();
+
+            txtRemark.Text = dt.Rows[rowIndex][text.Header_Remark].ToString();
+
+            cbDescriptionIncludeCategory.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeCategory].ToString(), out bool includeCategory) ? includeCategory : false;
+            cbDescriptionIncludePackaging.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludePackaging].ToString(), out bool includePackaging) ? includePackaging : false;
+            cbDescriptionIncludeRemark.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeRemark].ToString(), out bool includeRemark) ? includeRemark : false;
+
+            txtDescriptionPreview.Text = dt.Rows[rowIndex][text.Header_Description].ToString();
+
+            DO_ITEM_EDIT_MODE = true;
+            btnAddItem.Text = BUTTON_UPDATETOLIST_TEXT;
+            btnCancelItemEdit.Visible = true;
+
+        }
+
+
 
         #endregion
 
@@ -200,7 +422,7 @@ namespace FactoryManagementSoftware.UI
             Color circleLabelCompletedBackColor = Color.FromArgb(153, 255, 204);
 
             string tickText = "✓";
-  
+
             circleLabelStep1.CircleBackColor = CircleLabelProcessingColor;
             circleLabelStep2.CircleBackColor = CircleLabelProcessingColor;
             circleLabelStep3.CircleBackColor = CircleLabelProcessingColor;
@@ -222,6 +444,11 @@ namespace FactoryManagementSoftware.UI
                 #region Case 1: D/O Settings
                 case 1:
 
+                    if(!DO_TYPE_DATA_LOADED)
+                    {
+                        InitialDOTypeComboBox();
+                    }
+
                     this.Size = new Size(1366, 750);
                     this.Location = new Point(
     (Screen.PrimaryScreen.WorkingArea.Width - this.Width) / 2,
@@ -232,7 +459,7 @@ namespace FactoryManagementSoftware.UI
                     lblStep1.Font = CurrentStepFont;
 
                     tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 200);//Continue
-                  
+
                     btnPreviousStep.Visible = false;
                     btnContinue.Visible = true;
 
@@ -457,7 +684,7 @@ namespace FactoryManagementSoftware.UI
                 btnSearch.Image = Properties.Resources.icons8_search_500;
             }
 
-            if (txtItemDescription.Text.Length <=0 || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
+            if (txtItemDescription.Text.Length <= 0 || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
             {
                 ItemDescriptionTextSetDefault();
             }
@@ -593,7 +820,7 @@ namespace FactoryManagementSoftware.UI
         {
             // Parse the numeric values. If parsing fails, default to 0.
             decimal.TryParse(txtTotalQty.Text, out decimal totalQty);
-            
+
             string qtyUnit = string.IsNullOrEmpty(txtTotalQtyUnit.Text) ? "pcs" : txtTotalQtyUnit.Text;
 
             // Construct the packaging info string
@@ -604,7 +831,7 @@ namespace FactoryManagementSoftware.UI
 
         private void itemCodePreviewUpdate()
         {
-            if(!string.IsNullOrEmpty(txtItemDescription.Text))
+            if (!string.IsNullOrEmpty(txtItemDescription.Text))
             {
                 string CodePreview = "custom";
 
@@ -623,7 +850,7 @@ namespace FactoryManagementSoftware.UI
 
                 txtItemCodePreview.Text = CodePreview;
             }
-           
+
         }
 
         private void UpdatePreviewDescription()
@@ -631,11 +858,11 @@ namespace FactoryManagementSoftware.UI
             string previewDescription = "";
 
             //get category info & item name
-            if(cbItemSearch.Checked && !string.IsNullOrEmpty(txtItemDescription.Text))
+            if (cbItemSearch.Checked && !string.IsNullOrEmpty(txtItemDescription.Text))
             {
-               
 
-                if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT )
+
+                if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT)
                 {
                     previewDescription += "[PLEASE SEARCH A ITEM]";
                 }
@@ -650,7 +877,7 @@ namespace FactoryManagementSoftware.UI
                         previewDescription += txtItemDescription.Text;
                     }
 
-                   
+
                 }
             }
             else
@@ -666,13 +893,13 @@ namespace FactoryManagementSoftware.UI
             }
 
             //get packaging info
-            if (txtTotalQty.Text != "0" && !string.IsNullOrEmpty(txtTotalQty.Text) &&  cbDescriptionIncludePackaging.Checked && IsTotalQtyCorrect())
+            if (txtTotalQty.Text != "0" && !string.IsNullOrEmpty(txtTotalQty.Text) && cbDescriptionIncludePackaging.Checked && IsTotalQtyCorrect())
             {
                 previewDescription += " : " + GetPackagingInfo();
             }
 
             //get remark
-            if(cbDescriptionIncludeRemark.Checked &&  !string.IsNullOrEmpty(txtRemark.Text))
+            if (cbDescriptionIncludeRemark.Checked && !string.IsNullOrEmpty(txtRemark.Text))
             {
                 previewDescription += " " + txtRemark.Text;
             }
@@ -710,262 +937,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        #endregion
 
-        #region Logic
-
-        private void LoadSummaryData()
-        {
-
-        }
-
-        private bool Validation(int currentStep)
-        {
-            return true;
-        }
-
-        private void ItemFieldReset()
-        {
-            txtItemDescription.Text = null;
-            ITEM_CODE = "";
-            txtBoxQty.Text = "";
-            txtBalanceQty.Text = "";
-            txtQtyPerBox.Text = "";
-            txtTotalQty.Text = "";
-            txtRemark.Text = "";
-            txtItemCodePreview.Text = "";
-            txtQtyPreview.Text = "";
-
-            btnCancelItemEdit.Visible = false;
-            btnAddItem.Text = BUTTON_ADDTOLIST_TEXT;
-        }
-
-        private bool ItemFieldInspection()
-        {
-            errorProvider1.Clear();
-            errorProvider2.Clear();
-
-            if (string.IsNullOrEmpty(txtItemDescription.Text) || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
-            {
-                errorProvider1.SetError(cbItemCustom, "Description Required");
-                return false;
-            }
-
-            if (string.IsNullOrEmpty(txtTotalQty.Text) || txtTotalQty.Text == "0")
-            { 
-                errorProvider2.SetError(lblTotalQty, "Total Qty Required");
-                return false;
-            }
-
-
-            return true;
-        }
-
-        private void AddItem()
-        {
-            if(ItemFieldInspection())
-            {
-                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
-
-                if (TotalQty <= -1)
-                {
-                    errorProvider2.SetError(lblTotalQty, "Invalid!");
-                    return;
-                }
-
-                // Create a new row in the DataTable
-                DataRow newRow = DT_ITEM_LIST.NewRow();
-
-                // Assign values to each column in the DataRow
-                newRow[text.Header_ItemCode] = txtItemCodePreview.Text;
-                newRow[text.Header_Description] = txtDescriptionPreview.Text;
-                newRow[text.Header_Qty] = TotalQty;
-                newRow[text.Header_Unit] = txtTotalQtyUnit.Text;
-
-                newRow[text.Header_SearchMode] = cbItemSearch.Checked;
-                newRow[text.Header_ItemName] = txtItemDescription.Text;
-
-                newRow[text.Header_TotalQty] = txtTotalQty.Text;
-                newRow[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
-                newRow[text.Header_QtyPerBox] = txtQtyPerBox.Text;
-                newRow[text.Header_BoxQty] = txtBoxQty.Text;
-                newRow[text.Header_BoxUnit] = txtBoxUnit.Text;
-                newRow[text.Header_Balance] = txtBalanceQty.Text;
-
-                newRow[text.Header_Remark] = txtRemark.Text;
-
-                newRow[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
-                newRow[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
-                newRow[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
-
-
-
-                int index = 1;
-
-                if (DT_ITEM_LIST.Rows.Count > 0)
-                {
-                    index = int.TryParse(DT_ITEM_LIST.Rows[DT_ITEM_LIST.Rows.Count - 1][text.Header_Index].ToString(), out int i) ? i + 1 : index;
-                }
-
-                newRow[text.Header_Index] = index;
-
-
-                // Add the new row to the DataTable
-                DT_ITEM_LIST.Rows.Add(newRow);
-
-                //if (dgvDOItemList.DataSource != DT_ITEM_LIST)
-                //{
-                //    dgvDOItemList.DataSource = DT_ITEM_LIST;
-                //}
-                dgvDOItemList.DataSource = null;
-
-                dgvDOItemList.DataSource = DT_ITEM_LIST;
-
-                ItemFieldReset();
-
-                dgvUIEdit(dgvDOItemList);
-                dgvDOItemList.ClearSelection();
-            }
-           
-        }
-
-        private void UpdateItem(int rowIndex)
-        {
-            if (ItemFieldInspection())
-            {
-                decimal TotalQty = decimal.TryParse(txtTotalQty.Text, out TotalQty) ? TotalQty : -1;
-
-                if (TotalQty <= -1)
-                {
-                    errorProvider2.SetError(lblTotalQty, "Invalid!");
-                    return;
-                }
-
-                if (rowIndex < 0 || rowIndex >= DT_ITEM_LIST.Rows.Count)
-                {
-                    MessageBox.Show("Invalid row index.");
-                    return;
-                }
-
-                DataRow rowToUpdate = DT_ITEM_LIST.Rows[rowIndex];
-
-                // Assign updated values to the row
-                rowToUpdate[text.Header_ItemCode] = txtItemCodePreview.Text;
-                rowToUpdate[text.Header_Description] = txtDescriptionPreview.Text;
-                rowToUpdate[text.Header_Qty] = TotalQty;
-                rowToUpdate[text.Header_Unit] = txtTotalQtyUnit.Text;
-
-                rowToUpdate[text.Header_SearchMode] = cbItemSearch.Checked;
-                rowToUpdate[text.Header_ItemName] = txtItemDescription.Text;
-
-                rowToUpdate[text.Header_TotalQty] = txtTotalQty.Text;
-                rowToUpdate[text.Header_TotalQtyUnit] = txtTotalQtyUnit.Text;
-                rowToUpdate[text.Header_QtyPerBox] = txtQtyPerBox.Text;
-                rowToUpdate[text.Header_BoxQty] = txtBoxQty.Text;
-                rowToUpdate[text.Header_BoxUnit] = txtBoxUnit.Text;
-                rowToUpdate[text.Header_Balance] = txtBalanceQty.Text;
-
-                rowToUpdate[text.Header_Remark] = txtRemark.Text;
-
-                rowToUpdate[text.Header_DescriptionIncludeCategory] = cbDescriptionIncludeCategory.Checked;
-                rowToUpdate[text.Header_DescriptionIncludePackaging] = cbDescriptionIncludePackaging.Checked;
-                rowToUpdate[text.Header_DescriptionIncludeRemark] = cbDescriptionIncludeRemark.Checked;
-
-                dgvDOItemList.DataSource = null;
-                dgvDOItemList.DataSource = DT_ITEM_LIST;
-
-                ItemFieldReset();
-                dgvUIEdit(dgvDOItemList);
-                dgvDOItemList.ClearSelection();
-            }
-        }
-
-        private void GetDataFromList(int rowIndex)
-        {
-            DataTable dt = (DataTable)dgvDOItemList.DataSource;
-
-            cbItemSearch.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_SearchMode].ToString(), out bool search) ? search : true;
-            txtItemDescription.Text = dt.Rows[rowIndex][text.Header_ItemName].ToString();
-
-            ITEM_CODE = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
-            txtItemCodePreview.Text = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
-
-
-            txtTotalQty.Text = dt.Rows[rowIndex][text.Header_TotalQty].ToString();
-            txtTotalQtyUnit.Text = dt.Rows[rowIndex][text.Header_TotalQtyUnit].ToString();
-            txtQtyPerBox.Text = dt.Rows[rowIndex][text.Header_QtyPerBox].ToString();
-            txtBoxQty.Text = dt.Rows[rowIndex][text.Header_BoxQty].ToString();
-            txtBoxUnit.Text = dt.Rows[rowIndex][text.Header_BoxUnit].ToString();
-            txtBalanceQty.Text = dt.Rows[rowIndex][text.Header_Balance].ToString();
-
-            txtRemark.Text = dt.Rows[rowIndex][text.Header_Remark].ToString();
-
-            cbDescriptionIncludeCategory.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeCategory].ToString(), out bool includeCategory) ? includeCategory : false;
-            cbDescriptionIncludePackaging.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludePackaging].ToString(), out bool includePackaging) ? includePackaging : false;
-            cbDescriptionIncludeRemark.Checked = bool.TryParse(dt.Rows[rowIndex][text.Header_DescriptionIncludeRemark].ToString(), out bool includeRemark) ? includeRemark : false;
-
-            txtDescriptionPreview.Text = dt.Rows[rowIndex][text.Header_Description].ToString();
-
-            DO_ITEM_EDIT_MODE = true;
-            btnAddItem.Text = BUTTON_UPDATETOLIST_TEXT;
-            btnCancelItemEdit.Visible = true;
-
-        }
-
-
-
-        #endregion
-
-        #endregion
-
-        #endregion
-
-        #region Data Access
-
-        private DataTable DT_ITEM_SOURCE;
-
-        private string header_MasterCode = "MasterCode";
-
-        private void InitialNameTextBox()
-        {
-            if(cbItemSearch.Checked)
-            {
-                DT_ITEM_SOURCE = dalItem.Select();
-
-                DT_ITEM_SOURCE.Columns.Add(header_MasterCode, typeof(string));
-
-                var masterCodes = new List<string>();
-
-                foreach (DataRow row in DT_ITEM_SOURCE.Rows)
-                {
-                    var category = row[dalItem.ItemCat].ToString();
-                    var itemName = row[dalItem.ItemName].ToString();
-                    var itemCode = row[dalItem.ItemCode].ToString();
-
-                    var masterCode = $"[{category}] {itemName}";
-
-                    if (itemName != itemCode)
-                    {
-                        masterCode += $" ({itemCode})";
-                    }
-
-                    row[header_MasterCode] = masterCode;
-                    masterCodes.Add(masterCode);
-                }
-
-                txtItemDescription.Values = masterCodes.ToArray();
-            }
-            else
-            {
-                txtItemDescription.Values = null;
-            }
-        }
-
-
-        #endregion
-
-        private string ITEM_CODE = "ITEM CODE";
-        private string ITEM_CATEGORY = "CATEGORY";
 
         private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
         {
@@ -977,7 +949,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
 
-                    if(keywords == row[header_MasterCode].ToString())
+                    if (keywords == row[header_MasterCode].ToString())
                     {
                         ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
                         ITEM_CODE = row[dalItem.ItemCode].ToString();
@@ -996,14 +968,9 @@ namespace FactoryManagementSoftware.UI
             itemCodePreviewUpdate();
         }
 
-        bool DO_ITEM_EDIT_MODE = false;
-        private int EDITING_INDEX = -1;
-        private string BUTTON_ADDTOLIST_TEXT = "Add to List";
-        private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
-
         private void btnNewJob_Click(object sender, EventArgs e)
         {
-            if(!DO_ITEM_EDIT_MODE)
+            if (!DO_ITEM_EDIT_MODE)
             {
                 AddItem();
 
@@ -1036,7 +1003,7 @@ namespace FactoryManagementSoftware.UI
             {
                 e.Handled = true;
             }
-           
+
         }
 
         private void txtBalanceQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -1078,7 +1045,6 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        
         private void btnItemEdit_Click(object sender, EventArgs e)
         {
             if (dgvDOItemList.Rows.Count == 0)
@@ -1105,8 +1071,6 @@ namespace FactoryManagementSoftware.UI
                 dgvDOItemList.ClearSelection();
             }
         }
-
-        private bool DATA_SAVED = false;
 
         private void frmDOEditing_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -1136,6 +1100,111 @@ namespace FactoryManagementSoftware.UI
         {
             UpdatePreviewDescription();
             totalQtyPreviewUpdate();
+        }
+
+
+
+        #endregion
+
+        #region Data Access
+
+        private DataTable DT_ITEM_SOURCE;
+        private DataTable DT_DO_FORMAT;
+
+        private string header_MasterCode = "MasterCode";
+
+        private void InitialNameTextBox()
+        {
+            if(cbItemSearch.Checked)
+            {
+                DT_ITEM_SOURCE = dalItem.Select();
+
+                DT_ITEM_SOURCE.Columns.Add(header_MasterCode, typeof(string));
+
+                var masterCodes = new List<string>();
+
+                foreach (DataRow row in DT_ITEM_SOURCE.Rows)
+                {
+                    var category = row[dalItem.ItemCat].ToString();
+                    var itemName = row[dalItem.ItemName].ToString();
+                    var itemCode = row[dalItem.ItemCode].ToString();
+
+                    var masterCode = $"[{category}] {itemName}";
+
+                    if (itemName != itemCode)
+                    {
+                        masterCode += $" ({itemCode})";
+                    }
+
+                    row[header_MasterCode] = masterCode;
+                    masterCodes.Add(masterCode);
+                }
+
+                txtItemDescription.Values = masterCodes.ToArray();
+            }
+            else
+            {
+                txtItemDescription.Values = null;
+            }
+        }
+
+
+        private void LoadDoFormatDB()
+        {
+            DT_DO_FORMAT = dalDoFormat.SelectAll();
+        }
+
+        private bool DO_TYPE_DATA_LOADED = false;
+
+        private void InitialDOTypeComboBox()
+        {
+            if (DT_DO_FORMAT == null || DT_DO_FORMAT.Rows.Count == 0)
+            {
+                LoadDoFormatDB();
+            }
+
+            cmbDOType.DataSource = DT_DO_FORMAT;
+            cmbDOType.DisplayMember = dalDoFormat.doType;
+            cmbDOType.ValueMember = dalDoFormat.doType; 
+
+            cmbDOType.SelectedIndex = -1; // Set selection to null
+            cmbFromBranch.SelectedIndex = -1; // Set selection to null
+            cmbToDeliveryLocation.SelectedIndex = -1; // Set selection to null
+
+            DO_TYPE_DATA_LOADED = true;
+        }
+
+
+        #endregion
+
+        private void cmbDOType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            internalTransferDataAutoLoad();
+        }
+
+        private void internalTransferDataAutoLoad()
+        {
+            string doType = cmbDOType.Text;
+
+            bool fromOUG = doType.ToUpper().Contains("INTERNAL") && doType.ToUpper().Contains("OUG");
+            bool fromSemenyih = doType.ToUpper().Contains("INTERNAL") && doType.ToUpper().Contains("SEMENYIH");
+
+            if(fromOUG)
+            {
+                txtDONoSample.Text = "Sample : IT24/999";
+                cmbFromBranch.Text = "OUG";
+                cmbToDeliveryLocation.Text = "Semenyih";
+                txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
+
+            }
+            else if (fromSemenyih)
+            {
+                txtDONoSample.Text = "Sample : ITN24/S999";
+                cmbFromBranch.Text = "Semenyih";
+                cmbToDeliveryLocation.Text = "OUG";
+                txtShippingAddress.Text = "SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)\r\nNO.17, PT 2507, JLN HI-TECH 2,\r\nKAW. PERIND. HI.TECH,\r\nJALAN SG. LALANG,\r\n43500 SEMENYIH, SELANGOR\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+
+            }
         }
     }
 }
