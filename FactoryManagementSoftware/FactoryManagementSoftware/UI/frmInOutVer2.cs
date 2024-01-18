@@ -419,6 +419,10 @@ namespace FactoryManagementSoftware.UI
             {
                 DataTable dt = dalStock.Select(itemCode);
 
+                bool isRawMaterial =  tool.getItemCat(itemCode) == text.Cat_RawMat;
+
+                dgvFactoryStock.Columns["Remark"].Visible = isRawMaterial;
+
                 dgvFactoryStock.Rows.Clear();
 
                 if (dt.Rows.Count > 0)
@@ -434,6 +438,28 @@ namespace FactoryManagementSoftware.UI
                         string facStock_string = facStock.ToString("0.##");
 
                         dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = facStock_string;
+
+
+                        string remark = "";
+
+
+                        if(isRawMaterial)
+                        {
+                            int bagQty = (int) facStock / 25;
+
+                            if(bagQty == 1)
+                            {
+                                remark = bagQty + " bag";
+
+                            }
+                            else if(bagQty > 1)
+                            {
+                                remark = bagQty + " bags";
+
+                            }
+                        }
+
+                        dgvFactoryStock.Rows[n].Cells["Remark"].Value = remark;
 
                     }
 

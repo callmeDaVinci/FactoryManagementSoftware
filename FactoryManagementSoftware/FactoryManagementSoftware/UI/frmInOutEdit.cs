@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
+using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -3387,6 +3388,8 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvTransfer_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
+           
+
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -3403,10 +3406,11 @@ namespace FactoryManagementSoftware.UI
                     string category = dgvTransfer.Rows[e.RowIndex].Cells[CatColumnName].Value.ToString();
 
                     string from = dgvTransfer.Rows[e.RowIndex].Cells[FromCatColumnName].Value.ToString();
+
                     string to = dgvTransfer.Rows[e.RowIndex].Cells[ToCatColumnName].Value.ToString();
 
                     bool ProductionOut = false;
-                    if(to == text.Production)
+                    if (to == text.Production)
                     {
                         ProductionOut = true;
                     }
@@ -3459,9 +3463,16 @@ namespace FactoryManagementSoftware.UI
                             beforeTotalQty += facStock;
                             afterTotalQty += facStock;
 
+
+
+                            float newBalance = 0;
+
                             if (from.Equals(fac) && to.Equals(fac))
                             {
-                                facStock_string =  facStock_string + " --> " +facStock_string;
+                                newBalance = Convert.ToSingle(facStock_string);
+
+                                facStock_string = facStock_string + " --> " + facStock_string;
+
                                 from = "";
                                 to = "";
                             }
@@ -3469,20 +3480,45 @@ namespace FactoryManagementSoftware.UI
                             else if (from.Equals(fac))
                             {
                                 afterTotalQty -= trfQty;
+                                newBalance = Convert.ToSingle(facStock_string) - trfQty;
+
                                 facStock_string = facStock_string + " --> " + (Convert.ToSingle(facStock_string) - trfQty).ToString();
                                 from = "";
+
+
                             }
 
                             else if (to.Equals(fac))
                             {
                                 afterTotalQty += trfQty;
+                                newBalance = Convert.ToSingle(facStock_string) + trfQty;
+
                                 facStock_string = facStock_string + " --> " + (Convert.ToSingle(facStock_string) + trfQty).ToString();
                                 to = "";
+
+
                             }
 
 
+                            if (category == text.Cat_RawMat)
+                            {
+                                int fullBagQty = (int)newBalance / 25;
+
+                                if (fullBagQty == 1)
+                                {
+                                    facStock_string += " (" + fullBagQty + " bag)";
+
+                                }
+                                else if (fullBagQty > 1)
+                                {
+                                    facStock_string += " (" + fullBagQty + " bags)";
+
+                                }
+
+                            }
+
                             int length = fac.Length;
-                            if((10 - length) >=0)
+                            if ((10 - length) >= 0)
                             {
                                 for (int i = 1; i <= (10 - length); i++)
                                 {
@@ -3490,10 +3526,10 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            my_menu.Items.Add(fac+" "+facStock_string).Name = fac;                          
+                            my_menu.Items.Add(fac + " " + facStock_string).Name = fac;
                         }
 
-                        if(from != "" && to != "")
+                        if (from != "" && to != "")
                         {
                             string fac = "";
                             string stock = "";
@@ -3538,8 +3574,8 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 my_menu.Items.Add(fac + " " + stock).Name = fac;
                             }
-                            
-                            
+
+
 
                         }
                         else if (from != "")
@@ -3561,7 +3597,7 @@ namespace FactoryManagementSoftware.UI
                         else if (to != "")
                         {
                             string fac = to;
-                            string stock = "0 --> " +trfQty;
+                            string stock = "0 --> " + trfQty;
                             int length = fac.Length;
                             afterTotalQty += trfQty;
 
@@ -3577,7 +3613,7 @@ namespace FactoryManagementSoftware.UI
 
                         string total = null;
 
-                        if(beforeTotalQty == afterTotalQty)
+                        if (beforeTotalQty == afterTotalQty)
                         {
                             total = beforeTotalQty.ToString("0.00");
                         }
@@ -3588,7 +3624,7 @@ namespace FactoryManagementSoftware.UI
 
                         my_menu.Items.Add("---------------------").Name = "Line1";
                         my_menu.Items.Add("Total" + "       " + total).Name = "Total";
-                        my_menu.Items.Add("---------------------").Name = "Line2";                         
+                        my_menu.Items.Add("---------------------").Name = "Line2";
                     }
                     else
                     {
@@ -3603,7 +3639,7 @@ namespace FactoryManagementSoftware.UI
                     my_menu.Items.Add("").Name = "";
                     my_menu.Items.Add(text.AddTransaction).Name = text.AddTransaction;
 
-                    if(ProductionOut && ( category == text.Cat_RawMat || category == text.Cat_MB || category == text.Cat_Pigment)) 
+                    if (ProductionOut && (category == text.Cat_RawMat || category == text.Cat_MB || category == text.Cat_Pigment))
                     {
                         my_menu.Items.Add(text.UsingRecycledMaterial).Name = text.UsingRecycledMaterial;
 

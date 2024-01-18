@@ -31,11 +31,11 @@ namespace FactoryManagementSoftware.UI
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDOEditing));
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel28 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpStepPanel = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox2 = new Guna.UI.WinForms.GunaGroupBox();
@@ -65,6 +65,7 @@ namespace FactoryManagementSoftware.UI
             this.label32 = new System.Windows.Forms.Label();
             this.label33 = new System.Windows.Forms.Label();
             this.label41 = new System.Windows.Forms.Label();
+            this.gunaGradientButton8 = new Guna.UI.WinForms.GunaGradientButton();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label4 = new System.Windows.Forms.Label();
             this.button1 = new System.Windows.Forms.Button();
@@ -72,11 +73,14 @@ namespace FactoryManagementSoftware.UI
             this.tlpItemListSetting = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel34 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnItemRemove = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnItemEdit = new Guna.UI.WinForms.GunaGradientButton();
             this.label14 = new System.Windows.Forms.Label();
             this.dgvDOItemList = new System.Windows.Forms.DataGridView();
             this.panel2 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel33 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnAddItem = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancelItemEdit = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
             this.txtBalanceQty = new Guna.UI.WinForms.GunaTextBox();
@@ -111,14 +115,17 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
             this.cbItemSearch = new System.Windows.Forms.CheckBox();
             this.cbItemCustom = new System.Windows.Forms.CheckBox();
+            this.gunaGradientButton13 = new Guna.UI.WinForms.GunaGradientButton();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton2 = new Guna.UI.WinForms.GunaGradientButton();
             this.label2 = new System.Windows.Forms.Label();
             this.cmbDOType = new Guna.UI.WinForms.GunaComboBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton3 = new Guna.UI.WinForms.GunaGradientButton();
             this.label3 = new System.Windows.Forms.Label();
             this.txtDONoSample = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
@@ -126,24 +133,28 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
             this.txtShippingAddress = new Guna.UI.WinForms.GunaTextBox();
-            this.txtSearch = new Guna.UI.WinForms.GunaTextBox();
+            this.txtBillingAddress = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel18 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbInProgress = new System.Windows.Forms.CheckBox();
+            this.gunaGradientButton6 = new Guna.UI.WinForms.GunaGradientButton();
+            this.cbSameWithBilling = new System.Windows.Forms.CheckBox();
             this.label17 = new System.Windows.Forms.Label();
             this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton5 = new Guna.UI.WinForms.GunaGradientButton();
             this.label19 = new System.Windows.Forms.Label();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
-            this.gunaTextBox2 = new Guna.UI.WinForms.GunaTextBox();
+            this.txtDORemark = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.cbShowRemarkinDO = new System.Windows.Forms.CheckBox();
             this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton7 = new Guna.UI.WinForms.GunaGradientButton();
             this.label15 = new System.Windows.Forms.Label();
-            this.gunaComboBox8 = new Guna.UI.WinForms.GunaComboBox();
+            this.cmbDeliveryMethod = new Guna.UI.WinForms.GunaComboBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
             this.label6 = new System.Windows.Forms.Label();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton1 = new Guna.UI.WinForms.GunaGradientButton();
             this.label10 = new System.Windows.Forms.Label();
             this.cmbToDeliveryLocation = new Guna.UI.WinForms.GunaComboBox();
             this.cmbToCompany = new Guna.UI.WinForms.GunaComboBox();
@@ -153,12 +164,16 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
             this.label1 = new System.Windows.Forms.Label();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGradientButton4 = new Guna.UI.WinForms.GunaGradientButton();
             this.lblSubList = new System.Windows.Forms.Label();
             this.cmbFromBranch = new Guna.UI.WinForms.GunaComboBox();
             this.cmbFromCompany = new Guna.UI.WinForms.GunaComboBox();
             this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
+            this.btnContinue = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnAddAsDraft = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.btnJobPublish = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnPreviousStep = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel59 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel62 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep3 = new System.Windows.Forms.Label();
@@ -166,27 +181,12 @@ namespace FactoryManagementSoftware.UI
             this.lblStep2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel60 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep1 = new System.Windows.Forms.Label();
+            this.btnSearch = new Guna.UI.WinForms.GunaGradientButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider2 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider3 = new System.Windows.Forms.ErrorProvider(this.components);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
-            this.gunaGradientButton8 = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnItemRemove = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnItemEdit = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnAddItem = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton13 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton2 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton3 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton6 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton5 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton7 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton1 = new Guna.UI.WinForms.GunaGradientButton();
-            this.gunaGradientButton4 = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnContinue = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnAddAsDraft = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnPreviousStep = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnSearch = new Guna.UI.WinForms.GunaGradientButton();
             this.txtItemDescription = new FactoryManagementSoftware.CustomTextBox();
             this.circleLabelStep3 = new FactoryManagementSoftware.UI.CircleLabel();
             this.circleLabelStep2 = new FactoryManagementSoftware.UI.CircleLabel();
@@ -678,6 +678,38 @@ namespace FactoryManagementSoftware.UI
             this.label41.TabIndex = 295;
             this.label41.Text = "安全塑膠有限公司";
             // 
+            // gunaGradientButton8
+            // 
+            this.gunaGradientButton8.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton8.AnimationSpeed = 0.03F;
+            this.gunaGradientButton8.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.BorderSize = 1;
+            this.gunaGradientButton8.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton8.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton8.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton8.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton8.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton8.Image")));
+            this.gunaGradientButton8.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.gunaGradientButton8.ImageOffsetX = -10;
+            this.gunaGradientButton8.ImageSize = new System.Drawing.Size(113, 60);
+            this.gunaGradientButton8.Location = new System.Drawing.Point(5, 5);
+            this.gunaGradientButton8.Margin = new System.Windows.Forms.Padding(5);
+            this.gunaGradientButton8.Name = "gunaGradientButton8";
+            this.gunaGradientButton8.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.OnHoverBorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton8.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton8.OnHoverImage = null;
+            this.gunaGradientButton8.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton8.Radius = 2;
+            this.gunaGradientButton8.Size = new System.Drawing.Size(1, 140);
+            this.gunaGradientButton8.TabIndex = 300;
+            this.gunaGradientButton8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
             // dataGridView1
             // 
             this.dataGridView1.AllowUserToAddRows = false;
@@ -687,24 +719,24 @@ namespace FactoryManagementSoftware.UI
             this.dataGridView1.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dataGridView1.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dataGridView1.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dataGridView1.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dataGridView1.DefaultCellStyle = dataGridViewCellStyle2;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dataGridView1.Location = new System.Drawing.Point(10, 347);
@@ -814,6 +846,66 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel20.Size = new System.Drawing.Size(1, 35);
             this.tableLayoutPanel20.TabIndex = 2017;
             // 
+            // btnItemRemove
+            // 
+            this.btnItemRemove.AnimationHoverSpeed = 0.07F;
+            this.btnItemRemove.AnimationSpeed = 0.03F;
+            this.btnItemRemove.BackColor = System.Drawing.Color.Transparent;
+            this.btnItemRemove.BaseColor1 = System.Drawing.Color.Transparent;
+            this.btnItemRemove.BaseColor2 = System.Drawing.Color.Transparent;
+            this.btnItemRemove.BorderColor = System.Drawing.Color.Transparent;
+            this.btnItemRemove.BorderSize = 1;
+            this.btnItemRemove.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnItemRemove.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnItemRemove.FocusedColor = System.Drawing.Color.Empty;
+            this.btnItemRemove.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnItemRemove.ForeColor = System.Drawing.Color.White;
+            this.btnItemRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnItemRemove.Image")));
+            this.btnItemRemove.ImageSize = new System.Drawing.Size(15, 15);
+            this.btnItemRemove.Location = new System.Drawing.Point(-36, 3);
+            this.btnItemRemove.Name = "btnItemRemove";
+            this.btnItemRemove.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
+            this.btnItemRemove.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
+            this.btnItemRemove.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.btnItemRemove.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnItemRemove.OnHoverImage = null;
+            this.btnItemRemove.OnPressedColor = System.Drawing.Color.Black;
+            this.btnItemRemove.Radius = 2;
+            this.btnItemRemove.Size = new System.Drawing.Size(34, 29);
+            this.btnItemRemove.TabIndex = 2018;
+            this.btnItemRemove.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnItemRemove.Click += new System.EventHandler(this.btnItemRemove_Click);
+            // 
+            // btnItemEdit
+            // 
+            this.btnItemEdit.AnimationHoverSpeed = 0.07F;
+            this.btnItemEdit.AnimationSpeed = 0.03F;
+            this.btnItemEdit.BackColor = System.Drawing.Color.Transparent;
+            this.btnItemEdit.BaseColor1 = System.Drawing.Color.Transparent;
+            this.btnItemEdit.BaseColor2 = System.Drawing.Color.Transparent;
+            this.btnItemEdit.BorderColor = System.Drawing.Color.Transparent;
+            this.btnItemEdit.BorderSize = 1;
+            this.btnItemEdit.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnItemEdit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnItemEdit.FocusedColor = System.Drawing.Color.Empty;
+            this.btnItemEdit.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnItemEdit.ForeColor = System.Drawing.Color.White;
+            this.btnItemEdit.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_pencil_100;
+            this.btnItemEdit.ImageSize = new System.Drawing.Size(15, 15);
+            this.btnItemEdit.Location = new System.Drawing.Point(-76, 3);
+            this.btnItemEdit.Name = "btnItemEdit";
+            this.btnItemEdit.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
+            this.btnItemEdit.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
+            this.btnItemEdit.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.btnItemEdit.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnItemEdit.OnHoverImage = null;
+            this.btnItemEdit.OnPressedColor = System.Drawing.Color.Black;
+            this.btnItemEdit.Radius = 2;
+            this.btnItemEdit.Size = new System.Drawing.Size(34, 29);
+            this.btnItemEdit.TabIndex = 252;
+            this.btnItemEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnItemEdit.Click += new System.EventHandler(this.btnItemEdit_Click);
+            // 
             // label14
             // 
             this.label14.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -836,24 +928,24 @@ namespace FactoryManagementSoftware.UI
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOItemList.Location = new System.Drawing.Point(5, 40);
@@ -921,6 +1013,37 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel33.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel33.Size = new System.Drawing.Size(1, 45);
             this.tableLayoutPanel33.TabIndex = 2020;
+            // 
+            // btnAddItem
+            // 
+            this.btnAddItem.AnimationHoverSpeed = 0.07F;
+            this.btnAddItem.AnimationSpeed = 0.03F;
+            this.btnAddItem.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddItem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
+            this.btnAddItem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
+            this.btnAddItem.BorderColor = System.Drawing.Color.Black;
+            this.btnAddItem.BorderSize = 1;
+            this.btnAddItem.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAddItem.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.btnAddItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
+            this.btnAddItem.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_more_than_25;
+            this.btnAddItem.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnAddItem.Location = new System.Drawing.Point(-161, 3);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAddItem.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAddItem.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAddItem.OnHoverImage = null;
+            this.btnAddItem.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAddItem.Radius = 2;
+            this.btnAddItem.Size = new System.Drawing.Size(159, 39);
+            this.btnAddItem.TabIndex = 2015;
+            this.btnAddItem.Text = "Add to List";
+            this.btnAddItem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddItem.Click += new System.EventHandler(this.btnNewJob_Click);
             // 
             // btnCancelItemEdit
             // 
@@ -1549,6 +1672,35 @@ namespace FactoryManagementSoftware.UI
             this.cbItemCustom.UseVisualStyleBackColor = true;
             this.cbItemCustom.CheckedChanged += new System.EventHandler(this.cbItemCustom_CheckedChanged);
             // 
+            // gunaGradientButton13
+            // 
+            this.gunaGradientButton13.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton13.AnimationSpeed = 0.03F;
+            this.gunaGradientButton13.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton13.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton13.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton13.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton13.BorderSize = 1;
+            this.gunaGradientButton13.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton13.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton13.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton13.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton13.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton13.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton13.Image")));
+            this.gunaGradientButton13.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton13.Location = new System.Drawing.Point(-36, 3);
+            this.gunaGradientButton13.Name = "gunaGradientButton13";
+            this.gunaGradientButton13.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton13.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton13.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton13.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton13.OnHoverImage = null;
+            this.gunaGradientButton13.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton13.Radius = 2;
+            this.gunaGradientButton13.Size = new System.Drawing.Size(34, 23);
+            this.gunaGradientButton13.TabIndex = 252;
+            this.gunaGradientButton13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -1630,6 +1782,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel12.Size = new System.Drawing.Size(324, 30);
             this.tableLayoutPanel12.TabIndex = 253;
             // 
+            // gunaGradientButton2
+            // 
+            this.gunaGradientButton2.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton2.AnimationSpeed = 0.03F;
+            this.gunaGradientButton2.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BorderSize = 1;
+            this.gunaGradientButton2.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton2.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton2.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton2.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton2.Image")));
+            this.gunaGradientButton2.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton2.Location = new System.Drawing.Point(287, 3);
+            this.gunaGradientButton2.Name = "gunaGradientButton2";
+            this.gunaGradientButton2.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton2.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton2.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton2.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton2.OnHoverImage = null;
+            this.gunaGradientButton2.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton2.Radius = 2;
+            this.gunaGradientButton2.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton2.TabIndex = 251;
+            this.gunaGradientButton2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label2
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1682,6 +1863,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.Size = new System.Drawing.Size(324, 30);
             this.tableLayoutPanel5.TabIndex = 252;
+            // 
+            // gunaGradientButton3
+            // 
+            this.gunaGradientButton3.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton3.AnimationSpeed = 0.03F;
+            this.gunaGradientButton3.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton3.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton3.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton3.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton3.BorderSize = 1;
+            this.gunaGradientButton3.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton3.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton3.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton3.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton3.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton3.Image")));
+            this.gunaGradientButton3.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton3.Location = new System.Drawing.Point(287, 3);
+            this.gunaGradientButton3.Name = "gunaGradientButton3";
+            this.gunaGradientButton3.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton3.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton3.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton3.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton3.OnHoverImage = null;
+            this.gunaGradientButton3.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton3.Radius = 2;
+            this.gunaGradientButton3.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton3.TabIndex = 252;
+            this.gunaGradientButton3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // label3
             // 
@@ -1781,7 +1991,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel17.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel17.Controls.Add(this.txtShippingAddress, 2, 1);
-            this.tableLayoutPanel17.Controls.Add(this.txtSearch, 0, 1);
+            this.tableLayoutPanel17.Controls.Add(this.txtBillingAddress, 0, 1);
             this.tableLayoutPanel17.Controls.Add(this.tableLayoutPanel18, 2, 0);
             this.tableLayoutPanel17.Controls.Add(this.tableLayoutPanel19, 0, 0);
             this.tableLayoutPanel17.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -1803,7 +2013,6 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.BorderSize = 1;
             this.txtShippingAddress.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtShippingAddress.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtShippingAddress.Enabled = false;
             this.txtShippingAddress.FocusedBaseColor = System.Drawing.Color.White;
             this.txtShippingAddress.FocusedBorderColor = System.Drawing.Color.White;
             this.txtShippingAddress.FocusedForeColor = System.Drawing.SystemColors.ControlText;
@@ -1817,34 +2026,32 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.PasswordChar = '\0';
             this.txtShippingAddress.Radius = 3;
             this.txtShippingAddress.SelectedText = "";
-            this.txtShippingAddress.Size = new System.Drawing.Size(422, 218);
+            this.txtShippingAddress.Size = new System.Drawing.Size(422, 142);
             this.txtShippingAddress.TabIndex = 247;
             // 
-            // txtSearch
+            // txtBillingAddress
             // 
-            this.txtSearch.BackColor = System.Drawing.Color.Transparent;
-            this.txtSearch.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtSearch.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.txtSearch.BorderColor = System.Drawing.Color.Silver;
-            this.txtSearch.BorderSize = 1;
-            this.txtSearch.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSearch.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSearch.Enabled = false;
-            this.txtSearch.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtSearch.FocusedBorderColor = System.Drawing.Color.White;
-            this.txtSearch.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.txtSearch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtSearch.Location = new System.Drawing.Point(3, 33);
-            this.txtSearch.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
-            this.txtSearch.Multiline = true;
-            this.txtSearch.Name = "txtSearch";
-            this.txtSearch.PasswordChar = '\0';
-            this.txtSearch.Radius = 3;
-            this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(422, 218);
-            this.txtSearch.TabIndex = 246;
-            this.txtSearch.Text = "Not Applicable";
+            this.txtBillingAddress.BackColor = System.Drawing.Color.Transparent;
+            this.txtBillingAddress.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtBillingAddress.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtBillingAddress.BorderColor = System.Drawing.Color.Silver;
+            this.txtBillingAddress.BorderSize = 1;
+            this.txtBillingAddress.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtBillingAddress.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtBillingAddress.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtBillingAddress.FocusedBorderColor = System.Drawing.Color.White;
+            this.txtBillingAddress.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtBillingAddress.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.txtBillingAddress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.txtBillingAddress.Location = new System.Drawing.Point(3, 33);
+            this.txtBillingAddress.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
+            this.txtBillingAddress.Multiline = true;
+            this.txtBillingAddress.Name = "txtBillingAddress";
+            this.txtBillingAddress.PasswordChar = '\0';
+            this.txtBillingAddress.Radius = 3;
+            this.txtBillingAddress.SelectedText = "";
+            this.txtBillingAddress.Size = new System.Drawing.Size(422, 142);
+            this.txtBillingAddress.TabIndex = 246;
             // 
             // tableLayoutPanel18
             // 
@@ -1853,7 +2060,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel18.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel18.Controls.Add(this.gunaGradientButton6, 2, 0);
-            this.tableLayoutPanel18.Controls.Add(this.cbInProgress, 1, 0);
+            this.tableLayoutPanel18.Controls.Add(this.cbSameWithBilling, 1, 0);
             this.tableLayoutPanel18.Controls.Add(this.label17, 0, 0);
             this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel18.Location = new System.Drawing.Point(438, 0);
@@ -1864,19 +2071,48 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel18.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel18.TabIndex = 254;
             // 
-            // cbInProgress
+            // gunaGradientButton6
             // 
-            this.cbInProgress.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.cbInProgress.AutoSize = true;
-            this.cbInProgress.Enabled = false;
-            this.cbInProgress.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbInProgress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbInProgress.Location = new System.Drawing.Point(127, 6);
-            this.cbInProgress.Name = "cbInProgress";
-            this.cbInProgress.Size = new System.Drawing.Size(128, 21);
-            this.cbInProgress.TabIndex = 247;
-            this.cbInProgress.Text = "Same with billing";
-            this.cbInProgress.UseVisualStyleBackColor = true;
+            this.gunaGradientButton6.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton6.AnimationSpeed = 0.03F;
+            this.gunaGradientButton6.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton6.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton6.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton6.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton6.BorderSize = 1;
+            this.gunaGradientButton6.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton6.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton6.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton6.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton6.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton6.Image")));
+            this.gunaGradientButton6.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton6.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton6.Name = "gunaGradientButton6";
+            this.gunaGradientButton6.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton6.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton6.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton6.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton6.OnHoverImage = null;
+            this.gunaGradientButton6.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton6.Radius = 2;
+            this.gunaGradientButton6.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton6.TabIndex = 252;
+            this.gunaGradientButton6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // cbSameWithBilling
+            // 
+            this.cbSameWithBilling.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbSameWithBilling.AutoSize = true;
+            this.cbSameWithBilling.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbSameWithBilling.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbSameWithBilling.Location = new System.Drawing.Point(127, 6);
+            this.cbSameWithBilling.Name = "cbSameWithBilling";
+            this.cbSameWithBilling.Size = new System.Drawing.Size(128, 21);
+            this.cbSameWithBilling.TabIndex = 247;
+            this.cbSameWithBilling.Text = "Same with billing";
+            this.cbSameWithBilling.UseVisualStyleBackColor = true;
+            this.cbSameWithBilling.CheckedChanged += new System.EventHandler(this.cbSameWithBilling_CheckedChanged);
             // 
             // label17
             // 
@@ -1907,6 +2143,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel19.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel19.TabIndex = 253;
             // 
+            // gunaGradientButton5
+            // 
+            this.gunaGradientButton5.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton5.AnimationSpeed = 0.03F;
+            this.gunaGradientButton5.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton5.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton5.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton5.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton5.BorderSize = 1;
+            this.gunaGradientButton5.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton5.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton5.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton5.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton5.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton5.Image")));
+            this.gunaGradientButton5.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton5.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton5.Name = "gunaGradientButton5";
+            this.gunaGradientButton5.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton5.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton5.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton5.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton5.OnHoverImage = null;
+            this.gunaGradientButton5.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton5.Radius = 2;
+            this.gunaGradientButton5.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton5.TabIndex = 252;
+            this.gunaGradientButton5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label19
             // 
             this.label19.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -1926,10 +2191,10 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel14.Controls.Add(this.gunaTextBox2, 2, 1);
+            this.tableLayoutPanel14.Controls.Add(this.txtDORemark, 2, 1);
             this.tableLayoutPanel14.Controls.Add(this.tableLayoutPanel15, 2, 0);
             this.tableLayoutPanel14.Controls.Add(this.tableLayoutPanel16, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.gunaComboBox8, 0, 1);
+            this.tableLayoutPanel14.Controls.Add(this.cmbDeliveryMethod, 0, 1);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel14.Location = new System.Drawing.Point(0, 255);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
@@ -1940,36 +2205,38 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel14.Size = new System.Drawing.Size(866, 84);
             this.tableLayoutPanel14.TabIndex = 259;
             // 
-            // gunaTextBox2
+            // txtDORemark
             // 
-            this.gunaTextBox2.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox2.BaseColor = System.Drawing.Color.White;
-            this.gunaTextBox2.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox2.BorderSize = 1;
-            this.gunaTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox2.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox2.FocusedBorderColor = System.Drawing.Color.White;
-            this.gunaTextBox2.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox2.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.gunaTextBox2.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.gunaTextBox2.Location = new System.Drawing.Point(441, 33);
-            this.gunaTextBox2.Name = "gunaTextBox2";
-            this.gunaTextBox2.PasswordChar = '\0';
-            this.gunaTextBox2.Radius = 3;
-            this.gunaTextBox2.SelectedText = "";
-            this.gunaTextBox2.Size = new System.Drawing.Size(422, 48);
-            this.gunaTextBox2.TabIndex = 247;
-            this.gunaTextBox2.Text = "Remark :";
+            this.txtDORemark.BackColor = System.Drawing.Color.Transparent;
+            this.txtDORemark.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtDORemark.BaseColor = System.Drawing.Color.White;
+            this.txtDORemark.BorderColor = System.Drawing.Color.Silver;
+            this.txtDORemark.BorderSize = 1;
+            this.txtDORemark.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtDORemark.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDORemark.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtDORemark.FocusedBorderColor = System.Drawing.Color.White;
+            this.txtDORemark.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtDORemark.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.txtDORemark.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtDORemark.Location = new System.Drawing.Point(441, 33);
+            this.txtDORemark.Name = "txtDORemark";
+            this.txtDORemark.PasswordChar = '\0';
+            this.txtDORemark.Radius = 3;
+            this.txtDORemark.SelectedText = "";
+            this.txtDORemark.Size = new System.Drawing.Size(422, 48);
+            this.txtDORemark.TabIndex = 247;
+            this.txtDORemark.Text = "Remark :";
+            this.txtDORemark.Enter += new System.EventHandler(this.txtDORemark_Enter);
+            this.txtDORemark.Leave += new System.EventHandler(this.txtDORemark_Leave);
             // 
             // tableLayoutPanel15
             // 
             this.tableLayoutPanel15.ColumnCount = 2;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 381F));
-            this.tableLayoutPanel15.Controls.Add(this.checkBox1, 1, 0);
+            this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 367F));
             this.tableLayoutPanel15.Controls.Add(this.label13, 0, 0);
+            this.tableLayoutPanel15.Controls.Add(this.cbShowRemarkinDO, 1, 0);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel15.Location = new System.Drawing.Point(438, 0);
             this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
@@ -1979,18 +2246,18 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel15.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel15.TabIndex = 254;
             // 
-            // checkBox1
+            // cbShowRemarkinDO
             // 
-            this.checkBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.checkBox1.Location = new System.Drawing.Point(50, 6);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(103, 21);
-            this.checkBox1.TabIndex = 248;
-            this.checkBox1.Text = "Show in D/O";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.cbShowRemarkinDO.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbShowRemarkinDO.AutoSize = true;
+            this.cbShowRemarkinDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbShowRemarkinDO.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbShowRemarkinDO.Location = new System.Drawing.Point(64, 6);
+            this.cbShowRemarkinDO.Name = "cbShowRemarkinDO";
+            this.cbShowRemarkinDO.Size = new System.Drawing.Size(103, 21);
+            this.cbShowRemarkinDO.TabIndex = 248;
+            this.cbShowRemarkinDO.Text = "Show in D/O";
+            this.cbShowRemarkinDO.UseVisualStyleBackColor = true;
             // 
             // label13
             // 
@@ -1998,10 +2265,10 @@ namespace FactoryManagementSoftware.UI
             this.label13.AutoSize = true;
             this.label13.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.label13.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label13.Location = new System.Drawing.Point(3, 3);
+            this.label13.Location = new System.Drawing.Point(3, 8);
             this.label13.Margin = new System.Windows.Forms.Padding(3);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(36, 24);
+            this.label13.Size = new System.Drawing.Size(55, 19);
             this.label13.TabIndex = 159;
             this.label13.Text = "Remark";
             // 
@@ -2021,6 +2288,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel16.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel16.TabIndex = 253;
             // 
+            // gunaGradientButton7
+            // 
+            this.gunaGradientButton7.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton7.AnimationSpeed = 0.03F;
+            this.gunaGradientButton7.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton7.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton7.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton7.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton7.BorderSize = 1;
+            this.gunaGradientButton7.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton7.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton7.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton7.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton7.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton7.Image")));
+            this.gunaGradientButton7.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton7.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton7.Name = "gunaGradientButton7";
+            this.gunaGradientButton7.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton7.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton7.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton7.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton7.OnHoverImage = null;
+            this.gunaGradientButton7.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton7.Radius = 2;
+            this.gunaGradientButton7.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton7.TabIndex = 260;
+            this.gunaGradientButton7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label15
             // 
             this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -2030,34 +2326,32 @@ namespace FactoryManagementSoftware.UI
             this.label15.Location = new System.Drawing.Point(3, 8);
             this.label15.Margin = new System.Windows.Forms.Padding(3);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(79, 19);
+            this.label15.Size = new System.Drawing.Size(111, 19);
             this.label15.TabIndex = 158;
-            this.label15.Text = "Transporter";
+            this.label15.Text = "Delivery Method";
             // 
-            // gunaComboBox8
+            // cmbDeliveryMethod
             // 
-            this.gunaComboBox8.BackColor = System.Drawing.Color.Transparent;
-            this.gunaComboBox8.BaseColor = System.Drawing.Color.White;
-            this.gunaComboBox8.BorderColor = System.Drawing.Color.Silver;
-            this.gunaComboBox8.BorderSize = 1;
-            this.gunaComboBox8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaComboBox8.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.gunaComboBox8.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.gunaComboBox8.Enabled = false;
-            this.gunaComboBox8.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaComboBox8.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaComboBox8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.gunaComboBox8.FormattingEnabled = true;
-            this.gunaComboBox8.Items.AddRange(new object[] {
+            this.cmbDeliveryMethod.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDeliveryMethod.BaseColor = System.Drawing.Color.White;
+            this.cmbDeliveryMethod.BorderColor = System.Drawing.Color.Silver;
+            this.cmbDeliveryMethod.BorderSize = 1;
+            this.cmbDeliveryMethod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbDeliveryMethod.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDeliveryMethod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDeliveryMethod.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbDeliveryMethod.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.cmbDeliveryMethod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmbDeliveryMethod.FormattingEnabled = true;
+            this.cmbDeliveryMethod.Items.AddRange(new object[] {
             "In-house delivery"});
-            this.gunaComboBox8.Location = new System.Drawing.Point(3, 33);
-            this.gunaComboBox8.Name = "gunaComboBox8";
-            this.gunaComboBox8.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaComboBox8.OnHoverItemForeColor = System.Drawing.Color.White;
-            this.gunaComboBox8.Radius = 3;
-            this.gunaComboBox8.Size = new System.Drawing.Size(422, 28);
-            this.gunaComboBox8.StartIndex = 0;
-            this.gunaComboBox8.TabIndex = 252;
+            this.cmbDeliveryMethod.Location = new System.Drawing.Point(3, 33);
+            this.cmbDeliveryMethod.Name = "cmbDeliveryMethod";
+            this.cmbDeliveryMethod.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cmbDeliveryMethod.OnHoverItemForeColor = System.Drawing.Color.White;
+            this.cmbDeliveryMethod.Radius = 3;
+            this.cmbDeliveryMethod.Size = new System.Drawing.Size(422, 28);
+            this.cmbDeliveryMethod.TabIndex = 252;
             // 
             // tableLayoutPanel7
             // 
@@ -2124,6 +2418,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel11.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel11.TabIndex = 253;
             // 
+            // gunaGradientButton1
+            // 
+            this.gunaGradientButton1.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton1.AnimationSpeed = 0.03F;
+            this.gunaGradientButton1.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton1.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton1.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton1.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton1.BorderSize = 1;
+            this.gunaGradientButton1.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton1.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton1.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton1.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton1.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton1.Image")));
+            this.gunaGradientButton1.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton1.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton1.Name = "gunaGradientButton1";
+            this.gunaGradientButton1.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton1.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton1.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton1.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton1.OnHoverImage = null;
+            this.gunaGradientButton1.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton1.Radius = 2;
+            this.gunaGradientButton1.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton1.TabIndex = 252;
+            this.gunaGradientButton1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // label10
             // 
             this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -2159,7 +2482,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbToDeliveryLocation.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbToDeliveryLocation.Radius = 3;
             this.cmbToDeliveryLocation.Size = new System.Drawing.Size(422, 28);
-            this.cmbToDeliveryLocation.StartIndex = 1;
             this.cmbToDeliveryLocation.TabIndex = 253;
             this.cmbToDeliveryLocation.SelectedIndexChanged += new System.EventHandler(this.cmbToDeliveryLocation_SelectedIndexChanged);
             // 
@@ -2172,7 +2494,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbToCompany.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbToCompany.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbToCompany.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbToCompany.Enabled = false;
             this.cmbToCompany.FocusedColor = System.Drawing.Color.Empty;
             this.cmbToCompany.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cmbToCompany.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2185,7 +2506,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbToCompany.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbToCompany.Radius = 3;
             this.cmbToCompany.Size = new System.Drawing.Size(422, 28);
-            this.cmbToCompany.StartIndex = 0;
             this.cmbToCompany.TabIndex = 252;
             // 
             // gunaGroupBox1
@@ -2286,6 +2606,35 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel8.Size = new System.Drawing.Size(428, 30);
             this.tableLayoutPanel8.TabIndex = 253;
             // 
+            // gunaGradientButton4
+            // 
+            this.gunaGradientButton4.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton4.AnimationSpeed = 0.03F;
+            this.gunaGradientButton4.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton4.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton4.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton4.BorderColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton4.BorderSize = 1;
+            this.gunaGradientButton4.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton4.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton4.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton4.ForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton4.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton4.Image")));
+            this.gunaGradientButton4.ImageSize = new System.Drawing.Size(15, 15);
+            this.gunaGradientButton4.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton4.Name = "gunaGradientButton4";
+            this.gunaGradientButton4.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton4.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton4.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton4.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton4.OnHoverImage = null;
+            this.gunaGradientButton4.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton4.Radius = 2;
+            this.gunaGradientButton4.Size = new System.Drawing.Size(34, 24);
+            this.gunaGradientButton4.TabIndex = 252;
+            this.gunaGradientButton4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
             // lblSubList
             // 
             this.lblSubList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -2321,7 +2670,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromBranch.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbFromBranch.Radius = 3;
             this.cmbFromBranch.Size = new System.Drawing.Size(422, 28);
-            this.cmbFromBranch.StartIndex = 0;
             this.cmbFromBranch.TabIndex = 253;
             this.cmbFromBranch.SelectedIndexChanged += new System.EventHandler(this.cmbFromBranch_SelectedIndexChanged);
             // 
@@ -2334,7 +2682,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromCompany.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cmbFromCompany.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.cmbFromCompany.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbFromCompany.Enabled = false;
             this.cmbFromCompany.FocusedColor = System.Drawing.Color.Empty;
             this.cmbFromCompany.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cmbFromCompany.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
@@ -2347,7 +2694,6 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromCompany.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbFromCompany.Radius = 3;
             this.cmbFromCompany.Size = new System.Drawing.Size(422, 28);
-            this.cmbFromCompany.StartIndex = 0;
             this.cmbFromCompany.TabIndex = 252;
             // 
             // tlpButton
@@ -2377,6 +2723,71 @@ namespace FactoryManagementSoftware.UI
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.Size = new System.Drawing.Size(1348, 70);
             this.tlpButton.TabIndex = 221;
+            // 
+            // btnContinue
+            // 
+            this.btnContinue.AnimationHoverSpeed = 0.07F;
+            this.btnContinue.AnimationSpeed = 0.03F;
+            this.btnContinue.BackColor = System.Drawing.Color.Transparent;
+            this.btnContinue.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnContinue.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnContinue.BorderColor = System.Drawing.Color.Black;
+            this.btnContinue.BorderSize = 1;
+            this.btnContinue.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnContinue.FocusedColor = System.Drawing.Color.Empty;
+            this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnContinue.ForeColor = System.Drawing.Color.White;
+            this.btnContinue.Image = ((System.Drawing.Image)(resources.GetObject("btnContinue.Image")));
+            this.btnContinue.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnContinue.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnContinue.Location = new System.Drawing.Point(575, 10);
+            this.btnContinue.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnContinue.Name = "btnContinue";
+            this.btnContinue.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnContinue.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnContinue.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnContinue.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnContinue.OnHoverImage = null;
+            this.btnContinue.OnPressedColor = System.Drawing.Color.Black;
+            this.btnContinue.Radius = 5;
+            this.btnContinue.Size = new System.Drawing.Size(180, 50);
+            this.btnContinue.TabIndex = 223;
+            this.btnContinue.Text = "Continue";
+            this.btnContinue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
+            // 
+            // btnAddAsDraft
+            // 
+            this.btnAddAsDraft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddAsDraft.AnimationHoverSpeed = 0.07F;
+            this.btnAddAsDraft.AnimationSpeed = 0.03F;
+            this.btnAddAsDraft.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddAsDraft.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddAsDraft.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddAsDraft.BorderColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.BorderSize = 1;
+            this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
+            this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnAddAsDraft.Location = new System.Drawing.Point(925, 10);
+            this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnAddAsDraft.Name = "btnAddAsDraft";
+            this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAddAsDraft.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAddAsDraft.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAddAsDraft.OnHoverImage = null;
+            this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.Radius = 5;
+            this.btnAddAsDraft.Size = new System.Drawing.Size(180, 50);
+            this.btnAddAsDraft.TabIndex = 224;
+            this.btnAddAsDraft.Text = "Add as Draft";
+            this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnCancel
             // 
@@ -2443,6 +2854,38 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.Text = "Add D/O";
             this.btnJobPublish.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnJobPublish.Click += new System.EventHandler(this.btnJobPublish_Click);
+            // 
+            // btnPreviousStep
+            // 
+            this.btnPreviousStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnPreviousStep.AnimationHoverSpeed = 0.07F;
+            this.btnPreviousStep.AnimationSpeed = 0.03F;
+            this.btnPreviousStep.BackColor = System.Drawing.Color.Transparent;
+            this.btnPreviousStep.BaseColor1 = System.Drawing.Color.White;
+            this.btnPreviousStep.BaseColor2 = System.Drawing.Color.White;
+            this.btnPreviousStep.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnPreviousStep.BorderSize = 1;
+            this.btnPreviousStep.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnPreviousStep.FocusedColor = System.Drawing.Color.Empty;
+            this.btnPreviousStep.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnPreviousStep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.btnPreviousStep.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviousStep.Image")));
+            this.btnPreviousStep.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnPreviousStep.Location = new System.Drawing.Point(33, 10);
+            this.btnPreviousStep.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
+            this.btnPreviousStep.Name = "btnPreviousStep";
+            this.btnPreviousStep.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnPreviousStep.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnPreviousStep.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnPreviousStep.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnPreviousStep.OnHoverImage = null;
+            this.btnPreviousStep.OnPressedColor = System.Drawing.Color.Black;
+            this.btnPreviousStep.Radius = 5;
+            this.btnPreviousStep.Size = new System.Drawing.Size(190, 50);
+            this.btnPreviousStep.TabIndex = 225;
+            this.btnPreviousStep.Text = "Previous Step";
+            this.btnPreviousStep.Click += new System.EventHandler(this.btnPreviousStep_Click);
             // 
             // tableLayoutPanel59
             // 
@@ -2555,482 +2998,6 @@ namespace FactoryManagementSoftware.UI
             this.lblStep1.TabIndex = 183;
             this.lblStep1.Text = "D/O Settings";
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
-            // 
-            // errorProvider1
-            // 
-            this.errorProvider1.ContainerControl = this;
-            // 
-            // errorProvider2
-            // 
-            this.errorProvider2.ContainerControl = this;
-            // 
-            // errorProvider3
-            // 
-            this.errorProvider3.ContainerControl = this;
-            // 
-            // imageList1
-            // 
-            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
-            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
-            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
-            // 
-            // gunaGradientButton8
-            // 
-            this.gunaGradientButton8.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton8.AnimationSpeed = 0.03F;
-            this.gunaGradientButton8.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.BorderSize = 1;
-            this.gunaGradientButton8.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton8.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton8.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton8.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton8.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton8.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton8.Image")));
-            this.gunaGradientButton8.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.gunaGradientButton8.ImageOffsetX = -10;
-            this.gunaGradientButton8.ImageSize = new System.Drawing.Size(113, 60);
-            this.gunaGradientButton8.Location = new System.Drawing.Point(5, 5);
-            this.gunaGradientButton8.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaGradientButton8.Name = "gunaGradientButton8";
-            this.gunaGradientButton8.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.OnHoverBorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton8.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton8.OnHoverImage = null;
-            this.gunaGradientButton8.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton8.Radius = 2;
-            this.gunaGradientButton8.Size = new System.Drawing.Size(1, 140);
-            this.gunaGradientButton8.TabIndex = 300;
-            this.gunaGradientButton8.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            // 
-            // btnItemRemove
-            // 
-            this.btnItemRemove.AnimationHoverSpeed = 0.07F;
-            this.btnItemRemove.AnimationSpeed = 0.03F;
-            this.btnItemRemove.BackColor = System.Drawing.Color.Transparent;
-            this.btnItemRemove.BaseColor1 = System.Drawing.Color.Transparent;
-            this.btnItemRemove.BaseColor2 = System.Drawing.Color.Transparent;
-            this.btnItemRemove.BorderColor = System.Drawing.Color.Transparent;
-            this.btnItemRemove.BorderSize = 1;
-            this.btnItemRemove.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnItemRemove.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnItemRemove.FocusedColor = System.Drawing.Color.Empty;
-            this.btnItemRemove.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnItemRemove.ForeColor = System.Drawing.Color.White;
-            this.btnItemRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnItemRemove.Image")));
-            this.btnItemRemove.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemRemove.Location = new System.Drawing.Point(-36, 3);
-            this.btnItemRemove.Name = "btnItemRemove";
-            this.btnItemRemove.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
-            this.btnItemRemove.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
-            this.btnItemRemove.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.btnItemRemove.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnItemRemove.OnHoverImage = null;
-            this.btnItemRemove.OnPressedColor = System.Drawing.Color.Black;
-            this.btnItemRemove.Radius = 2;
-            this.btnItemRemove.Size = new System.Drawing.Size(34, 29);
-            this.btnItemRemove.TabIndex = 2018;
-            this.btnItemRemove.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnItemRemove.Click += new System.EventHandler(this.btnItemRemove_Click);
-            // 
-            // btnItemEdit
-            // 
-            this.btnItemEdit.AnimationHoverSpeed = 0.07F;
-            this.btnItemEdit.AnimationSpeed = 0.03F;
-            this.btnItemEdit.BackColor = System.Drawing.Color.Transparent;
-            this.btnItemEdit.BaseColor1 = System.Drawing.Color.Transparent;
-            this.btnItemEdit.BaseColor2 = System.Drawing.Color.Transparent;
-            this.btnItemEdit.BorderColor = System.Drawing.Color.Transparent;
-            this.btnItemEdit.BorderSize = 1;
-            this.btnItemEdit.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnItemEdit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnItemEdit.FocusedColor = System.Drawing.Color.Empty;
-            this.btnItemEdit.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnItemEdit.ForeColor = System.Drawing.Color.White;
-            this.btnItemEdit.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_pencil_100;
-            this.btnItemEdit.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemEdit.Location = new System.Drawing.Point(-76, 3);
-            this.btnItemEdit.Name = "btnItemEdit";
-            this.btnItemEdit.OnHoverBaseColor1 = System.Drawing.Color.Transparent;
-            this.btnItemEdit.OnHoverBaseColor2 = System.Drawing.Color.Transparent;
-            this.btnItemEdit.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.btnItemEdit.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnItemEdit.OnHoverImage = null;
-            this.btnItemEdit.OnPressedColor = System.Drawing.Color.Black;
-            this.btnItemEdit.Radius = 2;
-            this.btnItemEdit.Size = new System.Drawing.Size(34, 29);
-            this.btnItemEdit.TabIndex = 252;
-            this.btnItemEdit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnItemEdit.Click += new System.EventHandler(this.btnItemEdit_Click);
-            // 
-            // btnAddItem
-            // 
-            this.btnAddItem.AnimationHoverSpeed = 0.07F;
-            this.btnAddItem.AnimationSpeed = 0.03F;
-            this.btnAddItem.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddItem.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
-            this.btnAddItem.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(251)))), ((int)(((byte)(160)))));
-            this.btnAddItem.BorderColor = System.Drawing.Color.Black;
-            this.btnAddItem.BorderSize = 1;
-            this.btnAddItem.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnAddItem.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddItem.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.btnAddItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
-            this.btnAddItem.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_more_than_25;
-            this.btnAddItem.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddItem.Location = new System.Drawing.Point(-161, 3);
-            this.btnAddItem.Name = "btnAddItem";
-            this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnAddItem.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnAddItem.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnAddItem.OnHoverImage = null;
-            this.btnAddItem.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAddItem.Radius = 2;
-            this.btnAddItem.Size = new System.Drawing.Size(159, 39);
-            this.btnAddItem.TabIndex = 2015;
-            this.btnAddItem.Text = "Add to List";
-            this.btnAddItem.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnAddItem.Click += new System.EventHandler(this.btnNewJob_Click);
-            // 
-            // gunaGradientButton13
-            // 
-            this.gunaGradientButton13.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton13.AnimationSpeed = 0.03F;
-            this.gunaGradientButton13.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton13.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton13.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton13.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton13.BorderSize = 1;
-            this.gunaGradientButton13.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton13.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton13.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton13.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton13.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton13.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton13.Image")));
-            this.gunaGradientButton13.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton13.Location = new System.Drawing.Point(-36, 3);
-            this.gunaGradientButton13.Name = "gunaGradientButton13";
-            this.gunaGradientButton13.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton13.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton13.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton13.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton13.OnHoverImage = null;
-            this.gunaGradientButton13.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton13.Radius = 2;
-            this.gunaGradientButton13.Size = new System.Drawing.Size(34, 23);
-            this.gunaGradientButton13.TabIndex = 252;
-            this.gunaGradientButton13.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton2
-            // 
-            this.gunaGradientButton2.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton2.AnimationSpeed = 0.03F;
-            this.gunaGradientButton2.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BorderSize = 1;
-            this.gunaGradientButton2.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton2.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton2.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton2.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton2.Image")));
-            this.gunaGradientButton2.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton2.Location = new System.Drawing.Point(287, 3);
-            this.gunaGradientButton2.Name = "gunaGradientButton2";
-            this.gunaGradientButton2.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton2.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton2.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton2.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton2.OnHoverImage = null;
-            this.gunaGradientButton2.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton2.Radius = 2;
-            this.gunaGradientButton2.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton2.TabIndex = 251;
-            this.gunaGradientButton2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton3
-            // 
-            this.gunaGradientButton3.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton3.AnimationSpeed = 0.03F;
-            this.gunaGradientButton3.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton3.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton3.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton3.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton3.BorderSize = 1;
-            this.gunaGradientButton3.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton3.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton3.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton3.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton3.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton3.Image")));
-            this.gunaGradientButton3.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton3.Location = new System.Drawing.Point(287, 3);
-            this.gunaGradientButton3.Name = "gunaGradientButton3";
-            this.gunaGradientButton3.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton3.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton3.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton3.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton3.OnHoverImage = null;
-            this.gunaGradientButton3.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton3.Radius = 2;
-            this.gunaGradientButton3.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton3.TabIndex = 252;
-            this.gunaGradientButton3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton6
-            // 
-            this.gunaGradientButton6.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton6.AnimationSpeed = 0.03F;
-            this.gunaGradientButton6.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton6.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton6.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton6.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton6.BorderSize = 1;
-            this.gunaGradientButton6.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton6.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton6.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton6.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton6.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton6.Image")));
-            this.gunaGradientButton6.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton6.Location = new System.Drawing.Point(391, 3);
-            this.gunaGradientButton6.Name = "gunaGradientButton6";
-            this.gunaGradientButton6.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton6.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton6.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton6.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton6.OnHoverImage = null;
-            this.gunaGradientButton6.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton6.Radius = 2;
-            this.gunaGradientButton6.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton6.TabIndex = 252;
-            this.gunaGradientButton6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton5
-            // 
-            this.gunaGradientButton5.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton5.AnimationSpeed = 0.03F;
-            this.gunaGradientButton5.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton5.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton5.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton5.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton5.BorderSize = 1;
-            this.gunaGradientButton5.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton5.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton5.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton5.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton5.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton5.Image")));
-            this.gunaGradientButton5.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton5.Location = new System.Drawing.Point(391, 3);
-            this.gunaGradientButton5.Name = "gunaGradientButton5";
-            this.gunaGradientButton5.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton5.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton5.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton5.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton5.OnHoverImage = null;
-            this.gunaGradientButton5.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton5.Radius = 2;
-            this.gunaGradientButton5.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton5.TabIndex = 252;
-            this.gunaGradientButton5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton7
-            // 
-            this.gunaGradientButton7.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton7.AnimationSpeed = 0.03F;
-            this.gunaGradientButton7.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton7.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton7.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton7.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton7.BorderSize = 1;
-            this.gunaGradientButton7.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton7.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton7.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton7.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton7.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton7.Image")));
-            this.gunaGradientButton7.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton7.Location = new System.Drawing.Point(391, 3);
-            this.gunaGradientButton7.Name = "gunaGradientButton7";
-            this.gunaGradientButton7.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton7.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton7.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton7.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton7.OnHoverImage = null;
-            this.gunaGradientButton7.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton7.Radius = 2;
-            this.gunaGradientButton7.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton7.TabIndex = 260;
-            this.gunaGradientButton7.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton1
-            // 
-            this.gunaGradientButton1.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton1.AnimationSpeed = 0.03F;
-            this.gunaGradientButton1.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton1.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton1.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton1.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton1.BorderSize = 1;
-            this.gunaGradientButton1.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton1.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton1.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton1.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton1.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton1.Image")));
-            this.gunaGradientButton1.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton1.Location = new System.Drawing.Point(391, 3);
-            this.gunaGradientButton1.Name = "gunaGradientButton1";
-            this.gunaGradientButton1.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton1.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton1.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton1.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton1.OnHoverImage = null;
-            this.gunaGradientButton1.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton1.Radius = 2;
-            this.gunaGradientButton1.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton1.TabIndex = 252;
-            this.gunaGradientButton1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // gunaGradientButton4
-            // 
-            this.gunaGradientButton4.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton4.AnimationSpeed = 0.03F;
-            this.gunaGradientButton4.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton4.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton4.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton4.BorderColor = System.Drawing.Color.Transparent;
-            this.gunaGradientButton4.BorderSize = 1;
-            this.gunaGradientButton4.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGradientButton4.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton4.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton4.ForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton4.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton4.Image")));
-            this.gunaGradientButton4.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton4.Location = new System.Drawing.Point(391, 3);
-            this.gunaGradientButton4.Name = "gunaGradientButton4";
-            this.gunaGradientButton4.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton4.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton4.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton4.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton4.OnHoverImage = null;
-            this.gunaGradientButton4.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton4.Radius = 2;
-            this.gunaGradientButton4.Size = new System.Drawing.Size(34, 24);
-            this.gunaGradientButton4.TabIndex = 252;
-            this.gunaGradientButton4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnContinue
-            // 
-            this.btnContinue.AnimationHoverSpeed = 0.07F;
-            this.btnContinue.AnimationSpeed = 0.03F;
-            this.btnContinue.BackColor = System.Drawing.Color.Transparent;
-            this.btnContinue.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnContinue.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnContinue.BorderColor = System.Drawing.Color.Black;
-            this.btnContinue.BorderSize = 1;
-            this.btnContinue.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnContinue.FocusedColor = System.Drawing.Color.Empty;
-            this.btnContinue.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnContinue.ForeColor = System.Drawing.Color.White;
-            this.btnContinue.Image = ((System.Drawing.Image)(resources.GetObject("btnContinue.Image")));
-            this.btnContinue.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnContinue.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnContinue.Location = new System.Drawing.Point(575, 10);
-            this.btnContinue.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnContinue.Name = "btnContinue";
-            this.btnContinue.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnContinue.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnContinue.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnContinue.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnContinue.OnHoverImage = null;
-            this.btnContinue.OnPressedColor = System.Drawing.Color.Black;
-            this.btnContinue.Radius = 5;
-            this.btnContinue.Size = new System.Drawing.Size(180, 50);
-            this.btnContinue.TabIndex = 223;
-            this.btnContinue.Text = "Continue";
-            this.btnContinue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
-            // 
-            // btnAddAsDraft
-            // 
-            this.btnAddAsDraft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAsDraft.AnimationHoverSpeed = 0.07F;
-            this.btnAddAsDraft.AnimationSpeed = 0.03F;
-            this.btnAddAsDraft.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddAsDraft.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddAsDraft.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddAsDraft.BorderColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.BorderSize = 1;
-            this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
-            this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnAddAsDraft.Location = new System.Drawing.Point(925, 10);
-            this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnAddAsDraft.Name = "btnAddAsDraft";
-            this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnAddAsDraft.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnAddAsDraft.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnAddAsDraft.OnHoverImage = null;
-            this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.Radius = 5;
-            this.btnAddAsDraft.Size = new System.Drawing.Size(180, 50);
-            this.btnAddAsDraft.TabIndex = 224;
-            this.btnAddAsDraft.Text = "Add as Draft";
-            this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // btnPreviousStep
-            // 
-            this.btnPreviousStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPreviousStep.AnimationHoverSpeed = 0.07F;
-            this.btnPreviousStep.AnimationSpeed = 0.03F;
-            this.btnPreviousStep.BackColor = System.Drawing.Color.Transparent;
-            this.btnPreviousStep.BaseColor1 = System.Drawing.Color.White;
-            this.btnPreviousStep.BaseColor2 = System.Drawing.Color.White;
-            this.btnPreviousStep.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnPreviousStep.BorderSize = 1;
-            this.btnPreviousStep.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnPreviousStep.FocusedColor = System.Drawing.Color.Empty;
-            this.btnPreviousStep.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnPreviousStep.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.btnPreviousStep.Image = ((System.Drawing.Image)(resources.GetObject("btnPreviousStep.Image")));
-            this.btnPreviousStep.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnPreviousStep.Location = new System.Drawing.Point(33, 10);
-            this.btnPreviousStep.Margin = new System.Windows.Forms.Padding(0, 0, 10, 0);
-            this.btnPreviousStep.Name = "btnPreviousStep";
-            this.btnPreviousStep.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnPreviousStep.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnPreviousStep.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnPreviousStep.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnPreviousStep.OnHoverImage = null;
-            this.btnPreviousStep.OnPressedColor = System.Drawing.Color.Black;
-            this.btnPreviousStep.Radius = 5;
-            this.btnPreviousStep.Size = new System.Drawing.Size(190, 50);
-            this.btnPreviousStep.TabIndex = 225;
-            this.btnPreviousStep.Text = "Previous Step";
-            this.btnPreviousStep.Click += new System.EventHandler(this.btnPreviousStep_Click);
-            // 
             // btnSearch
             // 
             this.btnSearch.AnimationHoverSpeed = 0.07F;
@@ -3060,6 +3027,30 @@ namespace FactoryManagementSoftware.UI
             this.btnSearch.TabIndex = 249;
             this.btnSearch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnSearch.Visible = false;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(61, 4);
+            // 
+            // errorProvider1
+            // 
+            this.errorProvider1.ContainerControl = this;
+            // 
+            // errorProvider2
+            // 
+            this.errorProvider2.ContainerControl = this;
+            // 
+            // errorProvider3
+            // 
+            this.errorProvider3.ContainerControl = this;
+            // 
+            // imageList1
+            // 
+            this.imageList1.ColorDepth = System.Windows.Forms.ColorDepth.Depth8Bit;
+            this.imageList1.ImageSize = new System.Drawing.Size(16, 16);
+            this.imageList1.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // txtItemDescription
             // 
@@ -3256,15 +3247,15 @@ namespace FactoryManagementSoftware.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox3;
         private Guna.UI.WinForms.GunaTextBox txtShippingAddress;
-        private Guna.UI.WinForms.GunaTextBox txtSearch;
-        private System.Windows.Forms.CheckBox cbInProgress;
+        private Guna.UI.WinForms.GunaTextBox txtBillingAddress;
+        private System.Windows.Forms.CheckBox cbSameWithBilling;
         private System.Windows.Forms.Label label17;
         private System.Windows.Forms.Label label19;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private Guna.UI.WinForms.GunaTextBox txtDORemark;
+        private System.Windows.Forms.CheckBox cbShowRemarkinDO;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.Label label15;
-        private Guna.UI.WinForms.GunaComboBox gunaComboBox8;
+        private Guna.UI.WinForms.GunaComboBox cmbDeliveryMethod;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel12;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;

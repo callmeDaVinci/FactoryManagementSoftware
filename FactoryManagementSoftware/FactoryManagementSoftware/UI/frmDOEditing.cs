@@ -378,6 +378,13 @@ namespace FactoryManagementSoftware.UI
             dgvUIEdit(dgvDOItemList);
         }
 
+        doFormatBLL uDoFormat = new doFormatBLL();
+
+        private void getDOSettingData()
+        {
+            
+        }
+
         private void StepUIUpdates(int step, bool Continue)
         {
             #region setting
@@ -1102,7 +1109,24 @@ namespace FactoryManagementSoftware.UI
             totalQtyPreviewUpdate();
         }
 
+        private void UpdateGeneralRemarkextBoxAppearance()
+        {
+            string defaultText = "Remark :";
 
+            if (txtDORemark.Text == defaultText)
+            {
+                txtDORemark.Text = "";
+                txtDORemark.ForeColor = Color.FromArgb(50, 50, 50);
+
+                txtDORemark.Font = new Font(txtDORemark.Font, FontStyle.Regular);
+            }
+            else if (txtDORemark.Text.Length == 0 || string.IsNullOrEmpty(txtDORemark.Text.Replace(" ", "")))
+            {
+                txtDORemark.Text = defaultText;
+                txtDORemark.ForeColor = SystemColors.GrayText;
+                txtDORemark.Font = new Font(txtDORemark.Font, FontStyle.Italic);
+            }
+        }
 
         #endregion
 
@@ -1186,25 +1210,69 @@ namespace FactoryManagementSoftware.UI
         {
             string doType = cmbDOType.Text;
 
-            bool fromOUG = doType.ToUpper().Contains("INTERNAL") && doType.ToUpper().Contains("OUG");
-            bool fromSemenyih = doType.ToUpper().Contains("INTERNAL") && doType.ToUpper().Contains("SEMENYIH");
-
-            if(fromOUG)
+            if(doType.ToUpper().Contains("INTERNAL"))
             {
-                txtDONoSample.Text = "Sample : IT24/999";
-                cmbFromBranch.Text = "OUG";
-                cmbToDeliveryLocation.Text = "Semenyih";
-                txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
+                //if do type is internal
+                cmbFromCompany.Text = "Safety Plastics";
+                cmbFromCompany.Enabled = false;
+
+                cmbToCompany.Text = "Safety Plastics";
+                cmbToCompany.Enabled = false;
+
+                txtBillingAddress.Text = "Not Applicable";
+                txtBillingAddress.Enabled = false;
+
+                cbSameWithBilling.Enabled = false;
+
+                cmbDeliveryMethod.Text = "In-house delivery";
+                cmbToCompany.Enabled = false;
+
+                //if location is between OUG and Semenyih
+                bool fromOUG = doType.ToUpper().Contains("OUG");
+                bool fromSemenyih = doType.ToUpper().Contains("SEMENYIH");
+
+                cmbFromBranch.Enabled = false;
+                cmbToDeliveryLocation.Enabled = false;
+
+                if (fromOUG)//SAFETY PLASTICS SDN BHD
+                {
+                    txtDONoSample.Text = "Sample : IT24/999";
+                    cmbFromBranch.Text = "OUG";
+                    cmbToDeliveryLocation.Text = "Semenyih";
+                    txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
+
+                }
+                else if (fromSemenyih)//SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)
+                {
+                    txtDONoSample.Text = "Sample : ITN24/S999";
+                    cmbFromBranch.Text = "Semenyih";
+                    cmbToDeliveryLocation.Text = "OUG";
+                    txtShippingAddress.Text = "No.17, PT 2507, Jalan Hi-Tech 2,\r\nKawasan Perindustrian Hi-Tech,\r\nJalan Sungai Lalang,\r\n43500 Semenyih, Selangor\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+
+                }
+
 
             }
-            else if (fromSemenyih)
-            {
-                txtDONoSample.Text = "Sample : ITN24/S999";
-                cmbFromBranch.Text = "Semenyih";
-                cmbToDeliveryLocation.Text = "OUG";
-                txtShippingAddress.Text = "SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)\r\nNO.17, PT 2507, JLN HI-TECH 2,\r\nKAW. PERIND. HI.TECH,\r\nJALAN SG. LALANG,\r\n43500 SEMENYIH, SELANGOR\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+          
+        }
 
+        private void cbSameWithBilling_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbSameWithBilling.Checked)
+            {
+                txtShippingAddress.Text = txtBillingAddress.Text;
             }
+        }
+
+        private void txtDORemark_Enter(object sender, EventArgs e)
+        {
+            UpdateGeneralRemarkextBoxAppearance();
+        }
+
+        private void txtDORemark_Leave(object sender, EventArgs e)
+        {
+            UpdateGeneralRemarkextBoxAppearance();
+
         }
     }
 }
