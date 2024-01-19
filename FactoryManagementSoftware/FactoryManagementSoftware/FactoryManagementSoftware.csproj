@@ -29,7 +29,7 @@
     <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>587</ApplicationRevision>
+    <ApplicationRevision>591</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\companyBLL.cs" />
+    <Compile Include="BLL\internalDOBLL.cs" />
     <Compile Include="BLL\doFormatBLL.cs" />
     <Compile Include="BLL\AddressBookBLL.cs" />
     <Compile Include="BLL\CheckChildBLL.cs" />

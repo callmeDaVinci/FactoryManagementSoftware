@@ -1910,7 +1910,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmOrderAlert_NEW_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.NewOrdFormOpen = false;
+            //MainDashboard.NewOrdFormOpen = false;
         }
 
         private void ResetPage()

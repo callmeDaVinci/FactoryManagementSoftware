@@ -1959,6 +1959,27 @@ namespace FactoryManagementSoftware.UI
             dgvTrf.ClearSelection();
             formLoaded = true;
             btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height) / 2);
+
+            if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+            {
+
+            }
+            else
+            {
+
+                frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
+                //frm2.StartPosition = FormStartPosition.CenterScreen;
+                //frm2.Show();
+
+                // Check if frm2 exists and is not disposed
+                if (frm2 != null && !frm2.IsDisposed)
+                {
+                    // The form exists and is not disposed, so just show it
+                    frm2.StartPosition = FormStartPosition.CenterScreen;
+                    frm2.Show();
+                }
+               
+            }
         }
 
         private void dgvTrf_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

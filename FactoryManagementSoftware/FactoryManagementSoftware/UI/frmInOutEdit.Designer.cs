@@ -520,7 +520,7 @@
             this.tableLayoutPanel5.ColumnCount = 3;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 49.18033F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50.81967F));
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 260F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 262F));
             this.tableLayoutPanel5.Controls.Add(this.btnIn, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnOut, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnSwitch, 2, 0);
@@ -558,7 +558,7 @@
             this.btnIn.OnHoverImage = null;
             this.btnIn.OnPressedColor = System.Drawing.Color.Black;
             this.btnIn.Radius = 2;
-            this.btnIn.Size = new System.Drawing.Size(57, 34);
+            this.btnIn.Size = new System.Drawing.Size(56, 34);
             this.btnIn.TabIndex = 232;
             this.btnIn.Text = "In";
             this.btnIn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -580,7 +580,7 @@
             this.btnOut.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnOut.Image = null;
             this.btnOut.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnOut.Location = new System.Drawing.Point(70, 5);
+            this.btnOut.Location = new System.Drawing.Point(69, 5);
             this.btnOut.Margin = new System.Windows.Forms.Padding(5);
             this.btnOut.Name = "btnOut";
             this.btnOut.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -590,7 +590,7 @@
             this.btnOut.OnHoverImage = null;
             this.btnOut.OnPressedColor = System.Drawing.Color.Black;
             this.btnOut.Radius = 2;
-            this.btnOut.Size = new System.Drawing.Size(58, 34);
+            this.btnOut.Size = new System.Drawing.Size(57, 34);
             this.btnOut.TabIndex = 232;
             this.btnOut.Text = "Out";
             this.btnOut.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -612,7 +612,7 @@
             this.btnSwitch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnSwitch.Image = null;
             this.btnSwitch.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSwitch.Location = new System.Drawing.Point(138, 5);
+            this.btnSwitch.Location = new System.Drawing.Point(136, 5);
             this.btnSwitch.Margin = new System.Windows.Forms.Padding(5, 5, 3, 5);
             this.btnSwitch.Name = "btnSwitch";
             this.btnSwitch.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -622,7 +622,7 @@
             this.btnSwitch.OnHoverImage = null;
             this.btnSwitch.OnPressedColor = System.Drawing.Color.Black;
             this.btnSwitch.Radius = 2;
-            this.btnSwitch.Size = new System.Drawing.Size(253, 34);
+            this.btnSwitch.Size = new System.Drawing.Size(255, 34);
             this.btnSwitch.TabIndex = 232;
             this.btnSwitch.Text = "Internal Transfer";
             this.btnSwitch.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

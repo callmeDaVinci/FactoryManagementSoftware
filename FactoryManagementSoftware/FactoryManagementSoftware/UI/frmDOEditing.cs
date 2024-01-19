@@ -8,6 +8,8 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using System.Linq;
 using System.Threading;
+using Syncfusion.XlsIO.Parser.Biff_Records;
+using Guna.UI.WinForms;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -19,6 +21,12 @@ namespace FactoryManagementSoftware.UI
         Text text = new Text();
         itemDAL dalItem = new itemDAL();
         doFormatDAL dalDoFormat = new doFormatDAL();
+        companyDAL dalCompany = new companyDAL();
+        addressBookDAL dalAddressBook = new addressBookDAL();
+
+        AddressBookBLL uBillingAddress = new AddressBookBLL();
+        AddressBookBLL uShippingAddress = new AddressBookBLL();
+        internalDOBLL uInternalDO = new internalDOBLL();
 
         private string ITEM_CODE = "ITEM CODE";
         private string ITEM_CATEGORY = "CATEGORY";
@@ -139,6 +147,12 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadSummaryData()
         {
+
+            //lblLetterHeadAddress.Text = "";
+            //lblLetterHeadContactInfo.Text = "";
+            lblDOTypePreview.Text = cmbDOType.Text;
+            txtDeliveryToFullName.Text = uShippingAddress.full_name;
+            txtDeliverToAddress.Text = SHIPPING_ADDRESS;
 
         }
 
@@ -350,19 +364,23 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbFromBranch_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string branch = cmbFromBranch.Text;
-
-            if (cmbDOType.Text == "Internal Transfer Note")
+            if(COMPANY_DATA_LOADED)
             {
-                if (branch == text.Factory_OUG)
+                string branch = cmbFromBranch.Text;
+
+                if (cmbDOType.Text == "Internal Transfer Note")
                 {
-                    cmbToDeliveryLocation.Text = text.Factory_Semenyih;
-                }
-                else if (branch == text.Factory_Semenyih)
-                {
-                    cmbToDeliveryLocation.Text = text.Factory_OUG;
+                    if (branch == text.Factory_OUG)
+                    {
+                        cmbToDeliveryLocation.Text = text.Factory_Semenyih;
+                    }
+                    else if (branch == text.Factory_Semenyih)
+                    {
+                        cmbToDeliveryLocation.Text = text.Factory_OUG;
+                    }
                 }
             }
+           
         }
 
         private void assignDOItemListtoDGV()
@@ -378,12 +396,7 @@ namespace FactoryManagementSoftware.UI
             dgvUIEdit(dgvDOItemList);
         }
 
-        doFormatBLL uDoFormat = new doFormatBLL();
-
-        private void getDOSettingData()
-        {
-            
-        }
+      
 
         private void StepUIUpdates(int step, bool Continue)
         {
@@ -451,7 +464,7 @@ namespace FactoryManagementSoftware.UI
                 #region Case 1: D/O Settings
                 case 1:
 
-                    if(!DO_TYPE_DATA_LOADED)
+                    if (!DO_TYPE_DATA_LOADED)
                     {
                         InitialDOTypeComboBox();
                     }
@@ -588,11 +601,117 @@ namespace FactoryManagementSoftware.UI
             //frmLoading.CloseForm();
         }
 
+
+        private string GetSelectedDOFormatTblCode()
+        {
+            if (cmbDOType.SelectedIndex == -1)
+            {
+                // No item is selected
+                return null;
+            }
+
+            // Get the DataRowView for the selected item
+            DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
+
+            // Extract the table code from the selected row
+            string tableCode = selectedRow[dalDoFormat.tblCode].ToString();
+
+            return tableCode;
+        }
+        doFormatBLL uDoFormat = new doFormatBLL();
+
+
+        private bool getDOGeneralData()
+        {
+            bool success = true;
+            bool isInternal = false;
+            DataRowView selectedDOTypeRow;
+            DataRowView selectedRecevingCompanyTypeRow;
+            DataRowView selectedDeliveryLocationRow;
+
+            if (cmbDOType.SelectedIndex == -1)
+            {
+                // No item is selected
+                errorProvider1.SetError(lblDOType, "D/O's Type Required!");
+
+                return false;
+            }
+            else
+            {
+                // Get the DataRowView for the selected item
+                selectedDOTypeRow = (DataRowView)cmbDOType.SelectedItem;
+
+                // Extract the table code from the selected row
+                isInternal = bool.TryParse(selectedDOTypeRow[dalDoFormat.isInternal].ToString(), out isInternal) ? isInternal : false;
+                
+            }
+
+            if (cmbToCompany.SelectedIndex == -1)
+            {
+                // No item is selected
+                errorProvider2.SetError(lblCompanyTo, "Receving Company Required!");
+
+                return false;
+            }
+            else
+            {
+                // Get the DataRowView for the selected item
+                selectedRecevingCompanyTypeRow = (DataRowView)cmbToCompany.SelectedItem;
+            }
+
+            if (cmbToDeliveryLocation.SelectedIndex == -1)
+            {
+                // No item is selected
+                errorProvider3.SetError(lblDeliveryLocation, "Delivery Location Required!");
+
+                return false;
+            }
+            else
+            {
+                // Get the DataRowView for the selected item
+                selectedDeliveryLocationRow = (DataRowView)cmbToDeliveryLocation.SelectedItem;
+            }
+
+
+            if (isInternal)
+            {
+                uInternalDO = new internalDOBLL();
+                uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
+                uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
+                uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
+                uInternalDO.shipping_method = cmbDeliveryMethod.Text;
+
+                if(txtDORemark.Text != "Remark :")
+                    uInternalDO.remark = txtDORemark.Text;
+            }
+            else
+            {
+
+            }
+
+            return success;
+        }
+
+        
         private void btnContinue_Click(object sender, EventArgs e)
         {
             if (Validation(CURRENT_STEP))
             {
                 //frmLoading.ShowLoadingScreen();
+
+                if(CURRENT_STEP == 1)
+                {
+                    //get do general setting data
+                    if(!getDOGeneralData())
+                    {
+                        return;
+                    }
+                }
+                else if(CURRENT_STEP == 2)
+                {
+                    //get do item list data
+                }
+
                 CURRENT_STEP++;
 
                 if (CURRENT_STEP < 1)
@@ -617,21 +736,37 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private string SHIPPING_ADDRESS = "";
         private void cmbToDeliveryLocation_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string DeliveryLocation = cmbToDeliveryLocation.Text;
-
-            if (cmbDOType.Text == "Internal Transfer Note")
+            if (COMPANY_DATA_LOADED && cmbToDeliveryLocation.SelectedIndex != -1)
             {
-                if (DeliveryLocation == text.Factory_OUG)
+                errorProvider3.Clear();
+                string DeliveryLocation = cmbToDeliveryLocation.Text;
+
+                if (CheckIfInternalDOType())
                 {
-                    cmbFromBranch.Text = text.Factory_Semenyih;
+                    if (DeliveryLocation == text.Factory_OUG)
+                    {
+                        cmbFromBranch.Text = text.Factory_Semenyih;
+                    }
+                    else if (DeliveryLocation == text.Factory_Semenyih)
+                    {
+                        cmbFromBranch.Text = text.Factory_OUG;
+                    }
+
+                    cbSameWithBilling.Checked = false;
                 }
-                else if (DeliveryLocation == text.Factory_Semenyih)
+
+                //LOAD shipping data
+                if(!cbSameWithBilling.Checked)
                 {
-                    cmbFromBranch.Text = text.Factory_OUG;
+                    SHIPPING_ADDRESS =  WriteShippingAddress();
+                    txtShippingAddress.Text = SHIPPING_ADDRESS;
                 }
+
             }
+                
         }
 
         private void gunaTextBox12_TextChanged(object sender, EventArgs e)
@@ -1134,12 +1269,14 @@ namespace FactoryManagementSoftware.UI
 
         private DataTable DT_ITEM_SOURCE;
         private DataTable DT_DO_FORMAT;
+        private DataTable DT_COMPANY;
+        private DataTable DT_ADDRESS_BOOK;
 
         private string header_MasterCode = "MasterCode";
 
         private void InitialNameTextBox()
         {
-            if(cbItemSearch.Checked)
+            if (cbItemSearch.Checked)
             {
                 DT_ITEM_SOURCE = dalItem.Select();
 
@@ -1172,10 +1309,19 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-
         private void LoadDoFormatDB()
         {
             DT_DO_FORMAT = dalDoFormat.SelectAll();
+        }
+
+        private void LoadCompanyDB()
+        {
+            DT_COMPANY = dalCompany.SelectAll();
+        }
+
+        private void LoadAddressBookDB()
+        {
+            DT_ADDRESS_BOOK = dalAddressBook.SelectAll();
         }
 
         private bool DO_TYPE_DATA_LOADED = false;
@@ -1189,7 +1335,7 @@ namespace FactoryManagementSoftware.UI
 
             cmbDOType.DataSource = DT_DO_FORMAT;
             cmbDOType.DisplayMember = dalDoFormat.doType;
-            cmbDOType.ValueMember = dalDoFormat.doType; 
+            cmbDOType.ValueMember = dalDoFormat.doType;
 
             cmbDOType.SelectedIndex = -1; // Set selection to null
             cmbFromBranch.SelectedIndex = -1; // Set selection to null
@@ -1198,19 +1344,289 @@ namespace FactoryManagementSoftware.UI
             DO_TYPE_DATA_LOADED = true;
         }
 
+        private bool COMPANY_DATA_LOADED = false;
 
+        private void InitialCompanyCombobox(ComboBox cmb, bool isInternal)
+        {
+            COMPANY_DATA_LOADED = false;
+
+            if (DT_COMPANY == null || DT_COMPANY.Rows.Count == 0)
+            {
+                LoadCompanyDB();
+            }
+
+            DataTable dt = DT_COMPANY.Clone();
+
+            foreach (DataRow row in DT_COMPANY.Rows)
+            {
+                // Check if the isInternal column is DBNull, and treat DBNull as false
+               //bool rowIsInternal = row[dalCompany.isInternal] != DBNull.Value && Convert.ToBoolean(row[dalCompany.isInternal]);
+                bool rowIsInternal = bool.TryParse(row[dalCompany.isInternal].ToString(), out rowIsInternal) ? rowIsInternal : false;
+
+                if (isInternal == rowIsInternal)
+                {
+                    dt.ImportRow(row);
+                }
+            }
+
+
+            cmb.DataSource = dt;
+            cmb.DisplayMember = dalCompany.shortName;
+            cmb.ValueMember = dalCompany.tblCode;
+            cmb.SelectedIndex = -1;
+
+            COMPANY_DATA_LOADED = true;
+
+        }
+
+        private bool DELIVERY_LOCATION_LOADED = false;
+
+        private string getCompanyTblCode(ComboBox cmbCompany)
+        {
+
+            if (cmbCompany.SelectedIndex == -1)
+            {
+                // No item is selected
+                return "-1";
+            }
+
+            // Get the DataRowView for the selected item
+            DataRowView selectedRow = (DataRowView)cmbCompany.SelectedItem;
+
+            // Extract the table code from the selected row
+            return selectedRow[dalCompany.tblCode].ToString();
+        }
+
+        private void InitialDeliveryLocationCombobox(string companyTblCode, ComboBox cmb)
+        {
+            DELIVERY_LOCATION_LOADED = false;
+
+            if (DT_COMPANY == null || DT_COMPANY.Rows.Count == 0)
+            {
+                LoadCompanyDB();
+            }
+
+            if (DT_ADDRESS_BOOK == null || DT_ADDRESS_BOOK.Rows.Count == 0)
+            {
+                LoadAddressBookDB();
+            }
+
+            DataTable dt = DT_ADDRESS_BOOK.Clone();
+
+            foreach (DataRow row in DT_ADDRESS_BOOK.Rows)
+            {
+                // Check if the isInternal column is DBNull, and treat DBNull as false
+                //bool rowIsInternal = row[dalCompany.isInternal] != DBNull.Value && Convert.ToBoolean(row[dalCompany.isInternal]);
+                string tblCode =row[dalAddressBook.companyTblCode].ToString();
+
+                if (tblCode == companyTblCode)
+                {
+                    dt.ImportRow(row);
+                }
+            }
+
+
+            cmb.DataSource = dt;
+            cmb.DisplayMember = dalAddressBook.shortName;
+            cmb.ValueMember = dalAddressBook.tblCode;
+            cmb.SelectedIndex = -1;
+
+            DELIVERY_LOCATION_LOADED = true;
+
+        }
         #endregion
+        private string DONumberConvert(string prefix, string dateFormat, string suffix, int runningNumber, int numberLength)
+        {
+            string DOSample = "";
 
+            // Current date
+            DateTime now = DateTime.Now;
+
+            // Replace date format placeholders
+            dateFormat = dateFormat.Replace("[yy]", now.ToString("yy"))
+                                   .Replace("[yyyy]", now.ToString("yyyy"))
+                                   .Replace("[mm]", now.ToString("MM"))
+                                   .Replace("[mmm]", now.ToString("MMM"))
+                                   .Replace("[MMM]", now.ToString("MMM").ToUpper())
+                                   .Replace("[MMMM]", now.ToString("MMMM"))
+                                   .Replace("[dd]", now.ToString("dd"));
+
+            // Format running number with leading zeros based on numberLength
+            string formattedRunningNumber = runningNumber.ToString().PadLeft(numberLength, '0');
+
+            // Concatenate parts to form DOSample
+            DOSample = prefix + dateFormat + formattedRunningNumber;
+
+            // Append suffix if it is not null or empty
+            if (!string.IsNullOrEmpty(suffix))
+            {
+                DOSample += suffix;
+            }
+
+            return DOSample;
+        }
+
+        private void LoadDONumberSample(int runningNumber)
+        {
+            string DOSample = "";
+            if (cmbDOType.SelectedIndex != -1)
+            {
+                // Get the DataRowView for the selected item
+                DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
+
+                // Extract the table code from the selected row
+                string prefix= selectedRow[dalDoFormat.prefix].ToString();
+                string dateFormat= selectedRow[dalDoFormat.dateFormat].ToString();
+                string suffix= selectedRow[dalDoFormat.suffix].ToString();
+                int numberLength= int.TryParse(selectedRow[dalDoFormat.runningNumberLength].ToString(), out int i)? i : 3;
+
+                DOSample = DONumberConvert(prefix, dateFormat, suffix, runningNumber, numberLength);
+            }
+
+
+            txtDONoSample.Text = DOSample;
+
+        }
         private void cmbDOType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            internalTransferDataAutoLoad();
+            if(cmbDOType.SelectedIndex != -1)
+            {
+                errorProvider1.Clear();
+
+
+                LoadDONumberSample(123);
+
+                if(CheckIfInternalDOType())
+                {
+                    
+                }
+                else
+                {
+
+                }
+
+                LoadCompanyData();
+                internalTransferDataAutoLoad();
+            }
+          
+        }
+
+        private string WriteShippingAddress()
+        {
+            string address = "";
+            uShippingAddress = new AddressBookBLL();
+
+            if (cmbToDeliveryLocation.SelectedIndex != -1)
+            {
+                // Get the DataRowView for the selected item
+                DataRowView selectedRow = (DataRowView)cmbToDeliveryLocation.SelectedItem;
+
+                // Extract the table code from the selected row
+
+                uShippingAddress.tbl_code = int.TryParse(selectedRow[dalAddressBook.tblCode].ToString(), out int i) ?  i : -1;
+                uShippingAddress.company_tbl_code = int.TryParse(selectedRow[dalAddressBook.companyTblCode].ToString(), out i) ?  i : -1;
+                uShippingAddress.full_name = selectedRow[dalAddressBook.fullName].ToString();
+                uShippingAddress.short_name = selectedRow[dalAddressBook.shortName].ToString();
+                uShippingAddress.registration_no = selectedRow[dalAddressBook.registrationNo].ToString();
+                uShippingAddress.address_1 = selectedRow[dalAddressBook.addressLine1].ToString();
+                uShippingAddress.address_2 = selectedRow[dalAddressBook.addressLine2].ToString();
+                uShippingAddress.address_3 = selectedRow[dalAddressBook.addressLine3].ToString();
+                uShippingAddress.address_state = selectedRow[dalAddressBook.addressState].ToString();
+                uShippingAddress.address_postal_code = selectedRow[dalAddressBook.addressPostalCode].ToString();
+                uShippingAddress.address_country = selectedRow[dalAddressBook.addressCountry].ToString();
+
+                uShippingAddress.fax_no = selectedRow[dalAddressBook.faxNo].ToString();
+                uShippingAddress.contact_name_1 = selectedRow[dalAddressBook.contactName1].ToString();
+                uShippingAddress.contact_number_1 = selectedRow[dalAddressBook.contactNo1].ToString();
+                uShippingAddress.contact_name_2 = selectedRow[dalAddressBook.contactName2].ToString();
+                uShippingAddress.contact_number_2 = selectedRow[dalAddressBook.contactNo2].ToString();
+
+                uShippingAddress.email_address = selectedRow[dalAddressBook.emailAddress].ToString();
+                uShippingAddress.website = selectedRow[dalAddressBook.website].ToString();
+
+                uShippingAddress.route_tbl_code = int.TryParse(selectedRow[dalAddressBook.routeTblCode].ToString(), out i) ? i : -1;
+                uShippingAddress.updated_by = int.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out i) ? i : -1;
+                uShippingAddress.updated_date = DateTime.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out DateTime k) ? k : DateTime.MaxValue;
+
+                uShippingAddress.remark = selectedRow[dalAddressBook.remark].ToString();
+                uShippingAddress.delivery_method_remark = selectedRow[dalAddressBook.deliveryMethodRemark].ToString();
+
+                uShippingAddress.isRemoved = bool.TryParse(selectedRow[dalAddressBook.isRemoved].ToString(), out bool x) ? x : false;
+
+
+                string address1 = selectedRow[dalAddressBook.addressLine1].ToString();
+                string address2 = selectedRow[dalAddressBook.addressLine2].ToString();
+                string address3 = selectedRow[dalAddressBook.addressLine3].ToString();
+                string State = selectedRow[dalAddressBook.addressState].ToString();
+                string postalCode = selectedRow[dalAddressBook.addressPostalCode].ToString();
+                string Tel1 = selectedRow[dalAddressBook.contactNo1].ToString();
+                string Tel1Name1 = selectedRow[dalAddressBook.contactName1].ToString();
+                string Tel2 = selectedRow[dalAddressBook.contactNo2].ToString();
+                string Tel1Name2 = selectedRow[dalAddressBook.contactName2].ToString();
+                string email = selectedRow[dalAddressBook.emailAddress].ToString();
+                string fax = selectedRow[dalAddressBook.faxNo].ToString();
+                string deliveryMethod = selectedRow[dalAddressBook.deliveryMethodRemark].ToString();
+                string fullName = selectedRow[dalAddressBook.fullName].ToString();
+
+                cmbDeliveryMethod.Text = deliveryMethod;
+
+                address = address1;
+
+                if (!string.IsNullOrEmpty(address2))
+                {
+                    address += "\r\n" + address2;
+                }
+
+                if (!string.IsNullOrEmpty(address3))
+                {
+                    address += "\r\n" + address3;
+                }
+
+                if (!string.IsNullOrEmpty(postalCode) && !string.IsNullOrEmpty(State))
+                {
+                    address += "\r\n" + postalCode + " " + State +".";
+                }
+            }
+
+            return address;
+        }
+
+        private bool CheckIfInternalDOType()
+        {
+            if (cmbDOType.SelectedIndex == -1)
+            {
+                // No item is selected
+                return false;
+            }
+
+            // Get the DataRowView for the selected item
+            DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
+
+            // Extract the table code from the selected row
+            bool isInternal = bool.TryParse(selectedRow[dalDoFormat.isInternal].ToString(), out isInternal) ? isInternal : false;
+
+
+            return isInternal;
+
+        }
+
+        private void LoadCompanyData()
+        {
+
+            InitialCompanyCombobox(cmbFromCompany, CheckIfInternalDOType());
+            InitialCompanyCombobox(cmbToCompany, CheckIfInternalDOType());
+        }
+
+        private void LoadDeliveryLocationData(ComboBox Company, ComboBox DeliveryLocation)
+        {
+
         }
 
         private void internalTransferDataAutoLoad()
         {
             string doType = cmbDOType.Text;
 
-            if(doType.ToUpper().Contains("INTERNAL"))
+            if (CheckIfInternalDOType())
             {
                 //if do type is internal
                 cmbFromCompany.Text = "Safety Plastics";
@@ -1223,42 +1639,45 @@ namespace FactoryManagementSoftware.UI
                 txtBillingAddress.Enabled = false;
 
                 cbSameWithBilling.Enabled = false;
-
-                cmbDeliveryMethod.Text = "In-house delivery";
                 cmbToCompany.Enabled = false;
 
-                //if location is between OUG and Semenyih
+                COMPANY_DATA_LOADED = true;
+
+                ////if location is between OUG and Semenyih
                 bool fromOUG = doType.ToUpper().Contains("OUG");
                 bool fromSemenyih = doType.ToUpper().Contains("SEMENYIH");
 
-                cmbFromBranch.Enabled = false;
-                cmbToDeliveryLocation.Enabled = false;
+                //cmbFromBranch.Enabled = false;
+                //cmbToDeliveryLocation.Enabled = false;
 
                 if (fromOUG)//SAFETY PLASTICS SDN BHD
                 {
-                    txtDONoSample.Text = "Sample : IT24/999";
+                    //txtDONoSample.Text = "Sample : IT24/999";
                     cmbFromBranch.Text = "OUG";
                     cmbToDeliveryLocation.Text = "Semenyih";
-                    txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
+                    //txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
 
                 }
                 else if (fromSemenyih)//SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)
                 {
-                    txtDONoSample.Text = "Sample : ITN24/S999";
+                    //txtDONoSample.Text = "Sample : ITN24/S999";
                     cmbFromBranch.Text = "Semenyih";
                     cmbToDeliveryLocation.Text = "OUG";
-                    txtShippingAddress.Text = "No.17, PT 2507, Jalan Hi-Tech 2,\r\nKawasan Perindustrian Hi-Tech,\r\nJalan Sungai Lalang,\r\n43500 Semenyih, Selangor\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+                    //txtShippingAddress.Text = "No.17, PT 2507, Jalan Hi-Tech 2,\r\nKawasan Perindustrian Hi-Tech,\r\nJalan Sungai Lalang,\r\n43500 Semenyih, Selangor\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
 
                 }
 
+                DELIVERY_LOCATION_LOADED = true;
+                cmbFromBranch.Enabled = false;
+                cmbToDeliveryLocation.Enabled = false;
 
             }
-          
+
         }
 
         private void cbSameWithBilling_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbSameWithBilling.Checked)
+            if (cbSameWithBilling.Checked)
             {
                 txtShippingAddress.Text = txtBillingAddress.Text;
             }
@@ -1273,6 +1692,41 @@ namespace FactoryManagementSoftware.UI
         {
             UpdateGeneralRemarkextBoxAppearance();
 
+        }
+
+        private void cmbToCompany_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(cmbToCompany.SelectedIndex != -1 && COMPANY_DATA_LOADED)
+            {
+                errorProvider2.Clear();
+
+                //set billing address
+                if (CheckIfInternalDOType())
+                {
+                    txtBillingAddress.Text = "Not Applicable";
+                    txtBillingAddress.Enabled = false;
+                }
+                else
+                {
+                    txtBillingAddress.Enabled = true;
+                }
+
+                InitialDeliveryLocationCombobox(getCompanyTblCode(cmbToCompany), cmbToDeliveryLocation);
+
+            }
+        }
+
+        private void gunaTextBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cmbFromCompany_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cmbFromCompany.SelectedIndex != -1 && COMPANY_DATA_LOADED)
+            {
+                InitialDeliveryLocationCombobox(getCompanyTblCode(cmbFromCompany), cmbFromBranch);
+            }
         }
     }
 }

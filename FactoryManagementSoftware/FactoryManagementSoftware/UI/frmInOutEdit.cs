@@ -1118,7 +1118,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else
                                 {
-                                    transferQty = Convert.ToSingle(txtTrfQty.Text);
+                                    transferQty = childQty;
                                 }
 
                                 if (facStock - transferQty < 0)
