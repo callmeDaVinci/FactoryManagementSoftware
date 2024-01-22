@@ -26,6 +26,7 @@ namespace FactoryManagementSoftware.UI
 
         AddressBookBLL uBillingAddress = new AddressBookBLL();
         AddressBookBLL uShippingAddress = new AddressBookBLL();
+        AddressBookBLL uLetterHeadAddress = new AddressBookBLL();
         internalDOBLL uInternalDO = new internalDOBLL();
 
         private string ITEM_CODE = "ITEM CODE";
@@ -133,6 +134,39 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
 
             }
+            else if (dgv == dgvPreviewItemList)
+            {
+                dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+                dgv.Columns[text.Header_ItemCode].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dgv.Columns[text.Header_ItemCode].MinimumWidth = 100;
+
+
+                dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[text.Header_Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                dgv.Columns[text.Header_Description].MinimumWidth = 100;
+                dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+
+                dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+                dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+
+                dgv.Columns[text.Header_SearchMode].Visible = false;
+                dgv.Columns[text.Header_ItemName].Visible = false;
+                dgv.Columns[text.Header_TotalQty].Visible = false;
+                dgv.Columns[text.Header_TotalQtyUnit].Visible = false;
+                dgv.Columns[text.Header_QtyPerBox].Visible = false;
+                dgv.Columns[text.Header_BoxQty].Visible = false;
+                dgv.Columns[text.Header_BoxUnit].Visible = false;
+                dgv.Columns[text.Header_Balance].Visible = false;
+                dgv.Columns[text.Header_Remark].Visible = false;
+                dgv.Columns[text.Header_Balance].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
+                dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
+
+            }
         }
 
         #endregion
@@ -145,15 +179,147 @@ namespace FactoryManagementSoftware.UI
 
         #region Logic
 
+        private string LETTER_HEAD_ADDRESS = "";
+        private string LETTER_HEAD_CONTACT_INFO = "";
+        private void GetLetterHeadAddressAndContactInfo()
+        {
+             LETTER_HEAD_ADDRESS = "";
+             LETTER_HEAD_CONTACT_INFO = "";
+
+            if (cmbFromBranch.SelectedIndex != -1)
+            {
+                // Get the DataRowView for the selected item
+                DataRowView selectedRow = (DataRowView)cmbFromBranch.SelectedItem;
+
+                uLetterHeadAddress = new AddressBookBLL();
+
+                // Extract the table code from the selected row
+
+                uLetterHeadAddress.tbl_code = int.TryParse(selectedRow[dalAddressBook.tblCode].ToString(), out int i) ? i : -1;
+                uLetterHeadAddress.company_tbl_code = int.TryParse(selectedRow[dalAddressBook.companyTblCode].ToString(), out i) ? i : -1;
+                uLetterHeadAddress.full_name = selectedRow[dalAddressBook.fullName].ToString();
+                uLetterHeadAddress.short_name = selectedRow[dalAddressBook.shortName].ToString();
+                uLetterHeadAddress.registration_no = selectedRow[dalAddressBook.registrationNo].ToString();
+                uLetterHeadAddress.address_1 = selectedRow[dalAddressBook.addressLine1].ToString();
+                uLetterHeadAddress.address_2 = selectedRow[dalAddressBook.addressLine2].ToString();
+                uLetterHeadAddress.address_3 = selectedRow[dalAddressBook.addressLine3].ToString();
+                uLetterHeadAddress.address_state = selectedRow[dalAddressBook.addressState].ToString();
+                uLetterHeadAddress.address_postal_code = selectedRow[dalAddressBook.addressPostalCode].ToString();
+                uLetterHeadAddress.address_country = selectedRow[dalAddressBook.addressCountry].ToString();
+
+                uLetterHeadAddress.fax_no = selectedRow[dalAddressBook.faxNo].ToString();
+                uLetterHeadAddress.contact_name_1 = selectedRow[dalAddressBook.contactName1].ToString();
+                uLetterHeadAddress.contact_number_1 = selectedRow[dalAddressBook.contactNo1].ToString();
+                uLetterHeadAddress.contact_name_2 = selectedRow[dalAddressBook.contactName2].ToString();
+                uLetterHeadAddress.contact_number_2 = selectedRow[dalAddressBook.contactNo2].ToString();
+
+                uLetterHeadAddress.email_address = selectedRow[dalAddressBook.emailAddress].ToString();
+                uLetterHeadAddress.website = selectedRow[dalAddressBook.website].ToString();
+
+                uLetterHeadAddress.route_tbl_code = int.TryParse(selectedRow[dalAddressBook.routeTblCode].ToString(), out i) ? i : -1;
+                uLetterHeadAddress.updated_by = int.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out i) ? i : -1;
+                uLetterHeadAddress.updated_date = DateTime.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out DateTime k) ? k : DateTime.MaxValue;
+
+                uLetterHeadAddress.remark = selectedRow[dalAddressBook.remark].ToString();
+                uLetterHeadAddress.delivery_method_remark = selectedRow[dalAddressBook.deliveryMethodRemark].ToString();
+
+                uLetterHeadAddress.isRemoved = bool.TryParse(selectedRow[dalAddressBook.isRemoved].ToString(), out bool x) ? x : false;
+
+                LETTER_HEAD_ADDRESS = uLetterHeadAddress.address_1;
+
+                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_2))
+                {
+                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_2;
+                }
+
+                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_3))
+                {
+                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_3;
+                }
+
+                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_postal_code) && !string.IsNullOrEmpty(uLetterHeadAddress.address_state))
+                {
+                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_postal_code + " " + uLetterHeadAddress.address_state + ".";
+                }
+
+                
+                if(!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1) || !string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
+                {
+
+                    LETTER_HEAD_CONTACT_INFO = "(Tel) ";
+
+                    if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1))
+                    {
+                        LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_1;
+
+                        if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
+                        {
+                            LETTER_HEAD_CONTACT_INFO += ", " + uLetterHeadAddress.contact_number_2 + " ";
+                        }
+                    }
+                    else
+                    {
+                        LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_2 + " ";
+                    }
+                  
+                }
+
+                if (!string.IsNullOrEmpty(uLetterHeadAddress.fax_no))
+                {
+                    if(!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
+                    {
+                        LETTER_HEAD_CONTACT_INFO += " (Fax) " + uLetterHeadAddress.fax_no;
+                    }
+                    else
+                    {
+                        LETTER_HEAD_CONTACT_INFO = "(Fax) " + uLetterHeadAddress.fax_no;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(uLetterHeadAddress.email_address))
+                {
+                    if (!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
+                    {
+                        LETTER_HEAD_CONTACT_INFO += " (Email) " + uLetterHeadAddress.email_address;
+                    }
+                    else
+                    {
+                        LETTER_HEAD_CONTACT_INFO = "(Email) " + uLetterHeadAddress.email_address;
+                    }
+                }
+
+            }
+        }
+
+        private string GetLetterHeadContactInfo()
+        {
+            string ContactInfo = "";
+
+
+            return ContactInfo;
+        }
+
         private void LoadSummaryData()
         {
+            GetLetterHeadAddressAndContactInfo();
 
-            //lblLetterHeadAddress.Text = "";
-            //lblLetterHeadContactInfo.Text = "";
-            lblDOTypePreview.Text = cmbDOType.Text;
-            txtDeliveryToFullName.Text = uShippingAddress.full_name;
-            txtDeliverToAddress.Text = SHIPPING_ADDRESS;
+            lblLetterHeadAddress.Text = LETTER_HEAD_ADDRESS;
 
+            lblLetterHeadContactInfo.Text = LETTER_HEAD_CONTACT_INFO;
+
+            lblDOTypePreview.Text = cmbDOType.Text.ToUpper();
+            //txtDeliveryToFullName.Text = uShippingAddress.full_name;
+            txtDeliverToAddress.Text = uShippingAddress.full_name + "\r\n" + SHIPPING_ADDRESS;
+
+            dgvPreviewItemList.DataSource = DT_ITEM_LIST;
+            dgvUIEdit(dgvPreviewItemList);
+
+            lblPreviewDORemark.Text = uInternalDO.remark;
+
+            if (cbShowRemarkinDO.Checked)
+            {
+                lblPreviewDORemark.Text += " (show in DO)";
+            }
         }
 
         private bool Validation(int currentStep)
@@ -175,6 +341,9 @@ namespace FactoryManagementSoftware.UI
 
             btnCancelItemEdit.Visible = false;
             btnAddItem.Text = BUTTON_ADDTOLIST_TEXT;
+
+            EDITING_INDEX = -1;
+            DO_ITEM_EDIT_MODE = false;
         }
 
         private bool ItemFieldInspection()
@@ -426,7 +595,6 @@ namespace FactoryManagementSoftware.UI
             tlpStepPanel.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);//Item List
             tlpStepPanel.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0);//Final Reivew
 
-
             tlpButton.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0);//Previous
             tlpButton.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0);//Continue
             tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);//Cancel
@@ -569,6 +737,8 @@ namespace FactoryManagementSoftware.UI
 
                     tlpDOPreview.Visible = true;
 
+                    dgvPreviewItemList.ClearSelection();
+
                     break;
                     #endregion
             }
@@ -576,7 +746,7 @@ namespace FactoryManagementSoftware.UI
             //System.Threading.Thread.Sleep(100);
 
             tlpStepPanel.Visible = true;
-
+            dgvPreviewItemList.ClearSelection();
         }
 
         private void btnPreviousStep_Click(object sender, EventArgs e)
@@ -692,7 +862,17 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
 
-        
+        private bool getItemList()
+        {
+            if(DT_ITEM_LIST?.Rows.Count <= 0)
+            {
+                MessageBox.Show("Item list not found!");
+                return false;
+            }
+
+            return true;
+        }
+
         private void btnContinue_Click(object sender, EventArgs e)
         {
             if (Validation(CURRENT_STEP))
@@ -710,6 +890,10 @@ namespace FactoryManagementSoftware.UI
                 else if(CURRENT_STEP == 2)
                 {
                     //get do item list data
+                    if(!getItemList())
+                    {
+                        return;
+                    }
                 }
 
                 CURRENT_STEP++;
@@ -947,12 +1131,12 @@ namespace FactoryManagementSoftware.UI
             string pcsUnit = string.IsNullOrEmpty(txtTotalQtyUnit.Text) ? "pcs" : txtTotalQtyUnit.Text;
 
             // Construct the packaging info string
-            string packagingInfo = $"{qtyPerBox} {pcsUnit} x {boxQty} {boxUnit}";
+            string packagingInfo = $"{qtyPerBox}{pcsUnit} x {boxQty}{boxUnit}";
 
             // Add balance part if balanceQty is not zero
             if (balanceQty > 0)
             {
-                packagingInfo += $" + bal. {balanceQty}";
+                packagingInfo += $" + bal. {balanceQty}{pcsUnit}";
             }
 
             return packagingInfo;
@@ -1037,13 +1221,13 @@ namespace FactoryManagementSoftware.UI
             //get packaging info
             if (txtTotalQty.Text != "0" && !string.IsNullOrEmpty(txtTotalQty.Text) && cbDescriptionIncludePackaging.Checked && IsTotalQtyCorrect())
             {
-                previewDescription += " : " + GetPackagingInfo();
+                previewDescription += "\r\n" + GetPackagingInfo();
             }
 
             //get remark
             if (cbDescriptionIncludeRemark.Checked && !string.IsNullOrEmpty(txtRemark.Text))
             {
-                previewDescription += " " + txtRemark.Text;
+                previewDescription += "\r\n" + txtRemark.Text;
             }
 
             txtDescriptionPreview.Text = previewDescription;
@@ -1079,7 +1263,25 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        joinDAL dalItemGroup = new joinDAL();
 
+        private string LoadStdPacking(string itemCode)
+        {
+            DataTable DB_Join = dalItemGroup.loadChildList(itemCode);
+
+            foreach (DataRow row in DB_Join.Rows)
+            {
+                string max = row[dalItemGroup.JoinMax].ToString();
+                bool isMainCarton = bool.TryParse(row[dalItemGroup.JoinMainCarton].ToString(), out isMainCarton)? isMainCarton : false;
+
+                if (isMainCarton)
+                {
+                    return max;
+                }
+            }
+
+            return "";
+        }
 
         private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
         {
@@ -1096,6 +1298,8 @@ namespace FactoryManagementSoftware.UI
                         ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
                         ITEM_CODE = row[dalItem.ItemCode].ToString();
 
+                        //get item std packing : main carton = true, max parent qty
+                        txtQtyPerBox.Text = LoadStdPacking(ITEM_CODE);
                         break;
                     }
                 }
@@ -1201,6 +1405,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Please select a row to edit.");
                 return;
             }
+
             EDITING_INDEX = dgvDOItemList.SelectedRows[0].Index;
             GetDataFromList(EDITING_INDEX);
         }
@@ -1211,6 +1416,8 @@ namespace FactoryManagementSoftware.UI
             {
                 ItemFieldReset();
                 dgvDOItemList.ClearSelection();
+
+                
             }
         }
 
