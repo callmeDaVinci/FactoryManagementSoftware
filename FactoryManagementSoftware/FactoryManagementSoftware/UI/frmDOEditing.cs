@@ -24,10 +24,13 @@ namespace FactoryManagementSoftware.UI
         companyDAL dalCompany = new companyDAL();
         addressBookDAL dalAddressBook = new addressBookDAL();
         doInternalDAL dalInternalDO = new doInternalDAL();
+        doInternalItemDAL dalInternalDOItem = new doInternalItemDAL();
+
         AddressBookBLL uBillingAddress = new AddressBookBLL();
         AddressBookBLL uShippingAddress = new AddressBookBLL();
         AddressBookBLL uLetterHeadAddress = new AddressBookBLL();
         internalDOBLL uInternalDO = new internalDOBLL();
+        internalDOItemBLL uInternalDOItem = new internalDOItemBLL();
 
         private string ITEM_CODE = "ITEM CODE";
         private string ITEM_CATEGORY = "CATEGORY";
@@ -86,7 +89,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_QtyPerBox, typeof(string));
             dt.Columns.Add(text.Header_BoxQty, typeof(string));
             dt.Columns.Add(text.Header_BoxUnit, typeof(string));
-            dt.Columns.Add(text.Header_Balance, typeof(string));
+            dt.Columns.Add(text.Header_Balance, typeof(decimal));
 
             dt.Columns.Add(text.Header_Remark, typeof(string));
 
@@ -850,8 +853,8 @@ namespace FactoryManagementSoftware.UI
                 uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_method = cmbDeliveryMethod.Text;
-
-                if(txtDORemark.Text != "Remark :")
+                uInternalDO.remark = "";
+                if (txtDORemark.Text != "Remark :")
                     uInternalDO.remark = txtDORemark.Text;
             }
             else
@@ -917,7 +920,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnJobPublish_Click(object sender, EventArgs e)
         {
-
+            PublishDO();
         }
 
         private string SHIPPING_ADDRESS = "";
@@ -1291,7 +1294,6 @@ namespace FactoryManagementSoftware.UI
             {
                 foreach (DataRow row in DT_ITEM_SOURCE.Rows)
                 {
-                    ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
 
                     if (keywords == row[header_MasterCode].ToString())
                     {
@@ -1938,46 +1940,50 @@ namespace FactoryManagementSoftware.UI
 
         private void btnAddAsDraft_Click(object sender, EventArgs e)
         {
-
+            SaveAsDraft();
         }
 
 
         private string SaveInternalDO(bool isDraft)
         {
             //to-do:
-            string randomCode = tool.GenerateRandomCode();
+            string doCode = "";
             string tblCode = "-1";
             bool success = true;
-
-            //save data to uInternalDO
-            //inspection data, if null then try to get data
-            //uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
-            //uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
-            //uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
 
             //status set to draft
             if (isDraft)
             {
                 uInternalDO.isDraft = true;
+                doCode = tool.GenerateRandomCode();
+                uInternalDO.running_no = -1;
             }
             else
             {
                 uInternalDO.isProcessing = true;
+
+                doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
+
+                int runningNo =  dalDoFormat.GenerateDONumber(doFormat); 
+                doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
+
+                uInternalDO.running_no = runningNo;
             }
 
             //do no string set to random code: GenerateRandomCode()
-            uInternalDO.do_no_string = randomCode;
+            uInternalDO.do_no_string = doCode;
 
             uInternalDO.updated_date = DateTime.Now;
             uInternalDO.updated_by = MainDashboard.USER_ID;
-
+            uInternalDO.delivery_date = dtpDODate.Value;
+            uInternalDO.remark = "";
             //insert to tbl_internal_do: Insert(internalDOBLL u)
             success = dalInternalDO.Insert(uInternalDO);
 
             //if success, get tbl code base on random code
             if (success)
             {
-                tblCode = dalInternalDO.SelectTblCodeByRandomCode(randomCode);
+                tblCode = dalInternalDO.SelectTblCodeByDOCode(doCode);
             }
             else
             {
@@ -1994,6 +2000,54 @@ namespace FactoryManagementSoftware.UI
 
             bool success = true;
 
+            DataTable dt = (DataTable) dgvPreviewItemList.DataSource;
+            int tblCode_INT = int.TryParse(tblCode, out tblCode_INT) ? tblCode_INT : -1;
+
+            if(tblCode_INT < 0)
+            {
+                MessageBox.Show("Invalid tbl code found. Failed to save Internal DO Item.");
+                return false;
+            }
+
+            if(dt?.Rows.Count > 0)
+            {
+                uInternalDOItem.updated_date = DateTime.Now;
+                uInternalDOItem.updated_by = MainDashboard.USER_ID;
+                uInternalDOItem.isRemoved = false;
+                uInternalDOItem.internal_do_tbl_code = tblCode_INT;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    uInternalDOItem.item_code = row[text.Header_ItemCode].ToString();
+                    uInternalDOItem.total_qty = Convert.ToDecimal(row[text.Header_Qty]);
+                    uInternalDOItem.qty_unit = row[text.Header_Unit].ToString();
+                    uInternalDOItem.qty_per_box = Convert.ToInt32(row[text.Header_QtyPerBox]);
+                    uInternalDOItem.box_qty = Convert.ToInt32(row[text.Header_BoxQty]);
+                    uInternalDOItem.box_unit = row[text.Header_BoxUnit].ToString();
+                    uInternalDOItem.balance_qty = Convert.ToDecimal(row[text.Header_Balance].ToString());
+                    uInternalDOItem.remark = row[text.Header_Remark].ToString();
+                    uInternalDOItem.search_mode = Convert.ToBoolean(row[text.Header_SearchMode]);
+                    uInternalDOItem.item_description = row[text.Header_ItemName].ToString();
+                    uInternalDOItem.description = row[text.Header_Description].ToString(); 
+                    uInternalDOItem.description_packing = Convert.ToBoolean(row[text.Header_DescriptionIncludePackaging]);
+                    uInternalDOItem.description_category = Convert.ToBoolean(row[text.Header_DescriptionIncludeCategory]);
+                    uInternalDOItem.description_remark = Convert.ToBoolean(row[text.Header_DescriptionIncludeRemark]);
+
+                    success = dalInternalDOItem.Insert(uInternalDOItem);
+
+                    if(!success)
+                    {
+                        MessageBox.Show("Failed to save item: " + uInternalDOItem.item_description + " !");
+                        return false;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Item list not found!");
+                return false;
+
+            }
 
             return success;
         }
@@ -2006,14 +2060,17 @@ namespace FactoryManagementSoftware.UI
 
                 if(tblCode != "-1")
                 {
-                    //to-do part 2:
-                    //get item list data
-                    //save item data to tbl_internal_do_item: ???
+                    if(SaveInternalDOItem(tblCode))
+                    {
+                        MessageBox.Show("DO save as draft successful!");
+                        DATA_SAVED = true;
+                        Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed to save DO draft!");
 
-                    //to-do part 3:
-                    //if publish do, then get new do running no from tbl_do_format base on tbl code:  GenerateDONumber(doFormatBLL format)
-                    //apply do format to new running no to get new do no string: ApplyDOFormat(doFormatBLL format, int newNumber)
-                    //update running number,do no string, and status to tbl_internal_do: UpdateDoNo(internalDOBLL u) base on tbl code
+                    }
                 }
                 else
                 {
@@ -2022,6 +2079,35 @@ namespace FactoryManagementSoftware.UI
                 }
             }
           
+        }
+
+        private void PublishDO()
+        {
+            if (CheckIfInternalDOType())
+            {
+                string tblCode = SaveInternalDO(false);
+
+                if (tblCode != "-1")
+                {
+                    if (SaveInternalDOItem(tblCode))
+                    {
+                        MessageBox.Show("DO publishedl!");
+                        DATA_SAVED = true;
+                        Close();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Failed publish DO!");
+
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Failed to get tbl code!");
+                    return;
+                }
+            }
+
         }
     }
 }

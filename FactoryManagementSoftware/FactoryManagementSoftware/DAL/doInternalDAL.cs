@@ -25,7 +25,7 @@ namespace FactoryManagementSoftware.DAL
         public string IsProcessing { get; } = "isProcessing";
         public string IsCompleted { get; } = "isCompleted";
         public string IsCancelled { get; } = "isCancelled";
-        public string remark { get; } = "remark";
+        public string Remark { get; } = "remark";
         public string updatedDate { get; } = "updated_date";
         public string updatedBy { get; } = "updated_by";
 
@@ -114,7 +114,7 @@ namespace FactoryManagementSoftware.DAL
         }
         #endregion
 
-        public string SelectTblCodeByRandomCode(string RandomCode)
+        public string SelectTblCodeByDOCode(string RandomCode)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);
             string tblCode = "-1";
@@ -175,7 +175,7 @@ namespace FactoryManagementSoftware.DAL
                             + IsProcessing + ","
                             + IsCompleted + ","
                             + IsCancelled + ","
-                            + remark + ","
+                            + Remark + ","
                             + updatedDate + ","
                             + updatedBy + ") VALUES" +
                             "(@do_format_tbl_code," +
@@ -191,7 +191,6 @@ namespace FactoryManagementSoftware.DAL
                             "@isCompleted," +
                             "@isCancelled," +
                             "@remark," +
-                            "@isRemoved," +
                             "@updated_date," +
                             "@updated_by)";
 
@@ -262,7 +261,7 @@ namespace FactoryManagementSoftware.DAL
                             + IsProcessing + ","
                             + IsCompleted + ","
                             + IsCancelled + ","
-                            + remark + ","
+                            + Remark + ","
                             + updatedDate + ","
                             + updatedBy + ") VALUES" +
                             "(@do_format_tbl_code," +
@@ -354,7 +353,7 @@ namespace FactoryManagementSoftware.DAL
                            + IsProcessing + "=@isProcessing,"
                            + IsCompleted + "=@isCompleted,"
                            + IsCancelled + "=@isCancelled,"
-                           + remark + "=@remark,"
+                           + Remark + "=@remark,"
                            + updatedDate + "=@updated_date,"
                            + updatedBy + "=@updated_by" +
                            " WHERE tbl_code = @tbl_code";
@@ -362,6 +361,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
                 cmd.Parameters.AddWithValue("@do_format_tbl_code", u.do_format_tbl_code);
                 cmd.Parameters.AddWithValue("@running_no", u.running_no);
                 cmd.Parameters.AddWithValue("@do_no_string", u.do_no_string);
@@ -429,6 +429,7 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
              
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
                 cmd.Parameters.AddWithValue("@running_no", u.running_no);
                 cmd.Parameters.AddWithValue("@do_no_string", u.do_no_string);
                 cmd.Parameters.AddWithValue("@isDraft", u.isDraft);
@@ -483,6 +484,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
 
                 cmd.Parameters.AddWithValue("@delivery_date", u.delivery_date);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);

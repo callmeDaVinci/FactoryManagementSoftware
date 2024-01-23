@@ -104,16 +104,16 @@ namespace FactoryManagementSoftware.DAL
                     doFormat.tbl_code = row[tblCode] != DBNull.Value ? Convert.ToInt32(row[tblCode]) : -1;
                     doFormat.letter_head_tbl_code = row[letterHeadTblCode] != DBNull.Value ? Convert.ToInt32(row[letterHeadTblCode]) : -1;
                     doFormat.sheet_format_tbl_code = row[sheetFormatTblCode] != DBNull.Value ? Convert.ToInt32(row[sheetFormatTblCode]) : -1;
-                    doFormat.do_type = row[doType] != DBNull.Value ? row[doType].ToString() : "do-type-null";
-                    doFormat.no_format = row[noFormat] != DBNull.Value ? row[noFormat].ToString() : "do-no-format-null";
-                    doFormat.prefix = row[prefix] != DBNull.Value ? row[prefix].ToString() : "prefix-null";
-                    doFormat.date_format = row[dateFormat] != DBNull.Value ? row[dateFormat].ToString() : "date-format-null";
-                    doFormat.suffix = row[suffix] != DBNull.Value ? row[suffix].ToString() : "suffix-null";
+                    doFormat.do_type = row[doType] != DBNull.Value ? row[doType].ToString() : "";
+                    doFormat.no_format = row[noFormat] != DBNull.Value ? row[noFormat].ToString() : "";
+                    doFormat.prefix = row[prefix] != DBNull.Value ? row[prefix].ToString() : "";
+                    doFormat.date_format = row[dateFormat] != DBNull.Value ? row[dateFormat].ToString() : "";
+                    doFormat.suffix = row[suffix] != DBNull.Value ? row[suffix].ToString() : "";
                     doFormat.running_number_length = row[runningNumberLength] != DBNull.Value ? Convert.ToInt32(row[runningNumberLength]) : -1;
                     doFormat.last_number = row[lastNumber] != DBNull.Value ? Convert.ToInt32(row[lastNumber]) : -1;
-                    doFormat.reset_running_number = row[resetRunningNumber] != DBNull.Value ? row[resetRunningNumber].ToString() : "reset-running-number-null";
+                    doFormat.reset_running_number = row[resetRunningNumber] != DBNull.Value ? row[resetRunningNumber].ToString() : "";
                     doFormat.isInternal = row[isInternal] != DBNull.Value ? Convert.ToBoolean(row[isInternal]) : false;
-                    doFormat.remark = row[remark] != DBNull.Value ? row[remark].ToString() : "remark-null";
+                    doFormat.remark = row[remark] != DBNull.Value ? row[remark].ToString() : "";
                     doFormat.isRemoved = row[isRemoved] != DBNull.Value ? Convert.ToBoolean(row[isRemoved]) : false;
                     doFormat.updated_by = row[updatedBy] != DBNull.Value ? Convert.ToInt32(row[updatedBy]) : -1;
                     doFormat.updated_date = row[updatedDate] != DBNull.Value ? Convert.ToDateTime(row[updatedDate]) : DateTime.MinValue;
@@ -464,11 +464,18 @@ namespace FactoryManagementSoftware.DAL
             // Get the current date
             DateTime currentDate = DateTime.Now;
 
+            if (format.last_reset_date == DateTime.MinValue)
+            {
+                lastNumber = 0;
+                lastResetDate = currentDate;
+
+            }
             // Check if a reset is needed
-            if ((isYearlyReset && currentDate.Year != lastResetDate.Year) ||
+            else if ((isYearlyReset && currentDate.Year != lastResetDate.Year) ||
                 (isMonthlyReset && (currentDate.Year != lastResetDate.Year || currentDate.Month != lastResetDate.Month)))
             {
                 lastNumber = 0; // Reset the last number
+                lastResetDate = currentDate;
             }
 
             // Increment the last number
@@ -486,6 +493,7 @@ namespace FactoryManagementSoftware.DAL
             // Update the table with the new last number and reset date
             format.last_number = lastNumber;
             format.last_reset_date = lastResetDate;
+
             UpdateLastNumberAndResetDate(format);
 
             return lastNumber;
@@ -498,6 +506,16 @@ namespace FactoryManagementSoftware.DAL
             string dateFormat = format.date_format;
             string suffix = format.suffix;
             int runningNumberLength = format.running_number_length;
+
+            if(string.IsNullOrEmpty(prefix))
+            {
+                prefix = string.Empty;
+            }
+
+            if (string.IsNullOrEmpty(suffix))
+            {
+                suffix = string.Empty;
+            }
 
             // Get the current date
             DateTime currentDate = DateTime.Now;

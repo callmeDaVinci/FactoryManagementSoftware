@@ -172,6 +172,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\companyBLL.cs" />
+    <Compile Include="BLL\internalDOItemBLL.cs" />
     <Compile Include="BLL\internalDOBLL.cs" />
     <Compile Include="BLL\doFormatBLL.cs" />
     <Compile Include="BLL\AddressBookBLL.cs" />
@@ -209,6 +210,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DAL\companyDAL.cs" />
+    <Compile Include="DAL\doInternalItemDAL.cs" />
     <Compile Include="DAL\doInternalDAL.cs" />
     <Compile Include="DAL\doFormatDAL.cs" />
     <Compile Include="DAL\childTrfHistDAL.cs" />
