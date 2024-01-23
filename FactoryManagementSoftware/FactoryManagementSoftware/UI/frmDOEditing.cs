@@ -23,7 +23,7 @@ namespace FactoryManagementSoftware.UI
         doFormatDAL dalDoFormat = new doFormatDAL();
         companyDAL dalCompany = new companyDAL();
         addressBookDAL dalAddressBook = new addressBookDAL();
-
+        doInternalDAL dalInternalDO = new doInternalDAL();
         AddressBookBLL uBillingAddress = new AddressBookBLL();
         AddressBookBLL uShippingAddress = new AddressBookBLL();
         AddressBookBLL uLetterHeadAddress = new AddressBookBLL();
@@ -1934,6 +1934,94 @@ namespace FactoryManagementSoftware.UI
             {
                 InitialDeliveryLocationCombobox(getCompanyTblCode(cmbFromCompany), cmbFromBranch);
             }
+        }
+
+        private void btnAddAsDraft_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private string SaveInternalDO(bool isDraft)
+        {
+            //to-do:
+            string randomCode = tool.GenerateRandomCode();
+            string tblCode = "-1";
+            bool success = true;
+
+            //save data to uInternalDO
+            //inspection data, if null then try to get data
+            //uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
+            //uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
+            //uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
+
+            //status set to draft
+            if (isDraft)
+            {
+                uInternalDO.isDraft = true;
+            }
+            else
+            {
+                uInternalDO.isProcessing = true;
+            }
+
+            //do no string set to random code: GenerateRandomCode()
+            uInternalDO.do_no_string = randomCode;
+
+            uInternalDO.updated_date = DateTime.Now;
+            uInternalDO.updated_by = MainDashboard.USER_ID;
+
+            //insert to tbl_internal_do: Insert(internalDOBLL u)
+            success = dalInternalDO.Insert(uInternalDO);
+
+            //if success, get tbl code base on random code
+            if (success)
+            {
+                tblCode = dalInternalDO.SelectTblCodeByRandomCode(randomCode);
+            }
+            else
+            {
+                //if not success, show error message (MessageBox)
+                MessageBox.Show("Failed to save internal do data!");
+            }
+
+
+            return tblCode;
+        }
+
+        private bool SaveInternalDOItem(string tblCode)
+        {
+
+            bool success = true;
+
+
+            return success;
+        }
+
+        private void SaveAsDraft()
+        {
+            if (CheckIfInternalDOType())
+            {
+                string tblCode =  SaveInternalDO(true);
+
+                if(tblCode != "-1")
+                {
+                    //to-do part 2:
+                    //get item list data
+                    //save item data to tbl_internal_do_item: ???
+
+                    //to-do part 3:
+                    //if publish do, then get new do running no from tbl_do_format base on tbl code:  GenerateDONumber(doFormatBLL format)
+                    //apply do format to new running no to get new do no string: ApplyDOFormat(doFormatBLL format, int newNumber)
+                    //update running number,do no string, and status to tbl_internal_do: UpdateDoNo(internalDOBLL u) base on tbl code
+                }
+                else
+                {
+                    MessageBox.Show("Failed to get tbl code!");
+                    return;
+                }
+            }
+          
         }
     }
 }

@@ -2157,6 +2157,25 @@ namespace FactoryManagementSoftware.Module
 
         }
 
+        private  Random random = new Random();
+
+        public string GenerateRandomCode()
+        {
+            string dateNow = DateTime.Now.ToString(); 
+            string randomString = GenerateRandomString(10); // Generate a 10-character random string
+
+            return dateNow + randomString;
+        }
+
+        public string GenerateRandomString(int length)
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()_+";
+            string randomString = new string(Enumerable.Repeat(chars, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+
+            return randomString;
+        }
+
         public bool IfDONoExistInRemovedDO(string doNO)
         {
             SBBDataDAL dalSPP = new SBBDataDAL();

@@ -209,6 +209,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="DAL\companyDAL.cs" />
+    <Compile Include="DAL\doInternalDAL.cs" />
     <Compile Include="DAL\doFormatDAL.cs" />
     <Compile Include="DAL\childTrfHistDAL.cs" />
     <Compile Include="DAL\custSupplierDAL.cs" />

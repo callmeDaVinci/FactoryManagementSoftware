@@ -17,12 +17,17 @@ namespace FactoryManagementSoftware.BLL
         public string date_format { get; set; }
         public string suffix { get; set; }
         public int running_number_length { get; set; }
-        public int next_start_number { get; set; }
+        public int last_number { get; set; }
         public string reset_running_number { get; set; }
         public bool isInternal { get; set; }
         public string remark { get; set; }
         public bool isRemoved { get; set; }
         public int updated_by { get; set; }
         public DateTime updated_date { get; set; }
+
+        public bool isMonthlyReset { get; set; }
+        public bool isYearlyReset { get; set; }
+
+        public DateTime last_reset_date { get; set; }
     }
 }
