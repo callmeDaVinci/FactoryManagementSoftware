@@ -14,6 +14,7 @@ using System.Linq;
 using Font = System.Drawing.Font;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
+using Syncfusion.XlsIO;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -429,7 +430,9 @@ namespace FactoryManagementSoftware.UI
                         dgv.Rows[rowIndex].Cells[header_DataMode].Value = text_ToRemove;
                         dgv.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Gray;
                     }
-                    
+
+                    BigSprayJetPriceSetBaseOnQty();
+                    SmallSprayJetPriceSetBaseOnQty();
 
                     //AddIndexToOrderTable();
                     // dgv.DataSource = dt_OrderList;
@@ -2162,6 +2165,115 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private void BigSprayJetPriceSetBaseOnQty()
+        {
+            DataTable dt = (DataTable)dgvPOItemList.DataSource;
+            int totalQty = 0;
+            decimal unitPrice = (decimal) 0.35;
+
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string dataMode = row[header_DataMode].ToString();
+                    string itemCode = row[header_Code].ToString();
+
+                    if (dataMode != text_ToRemove && itemCode.Contains("SJ360B"))
+                    {
+                        totalQty += int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
+                    }
+
+                }
+
+                if(totalQty >= 10000 && totalQty < 20000)
+                {
+                    unitPrice = (decimal)0.3;
+                }
+                else if (totalQty >= 20000 && totalQty < 40000)
+                {
+                    unitPrice = (decimal) 0.25;
+                }
+                else if (totalQty >= 40000 )
+                {
+                    unitPrice = (decimal) 0.2;
+                }
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string dataMode = row[header_DataMode].ToString();
+                    string itemCode = row[header_Code].ToString();
+
+                    if (dataMode != text_ToRemove && itemCode.Contains("SJ360B"))
+                    {
+                        int orderQty = int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
+                        decimal discountRate = decimal.TryParse(row[header_Discount].ToString(), out discountRate) ? discountRate :  80;
+
+                        row[header_UnitPrice] = unitPrice;
+
+                        decimal amount = (1 - discountRate / 100) * unitPrice;
+
+                        row[header_Total] = decimal.Round(amount * orderQty, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                }
+            }
+       
+        }
+        private void SmallSprayJetPriceSetBaseOnQty()
+        {
+            DataTable dt = (DataTable)dgvPOItemList.DataSource;
+            int totalQty = 0;
+            decimal unitPrice = (decimal)0.3;
+
+            if (dt != null)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    string dataMode = row[header_DataMode].ToString();
+                    string itemCode = row[header_Code].ToString();
+
+                    if (dataMode != text_ToRemove && itemCode.Contains("SJ360S"))
+                    {
+                        totalQty += int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
+                    }
+
+                }
+
+                if (totalQty >= 10000 && totalQty < 20000)
+                {
+                    unitPrice = (decimal)0.25;
+                }
+                else if (totalQty >= 20000 && totalQty < 40000)
+                {
+                    unitPrice = (decimal)0.2;
+                }
+                else if (totalQty >= 40000)
+                {
+                    unitPrice = (decimal)0.15;
+                }
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string dataMode = row[header_DataMode].ToString();
+                    string itemCode = row[header_Code].ToString();
+
+                    if (dataMode != text_ToRemove && itemCode.Contains("SJ360S"))
+                    {
+                        int orderQty = int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
+                        decimal discountRate = decimal.TryParse(row[header_Discount].ToString(), out discountRate) ? discountRate : 80;
+
+                        row[header_UnitPrice] = unitPrice;
+
+                        decimal amount = (1 - discountRate / 100) * unitPrice;
+
+                        row[header_Total] = decimal.Round(amount * orderQty, 2, MidpointRounding.AwayFromZero);
+                    }
+
+                }
+            }
+
+        }
+
         private bool checkIfItemAdded(string itemCode)
         {
             DataTable dt = (DataTable)dgvPOItemList.DataSource;
@@ -2186,8 +2298,11 @@ namespace FactoryManagementSoftware.UI
         private void btnAddItem_Click(object sender, EventArgs e)
         {
             string itemCode = lblCode.Text;
-            
-            if(!checkIfItemAdded(itemCode))
+
+            bool isBigSprayJet = itemCode.Contains("SJ360B");
+            bool isSmallSprayJet = itemCode.Contains("SJ360S");
+
+            if (!checkIfItemAdded(itemCode))
             {
                 if (!string.IsNullOrEmpty(itemCode))
                 {
@@ -2201,6 +2316,16 @@ namespace FactoryManagementSoftware.UI
                     else if (btnAddItem.Text == text_UpdateItem)
                     {
                         UpdateItemToList();
+                    }
+
+                    if(isBigSprayJet)
+                    {
+                        BigSprayJetPriceSetBaseOnQty();
+                    }
+
+                    if (isSmallSprayJet)
+                    {
+                        SmallSprayJetPriceSetBaseOnQty();
                     }
 
                     UpdateTotalPrice();

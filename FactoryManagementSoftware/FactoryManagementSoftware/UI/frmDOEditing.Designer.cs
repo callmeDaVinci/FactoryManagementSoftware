@@ -2024,7 +2024,7 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.Radius = 3;
             this.txtShippingAddress.ReadOnly = true;
             this.txtShippingAddress.SelectedText = "";
-            this.txtShippingAddress.Size = new System.Drawing.Size(1, 522);
+            this.txtShippingAddress.Size = new System.Drawing.Size(1, 500);
             this.txtShippingAddress.TabIndex = 247;
             // 
             // txtBillingAddress
@@ -2049,7 +2049,7 @@ namespace FactoryManagementSoftware.UI
             this.txtBillingAddress.Radius = 3;
             this.txtBillingAddress.ReadOnly = true;
             this.txtBillingAddress.SelectedText = "";
-            this.txtBillingAddress.Size = new System.Drawing.Size(1, 522);
+            this.txtBillingAddress.Size = new System.Drawing.Size(1, 500);
             this.txtBillingAddress.TabIndex = 246;
             // 
             // tableLayoutPanel18

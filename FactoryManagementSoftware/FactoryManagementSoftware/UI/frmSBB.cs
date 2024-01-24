@@ -14,6 +14,8 @@ using System.Globalization;
 using System.Configuration;
 using System.IO;
 using System.Data.OleDb;
+using Org.BouncyCastle.Asn1.Pkcs;
+using System.Xml.Linq;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -2431,10 +2433,438 @@ namespace FactoryManagementSoftware.UI
             //var startOfMonth = new DateTime(now.Year, now.Month, 1);
             LayoutPanelDisplay(true);
 
+            NewItemUpdates();
 
             ResumeLayout();
         }
+        SBBDataDAL dalData = new SBBDataDAL();
+        SBBDataBLL uData = new SBBDataBLL();
 
+        private DataTable DT_SIZE;
+        private DataTable DT_TYPE;
+        private DataTable DT_CATEGORY;
+
+        private string GetTblCode(DataTable dt,string data)
+        {
+            string tblCode = "-1";
+            string colName = "";
+            if(dt.Columns.Contains(dalData.SizeNumerator))
+            {
+                colName = dalData.SizeNumerator;
+            }
+            else if (dt.Columns.Contains(dalData.TypeName))
+            {
+                colName = dalData.TypeName;
+            }
+            else if (dt.Columns.Contains(dalData.CategoryName))
+            {
+                colName = dalData.CategoryName;
+            }
+            if(!string.IsNullOrEmpty(colName))
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[colName].ToString().ToUpper() == data.ToUpper())
+                    {
+                        tblCode = row[dalData.TableCode].ToString();
+                        return tblCode;
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Column not found!");
+            }
+            return tblCode;
+        }
+        private void InsertNewSize(float numerator, float denominator,string unit)
+        {
+
+            if(DT_SIZE?.Rows.Count <= 0)
+            {
+                DT_SIZE = dalData.SizeSelect();
+            }
+
+            foreach(DataRow row in DT_SIZE.Rows)
+            {
+                if (row[dalData.SizeNumerator].ToString() == numerator.ToString())
+                {
+                    return;
+                }
+            }
+
+
+            uData.Updated_Date = DateTime.Now;
+            uData.Updated_By = MainDashboard.USER_ID;
+
+            float weight = numerator / denominator;
+
+            uData.Size_Numerator = (int)numerator;
+            uData.Size_Denominator = (int)denominator;
+            uData.Size_Weight = weight;
+            uData.Size_Unit = unit;
+
+            if (!dalData.InsertSize(uData))
+            {
+                MessageBox.Show("Failed to insert size data to DB.");
+            }
+
+        }
+
+        private void InsertNewType(string typeName, bool isCommon)
+        {
+            if (DT_TYPE?.Rows.Count <= 0)
+            {
+                DT_TYPE = dalData.TypeSelect();
+            }
+
+            foreach (DataRow row in DT_TYPE.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalData.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (row[dalData.TypeName].ToString().ToUpper() == typeName.ToUpper() && !isRemoved)
+                {
+
+                    return;
+                }
+            }
+
+
+            uData.Updated_Date = DateTime.Now;
+            uData.Updated_By = MainDashboard.USER_ID;
+
+            uData.Type_Name = typeName.ToUpper();
+            uData.IsCommon = isCommon;
+
+            if (!dalData.InsertType(uData))
+            {
+                MessageBox.Show("Failed to insert type data to DB.");
+            }
+        }
+
+        private bool IfItemAddedToDB(String productCode)
+        {
+            return tool.getItemCatFromDataTable(dt_Item, productCode) != "";
+        }
+
+        static public itemBLL uItem = new itemBLL();
+
+        private void ChildPartInsert(string itemCode, string itemName)
+        {
+            if(!IfItemAddedToDB(itemCode))
+            {
+                //General Data
+                uItem.item_cat = text.Cat_Part;
+                uItem.item_code = itemCode;
+                uItem.item_name = itemName;
+                uItem.item_unit = text.Unit_Piece;
+                uItem.item_wastage_allowed = 0;
+                uItem.item_assembly = 0;
+                uItem.item_production = 1;
+                uItem.item_sbb = 1;
+
+                //Quotation Data
+                uItem.item_quo_ton = 0;
+                uItem.item_quo_ct = 0;
+                uItem.item_quo_pw_pcs = 0;
+                uItem.item_quo_rw_pcs = 0;
+
+                //Production Data
+                uItem.item_best_ton = 0;
+                uItem.item_pro_ton = 0;
+                uItem.item_pro_ct_from = 0;
+                uItem.item_pro_ct_to = 0;
+                uItem.item_cavity = 0;
+                uItem.item_pro_cooling = 0;
+
+                uItem.item_pro_pw_shot = 0;
+                uItem.item_pro_rw_shot = 0;
+
+                uItem.item_pro_pw_pcs = 0;
+                uItem.item_pro_rw_pcs = 0;
+
+                //Material Data
+                uItem.item_material = "";
+                uItem.item_mb = "";
+                uItem.item_mb_rate = 0;
+                uItem.item_color = "";
+
+                uItem.unit_to_pcs_rate = 1;
+
+                DateTime now = DateTime.Now;
+                uItem.item_added_date = now;
+                uItem.item_added_by = MainDashboard.USER_ID;
+
+                uItem.item_updtd_date = now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                //Inserting Data into Database
+                bool success = dalItem.ItemMasterList_ItemAdd(uItem);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    MessageBox.Show("Failed to add new item");
+                }
+            }
+        }
+
+        private void FinishedGoodesInsert(string itemCode, string itemName)
+        {
+            if (!IfItemAddedToDB(itemCode))
+            {
+                //General Data
+                uItem.item_cat = text.Cat_Part;
+                uItem.item_code = itemCode;
+                uItem.item_name = itemName;
+                uItem.item_unit = text.Unit_Set;
+                uItem.item_wastage_allowed = 0;
+                uItem.item_assembly = 1;
+                uItem.item_production = 0;
+                uItem.item_sbb = 1;
+
+                //Quotation Data
+                uItem.item_quo_ton = 0;
+                uItem.item_quo_ct = 0;
+                uItem.item_quo_pw_pcs = 0;
+                uItem.item_quo_rw_pcs = 0;
+
+                //Production Data
+                uItem.item_best_ton = 0;
+                uItem.item_pro_ton = 0;
+                uItem.item_pro_ct_from = 0;
+                uItem.item_pro_ct_to = 0;
+                uItem.item_cavity = 0;
+                uItem.item_pro_cooling = 0;
+
+                uItem.item_pro_pw_shot = 0;
+                uItem.item_pro_rw_shot = 0;
+
+                uItem.item_pro_pw_pcs = 0;
+                uItem.item_pro_rw_pcs = 0;
+
+                //Material Data
+                uItem.item_material = "";
+                uItem.item_mb = "";
+                uItem.item_mb_rate = 0;
+                uItem.item_color = "";
+
+                uItem.unit_to_pcs_rate = 1;
+
+                DateTime now = DateTime.Now;
+                uItem.item_added_date = now;
+                uItem.item_added_by = MainDashboard.USER_ID;
+
+                uItem.item_updtd_date = now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                //Inserting Data into Database
+                bool success = dalItem.ItemMasterList_ItemAdd(uItem);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    MessageBox.Show("Failed to add new item");
+                }
+            }
+        }
+
+        private void UpdateStdPacking(string itemCode,int pcsPerPacket, int pcsPerBag, int pcsPerContainer)
+        {
+          
+            if (pcsPerPacket > 0 || pcsPerBag > 0 || pcsPerContainer > 0)
+            {
+                SBBDataBLL uData = new SBBDataBLL();
+                SBBDataDAL dalData = new SBBDataDAL();
+
+                uData.Max_Lvl = 0;
+
+                uData.Updated_Date = DateTime.Now;
+                uData.Updated_By = MainDashboard.USER_ID;
+
+                uData.Qty_Per_Container = pcsPerContainer;
+                uData.Qty_Per_Packet = pcsPerPacket;
+                uData.Qty_Per_Bag = pcsPerBag;
+
+                uData.Item_code = itemCode;
+
+
+                if (!dalData.InsertStdPacking(uData))
+                {
+                    MessageBox.Show("Failed to insert standard packing data to DB.");
+                }
+            }
+        }
+
+        private void UpdatePrice()
+        {
+            //update price
+            //    if (IfSBBProductItem())
+            //    {
+            //        DialogResult dialogResult = MessageBox.Show("Do you want to add a new  Price & Discount Rate for this product?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            //        if (dialogResult == DialogResult.Yes)
+            //        {
+            //            //password
+            //            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
+            //            {
+            //                StartPosition = FormStartPosition.CenterScreen
+            //            };
+
+
+            //            frm.ShowDialog();
+
+            //            if (frmVerification.PASSWORD_MATCHED)
+            //            {
+            //                frmSBBPrice frm2 = new frmSBBPrice
+            //                {
+            //                    StartPosition = FormStartPosition.CenterScreen
+            //                };
+
+            //                frm2.ShowDialog();
+            //            }
+            //        }
+        }
+
+        private void UpdateItemGroup()
+        {
+            uJoin.join_parent_code = txtItemCode.Text;
+
+            uJoin.join_child_code = "";
+
+            frmJoinEdit frm = new frmJoinEdit(uJoin, false);
+
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+        }
+        
+        private void NewItemUpdates()
+        {
+            bool Validation = true;
+            Validation &= MainDashboard.USER_ID == 1;
+            Validation &= DateTime.Now.Year == 2024 &&  DateTime.Now.Month == 1 && DateTime.Now.Day == 24;
+
+            if (Validation)
+            {
+                if (dt_Item == null || dt_Item.Rows.Count < 0)
+                    dt_Item = dalItem.Select();
+
+                if(IfItemAddedToDB("SP323"))
+                {
+                    return;
+                }
+
+                DT_SIZE = dalData.SizeSelect();
+                DT_TYPE = dalData.TypeSelect();
+
+                //insert new type and new size
+                int sizeType = 323;
+                string SprinklerTypeName = "Sprinkler";
+                string ArmTypeName = "SP323 Arm";
+                string Nozzle1TypeName = "SP323 Nozzle 1";
+                string Nozzle2TypeName = "SP323 Nozzle 2";
+                string RodTypeName = "SP323 Rod";
+                string AdjusterTypeName = "SP323 Adjuster";
+                string GasketTypeName = "SP323 Gasket";
+                string TopBodyTypeName = "SP323 Top Body";
+                string BottomBushTypeName = "SP323 Bottom Bush";
+                string EllenBodyTypeName = "SP323 Ellen Body";
+
+                InsertNewSize(sizeType, 1," ");
+
+                InsertNewType(SprinklerTypeName, false);
+                InsertNewType(ArmTypeName, true);
+                InsertNewType(Nozzle1TypeName, true);
+                InsertNewType(Nozzle2TypeName, true);
+                InsertNewType(RodTypeName, true);
+                InsertNewType(AdjusterTypeName, true);
+                InsertNewType(GasketTypeName, true);
+                InsertNewType(TopBodyTypeName, true);
+                InsertNewType(BottomBushTypeName, true);
+                InsertNewType(EllenBodyTypeName, true);
+
+                //insert new sprinkler child part
+                DT_SIZE = dalData.SizeSelect();
+                DT_TYPE = dalData.TypeSelect();
+                DT_CATEGORY = dalData.CategorySelect();
+
+                uItem.Size_tbl_code_1 = int.TryParse(GetTblCode(DT_SIZE, sizeType.ToString()), out int i) ? i : -1;
+                uItem.Size_tbl_code_2 = -1;
+                uItem.Category_tbl_code = int.TryParse(GetTblCode(DT_CATEGORY, text.Cat_CommonPart), out i) ? i : -1;
+
+                string ArmCode = "SP323AR";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, ArmTypeName), out i) ? i : -1;
+                ChildPartInsert(ArmCode, "SPRINKLER 323 ARM");
+
+                string Nozzle1Code = "SP323N1";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, Nozzle1TypeName), out i) ? i : -1;
+                ChildPartInsert(Nozzle1Code, "SPRINKLER 323 NOZZLE 1");
+
+                string Nozzle2Code = "SP323N2";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, Nozzle2TypeName), out i) ? i : -1;
+                ChildPartInsert(Nozzle2Code, "SPRINKLER 323 NOZZLE 2");
+
+                string RodCode = "SP323RD";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, RodTypeName), out i) ? i : -1;
+                ChildPartInsert(RodCode, "SPRINKLER 323 ROD");
+
+                string AdjusterCode = "SP323AD";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, AdjusterTypeName), out i) ? i : -1;
+                ChildPartInsert(AdjusterCode, "SPRINKLER 323 ADJUSTER");
+
+                string GasketCode = "SP323GK";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, GasketTypeName), out i) ? i : -1;
+                ChildPartInsert(GasketCode, "SPRINKLER 323 GASKET");
+
+                string TopBodyCode = "SP323TB";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, TopBodyTypeName), out i) ? i : -1;
+                ChildPartInsert(TopBodyCode, "SPRINKLER 323 TOP BODY");
+
+                string BottomBushCode = "SP323BB";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, BottomBushTypeName), out i) ? i : -1;
+                ChildPartInsert(BottomBushCode, "SPRINKLER 323 BOTTOM BUSH");
+
+                string EllenBodyCode = "SP323EB";
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, EllenBodyTypeName), out i) ? i : -1;
+                ChildPartInsert(EllenBodyCode, "SPRINKLER 323 ELLEN BODY");
+
+                //insert new sprinkler 323 finished goods 
+                string Sprinkler323Code = "(OK) SP323";
+                uItem.Category_tbl_code = int.TryParse(GetTblCode(DT_CATEGORY, "Products"), out i) ? i : -1;
+                uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, SprinklerTypeName), out i) ? i : -1;
+                FinishedGoodesInsert(Sprinkler323Code, "(OK) SPRINKLER 323");
+
+                //pairCustomer(string itemCode);
+                //insert new sprinkler 323  item group
+
+                //update sprinkler 323 default price and discount rate
+                //update certain customer price and discount rate
+
+                //update sprinkler 323 std packing
+                UpdateStdPacking(Sprinkler323Code, 40, 400, 0);
+
+                //uData.Max_Lvl = int.TryParse(txtMaxLevel.Text, out int data) ? data : 0;
+                //uData.Qty_Per_Packet = int.TryParse(txtQtyPerPacket.Text, out data) ? data : 0;
+                //uData.Qty_Per_Bag = int.TryParse(txtQtyPerBag.Text, out data) ? data : 0;
+                //uData.Item_code = cmbCode.Text;
+
+
+                //if (!dalData.InsertStdPacking(uData))
+                //{
+                //    MessageBox.Show("Failed to insert standard packing data to DB.");
+                //}
+                //else
+                //{
+                //    LoadData();
+                //    ClearDataField();
+                //    ClearError();
+                //}
+                //add new price rules (moq pricing) to big/small spray jet
+                //update spray jet price to certain customers
+
+
+            }
+
+
+        }
         private void button1_Click_1(object sender, EventArgs e)
         {
             //frmSBBPrice frm = new frmSBBPrice

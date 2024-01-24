@@ -387,7 +387,7 @@
             // tableLayoutPanel23
             // 
             this.tableLayoutPanel23.ColumnCount = 1;
-            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 788F));
+            this.tableLayoutPanel23.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 998F));
             this.tableLayoutPanel23.Controls.Add(this.tableLayoutPanel24, 0, 1);
             this.tableLayoutPanel23.Controls.Add(this.dgvPOItemList, 0, 0);
             this.tableLayoutPanel23.Dock = System.Windows.Forms.DockStyle.Fill;
