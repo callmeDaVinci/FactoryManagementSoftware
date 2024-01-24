@@ -157,6 +157,7 @@ namespace FactoryManagementSoftware.Module
 
         public string SBB_TYPE_EQUAL { get; } = "EQUAL";
         public string SBB_TYPE_SPRAYJET{ get; } = "SPRAY JET";
+        public string SBB_TYPE_SPRINKLER{ get; } = "SPRINKLER";
         public string SBB_TYPE_SPRAYJETSMALL{ get; } = "SPRAY JET SMALL";
         public string SBB_TYPE_SPRAYJETBIG{ get; } = "SPRAY JET BIG";
         public string SBB_TYPE_MTA { get; } = "MTA";
@@ -601,6 +602,7 @@ namespace FactoryManagementSoftware.Module
         public string SprayJet_Short { get; } = "SJ";
         public string SprayJetSmall_Short { get; } = "SJS";
         public string SprayJetBig_Short { get; } = "SJB";
+        public string Sprinkler_Short { get; } = "SP";
         public string EqualElbow_Short { get; } = "EE";
         public string EqualSocket_Short { get; } = "ES";
         public string EqualTee_Short { get; } = "ET";
@@ -641,6 +643,7 @@ namespace FactoryManagementSoftware.Module
         public string Type_SprayJet { get; } = "SPRAY JET";
         public string Type_SprayJetSmall { get; } = "SPRAY JET SMALL";
         public string Type_SprayJetBig { get; } = "SPRAY JET BIG";
+        public string Type_Sprinkler { get; } = "SPRINKLER";
         public string Type_EqualElbow { get; } = "EQUAL ELBOW";
         public string Type_EqualTee { get; } = "EQUAL TEE";
         public string Type_Bush { get; } = "BUSH";

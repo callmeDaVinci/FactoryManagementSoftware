@@ -16,6 +16,7 @@ using System.Reflection;
 using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Mapping;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -4048,6 +4049,10 @@ namespace FactoryManagementSoftware.UI
             {
                 type_ShortName = text.SprayJetBig_Short;
             }
+            else if (type == text.Type_Sprinkler)
+            {
+                type_ShortName = text.Sprinkler_Short;
+            }
             else if (type == text.Type_EqualElbow)
             {
                 type_ShortName = text.EqualElbow_Short;
@@ -4435,7 +4440,9 @@ namespace FactoryManagementSoftware.UI
                             string shippingContact = null;
                             string transporterName = "";
                             int totalBag = 0;
+                            int totalBox= 0;
                             int totalOringBag = 0;
+                            int totalSprinklerPkt = 0;
                             int totalBalPcs = 0;
 
                             int indexNo = 1;
@@ -4537,7 +4544,6 @@ namespace FactoryManagementSoftware.UI
                                             remark = bag + " BAG" + withS;
 
                                         }
-
                                         int balancePcs = deliveryQty % stdPacking;
 
                                         if (balancePcs > 0)
@@ -4545,6 +4551,67 @@ namespace FactoryManagementSoftware.UI
                                             totalBalPcs += balancePcs;
                                             remark += " + " + balancePcs + " PCS";
                                         }
+
+                                        if (itemCode.Contains("SP323"))
+                                        {
+                                            totalBalPcs -= balancePcs;
+
+                                            if (bag > 1)
+                                            {
+                                                remark = bag + " BOXES";
+                                            }
+                                            else if (bag == 1)
+                                            {
+                                                remark = bag + " BOX";
+                                            }
+
+                                            totalBag -= bag;
+                                            totalBox += bag;
+
+                                            if (balancePcs > 0)
+                                            {
+                                                int pktQty = balancePcs / 40;
+
+                                                totalSprinklerPkt += pktQty;
+
+                                                string pktUnit = " PKT";
+
+                                                if(pktQty > 1)
+                                                {
+                                                    pktUnit += "S";
+                                                }
+
+                                                if (remark != "")
+                                                {
+                                                    remark += " + " + pktQty + pktUnit;
+
+                                                }
+                                                else
+                                                {
+                                                    remark += pktQty + pktUnit;
+
+                                                }
+
+                                                if(balancePcs % 40 > 0)
+                                                {
+                                                    if (remark != "")
+                                                    {
+                                                        remark += " + " + balancePcs % 40 + " PCS";
+
+                                                    }
+                                                    else
+                                                    {
+                                                        remark += balancePcs % 40 + " PCS";
+
+                                                    }
+
+                                                    totalBalPcs += balancePcs % 40;
+
+                                                }
+                                            }
+
+                                        }
+                                      
 
                                         #region Getting item Size
 
@@ -4865,24 +4932,30 @@ namespace FactoryManagementSoftware.UI
 
                                 }
                             }
+
+                            string totalRemark = "";
+
                             if (totalBag - totalOringBag <= 0)
                             {
-                                InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalOringBag + " PACKETS");
+                                if(totalOringBag > 1)
+                                {
+                                    //withS = "S";
+                                }
 
+                                totalRemark = "TOT. " + totalOringBag + " ORing PKT" + (totalOringBag > 1 ? "S" : "");
                             }
                             else if (totalBalPcs > 0)
                             {
-
                                 if (totalOringBag > 0)
                                 {
-                                    totalBag -= totalOringBag;
+                   
 
-                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS " + totalOringBag + " PACKETS");
+                                    totalBag -= totalOringBag;
+                                    totalRemark = "TOT. " + totalBag + " BAG"+ (totalBag > 1 ? "S" : "") + " + " + totalBalPcs + " PCS " + totalOringBag + "ORing PKT" + (totalOringBag>1? "S" : "");
                                 }
                                 else
                                 {
-                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) + " + totalBalPcs + " PCS");
-
+                                    totalRemark = "TOT. " + totalBag + " BAG" + (totalBag > 1 ? "S" : "") + " + " + totalBalPcs + " PCS";
                                 }
 
                             }
@@ -4891,12 +4964,51 @@ namespace FactoryManagementSoftware.UI
                                 if (totalOringBag > 0)
                                 {
                                     totalBag -= totalOringBag;
-                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S) " + totalOringBag + " PACKETS");
+                                    totalRemark = "TOT. " + totalBag + " BAG" + (totalBag > 1 ? "S" : "") + totalOringBag + " ORing PKT" + (totalOringBag > 1 ? "S" : "");
                                 }
                                 else
                                 {
-                                    InsertToSheet(xlWorkSheet, areaTotalData, "TOT. " + totalBag + " BAG(S)");
+                                    totalRemark = "TOT. " + totalBag + " BAG" + (totalBag > 1 ? "S" : "");
                                 }
+                            }
+
+                            string sprinklerTotalQtyRemark = "";
+
+                            if(totalBox > 0)
+                            {
+                                sprinklerTotalQtyRemark =  totalBox + " BOX" + (totalBox > 1 ? "ES" : "");
+                            }
+
+                            if (totalSprinklerPkt > 0)
+                            {
+                                if(string.IsNullOrEmpty(sprinklerTotalQtyRemark))
+                                {
+                                    sprinklerTotalQtyRemark += totalSprinklerPkt + " SP PKT" + (totalSprinklerPkt > 1 ? "S" : "");
+                                }
+                                else
+                                {
+                                    sprinklerTotalQtyRemark += " + " + totalSprinklerPkt + " SP PKT" + (totalSprinklerPkt > 1 ? "S" : "");
+                                }
+                            }
+
+                            if (!string.IsNullOrEmpty(sprinklerTotalQtyRemark))
+                            {
+                                if (string.IsNullOrEmpty(totalRemark) )
+                                {
+                                    totalRemark = sprinklerTotalQtyRemark ;
+                                }
+                                else
+                                { 
+                                    totalRemark +=  " + " + sprinklerTotalQtyRemark ;
+
+
+                                }
+                            }
+
+                            totalRemark = "";
+                            if (!string.IsNullOrEmpty(totalRemark))
+                            {
+                                InsertToSheet(xlWorkSheet, areaTotalData, totalRemark);
                             }
 
                             if (string.IsNullOrEmpty(billingAddress_3))

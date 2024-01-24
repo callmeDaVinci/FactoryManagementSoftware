@@ -663,7 +663,7 @@ namespace FactoryManagementSoftware.UI
                 cmbSize_1.DisplayMember = header_SizeString;
 
 
-                if(!itemType.Contains(text.SBB_TYPE_SPRAYJET) && !itemType.Contains(text.SBB_TYPE_EQUAL) && !itemType.Contains(text.SBB_TYPE_ENDCAP) && !itemType.Contains(text.SBB_TYPE_POLYORING))
+                if(!itemType.Contains(text.SBB_TYPE_SPRINKLER) && !itemType.Contains(text.SBB_TYPE_SPRAYJET) && !itemType.Contains(text.SBB_TYPE_EQUAL) && !itemType.Contains(text.SBB_TYPE_ENDCAP) && !itemType.Contains(text.SBB_TYPE_POLYORING))
                 {
                     cmbSize_2.Enabled = true;
                     DataTable dt_Size2 = dt_CMB.Copy();
@@ -678,6 +678,16 @@ namespace FactoryManagementSoftware.UI
                
             }
 
+
+            if(itemType.Contains(text.SBB_TYPE_SPRAYJET))
+            {
+                cmbSize_1.Text = "360";
+            }
+            else if (itemType.Contains(text.SBB_TYPE_SPRINKLER))
+            {
+                cmbSize_1.Text = "323";
+
+            }
         }
 
         private void frmSPPNewPO_Load(object sender, EventArgs e)
@@ -1523,8 +1533,13 @@ namespace FactoryManagementSoftware.UI
                     string sizeDB_1 = row[header_Size_1].ToString();
                     string sizeDB_2 = row[header_Size_2].ToString();
 
-                    string typeDB = row["TYPE"].ToString(); 
+                    
+                    string typeDB = row["TYPE"].ToString();
 
+                    if (typeDB == text.Type_Sprinkler)
+                    {
+                        sizeDB_2 = "";
+                    }
                     if (row["TYPE"].ToString()!= itemType)
                     {
 

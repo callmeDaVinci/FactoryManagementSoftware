@@ -16,6 +16,7 @@ using System.IO;
 using System.Data.OleDb;
 using Org.BouncyCastle.Asn1.Pkcs;
 using System.Xml.Linq;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -1441,7 +1442,7 @@ namespace FactoryManagementSoftware.UI
             itemCustBLL uItemCust = new itemCustBLL();
             itemCustDAL dalItemCust = new itemCustDAL();
 
-            string cust = "SPP";
+            string cust = text.SPP_BrandName;
 
             if (!IfExists(itemCode, cust))
             {
@@ -1469,482 +1470,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void insertItem(string itemCode, string itemName, bool bodyItem, int size1, int size2, int cat, int type)
-        {
-            //Add data
-            itemBLL u = new itemBLL();
-            u.item_cat = text.Cat_Part;
-
-            u.item_code = itemCode;
-            u.item_name = itemName;
-
-            u.Type_tbl_code = type;
-            u.Category_tbl_code = cat;
-
-            u.Size_tbl_code_1 = size1;
-            u.Size_tbl_code_2 = size2;
-
-
-            if (bodyItem)
-            {
-                u.item_assembly = 0;
-                u.item_production = 1;
-                u.Category_tbl_code = 2;
-            }
-            else
-            {
-                u.item_assembly = 1;
-                u.item_production = 0;
-            }
-
-            u.item_added_date = DateTime.Now;
-            u.item_added_by = MainDashboard.USER_ID;
-
-            //Inserting Data into Database
-            bool success = dalItem.SBBItemInsert(u);
-            //If the data is successfully inserted then the value of success will be true else false
-            if (success)
-            {
-                //Data Successfully Inserted
-                //MessageBox.Show("Item successfully created");
-                if (!bodyItem)
-                {
-                    pairCustomer(itemCode);
-                }
-            }
-            else
-            {
-                //Failed to insert data
-                MessageBox.Show("Failed to add new item");
-            }
-        }
-
-        private void updateItem(string itemCode, string itemName, bool bodyItem, int size1, int size2, int cat, int type)
-        {
-            //Add data
-            itemBLL u = new itemBLL();
-            u.item_cat = text.Cat_Part;
-
-            u.item_code = itemCode;
-            u.item_name = itemName;
-
-            u.Type_tbl_code = type;
-            u.Category_tbl_code = cat;
-
-            u.Size_tbl_code_1 = size1;
-            u.Size_tbl_code_2 = size2;
-
-
-            if (bodyItem)
-            {
-                u.item_assembly = 0;
-                u.item_production = 1;
-                u.Category_tbl_code = 2;
-            }
-            else
-            {
-                u.item_assembly = 1;
-                u.item_production = 0;
-            }
-
-            u.item_updtd_date = DateTime.Now;
-            u.item_updtd_by = MainDashboard.USER_ID;
-
-            //Inserting Data into Database
-            bool success = dalItem.SBBItemUpdate(u);
-            //If the data is successfully inserted then the value of success will be true else false
-            if (!success)
-            {
-                MessageBox.Show("Failed to update SBB item");
-
-            }
-           
-        }
-
-        private bool JoinItem(string parentCode, string childCode, int joinMax, int joinMin, int joinQty)
-        {
-            bool success = true;
-
-            uJoin.join_updated_date = DateTime.Now;
-            uJoin.join_updated_by = MainDashboard.USER_ID;
-            uJoin.join_added_date = DateTime.Now;
-            uJoin.join_added_by = MainDashboard.USER_ID;
-
-            uJoin.join_parent_code = parentCode;
-
-            uJoin.join_child_code = childCode;
-
-            uJoin.join_max = joinMax;
-            uJoin.join_min = joinMin;
-
-            uJoin.join_qty = joinQty;
-
-            DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
-
-            if (dt_existCheck.Rows.Count > 0)
-            {
-                //update data
-                success = dalJoin.UpdateWithMaxMin(uJoin);
-
-                if (!success)
-                {
-                    MessageBox.Show("Failed to update join");
-
-
-                }
-            }
-            else
-            {
-                //insert new data
-                success = dalJoin.InsertWithMaxMin(uJoin);
-
-                if (!success)
-                {
-                    //Failed to insert data
-                    MessageBox.Show("Failed to add new join");
-                }
-
-
-            }
-
-            return success;
-        }
-
-        private bool SaveCustomerPriceData(int custTblCode,string itemCode,decimal price)
-        {
-            //insert or update
-            DataTable dt_CustPrice = dalSBB.DiscountSelect();
-
-            decimal Discount = 80;
-
-            foreach (DataRow priceRow in dt_CustPrice.Rows)
-            {
-                int db_CustTblCode = int.TryParse(priceRow[dalSBB.CustTblCode].ToString(), out db_CustTblCode) ? db_CustTblCode : -2;
-                if (db_CustTblCode == custTblCode)
-                {
-                    //get table code
-                    Discount = decimal.TryParse(priceRow[dalSBB.DiscountRate].ToString(), out Discount) ? Discount : 80;
-                    break;
-                }
-            }
-
-            uSBB.Updated_Date = DateTime.Now;
-            uSBB.Updated_By = MainDashboard.USER_ID;
-            uSBB.Customer_tbl_code = custTblCode;
-
-            //get data
-            uSBB.Item_tbl_code = itemCode;
-            uSBB.Unit_price = price;
-            uSBB.Discount_rate = Discount;
-
-            //update or insert
-            bool dataSaved = false;
-
-            if (dt_CustPrice != null && dt_CustPrice.Rows.Count > 0)
-            {
-                foreach (DataRow priceRow in dt_CustPrice.Rows)
-                {
-                    int db_CustTblCode = int.TryParse(priceRow[dalSBB.CustTblCode].ToString(), out db_CustTblCode) ? db_CustTblCode : -2;
-                    if (uSBB.Item_tbl_code == priceRow[dalSBB.ItemTblCode].ToString() && db_CustTblCode == custTblCode)
-                    {
-                        //get table code
-                        int tableCode = int.TryParse(priceRow[dalSBB.TableCode].ToString(), out tableCode) ? tableCode : -1;
-                        uSBB.Table_Code = tableCode;
-
-                        if (tableCode != -1)
-                        {
-                            if (!dalSBB.DiscountUpdate(uSBB))
-                            {
-                                MessageBox.Show("Failed to update customer discount info!");
-                                return false;
-                            }
-                            else
-                            {
-
-                                dataSaved = true;
-                            }
-
-                            break;
-                        }
-                        else
-                        {
-                            MessageBox.Show("Failed to get table code of customer discount table!");
-                            break;
-                        }
-                        //updated data
-
-
-                    }
-                }
-            }
-
-            if (!dataSaved)
-            {
-                //insert data
-                if (!dalSBB.InsertDiscount(uSBB))
-                {
-                    MessageBox.Show("Failed to insert customer discount info!");
-                    return false;
-                }
-                else
-                {
-                    dataSaved = true;
-                }
-            }
-
-            return true;
-        }
-
-        private void SBBItemUpload()
-        {
-            //string path = text.CSV_Jun_GoogleDrive_SemenyihServer_Path;
-            ////DataTable dt_ItemPrice = dalSBB.PriceSelect();
-            ////DataTable dt_StdPacking = dalSBB.StdPackingSelect();
-            ////DataTable dt_SBBCust = dalSBB.CustomerWithoutRemovedDataSelect();
-
-            ////if (MainDashboard.myconnstrng == text.DB_Semenyih)//MainDashboard.myconnstrng == text.DB_Semenyih || cmbDataSource.Text.Contains(DataSource_LocalDB)
-            ////{
-            ////    path = text.CSV_SemenyihServer_Path;
-
-            ////}
-
-            //string fileName = "SBBItemUpload.csv";
-
-            //if (Directory.Exists(path) && File.Exists(path + fileName))
-            //{
-            //    dt_SBBItemUpload = CsvToDatatable(path + fileName, true);
-
-
-            //    string itemCust = text.SPP_BrandName;
-            //    DataTable dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-            //    //DataTable dt_Product = dalItemCust.SBBItemSelect(itemCust); 
-            //    // DataTable dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-            //    DataTable dt_Item = dalItem.Select();
-            //    DataTable dt_Join = dalJoin.SelectWithChildCat();
-
-            //    foreach (DataRow row in dt_SBBItemUpload.Rows)
-            //    {
-            //        string itemCode = row[dalSBB.ItemCode].ToString();
-
-            //        if(string.IsNullOrEmpty(itemCode))
-            //        {
-            //            break;
-            //        }
-            //        else
-            //        {
-            //            string itemName = row[dalSBB.ItemName].ToString();
-            //            string _itemSize_1_TblCode = row["size_tbl_code_1"].ToString();
-            //            string _itemSize_2_TblCode = row["size_tbl_code_2"].ToString();
-
-            //            string _qtyPerPacket = row["qty_per_packet"].ToString();
-            //            string _qtyPerBag = row["qty_per_bag"].ToString();
-            //            string _CategoryTblCode = row["category_tbl_code"].ToString();
-            //            string _type_tbl_code = row["type_tbl_code"].ToString();
-            //            string _price = row["price"].ToString();
-            //            string _benton_price = row["benton_price"].ToString();
-            //            string body_code = row["body_code"].ToString();
-            //            string body_name = row["body_name"].ToString();
-
-            //            string cap = row["cap"].ToString();
-            //            string grip = row["grip"].ToString();
-            //            string bush = row["bush"].ToString();
-            //            string oring = row["oring"].ToString();
-
-            //            string packet = row["packet"].ToString();
-            //            string bag = row["bag"].ToString();
-
-            //            int qtyPerPacket = int.TryParse(_qtyPerPacket, out qtyPerPacket) ? qtyPerPacket : 0;
-            //            int qtyPerBag = int.TryParse(_qtyPerBag, out qtyPerBag) ? qtyPerBag : 0;
-
-            //            int CategoryTblCode = int.TryParse(_CategoryTblCode, out CategoryTblCode) ? CategoryTblCode : 0;
-            //            int type_tbl_code = int.TryParse(_type_tbl_code, out type_tbl_code) ? type_tbl_code : 0;
-
-            //            int itemSize_1_TblCode = int.TryParse(_itemSize_1_TblCode, out itemSize_1_TblCode) ? itemSize_1_TblCode : 0;
-            //            int itemSize_2_TblCode = int.TryParse(_itemSize_2_TblCode, out itemSize_2_TblCode) ? itemSize_2_TblCode : 0;
-
-            //            decimal price = decimal.TryParse(_price, out price) ? price : 0;
-            //            decimal benton_price = decimal.TryParse(_benton_price, out benton_price) ? benton_price : 0;
-
-            //            #region Add to Item List
-            //            bool itemFound = false, bodyFound = false;
-            //            //insert to item list if not exist
-            //            foreach (DataRow itemRow in dt_Item.Rows)
-            //            {
-            //                if (itemRow[dalItem.ItemCode].ToString().Equals(itemCode))
-            //                {
-            //                    itemFound = true;
-
-            //                }
-
-            //                if (itemRow[dalItem.ItemCode].ToString().Equals(body_code))
-            //                {
-            //                    bodyFound = true;
-
-            //                }
-
-            //                if (itemFound && bodyFound)
-            //                {
-            //                    break;
-            //                }
-            //            }
-
-            //            if (!itemFound)
-            //            {
-            //                //add goods item to item list
-            //                insertItem(itemCode, itemName, false, itemSize_1_TblCode, itemSize_2_TblCode, CategoryTblCode, type_tbl_code);
-            //            }
-            //            else
-            //            {
-            //                updateItem(itemCode, itemName, false, itemSize_1_TblCode, itemSize_2_TblCode, CategoryTblCode, type_tbl_code);
-
-            //            }
-            //            if (!bodyFound)
-            //            {
-            //                //add body item to item list
-            //                insertItem(body_code, body_name, true, itemSize_1_TblCode, itemSize_2_TblCode, CategoryTblCode, type_tbl_code);
-
-            //            }
-            //            else
-            //            {
-            //                updateItem(body_code, body_name, true, itemSize_1_TblCode, itemSize_2_TblCode, CategoryTblCode, type_tbl_code);
-
-            //            }
-
-            //            #endregion
-
-            //            #region Create Join Group
-
-            //            JoinItem(itemCode, cap, 1, 1, 1);
-            //            JoinItem(itemCode, grip, 1, 1, 1);
-            //            JoinItem(itemCode, bush, 1, 1, 1);
-            //            JoinItem(itemCode, oring, 1, 1, 1);
-
-            //            if (!itemCode.Equals("(OK) CFFTA 20 1/2"))
-            //                JoinItem(itemCode, body_code, 1, 1, 1);
-
-            //            JoinItem(itemCode, packet, qtyPerPacket, qtyPerPacket, 1);
-            //            JoinItem(itemCode, bag, qtyPerBag, qtyPerBag, 1);
-
-            //            #endregion
-
-            //            #region Std Packing
-
-            //            uSBB.Updated_Date = DateTime.Now;
-            //            uSBB.Updated_By = MainDashboard.USER_ID;
-            //            uSBB.Max_Lvl = qtyPerBag;
-            //            uSBB.Qty_Per_Packet = qtyPerPacket;
-            //            uSBB.Qty_Per_Bag = qtyPerBag;
-            //            uSBB.Item_code = itemCode;
-
-
-            //            int tableCode = -1;
-            //            foreach (DataRow packingRow in dt_StdPacking.Rows)
-            //            {
-            //                if (packingRow[dalSBB.ItemCode].ToString() == uSBB.Item_code)
-            //                {
-            //                    tableCode = int.TryParse(packingRow[dalSBB.TableCode].ToString(), out tableCode) ? tableCode : -1;
-            //                }
-            //            }
-
-            //            if (tableCode > 0)//update data
-            //            {
-            //                uSBB.Table_Code = tableCode;
-            //                dalSBB.StdPackingUpdate(uSBB);
-            //            }
-            //            else
-            //            {
-            //                dalSBB.InsertStdPacking(uSBB);
-            //            }
-
-            //            #endregion
-
-            //            #region Add Price
-
-            //            uSBB.Item_tbl_code = itemCode;
-            //            uSBB.Default_price = price;
-            //            uSBB.Default_discount = 80;
-
-            //            //update or insert
-            //            bool dataSaved = false;
-
-            //            if (dt_ItemPrice != null && dt_ItemPrice.Rows.Count > 0)
-            //            {
-            //                foreach (DataRow priceRow in dt_ItemPrice.Rows)
-            //                {
-            //                    if (uSBB.Item_tbl_code == priceRow[dalSBB.ItemTblCode].ToString())
-            //                    {
-            //                        //get table code
-            //                        tableCode = int.TryParse(priceRow[dalSBB.TableCode].ToString(), out tableCode) ? tableCode : -1;
-            //                        uSBB.Table_Code = tableCode;
-            //                        if (tableCode != -1)
-            //                        {
-            //                            if (!dalSBB.PriceUpdate(uSBB))
-            //                            {
-            //                                MessageBox.Show("Failed to update item default price info!");
-            //                            }
-            //                            else
-            //                            {
-
-            //                                dataSaved = true;
-            //                            }
-
-            //                            break;
-            //                        }
-            //                        else
-            //                        {
-            //                            MessageBox.Show("Failed to get table code of item default price table!");
-            //                            break;
-            //                        }
-            //                        //updated data
-
-
-            //                    }
-            //                }
-            //            }
-
-            //            if (!dataSaved)
-            //            {
-            //                //insert data
-            //                if (!dalSBB.InsertPrice(uSBB))
-            //                {
-            //                    MessageBox.Show("Failed to insert item default price info!");
-            //                }
-            //                else
-            //                {
-            //                    dataSaved = true;
-            //                }
-            //            }
-            //            #endregion
-
-            //            #region Customer Price
-
-            //            foreach (DataRow CustRow in dt_SBBCust.Rows)
-            //            {
-
-            //                int custTblCode = int.TryParse(CustRow[dalSBB.TableCode].ToString(), out custTblCode) ? custTblCode : 0;
-
-            //                if (custTblCode == 17)//benton
-            //                {
-            //                    SaveCustomerPriceData(custTblCode, itemCode, benton_price);
-
-            //                }
-            //                else
-            //                {
-            //                    SaveCustomerPriceData(custTblCode, itemCode, price);
-
-            //                }
-
-            //            }
-
-            //            #endregion
-            //        }
-
-
-            //    }
-            //}
-
-
-        }
+      
 
         private int ItemStdPackingFound(DataTable dt,string itemCode)
         {
@@ -2669,7 +2195,17 @@ namespace FactoryManagementSoftware.UI
 
         private void UpdateStdPacking(string itemCode,int pcsPerPacket, int pcsPerBag, int pcsPerContainer)
         {
-          
+
+            DataTable dt = dalData.StdPackingSelect();
+
+            foreach(DataRow row in dt.Rows)
+            {
+                if (row[dalData.ItemCode].ToString() == itemCode)
+                {
+                    return;
+                }
+            }
+
             if (pcsPerPacket > 0 || pcsPerBag > 0 || pcsPerContainer > 0)
             {
                 SBBDataBLL uData = new SBBDataBLL();
@@ -2694,46 +2230,119 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void UpdatePrice()
+        SBBDataDAL dalSPP = new SBBDataDAL();
+        SBBDataBLL uSpp = new SBBDataBLL();
+        private void UpdatePrice(string itemCode ,decimal defaultPrice, decimal defaultDiscount)
         {
-            //update price
-            //    if (IfSBBProductItem())
-            //    {
-            //        DialogResult dialogResult = MessageBox.Show("Do you want to add a new  Price & Discount Rate for this product?", "Message", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            DataTable dt_ItemPrice = dalSPP.PriceSelect();
 
-            //        if (dialogResult == DialogResult.Yes)
-            //        {
-            //            //password
-            //            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
-            //            {
-            //                StartPosition = FormStartPosition.CenterScreen
-            //            };
+            uSpp.Updated_Date = DateTime.Now;
+            uSpp.Updated_By = MainDashboard.USER_ID;
+            uSpp.Item_tbl_code = itemCode;
+            uSpp.Default_price = defaultPrice;
+            uSpp.Default_discount = defaultDiscount;
+
+            //update or insert
+            bool dataSaved = false;
+
+            if (dt_ItemPrice != null && dt_ItemPrice.Rows.Count > 0)
+            {
+                foreach (DataRow priceRow in dt_ItemPrice.Rows)
+                {
+                    if (uSpp.Item_tbl_code == priceRow[dalSPP.ItemTblCode].ToString())
+                    {
+                        //get table code
+                        int tableCode = int.TryParse(priceRow[dalSPP.TableCode].ToString(), out tableCode) ? tableCode : -1;
+                        uSpp.Table_Code = tableCode;
+                        if (tableCode != -1)
+                        {
+                            if (!dalSPP.PriceUpdate(uSpp))
+                            {
+                                MessageBox.Show("Failed to update item default price info!");
+                                return ;
+                            }
+                            else
+                            {
+
+                                dataSaved = true;
+                            }
+
+                            break;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to get table code of item default price table!");
+                            break;
+                        }
+                       
 
 
-            //            frm.ShowDialog();
+                    }
+                }
+            }
 
-            //            if (frmVerification.PASSWORD_MATCHED)
-            //            {
-            //                frmSBBPrice frm2 = new frmSBBPrice
-            //                {
-            //                    StartPosition = FormStartPosition.CenterScreen
-            //                };
-
-            //                frm2.ShowDialog();
-            //            }
-            //        }
+            if (!dataSaved)
+            {
+                //insert data
+                if (!dalSPP.InsertPrice(uSpp))
+                {
+                    MessageBox.Show("Failed to insert item default price info!");
+                    return ;
+                }
+                else
+                {
+                    dataSaved = true;
+                }
+            }
         }
 
-        private void UpdateItemGroup()
+        private void UpdateItemGroup(string parentCode, string childCode)
         {
-            uJoin.join_parent_code = txtItemCode.Text;
+            uJoin.join_parent_code = parentCode;
+            uJoin.join_parent_name = tool.getItemNameFromDataTable(dt_Item, parentCode);
 
-            uJoin.join_child_code = "";
+            uJoin.join_child_code = childCode;
+            uJoin.join_child_name = tool.getItemNameFromDataTable(dt_Item, childCode);
 
-            frmJoinEdit frm = new frmJoinEdit(uJoin, false);
+            uJoin.join_max = 1;
+            uJoin.join_min = 1;
 
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();//Item Edit
+            uJoin.join_qty = 1;
+        
+            uJoin.join_stock_out = true;
+
+            DataTable dt_existCheck = dalJoin.existCheck(uJoin.join_parent_code, uJoin.join_child_code);
+
+            bool success = false;
+
+            if (dt_existCheck.Rows.Count > 0)
+            {
+                uJoin.join_updated_date = DateTime.Now;
+                uJoin.join_updated_by = MainDashboard.USER_ID;
+                //update data
+                success = dalJoin.UpdateWithMaxMin(uJoin);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    //Failed to update data
+                    MessageBox.Show("Failed to update join");
+                }
+             
+            }
+            else
+            {
+                uJoin.join_added_date = DateTime.Now;
+                uJoin.join_added_by = MainDashboard.USER_ID;
+                //insert new data
+                success = dalJoin.InsertWithMaxMin(uJoin);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    //Failed to insert data
+                    MessageBox.Show("Failed to add new join");
+                }
+              
+            }
         }
         
         private void NewItemUpdates()
@@ -2744,10 +2353,12 @@ namespace FactoryManagementSoftware.UI
 
             if (Validation)
             {
+                string Sprinkler323Code = "(OK) SP323";
+
                 if (dt_Item == null || dt_Item.Rows.Count < 0)
                     dt_Item = dalItem.Select();
 
-                if(IfItemAddedToDB("SP323"))
+                if(IfItemAddedToDB(Sprinkler323Code))
                 {
                     return;
                 }
@@ -2791,74 +2402,68 @@ namespace FactoryManagementSoftware.UI
                 uItem.Category_tbl_code = int.TryParse(GetTblCode(DT_CATEGORY, text.Cat_CommonPart), out i) ? i : -1;
 
                 string ArmCode = "SP323AR";
+                string Nozzle1Code = "SP323N1";
+                string Nozzle2Code = "SP323N2";
+                string RodCode = "SP323RD";
+                string AdjusterCode = "SP323AD";
+                string GasketCode = "SP323GK";
+                string TopBodyCode = "SP323TB";
+                string BottomBushCode = "SP323BB";
+                string EllenBodyCode = "SP323EB";
+
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, ArmTypeName), out i) ? i : -1;
                 ChildPartInsert(ArmCode, "SPRINKLER 323 ARM");
 
-                string Nozzle1Code = "SP323N1";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, Nozzle1TypeName), out i) ? i : -1;
                 ChildPartInsert(Nozzle1Code, "SPRINKLER 323 NOZZLE 1");
 
-                string Nozzle2Code = "SP323N2";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, Nozzle2TypeName), out i) ? i : -1;
                 ChildPartInsert(Nozzle2Code, "SPRINKLER 323 NOZZLE 2");
 
-                string RodCode = "SP323RD";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, RodTypeName), out i) ? i : -1;
                 ChildPartInsert(RodCode, "SPRINKLER 323 ROD");
 
-                string AdjusterCode = "SP323AD";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, AdjusterTypeName), out i) ? i : -1;
                 ChildPartInsert(AdjusterCode, "SPRINKLER 323 ADJUSTER");
 
-                string GasketCode = "SP323GK";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, GasketTypeName), out i) ? i : -1;
                 ChildPartInsert(GasketCode, "SPRINKLER 323 GASKET");
 
-                string TopBodyCode = "SP323TB";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, TopBodyTypeName), out i) ? i : -1;
                 ChildPartInsert(TopBodyCode, "SPRINKLER 323 TOP BODY");
 
-                string BottomBushCode = "SP323BB";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, BottomBushTypeName), out i) ? i : -1;
                 ChildPartInsert(BottomBushCode, "SPRINKLER 323 BOTTOM BUSH");
 
-                string EllenBodyCode = "SP323EB";
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, EllenBodyTypeName), out i) ? i : -1;
                 ChildPartInsert(EllenBodyCode, "SPRINKLER 323 ELLEN BODY");
 
                 //insert new sprinkler 323 finished goods 
-                string Sprinkler323Code = "(OK) SP323";
-                uItem.Category_tbl_code = int.TryParse(GetTblCode(DT_CATEGORY, "Products"), out i) ? i : -1;
+              
+                uItem.Category_tbl_code = int.TryParse(GetTblCode(DT_CATEGORY, text.Cat_ReadyGoods), out i) ? i : -1;
                 uItem.Type_tbl_code = int.TryParse(GetTblCode(DT_TYPE, SprinklerTypeName), out i) ? i : -1;
                 FinishedGoodesInsert(Sprinkler323Code, "(OK) SPRINKLER 323");
 
-                //pairCustomer(string itemCode);
+                pairCustomer(Sprinkler323Code);
+
                 //insert new sprinkler 323  item group
+                UpdateItemGroup(Sprinkler323Code, ArmCode);
+                UpdateItemGroup(Sprinkler323Code, Nozzle1Code);
+                UpdateItemGroup(Sprinkler323Code, Nozzle2Code);
+                UpdateItemGroup(Sprinkler323Code, RodCode);
+                UpdateItemGroup(Sprinkler323Code, AdjusterCode);
+                UpdateItemGroup(Sprinkler323Code, GasketCode);
+                UpdateItemGroup(Sprinkler323Code, TopBodyCode);
+                UpdateItemGroup(Sprinkler323Code, BottomBushCode);
+                UpdateItemGroup(Sprinkler323Code, EllenBodyCode);
 
                 //update sprinkler 323 default price and discount rate
+                UpdatePrice(Sprinkler323Code, (decimal) 6.5, 80);
+
                 //update certain customer price and discount rate
 
                 //update sprinkler 323 std packing
                 UpdateStdPacking(Sprinkler323Code, 40, 400, 0);
-
-                //uData.Max_Lvl = int.TryParse(txtMaxLevel.Text, out int data) ? data : 0;
-                //uData.Qty_Per_Packet = int.TryParse(txtQtyPerPacket.Text, out data) ? data : 0;
-                //uData.Qty_Per_Bag = int.TryParse(txtQtyPerBag.Text, out data) ? data : 0;
-                //uData.Item_code = cmbCode.Text;
-
-
-                //if (!dalData.InsertStdPacking(uData))
-                //{
-                //    MessageBox.Show("Failed to insert standard packing data to DB.");
-                //}
-                //else
-                //{
-                //    LoadData();
-                //    ClearDataField();
-                //    ClearError();
-                //}
-                //add new price rules (moq pricing) to big/small spray jet
-                //update spray jet price to certain customers
 
 
             }
