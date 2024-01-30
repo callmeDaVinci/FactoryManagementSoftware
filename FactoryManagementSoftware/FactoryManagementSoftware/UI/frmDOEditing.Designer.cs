@@ -83,7 +83,7 @@ namespace FactoryManagementSoftware.UI
             this.txtBoxQty = new Guna.UI.WinForms.GunaTextBox();
             this.label9 = new System.Windows.Forms.Label();
             this.txtQtyPerBox = new Guna.UI.WinForms.GunaTextBox();
-            this.label5 = new System.Windows.Forms.Label();
+            this.lblQty = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.lblBalanceQty = new System.Windows.Forms.Label();
             this.txtTotalQty = new Guna.UI.WinForms.GunaTextBox();
@@ -1016,7 +1016,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel22.Controls.Add(this.txtBoxQty, 2, 1);
             this.tableLayoutPanel22.Controls.Add(this.label9, 1, 1);
             this.tableLayoutPanel22.Controls.Add(this.txtQtyPerBox, 0, 1);
-            this.tableLayoutPanel22.Controls.Add(this.label5, 0, 0);
+            this.tableLayoutPanel22.Controls.Add(this.lblQty, 0, 0);
             this.tableLayoutPanel22.Controls.Add(this.label12, 2, 0);
             this.tableLayoutPanel22.Controls.Add(this.lblBalanceQty, 5, 0);
             this.tableLayoutPanel22.Controls.Add(this.txtTotalQty, 7, 1);
@@ -1168,17 +1168,17 @@ namespace FactoryManagementSoftware.UI
             this.txtQtyPerBox.TextChanged += new System.EventHandler(this.txtQtyPerBox_TextChanged);
             this.txtQtyPerBox.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtQtyPerBox_KeyPress);
             // 
-            // label5
+            // lblQty
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label5.Location = new System.Drawing.Point(3, 17);
-            this.label5.Margin = new System.Windows.Forms.Padding(3);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(51, 15);
-            this.label5.TabIndex = 275;
-            this.label5.Text = "Qty/Box";
+            this.lblQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblQty.AutoSize = true;
+            this.lblQty.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.lblQty.Location = new System.Drawing.Point(3, 17);
+            this.lblQty.Margin = new System.Windows.Forms.Padding(3);
+            this.lblQty.Name = "lblQty";
+            this.lblQty.Size = new System.Drawing.Size(26, 15);
+            this.lblQty.TabIndex = 275;
+            this.lblQty.Text = "Qty";
             // 
             // label12
             // 
@@ -1191,6 +1191,7 @@ namespace FactoryManagementSoftware.UI
             this.label12.Size = new System.Drawing.Size(27, 15);
             this.label12.TabIndex = 281;
             this.label12.Text = "Box";
+            this.label12.Visible = false;
             // 
             // lblBalanceQty
             // 
@@ -2024,7 +2025,7 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.Radius = 3;
             this.txtShippingAddress.ReadOnly = true;
             this.txtShippingAddress.SelectedText = "";
-            this.txtShippingAddress.Size = new System.Drawing.Size(1, 500);
+            this.txtShippingAddress.Size = new System.Drawing.Size(1, 452);
             this.txtShippingAddress.TabIndex = 247;
             // 
             // txtBillingAddress
@@ -2049,7 +2050,7 @@ namespace FactoryManagementSoftware.UI
             this.txtBillingAddress.Radius = 3;
             this.txtBillingAddress.ReadOnly = true;
             this.txtBillingAddress.SelectedText = "";
-            this.txtBillingAddress.Size = new System.Drawing.Size(1, 500);
+            this.txtBillingAddress.Size = new System.Drawing.Size(1, 452);
             this.txtBillingAddress.TabIndex = 246;
             // 
             // tableLayoutPanel18
@@ -3294,7 +3295,7 @@ namespace FactoryManagementSoftware.UI
         private Guna.UI.WinForms.GunaTextBox txtBoxQty;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Label lblQty;
         private System.Windows.Forms.Label lblTotalQty;
         private System.Windows.Forms.CheckBox cbDescriptionIncludeRemark;
         private System.Windows.Forms.CheckBox cbDescriptionIncludePackaging;

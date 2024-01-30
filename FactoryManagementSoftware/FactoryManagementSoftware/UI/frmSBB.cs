@@ -1959,7 +1959,7 @@ namespace FactoryManagementSoftware.UI
             //var startOfMonth = new DateTime(now.Year, now.Month, 1);
             LayoutPanelDisplay(true);
 
-            NewItemUpdates();
+            //NewItemUpdates();
 
             ResumeLayout();
         }

@@ -1774,14 +1774,14 @@ namespace FactoryManagementSoftware.UI
 
         private void AddNewJob()
         {
-            frmPlanningVer2dot1 frm = new frmPlanningVer2dot1();
+            frmJobAdding frm = new frmJobAdding();
 
             frm.StartPosition = FormStartPosition.CenterScreen;
 
             frm.ShowDialog();
 
             //get Job Number
-            string NewJobNo = frmPlanningVer2dot1.NEW_JOB_NO;
+            string NewJobNo = frmJobAdding.NEW_JOB_NO;
    
            
                 
@@ -4285,13 +4285,13 @@ namespace FactoryManagementSoftware.UI
         {
             string EditingJobNo = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value.ToString();
 
-            frmPlanningVer2dot1 frm = new frmPlanningVer2dot1((DataTable)dgvMacSchedule.DataSource, rowIndex);
+            frmJobAdding frm = new frmJobAdding((DataTable)dgvMacSchedule.DataSource, rowIndex);
 
             frm.StartPosition = FormStartPosition.CenterScreen;
 
             frm.ShowDialog();
 
-            if (frmPlanningVer2dot1.JOB_ADDED || frmPlanningVer2dot1.JOB_UPDATED || frmPlanningVer2dot1.JOB_EDITING_UPDATED)
+            if (frmJobAdding.JOB_ADDED || frmJobAdding.JOB_UPDATED || frmJobAdding.JOB_EDITING_UPDATED)
             {
                 New_LoadMacSchedule();
                 dgvMacScheduleRowFirstDisplay(EditingJobNo);

@@ -4139,7 +4139,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow; // change cursor to normal type
             Visible = false;
 
-            frmPlanningVer2dot1 frm = new frmPlanningVer2dot1();
+            frmJobAdding frm = new frmJobAdding();
 
             frm.StartPosition = FormStartPosition.CenterScreen;
 

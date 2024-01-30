@@ -6618,7 +6618,7 @@ namespace FactoryManagementSoftware.UI
 
                 targetQty = targetQty < 0 ? targetQty * -1 : targetQty;
                 
-                frmPlanningVer2dot1 frm = new frmPlanningVer2dot1(itemCode, targetQty);
+                frmJobAdding frm = new frmJobAdding(itemCode, targetQty);
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 //frm.WindowState = FormWindowState.Maximized;

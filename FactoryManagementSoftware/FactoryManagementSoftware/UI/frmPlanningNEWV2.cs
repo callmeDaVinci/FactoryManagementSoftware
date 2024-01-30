@@ -1369,5 +1369,10 @@ namespace FactoryManagementSoftware.UI
             //color material
             //
         }
+
+        private void txtHoursPerDay_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }

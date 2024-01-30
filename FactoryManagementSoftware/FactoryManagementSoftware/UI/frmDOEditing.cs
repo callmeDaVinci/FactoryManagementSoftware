@@ -1286,6 +1286,22 @@ namespace FactoryManagementSoftware.UI
             return "";
         }
 
+        private void GetItemUnit(string itemCategory)
+        {
+            string qtyUnit = "";
+            string boxUnit = "";
+            
+            if(itemCategory.ToUpper() == text.Cat_RawMat.ToUpper())
+            {
+                qtyUnit = "kg";
+                boxUnit = "bag(s)";
+                txtQtyPerBox.Text = "25";
+            }
+            txtTotalQtyUnit.Text = qtyUnit;
+            txtBoxUnit.Text = boxUnit;
+            lblQty.Text = "Qty(" + qtyUnit + ")";
+        }
+
         private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
         {
             string keywords = txtItemDescription.Text;
@@ -1302,6 +1318,8 @@ namespace FactoryManagementSoftware.UI
 
                         //get item std packing : main carton = true, max parent qty
                         txtQtyPerBox.Text = LoadStdPacking(ITEM_CODE);
+
+                        GetItemUnit(ITEM_CATEGORY);
                         break;
                     }
                 }
@@ -1451,6 +1469,9 @@ namespace FactoryManagementSoftware.UI
         {
             UpdatePreviewDescription();
             totalQtyPreviewUpdate();
+
+            string qtyUnit = txtTotalQtyUnit.Text;
+            lblQty.Text = "Qty(" + qtyUnit + ")";
         }
 
         private void UpdateGeneralRemarkextBoxAppearance()

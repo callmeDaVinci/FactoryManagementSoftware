@@ -7,7 +7,7 @@
     <ProjectGuid>{9E7F30F9-4A96-4D46-ADE4-4E0822E7A066}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
-    <AssemblyName>SBB ERP System</AssemblyName>
+    <AssemblyName>Safety ERP System</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -26,8 +26,8 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
-    <UpdateUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
+    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
     <ApplicationRevision>594</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>SBB logo WHITE.ico</ApplicationIcon>
+    <ApplicationIcon>sp logo 2023.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -393,11 +393,11 @@
     <Compile Include="UI\frmJobSummary.Designer.cs">
       <DependentUpon>frmJobSummary.cs</DependentUpon>
     </Compile>
-    <Compile Include="UI\frmPlanningVer2dot1.cs">
+    <Compile Include="UI\frmJobAdding.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\frmPlanningVer2dot1.Designer.cs">
-      <DependentUpon>frmPlanningVer2dot1.cs</DependentUpon>
+    <Compile Include="UI\frmJobAdding.Designer.cs">
+      <DependentUpon>frmJobAdding.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmPlanningNEWV2.cs">
       <SubType>Form</SubType>
@@ -1229,8 +1229,8 @@
     <EmbeddedResource Include="UI\frmJobSummary.resx">
       <DependentUpon>frmJobSummary.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmPlanningVer2dot1.resx">
-      <DependentUpon>frmPlanningVer2dot1.cs</DependentUpon>
+    <EmbeddedResource Include="UI\frmJobAdding.resx">
+      <DependentUpon>frmJobAdding.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmPlanningNEWV2.resx">
       <DependentUpon>frmPlanningNEWV2.cs</DependentUpon>

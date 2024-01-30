@@ -11,7 +11,7 @@ using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmPlanningVer2dot1 : Form
+    public partial class frmJobAdding : Form
     {
         #region Variable Declare
         itemDAL dalItem = new itemDAL();
@@ -72,7 +72,7 @@ namespace FactoryManagementSoftware.UI
 
 
 
-        public frmPlanningVer2dot1()
+        public frmJobAdding()
         {
             //Testing();
             InitializeComponent();
@@ -87,7 +87,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        public frmPlanningVer2dot1(string itemCode)
+        public frmJobAdding(string itemCode)
         {
             //Testing();
             InitializeComponent();
@@ -107,7 +107,7 @@ namespace FactoryManagementSoftware.UI
         private DataRow DT_JOBEDITING_ROW;
         private int EDITING_ROW_INDEX = -1;
 
-        public frmPlanningVer2dot1(DataTable dt_MacSchedule, int rowIndex)
+        public frmJobAdding(DataTable dt_MacSchedule, int rowIndex)
         {
             InitializeComponent();
             InitialSetting();
@@ -128,7 +128,7 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        public frmPlanningVer2dot1(string reference, bool jobEdit)
+        public frmJobAdding(string reference, bool jobEdit)
         {
             //Testing();
             InitializeComponent();
@@ -158,7 +158,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        public frmPlanningVer2dot1(string itemCode, int targetQty)
+        public frmJobAdding(string itemCode, int targetQty)
         {
             //Testing();
             InitializeComponent();
@@ -323,6 +323,8 @@ namespace FactoryManagementSoftware.UI
             DT_SUMMARY_RAW = null;
             DT_SUMMARY_STOCKCHECK = null;
             DT_SUMMARY_MAC_SCHEDULE = null;
+
+            loadHabitData();
         }
 
         private DataTable DT_SUMMARY_ITEM = null;
@@ -3899,10 +3901,7 @@ namespace FactoryManagementSoftware.UI
             FromMaxShotToTimeNeededCalculation();
         }
 
-        private void txtHrsPerDay_Leave(object sender, EventArgs e)
-        {
-
-        }
+      
 
         private void gunaGradientButton2_Click(object sender, EventArgs e)
         {
@@ -6366,7 +6365,43 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void txtHrsPerDay_Leave_1(object sender, EventArgs e)
+        private void loadHabitData()
+        {
+            string belongTo = text.habit_belongTo_PlanningPage;
+            string HourPerDayHabitData = "22";
+            string WastageHabitData = "5";
+
+            DataTable dt = dalHabit.HabitSearch(belongTo);
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string name = row[dalHabit.HabitName].ToString();
+
+                if (name.Equals(text.habit_planning_HourPerDay))
+                {
+                    if (float.TryParse(row[dalHabit.HabitData].ToString(), out float result))
+                    {
+                        HourPerDayHabitData = result.ToString();
+                    }
+
+                }
+
+                if (name.Equals(text.habit_planning_Wastage))
+                {
+                    if (float.TryParse(row[dalHabit.HabitData].ToString(), out float result))
+                    {
+                        WastageHabitData = result.ToString();
+                    }
+
+                }
+
+            }
+
+            txtHrsPerDay.Text = HourPerDayHabitData;
+            //txtMatWastage.Text = WastageHabitData;
+        }
+
+        private void txtHrsPerDay_Leave(object sender, EventArgs e)
         {
             string habitData = txtHrsPerDay.Text;
 
