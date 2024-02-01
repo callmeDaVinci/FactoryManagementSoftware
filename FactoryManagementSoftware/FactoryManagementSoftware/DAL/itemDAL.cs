@@ -3964,6 +3964,7 @@ namespace FactoryManagementSoftware.DAL
         public float getOrderQty(string itemCode)
         {
             float orderQty = 0;
+
             DataTable dt = codeSearch(itemCode);
 
             if (dt.Rows.Count > 0)
@@ -3972,7 +3973,31 @@ namespace FactoryManagementSoftware.DAL
                 //MessageBox.Show("get qty= "+qty);
             }
 
+            //ordDAL dalOrd = new ordDAL();
+            //Tool tool = new Tool();
 
+            //DataTable DB_PendingOrder = dalOrd.PendingOrderSelect();
+
+            //float pendingOrder_ZeroCost = tool.GetZeroCostPendingOrder(DB_PendingOrder, itemCode);
+            //float pendingOrder_Purchase = tool.GetPurchasePendingOrder(DB_PendingOrder, itemCode);
+
+            //float totalOrder = pendingOrder_ZeroCost + pendingOrder_Purchase;
+
+
+            //if(orderQty != totalOrder)
+            //{
+            //    itemBLL uItem = new itemBLL();
+
+            //    uItem.item_code = itemCode;
+            //    uItem.item_updtd_date = DateTime.Now;
+            //    uItem.item_updtd_by = MainDashboard.USER_ID;
+            //    uItem.item_ord = totalOrder;
+
+            //    //Updating data into database
+            //    ordUpdate(uItem);
+            //}
+
+            //orderQty = totalOrder;
 
             return orderQty;
         }

@@ -427,7 +427,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (i <= 0)
                 {
-                    uItem.item_wastage_allowed = 0.05f;
+                    uItem.item_wastage_allowed = i;
                 }
                 else
                 {
@@ -436,7 +436,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                uItem.item_wastage_allowed = 0.05f;
+                uItem.item_wastage_allowed = 0;
             }
 
             //item_assembly

@@ -5005,7 +5005,7 @@ namespace FactoryManagementSoftware.UI
                                 }
                             }
 
-                            totalRemark = "";
+                            //totalRemark = "";
                             if (!string.IsNullOrEmpty(totalRemark))
                             {
                                 InsertToSheet(xlWorkSheet, areaTotalData, totalRemark);

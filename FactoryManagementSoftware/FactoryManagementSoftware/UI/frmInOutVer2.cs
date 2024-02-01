@@ -1,6 +1,7 @@
 ﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using Syncfusion.XlsIO;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System;
 using System.Collections.Generic;
@@ -562,6 +563,8 @@ namespace FactoryManagementSoftware.UI
 
             if (dtItem.Rows.Count > 0)
             {
+                //pending order check
+                dtItem = PendingOrderCheck(dtItem);
                 dgv.DataSource = dtItem;
                 dgvItemUIEdit(dgv);
                 dgv.ClearSelection();
@@ -569,6 +572,45 @@ namespace FactoryManagementSoftware.UI
             itemListLoaded = true;
         }
 
+        private DataTable PendingOrderCheck(DataTable dt)
+        {
+
+            if(dt?.Rows.Count > 0)
+            {
+                ordDAL dalOrd = new ordDAL();
+                Tool tool = new Tool();
+
+                DataTable DB_PendingOrder = dalOrd.PendingOrderSelect();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    string itemCode = row[dalItem.ItemCode].ToString();
+                    float orderQty = float.TryParse(row[dalItem.ItemOrd].ToString(), out orderQty) ? orderQty : 0;
+
+                    float pendingOrder_ZeroCost = tool.GetZeroCostPendingOrder(DB_PendingOrder, itemCode);
+                    float pendingOrder_Purchase = tool.GetPurchasePendingOrder(DB_PendingOrder, itemCode);
+
+                    float totalOrder = pendingOrder_ZeroCost + pendingOrder_Purchase;
+
+                    if (orderQty != totalOrder)
+                    {
+                        row[dalItem.ItemOrd] = totalOrder;
+
+                        itemBLL uItem = new itemBLL();
+
+                        uItem.item_code = itemCode;
+                        uItem.item_updtd_date = DateTime.Now;
+                        uItem.item_updtd_by = MainDashboard.USER_ID;
+                        uItem.item_ord = totalOrder;
+
+                        //Updating data into database
+                        dalItem.ordUpdate(uItem);
+                    }
+                }
+            }
+           
+            return dt;
+        }
         private void loadTransferList(string itemCode)
         {
             DataTable dt;
