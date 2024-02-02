@@ -24,9 +24,11 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmSBBBodyCalculation());
             //Application.Run(new frmMaterialAlertNotice());
-            
+
             //Application.Run(new frmDOManagement());
             //Application.Run(new frmDOEditing());
+
+            Application.Run(new frmStockCountManagement());
 
             //Application.Run(new frmPlanningVer2dot1("R 120 141 375 96-OLD",1));
 
@@ -34,7 +36,7 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new MainDashboard(1));
 
-          Application.Run(new frmLogIn());
+            //Application.Run(new frmLogIn());
 
         }
 

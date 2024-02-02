@@ -529,6 +529,67 @@ namespace FactoryManagementSoftware.UI
 
         private void MainDashboard_Load(object sender, EventArgs e)
         {
+            //stockCountListDAL dalStockCountList =  new stockCountListDAL();
+
+            //dalStockCountList.CreateTable();
+
+            //stockCountListBLL uStockCountList = new stockCountListBLL();
+            //uStockCountList.list_description = "SEMENYIH STOCK(OUG ITEM)";
+            //uStockCountList.default_factory_tbl_code = 10;
+            //uStockCountList.isRemoved = false;
+            //uStockCountList.remark = "Update test";
+            //uStockCountList.updated_by = MainDashboard.USER_ID;
+            //uStockCountList.updated_date = DateTime.Now;
+            //uStockCountList.tbl_code = 1;
+
+            ////dalStockCountList.Insert(uStockCountList);
+            //dalStockCountList.Update(uStockCountList);
+
+            //stockCountListItemDAL dalStockCountListItem = new stockCountListItemDAL();
+
+            //dalStockCountListItem.CreateTable();
+
+            //stockCountListItemBLL uStockCountItem = new stockCountListItemBLL();
+            //uStockCountItem.list_tbl_code = 1;
+            //uStockCountItem.item_code = "ABS 700 314";
+            //uStockCountItem.factory_tbl_code = 10;
+            //uStockCountItem.default_out_tbl_code = 7;
+            //uStockCountItem.default_in_tbl_code = 3;
+            //uStockCountItem.count_unit = text.Unit_Bag;
+            //uStockCountItem.unit_conversion_rate = 25;
+            //uStockCountItem.remark = "Update Test";
+            //uStockCountItem.isRemoved = false;
+            //uStockCountItem.updated_date = DateTime.Now;
+            //uStockCountItem.updated_by = MainDashboard.USER_ID;
+            //uStockCountItem.tbl_code = 1;
+
+            ////dalStockCountListItem.Insert(uStockCountItem);
+            //dalStockCountListItem.Update(uStockCountItem);
+
+            // Create an instance of the DAL for stock count list item records
+            //stockCountListItemRecordDAL dalStockCountListItemRecord = new stockCountListItemRecordDAL();
+
+            //// Call the CreateTable method to ensure the table exists
+            //dalStockCountListItemRecord.CreateTable();
+
+            //// Create an instance of the BLL for a stock count list item record
+            //stockCountListItemRecordBLL uStockCountItemRecord = new stockCountListItemRecordBLL();
+            //uStockCountItemRecord.list_item_tbl_code = 1; // Set to the list item table code you mentioned
+            //uStockCountItemRecord.total_unit_qty = 1; 
+            //uStockCountItemRecord.count_unit = "Bag"; // Assuming "text.Unit_Bag" is equivalent to "Bag"
+            //uStockCountItemRecord.unit_conversion_rate = 25.0; // Example conversion rate
+            //uStockCountItemRecord.total_pcs = 25; // Example total pieces calculated
+            //uStockCountItemRecord.remark = "Update stock count entry"; // Remark for the record
+            //uStockCountItemRecord.updated_by = MainDashboard.USER_ID; // User ID from MainDashboard
+            //uStockCountItemRecord.updated_date = DateTime.Now; // Current date and time
+            //uStockCountItemRecord.stock_count_date = DateTime.Now; // Assuming stock count date is also now
+            //uStockCountItemRecord.tbl_code = 1;
+
+            //// Call the Insert method to add the record to the database
+            ////dalStockCountListItemRecord.Insert(uStockCountItemRecord);
+            //dalStockCountListItemRecord.Update(uStockCountItemRecord);
+
+
             if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
             {
                 //Semenyih

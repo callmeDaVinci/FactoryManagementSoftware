@@ -2130,5 +2130,21 @@ namespace FactoryManagementSoftware.UI
             }
 
         }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (!DATA_SAVED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Unsaved D/O data. Leave without saving? ", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult == DialogResult.Yes)
+                {
+                    Close();
+                }
+               
+
+            }
+        }
     }
 }

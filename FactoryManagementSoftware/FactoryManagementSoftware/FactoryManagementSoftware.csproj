@@ -7,7 +7,7 @@
     <ProjectGuid>{9E7F30F9-4A96-4D46-ADE4-4E0822E7A066}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
-    <AssemblyName>SBB ERP System</AssemblyName>
+    <AssemblyName>Safety ERP System</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -26,10 +26,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
-    <UpdateUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
+    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>595</ApplicationRevision>
+    <ApplicationRevision>596</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>SBB logo.ico</ApplicationIcon>
+    <ApplicationIcon>sp logo 2023.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -172,6 +172,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BLL\companyBLL.cs" />
+    <Compile Include="BLL\stockCountListItemRecordBLL.cs" />
+    <Compile Include="BLL\stockCountListItemBLL.cs" />
+    <Compile Include="BLL\stockCountListBLL.cs" />
     <Compile Include="BLL\internalDOItemBLL.cs" />
     <Compile Include="BLL\internalDOBLL.cs" />
     <Compile Include="BLL\doFormatBLL.cs" />
@@ -209,6 +212,9 @@
     <Compile Include="CustomTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="DAL\stockCountListItemRecordDAL.cs" />
+    <Compile Include="DAL\stockCountListItemDAL.cs" />
+    <Compile Include="DAL\stockCountListDAL.cs" />
     <Compile Include="DAL\companyDAL.cs" />
     <Compile Include="DAL\doInternalItemDAL.cs" />
     <Compile Include="DAL\doInternalDAL.cs" />
@@ -256,6 +262,24 @@
     </Compile>
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockCountListItemSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockCountListItemSetting.Designer.cs">
+      <DependentUpon>frmStockCountListItemSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockCountManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockCountManagement.Designer.cs">
+      <DependentUpon>frmStockCountManagement.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockCountListSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockCountListSetting.Designer.cs">
+      <DependentUpon>frmStockCountListSetting.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDoFormat.cs">
       <SubType>Form</SubType>
@@ -1159,6 +1183,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockCountListItemSetting.resx">
+      <DependentUpon>frmStockCountListItemSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockCountManagement.resx">
+      <DependentUpon>frmStockCountManagement.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockCountListSetting.resx">
+      <DependentUpon>frmStockCountListSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDoFormat.resx">
       <DependentUpon>frmDoFormat.cs</DependentUpon>
