@@ -194,7 +194,6 @@ namespace FactoryManagementSoftware.UI
 
         private void ListTypeUpdate()
         {
-            dalStockCountList.CreateTable();
 
             uStockCountList.list_description = txtListName.Text;
 

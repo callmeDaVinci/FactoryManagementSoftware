@@ -30,9 +30,12 @@ namespace FactoryManagementSoftware.UI
         stockCountListDAL dalStockCountList = new stockCountListDAL();
         stockCountListBLL uStockCountList = new stockCountListBLL();
 
+        stockCountListItemDAL dalStockCountListItem = new stockCountListItemDAL();
+
         DataTable DT_STOCK_COUNT_LIST;
 
-       
+        private bool INITIAL_SETTING_LOADED = false;
+
         private bool DATA_SAVED = true;
 
         public frmStockCountManagement()
@@ -180,7 +183,13 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbStockCountList_SelectedIndexChanged(object sender, EventArgs e)
         {
+            errorProvider1.Clear();
+
             lblEditList.Visible = cmbStockCountList.SelectedIndex > -1;
+
+            btnAddItem.Visible = cmbStockCountList.SelectedIndex > -1;
+
+            LoadStockCountListItem();
         }
 
         private void lblEditList_Click(object sender, EventArgs e)
@@ -198,6 +207,112 @@ namespace FactoryManagementSoftware.UI
 
             LoadStockCountListData();
             InitialStockCountListComboBox(DT_STOCK_COUNT_LIST);
+        }
+
+        private void LoadStockCountListItem()
+        {
+            if (!DATA_SAVED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Unsaved data. confirm to load data? ", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialogResult != DialogResult.Yes)
+                {
+                    return;
+                }
+            }
+
+            if(!INITIAL_SETTING_LOADED)
+            {
+                return;
+            }
+
+            if (cmbStockCountList.SelectedIndex != -1)
+            {
+                // Get the DataRowView for the selected item
+                DataRowView selectedRow = (DataRowView)cmbStockCountList.SelectedItem;
+                int listTblCode = int.TryParse(selectedRow[dalStockCountList.TblCode].ToString(), out int i) ? i : -1;
+
+                DataTable dt = dalStockCountListItem.SelectListItem(listTblCode);
+
+                if (dgvStockCountList?.Rows.Count > 0)
+                {
+                    // Existing IDs in dgvStockCountList
+                    HashSet<string> existingIDs = new HashSet<string>();
+                    foreach (DataGridViewRow dgvRow in dgvStockCountList.Rows)
+                    {
+                        if (dgvRow.Cells[dalStockCountListItem.TblCode]?.Value != null)
+                            existingIDs.Add(dgvRow.Cells[dalStockCountListItem.TblCode].Value.ToString());
+                    }
+
+                    // Add rows from dt if not found in existingIDs
+                    foreach (DataRow dtRow in dt.Rows)
+                    {
+                        if (!existingIDs.Contains(dtRow[dalStockCountListItem.TblCode].ToString()))
+                        {
+                            // Convert DataRow to DataGridViewRow or create a new row and add to dgvStockCountList
+                            DataGridViewRow newRow = new DataGridViewRow();
+                            newRow.CreateCells(dgvStockCountList); // Create cells for the new row
+
+                            for (int colIndex = 0; colIndex < dt.Columns.Count; colIndex++)
+                            {
+                                newRow.Cells[colIndex].Value = dtRow[colIndex];
+                            }
+
+                            dgvStockCountList.Rows.Add(newRow);
+                        }
+                    }
+                }
+                else
+                {
+                    dgvStockCountList.DataSource = dt;
+                }
+
+                dgvStockCountList.ClearSelection();
+            }
+        }
+
+        private void btnAddItem_Click(object sender, EventArgs e)
+        {
+            //if (cmbStockLocation.SelectedIndex != -1)
+            //{
+            //    // Get the DataRowView for the selected item
+            //    DataRowView selectedRow = (DataRowView)cmbStockLocation.SelectedItem;
+
+            //    int facID = int.TryParse(selectedRow[dalFac.FacID].ToString(), out int i) ? i : 3;
+            //    uStockCountList.default_factory_tbl_code = facID;
+            //}
+
+            if (cmbStockCountList.SelectedIndex != -1)
+            {
+                // Get the DataRowView for the selected item
+                DataRowView selectedRow = (DataRowView)cmbStockCountList.SelectedItem;
+
+                int tblCode = int.TryParse(selectedRow[dalStockCountList.TblCode].ToString(), out int i) ? i : -1;
+
+                frmStockCountListItemSetting frm = new frmStockCountListItemSetting(tblCode);
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                frm.ShowDialog();
+
+                LoadStockCountListItem();
+            }
+            else
+            {
+                MessageBox.Show("No List Type Found!");
+
+               
+
+                errorProvider1.SetError(lblStockCountList, "List Invalid");
+            }
+                
+               
+        }
+
+        private void frmStockCountManagement_Shown(object sender, EventArgs e)
+        {
+            INITIAL_SETTING_LOADED = true;
         }
     }
 }

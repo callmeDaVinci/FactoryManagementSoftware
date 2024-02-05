@@ -13,8 +13,8 @@ namespace FactoryManagementSoftware.BLL
         public int index_level { get; set; }
         public string item_code { get; set; }
         public int factory_tbl_code { get; set; }
-        public int default_out_tbl_code { get; set; }
-        public int default_in_tbl_code { get; set; }
+        public int default_out_cat_tbl_code { get; set; }
+        public int default_int_cat_tbl_code { get; set; }
         public string count_unit { get; set; }
         public double unit_conversion_rate { get; set; }
         public string remark { get; set; }

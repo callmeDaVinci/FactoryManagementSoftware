@@ -2146,5 +2146,10 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private void txtTotalQty_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
     }
 }

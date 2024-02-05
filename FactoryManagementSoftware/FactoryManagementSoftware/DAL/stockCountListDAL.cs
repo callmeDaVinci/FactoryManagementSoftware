@@ -65,6 +65,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        
         #endregion
 
         #region Insert Data in Database
