@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSaveRecord = new Guna.UI.WinForms.GunaGradientButton();
@@ -161,6 +161,7 @@
             this.btnStockUpdate.TabIndex = 227;
             this.btnStockUpdate.Text = "Save & Update Stock";
             this.btnStockUpdate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnStockUpdate.Click += new System.EventHandler(this.btnStockUpdate_Click);
             // 
             // tableLayoutPanel4
             // 
@@ -392,8 +393,8 @@
             this.dtpStockCountDate.Radius = 3;
             this.dtpStockCountDate.Size = new System.Drawing.Size(284, 31);
             this.dtpStockCountDate.TabIndex = 240;
-            this.dtpStockCountDate.Text = "2/2/2024";
-            this.dtpStockCountDate.Value = new System.DateTime(2024, 2, 2, 18, 37, 0, 0);
+            this.dtpStockCountDate.Text = "6/2/2024";
+            this.dtpStockCountDate.Value = new System.DateTime(2024, 2, 6, 0, 0, 0, 0);
             // 
             // lblStockCountDate
             // 
@@ -419,26 +420,29 @@
             this.dgvStockCountList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockCountList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockCountList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle5;
             this.dgvStockCountList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockCountList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockCountList.Location = new System.Drawing.Point(5, 105);
             this.dgvStockCountList.Margin = new System.Windows.Forms.Padding(5);
+            this.dgvStockCountList.MultiSelect = false;
             this.dgvStockCountList.Name = "dgvStockCountList";
-            this.dgvStockCountList.ReadOnly = true;
             this.dgvStockCountList.RowHeadersVisible = false;
             this.dgvStockCountList.RowHeadersWidth = 51;
             this.dgvStockCountList.RowTemplate.Height = 50;
             this.dgvStockCountList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvStockCountList.Size = new System.Drawing.Size(1232, 503);
             this.dgvStockCountList.TabIndex = 156;
+            this.dgvStockCountList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockCountList_CellClick);
+            this.dgvStockCountList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockCountList_CellEndEdit);
+            this.dgvStockCountList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockCountList_EditingControlShowing);
             // 
             // contextMenuStrip1
             // 

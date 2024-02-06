@@ -458,7 +458,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Adjust { get; } = "ADJUST";
         public string Header_Remark { get; } = "Remark";
         public string Header_Note { get; } = "NOTE";
-        public string Header_Category { get; } = "CATEGORY";
+        public string Header_Category { get; } = "Category";
         public string Header_Status { get; } = "Status";
         public string Header_Ori_Status { get; } = "ORI. STATUS";
         public string Header_Ori_Machine_Name { get; } = "ORI. Mac. Name";

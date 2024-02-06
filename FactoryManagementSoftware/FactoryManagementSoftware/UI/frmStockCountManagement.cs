@@ -10,6 +10,8 @@ using System.Reflection;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Linq;
+using Microsoft.VisualBasic;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -172,6 +174,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(text.Header_TableCode, typeof(int));
             dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Category, typeof(string));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
             dt.Columns.Add(text.Header_ItemDescription, typeof(string));
@@ -193,6 +196,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_UnitConversionRate, typeof(double));
             dt.Columns.Add(text.Header_TotalQty, typeof(double));
             dt.Columns.Add(text.Header_Unit, typeof(string));
+            dt.Columns.Add(text.Header_Difference, typeof(double));
             dt.Columns.Add(text.Header_ActionPreview, typeof(string));
             dt.Columns.Add(text.Header_Selection, typeof(bool));
 
@@ -219,6 +223,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_UnitConversionRate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_TotalQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_Difference].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[text.Header_TableCode].Visible = false;
                 dgv.Columns[text.Header_StockLocation_TblCode].Visible = false;
@@ -226,8 +232,24 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_ItemName].Visible = false;
                 dgv.Columns[text.Header_InFrom_TblCode].Visible = false;
                 dgv.Columns[text.Header_OutTo_TblCode].Visible = false;
+
+                dgv.Columns[text.Header_StockCount].DefaultCellStyle.BackColor = SystemColors.Info;
+                dgv.Columns[text.Header_Difference].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                dgv.Columns[text.Header_Difference].DefaultCellStyle.Font = new Font(dgvStockCountList.DefaultCellStyle.Font, FontStyle.Bold);
+
+                // Make all columns read-only initially
+                foreach (DataGridViewColumn column in dgv.Columns)
+                {
+                    column.ReadOnly = true;
+                }
+
+                // Enable editing for specific columns by name
+                dgv.Columns[text.Header_StockCount].ReadOnly = false;
+                dgv.Columns[text.Header_Selection].ReadOnly = false;
+
+
             }
-           
+
 
         }
 
@@ -238,9 +260,10 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
 
             frm.ShowDialog();
-
+            INITIAL_SETTING_LOADED = false;
             LoadStockCountListData();
             InitialStockCountListComboBox(DT_STOCK_COUNT_LIST);
+            INITIAL_SETTING_LOADED = true;
         }
 
         private void cmbStockCountList_SelectedIndexChanged(object sender, EventArgs e)
@@ -266,9 +289,13 @@ namespace FactoryManagementSoftware.UI
             frm.StartPosition = FormStartPosition.CenterScreen;
 
             frm.ShowDialog();
+            INITIAL_SETTING_LOADED = false;
 
             LoadStockCountListData();
             InitialStockCountListComboBox(DT_STOCK_COUNT_LIST);
+
+            INITIAL_SETTING_LOADED = true;
+
         }
 
         trfCatDAL daltrfCat = new trfCatDAL();
@@ -408,6 +435,7 @@ namespace FactoryManagementSoftware.UI
                         string facName = tool.getFactoryName(DT_FAC_STOCK, stockFacID.ToString());
                         double stock = tool.getFacStock(DT_FAC_STOCK, itemCode, stockFacID.ToString());
 
+                        newRow[text.Header_Category] = itemCat;
                         newRow[text.Header_ItemCode] = itemCode;
                         newRow[text.Header_ItemName] = itemName;
                         newRow[text.Header_ItemDescription] = itemDescription;
@@ -505,6 +533,7 @@ namespace FactoryManagementSoftware.UI
                         string facName = tool.getFactoryName(DT_FAC_STOCK, stockFacID.ToString());
                         double stock = tool.getFacStock(DT_FAC_STOCK, itemCode, stockFacID.ToString());
 
+                        newRow[text.Header_Category] = itemCat;
                         newRow[text.Header_ItemCode] = itemCode;
                         newRow[text.Header_ItemName] = itemName;
                         newRow[text.Header_ItemDescription] = itemDescription;
@@ -606,6 +635,188 @@ namespace FactoryManagementSoftware.UI
         private void frmStockCountManagement_Shown(object sender, EventArgs e)
         {
             INITIAL_SETTING_LOADED = true;
+        }
+
+        private void dgvStockCountList_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            // Temporarily store the current row index
+            int selectedRowIndex = e.RowIndex;
+
+            btnEdit.Visible = selectedRowIndex >= 0;
+
+            // Change the selection mode based on the clicked column
+            if (dgvStockCountList.Columns[e.ColumnIndex].Name == text.Header_ItemDescription)
+            {
+                dgvStockCountList.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            }
+            else
+            {
+                dgvStockCountList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            }
+
+
+            // Check if the row index is valid to avoid selecting header row
+            if (selectedRowIndex >= 0)
+            {
+                // Clear existing selection to ensure a clean state
+                dgvStockCountList.ClearSelection();
+
+                // Check the selection mode to determine how to reselect
+                if (dgvStockCountList.SelectionMode == DataGridViewSelectionMode.FullRowSelect)
+                {
+                    // Select the entire row
+                    dgvStockCountList.Rows[selectedRowIndex].Selected = true;
+                }
+                else
+                {
+                    // Select the specific cell
+                    dgvStockCountList.Rows[selectedRowIndex].Cells[e.ColumnIndex].Selected = true;
+                }
+            }
+        }
+
+        private void dgvStockCountList_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            e.Control.KeyPress -= new KeyPressEventHandler(Column_KeyPress);
+
+            // Check if the current column is "columnA"
+            if (dgvStockCountList.CurrentCell.ColumnIndex == dgvStockCountList.Columns[text.Header_StockCount].Index)
+            {
+                TextBox tb = e.Control as TextBox;
+                if (tb != null)
+                {
+                    tb.KeyPress += new KeyPressEventHandler(Column_KeyPress);
+                }
+            }
+        }
+
+        private void Column_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow number, backspace, and single decimal point
+            if (!char.IsNumber(e.KeyChar) && (Keys)e.KeyChar != Keys.Back && e.KeyChar != '.')
+            {
+                e.Handled = true;
+            }
+            else if (e.KeyChar == '.' && (sender as TextBox).Text.Contains('.'))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void dgvStockCountList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            // Check if the edited column is "Stock Count"
+            if (dgvStockCountList.Columns[e.ColumnIndex].Name == text.Header_StockCount)
+            {
+                double stockCount = 0;
+                double unitConversionRate = 1; // Default value
+                double totalQty;
+
+                // Try to get the stock count value
+                if (!double.TryParse(dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_StockCount].Value?.ToString(), out stockCount))
+                {
+                    // Invalid stock count, clear the Total Qty cell
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_TotalQty].Value = DBNull.Value;
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = false;
+                    return;
+                }
+
+                // Try to get the unit conversion rate, use default if invalid
+                var conversionRateCell = dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_UnitConversionRate].Value;
+                if (conversionRateCell != null && !double.TryParse(conversionRateCell.ToString(), out unitConversionRate))
+                {
+                    unitConversionRate = 1; // Use default if conversion rate is not valid
+                }
+
+                // Calculate total quantity
+                totalQty = stockCount * unitConversionRate;
+
+               
+                // Update the Total Qty cell
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_TotalQty].Value = totalQty;
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
+
+                double systemStock = double.TryParse(dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_SystemStock].Value.ToString(), out systemStock) ? systemStock : 0;
+
+                double diff = totalQty - systemStock;
+                string actionPreview = "";
+                string unit = dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Unit].Value.ToString();
+
+                var outToCell = dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_OutTo];
+                var inFromCell = dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_InFrom];
+
+                inFromCell.Style.BackColor = dgvStockCountList.DefaultCellStyle.BackColor; // Reset to default if previously set to red
+                outToCell.Style.BackColor = dgvStockCountList.DefaultCellStyle.BackColor; // Reset to default if previously set to red
+                // Update action preview based on the difference
+
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = false;
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Style.ForeColor = Color.Black;
+
+                if (diff > 0)
+                {
+                    // Retrieve "In From" location
+                    
+                    string inFrom = inFromCell.Value?.ToString() ?? "";
+
+                    if (string.IsNullOrWhiteSpace(inFrom))
+                    {
+                        inFromCell.Style.BackColor = Color.Red;
+                        inFrom = "[Missing Data]";
+                    }
+
+
+                    actionPreview = "Stock in " + Math.Abs(diff) + " " + unit + " from " + inFrom;
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Style.ForeColor = Color.Green;
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
+
+                }
+                else if(diff < 0)
+                {
+                    // Retrieve "Out To" location
+                   
+                    string outTo = outToCell.Value?.ToString() ?? "";
+
+                    if (string.IsNullOrWhiteSpace(outTo))
+                    {
+                        outToCell.Style.BackColor = Color.Red;
+                        outTo = "[Missing Data]";
+                    }
+
+                    actionPreview = "Stock out " + Math.Abs(diff) + " " + unit + " to " + outTo;
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Style.ForeColor = Color.Red;
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
+
+                }
+
+
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Value = diff;
+
+                dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_ActionPreview].Value = actionPreview;
+            }
+        }
+
+        private bool STOCK_UPDATED = false;
+        private void btnStockUpdate_Click(object sender, EventArgs e)
+        {
+            DialogResult dialogResult = MessageBox.Show("Confirm to process to Stock Update ?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (dialogResult == DialogResult.Yes)
+            {
+                DataTable dt = (DataTable)dgvStockCountList.DataSource;
+
+                frmInOutEdit frm = new frmInOutEdit(dt, dtpStockCountDate.Value.Date, true);
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.ShowDialog();//Item Edit
+
+                STOCK_UPDATED = frmInOutEdit.TrfSuccess;
+
+                if(STOCK_UPDATED)
+                {
+                    LoadStockCountListItem();
+                }
+            }
+
+
         }
     }
 }

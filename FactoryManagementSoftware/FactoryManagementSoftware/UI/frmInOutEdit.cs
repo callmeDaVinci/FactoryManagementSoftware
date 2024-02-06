@@ -57,6 +57,27 @@ namespace FactoryManagementSoftware.UI
             TrfSuccess = false;
         }
 
+        private bool AUTO_OUT_ITEM_GROUP = false;
+        private DateTime STOCK_COUNT_DATE = DateTime.MaxValue;
+        //CALL FROM STOCK COUNT LIST
+        public frmInOutEdit(DataTable dt, DateTime date, bool autoOutJoinGroup)
+        {
+            InitializeComponent();
+            AUTO_OUT_ITEM_GROUP = autoOutJoinGroup;
+            STOCK_COUNT_DATE = date;
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //#############################################################################################################################################
+            //dtpTrfDate.Value = date;
+            dtpTrfDate.Value = date;
+            //dtpTrfDate.Value = DateTime.Today.AddDays(-30);
+            createDGV();
+
+            DT_STOCK_COUNT_LIST = dt;
+            delivered_date = date;
+            callFromStockCountList = true;
+            TrfSuccess = false;
+        }
+
         //CALL FROM Stock Check LIST
         string stockTallyLocation;
 
@@ -246,6 +267,7 @@ namespace FactoryManagementSoftware.UI
         private bool dgvEdit = false;
         private bool callFromMatChecklist = false;
         private bool callFromDOlist = false;
+        private bool callFromStockCountList = false;
         private bool callFromStockCheckList = false;
         private bool callForStockTally = false;
         private bool callFromMatlist = false;
@@ -255,6 +277,7 @@ namespace FactoryManagementSoftware.UI
 
         static public DataTable dt_MatChecklist;
         private DataTable dt_DOItem;
+        private DataTable DT_STOCK_COUNT_LIST;
         private DataTable dt_StockTallyList;
         private DataTable dt_MatDeliveryList;
         private DataTable dt_Fac;
@@ -675,7 +698,10 @@ namespace FactoryManagementSoftware.UI
             {
                 StockTally(dt_StockTallyList);
             }
-
+            else if(callFromStockCountList)
+            {
+                StockCountUpdate();
+            }
 
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2558,6 +2584,105 @@ namespace FactoryManagementSoftware.UI
 
             dgv.ClearSelection();
             dgv.Rows[n].Selected = true;
+        }
+
+        private void StockCountUpdate()
+        {
+            DataGridView dgv = dgvTransfer;
+            DataTable dt_ItemInfo = dalItem.Select();
+            int n;
+
+            string stockLocation = "";
+            string itemUnit = "pcs";
+            string itemCat = "";
+            string itemName = "";
+
+            foreach (DataRow row in DT_STOCK_COUNT_LIST.Rows)
+            {
+                bool selected = bool.TryParse(row[text.Header_Selection].ToString(), out selected) ? selected : false;
+                double diff = double.TryParse(row[text.Header_Difference].ToString(), out diff) ? diff : 0;
+
+                if (selected && diff != 0)
+                {
+                    n = dgv.Rows.Add();
+                    //index++;
+                    index = n + 1;
+                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+
+                    itemCat = row[text.Header_Category].ToString();
+                    itemCode = row[text.Header_ItemCode].ToString();
+                    itemName = row[text.Header_ItemName].ToString();
+                    from = row[text.Header_InFrom].ToString();
+                    to = row[text.Header_OutTo].ToString();
+                    stockLocation = tool.getFactoryName(row[text.Header_StockLocation_TblCode].ToString());
+                    itemUnit = row[text.Header_Unit].ToString();
+
+                    dgv.Rows[n].Cells[DateColumnName].Value = STOCK_COUNT_DATE.ToShortDateString();
+                    dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                    dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                    dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+                    dgv.Rows[n].Cells[UnitColumnName].Value = itemUnit;
+
+                    if (diff < 0)
+                    {
+                        //out
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[FromColumnName].Value = stockLocation;
+
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = to;
+                        dgv.Rows[n].Cells[ToColumnName].Value = "";
+                        dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+
+                        diff = diff * -1;
+
+                        if (cmbTrfFromCategory.Text.Equals("Factory"))
+                        {
+                            facStockDAL dalFacStock = new facStockDAL();
+                            float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(stockLocation).ToString());
+
+                            facStock = (float)Math.Truncate(facStock * 1000) / 1000;
+
+
+                            dgv.Rows[n].Cells[QtyColumnName].Value = diff.ToString();
+
+                            float transferQty = Convert.ToSingle(diff);
+
+                            float afterbal = facStock - transferQty;
+
+                            if (facStock - transferQty < 0)
+                            {
+                                //#############################################################################################################################################
+                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString("0.##") + ")";
+                            }
+
+                        }
+                    }
+                    else if(diff > 0)
+                    {
+                        //in
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = from;
+                        dgv.Rows[n].Cells[FromColumnName].Value = "";
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[ToColumnName].Value = stockLocation;
+
+                        dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.FromArgb(0, 192, 0);
+
+                        dgv.Rows[n].Cells[QtyColumnName].Value = diff.ToString();
+                        if (tool.ifGotChildIncludedPackaging(itemCode) && AUTO_OUT_ITEM_GROUP)
+                        {
+                            if (from == text.Assembly || from == text.Production)
+                            {
+                                productionChildStockOut(to, itemCode, Convert.ToSingle(diff), -1, note, from);
+                            }
+                        }
+                    }
+                }
+
+                dgv.ClearSelection();
+                //dgv.Rows[n].Selected = true;
+            }
+
         }
 
         private void addToDGV(DataTable dt, bool fromProductionRecord)

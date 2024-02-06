@@ -250,6 +250,7 @@
             this.label3.Size = new System.Drawing.Size(101, 17);
             this.label3.TabIndex = 62;
             this.label3.Text = "Transfer Record";
+            this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
             // dgvTotal
             // 

@@ -321,7 +321,7 @@ namespace FactoryManagementSoftware.UI
             uStockCountListItem.list_tbl_code = LIST_TBL_CODE;
             uStockCountListItem.item_code = ITEM_CODE;
 
-            uStockCountListItem.count_unit = string.IsNullOrEmpty(txtCountUnit.Text)?txtCountUnit.Text : "pcs";
+            uStockCountListItem.count_unit = string.IsNullOrEmpty(txtCountUnit.Text) ? "pcs" : txtCountUnit.Text;
             uStockCountListItem.unit_conversion_rate = double.TryParse(txtUnitConversionRate.Text,out double d)?d : 1;
 
             uStockCountListItem.remark = "";
@@ -379,7 +379,8 @@ namespace FactoryManagementSoftware.UI
             uStockCountListItem.list_tbl_code = LIST_TBL_CODE;
             uStockCountListItem.item_code = ITEM_CODE;
 
-            uStockCountListItem.count_unit = string.IsNullOrEmpty(txtCountUnit.Text) ? txtCountUnit.Text : "pcs";
+            uStockCountListItem.count_unit = string.IsNullOrEmpty(txtCountUnit.Text) ? "pcs" : txtCountUnit.Text;
+
             uStockCountListItem.unit_conversion_rate = double.TryParse(txtUnitConversionRate.Text, out double d) ? d : 1;
 
             uStockCountListItem.remark = "";
@@ -428,7 +429,7 @@ namespace FactoryManagementSoftware.UI
       
         private void InsertButtonTextChange()
         {
-            if (LIST_TBL_CODE == -1)
+            if (ITEM_TBL_CODE == -1)
             {
                 btnInsert.Text = BUTTON_INSERT_TEXT;
             }

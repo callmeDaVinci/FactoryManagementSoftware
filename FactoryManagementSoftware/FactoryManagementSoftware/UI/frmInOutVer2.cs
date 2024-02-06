@@ -2590,6 +2590,13 @@ namespace FactoryManagementSoftware.UI
             frmLoading.CloseForm();
 
         }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+            frmStockCountManagement frm = new frmStockCountManagement();
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+        }
     }
 }
 

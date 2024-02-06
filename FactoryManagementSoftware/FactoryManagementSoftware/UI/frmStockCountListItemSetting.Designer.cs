@@ -36,7 +36,6 @@ namespace FactoryManagementSoftware.UI
             this.tlpStepPanel = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.lblItem = new System.Windows.Forms.Label();
-            this.txtItem = new FactoryManagementSoftware.CustomTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.lblUnitExample = new System.Windows.Forms.Label();
@@ -69,6 +68,7 @@ namespace FactoryManagementSoftware.UI
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtItem = new FactoryManagementSoftware.CustomTextBox();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
@@ -158,24 +158,6 @@ namespace FactoryManagementSoftware.UI
             this.lblItem.Size = new System.Drawing.Size(37, 19);
             this.lblItem.TabIndex = 2019;
             this.lblItem.Text = "Item";
-            // 
-            // txtItem
-            // 
-            this.txtItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.txtItem.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtItem.Location = new System.Drawing.Point(22, 81);
-            this.txtItem.Name = "txtItem";
-            this.txtItem.Size = new System.Drawing.Size(378, 20);
-            this.txtItem.TabIndex = 2017;
-            this.txtItem.Text = "Search (Item Name/Code)";
-            this.txtItem.Values = null;
-            this.txtItem.TextChanged += new System.EventHandler(this.txtItem_TextChanged);
-            this.txtItem.Enter += new System.EventHandler(this.txtItemDescription_Enter);
-            this.txtItem.Leave += new System.EventHandler(this.txtItemDescription_Leave);
             // 
             // panel1
             // 
@@ -683,6 +665,24 @@ namespace FactoryManagementSoftware.UI
             // errorProvider6
             // 
             this.errorProvider6.ContainerControl = this;
+            // 
+            // txtItem
+            // 
+            this.txtItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.txtItem.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtItem.Location = new System.Drawing.Point(22, 81);
+            this.txtItem.Name = "txtItem";
+            this.txtItem.Size = new System.Drawing.Size(378, 20);
+            this.txtItem.TabIndex = 2017;
+            this.txtItem.Text = "Search (Item Name/Code)";
+            this.txtItem.Values = null;
+            this.txtItem.TextChanged += new System.EventHandler(this.txtItem_TextChanged);
+            this.txtItem.Enter += new System.EventHandler(this.txtItemDescription_Enter);
+            this.txtItem.Leave += new System.EventHandler(this.txtItemDescription_Leave);
             // 
             // frmStockCountListItemSetting
             // 
