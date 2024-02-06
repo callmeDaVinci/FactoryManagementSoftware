@@ -36,12 +36,16 @@ namespace FactoryManagementSoftware.UI
             this.tlpStepPanel = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.lblItem = new System.Windows.Forms.Label();
+            this.txtItem = new FactoryManagementSoftware.CustomTextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblUnitExample = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtSystemUnit = new Guna.UI.WinForms.GunaTextBox();
             this.txtUnitConversionRate = new Guna.UI.WinForms.GunaTextBox();
             this.txtCountUnit = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSystemUnit = new System.Windows.Forms.Label();
             this.lblCountUnit = new System.Windows.Forms.Label();
             this.lblUnitConversionRate = new System.Windows.Forms.Label();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -65,10 +69,6 @@ namespace FactoryManagementSoftware.UI
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblSystemUnit = new System.Windows.Forms.Label();
-            this.txtSystemUnit = new Guna.UI.WinForms.GunaTextBox();
-            this.lblUnitExample = new System.Windows.Forms.Label();
-            this.txtItem = new FactoryManagementSoftware.CustomTextBox();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
@@ -159,6 +159,24 @@ namespace FactoryManagementSoftware.UI
             this.lblItem.TabIndex = 2019;
             this.lblItem.Text = "Item";
             // 
+            // txtItem
+            // 
+            this.txtItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
+            this.txtItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
+            this.txtItem.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.txtItem.Location = new System.Drawing.Point(22, 81);
+            this.txtItem.Name = "txtItem";
+            this.txtItem.Size = new System.Drawing.Size(378, 20);
+            this.txtItem.TabIndex = 2017;
+            this.txtItem.Text = "Search (Item Name/Code)";
+            this.txtItem.Values = null;
+            this.txtItem.TextChanged += new System.EventHandler(this.txtItem_TextChanged);
+            this.txtItem.Enter += new System.EventHandler(this.txtItemDescription_Enter);
+            this.txtItem.Leave += new System.EventHandler(this.txtItemDescription_Leave);
+            // 
             // panel1
             // 
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -195,6 +213,18 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel13.Size = new System.Drawing.Size(399, 345);
             this.tableLayoutPanel13.TabIndex = 258;
             // 
+            // lblUnitExample
+            // 
+            this.lblUnitExample.AutoSize = true;
+            this.lblUnitExample.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblUnitExample.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblUnitExample.Location = new System.Drawing.Point(3, 213);
+            this.lblUnitExample.Margin = new System.Windows.Forms.Padding(3);
+            this.lblUnitExample.Name = "lblUnitExample";
+            this.lblUnitExample.Size = new System.Drawing.Size(57, 17);
+            this.lblUnitExample.TabIndex = 161;
+            this.lblUnitExample.Text = "Example:";
+            // 
             // tableLayoutPanel4
             // 
             this.tableLayoutPanel4.ColumnCount = 5;
@@ -214,6 +244,32 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(399, 40);
             this.tableLayoutPanel4.TabIndex = 2022;
+            // 
+            // txtSystemUnit
+            // 
+            this.txtSystemUnit.BackColor = System.Drawing.Color.Transparent;
+            this.txtSystemUnit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtSystemUnit.BaseColor = System.Drawing.Color.White;
+            this.txtSystemUnit.BorderColor = System.Drawing.Color.Silver;
+            this.txtSystemUnit.BorderSize = 1;
+            this.txtSystemUnit.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSystemUnit.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSystemUnit.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtSystemUnit.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtSystemUnit.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtSystemUnit.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtSystemUnit.ForeColor = System.Drawing.Color.Black;
+            this.txtSystemUnit.Location = new System.Drawing.Point(287, 3);
+            this.txtSystemUnit.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtSystemUnit.Name = "txtSystemUnit";
+            this.txtSystemUnit.PasswordChar = '\0';
+            this.txtSystemUnit.Radius = 3;
+            this.txtSystemUnit.SelectedText = "";
+            this.txtSystemUnit.Size = new System.Drawing.Size(109, 33);
+            this.txtSystemUnit.TabIndex = 2021;
+            this.txtSystemUnit.Text = "pcs";
+            this.txtSystemUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSystemUnit.TextChanged += new System.EventHandler(this.txtSystemUnit_TextChanged);
             // 
             // txtUnitConversionRate
             // 
@@ -287,6 +343,19 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(399, 30);
             this.tableLayoutPanel3.TabIndex = 2021;
+            // 
+            // lblSystemUnit
+            // 
+            this.lblSystemUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblSystemUnit.AutoSize = true;
+            this.lblSystemUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblSystemUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblSystemUnit.Location = new System.Drawing.Point(287, 8);
+            this.lblSystemUnit.Margin = new System.Windows.Forms.Padding(3);
+            this.lblSystemUnit.Name = "lblSystemUnit";
+            this.lblSystemUnit.Size = new System.Drawing.Size(83, 19);
+            this.lblSystemUnit.TabIndex = 2023;
+            this.lblSystemUnit.Text = "System Unit";
             // 
             // lblCountUnit
             // 
@@ -614,75 +683,6 @@ namespace FactoryManagementSoftware.UI
             // errorProvider6
             // 
             this.errorProvider6.ContainerControl = this;
-            // 
-            // lblSystemUnit
-            // 
-            this.lblSystemUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblSystemUnit.AutoSize = true;
-            this.lblSystemUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblSystemUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblSystemUnit.Location = new System.Drawing.Point(287, 8);
-            this.lblSystemUnit.Margin = new System.Windows.Forms.Padding(3);
-            this.lblSystemUnit.Name = "lblSystemUnit";
-            this.lblSystemUnit.Size = new System.Drawing.Size(83, 19);
-            this.lblSystemUnit.TabIndex = 2023;
-            this.lblSystemUnit.Text = "System Unit";
-            // 
-            // txtSystemUnit
-            // 
-            this.txtSystemUnit.BackColor = System.Drawing.Color.Transparent;
-            this.txtSystemUnit.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtSystemUnit.BaseColor = System.Drawing.Color.White;
-            this.txtSystemUnit.BorderColor = System.Drawing.Color.Silver;
-            this.txtSystemUnit.BorderSize = 1;
-            this.txtSystemUnit.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtSystemUnit.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtSystemUnit.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtSystemUnit.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.txtSystemUnit.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtSystemUnit.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtSystemUnit.ForeColor = System.Drawing.Color.Black;
-            this.txtSystemUnit.Location = new System.Drawing.Point(287, 3);
-            this.txtSystemUnit.MaximumSize = new System.Drawing.Size(0, 33);
-            this.txtSystemUnit.Name = "txtSystemUnit";
-            this.txtSystemUnit.PasswordChar = '\0';
-            this.txtSystemUnit.Radius = 3;
-            this.txtSystemUnit.SelectedText = "";
-            this.txtSystemUnit.Size = new System.Drawing.Size(109, 33);
-            this.txtSystemUnit.TabIndex = 2021;
-            this.txtSystemUnit.Text = "pcs";
-            this.txtSystemUnit.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtSystemUnit.TextChanged += new System.EventHandler(this.txtSystemUnit_TextChanged);
-            // 
-            // lblUnitExample
-            // 
-            this.lblUnitExample.AutoSize = true;
-            this.lblUnitExample.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnitExample.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblUnitExample.Location = new System.Drawing.Point(3, 213);
-            this.lblUnitExample.Margin = new System.Windows.Forms.Padding(3);
-            this.lblUnitExample.Name = "lblUnitExample";
-            this.lblUnitExample.Size = new System.Drawing.Size(57, 17);
-            this.lblUnitExample.TabIndex = 161;
-            this.lblUnitExample.Text = "Example:";
-            // 
-            // txtItem
-            // 
-            this.txtItem.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.txtItem.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.txtItem.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Italic);
-            this.txtItem.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtItem.Location = new System.Drawing.Point(22, 81);
-            this.txtItem.Name = "txtItem";
-            this.txtItem.Size = new System.Drawing.Size(378, 20);
-            this.txtItem.TabIndex = 2017;
-            this.txtItem.Text = "Search (Item Name/Code)";
-            this.txtItem.Values = null;
-            this.txtItem.TextChanged += new System.EventHandler(this.txtItem_TextChanged);
-            this.txtItem.Enter += new System.EventHandler(this.txtItemDescription_Enter);
-            this.txtItem.Leave += new System.EventHandler(this.txtItemDescription_Leave);
             // 
             // frmStockCountListItemSetting
             // 

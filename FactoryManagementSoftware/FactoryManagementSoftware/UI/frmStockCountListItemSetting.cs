@@ -220,7 +220,7 @@ namespace FactoryManagementSoftware.UI
                     if(tblCode == ITEM_TBL_CODE.ToString())
                     {
                         txtCountUnit.Text = row[dalStockCountListItem.CountUnit].ToString();
-                        txtUnitConversionRate.Text = row[dalStockCountListItem.ListDescription].ToString();
+                        txtUnitConversionRate.Text = row[dalStockCountListItem.UnitConversionRate].ToString();
                         txtCountUnit.Text = row[dalStockCountList.ListDescription].ToString();
 
                         string facID = row[dalStockCountList.DefaultFactoryTblCode].ToString();

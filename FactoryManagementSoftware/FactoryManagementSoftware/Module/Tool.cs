@@ -4081,6 +4081,24 @@ namespace FactoryManagementSoftware.Module
             
             return -1;
         }
+        public string getFactoryName(DataTable dtFac, string factoryID)
+        {
+            string factoryName = "";
+
+            if (dtFac.Rows.Count > 0)
+            {
+                foreach (DataRow fac in dtFac.Rows)
+                {
+                    if(factoryID == fac["fac_id"].ToString())
+                    {
+                        factoryName = fac["fac_name"].ToString();
+                        return factoryName;
+                    }
+                }
+            }
+
+            return factoryName;
+        }
 
         public string getFactoryName(string factoryID)
         {
@@ -4735,6 +4753,28 @@ namespace FactoryManagementSoftware.Module
             return ItemName;
         }
 
+        public double getFacStock(DataTable dt_FacStock, string ItemCode, string facID)
+        {
+            double stock = 0;
+
+            if (dt_FacStock?.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt_FacStock.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(ItemCode) && row[dalFac.FacID].ToString().Equals(facID))
+                    {
+                        stock = double.TryParse(row[dalFac.StockQty].ToString(), out stock) ? stock : 0;
+
+                        return stock;
+                    }
+                }
+            }
+
+           ;
+            return stock;
+        }
+
+        
         private static TextInfo textInfo = new CultureInfo("en-US", false).TextInfo;
         private static HashSet<string> specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {

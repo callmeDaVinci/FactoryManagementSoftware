@@ -422,6 +422,18 @@ namespace FactoryManagementSoftware.Module
         public string Header_Balance { get; } = "balance";
         public string Header_BalStock { get; } = "Bal. Stock";
         public string Header_ReadyStock { get; } = "Ready Stock";
+        public string Header_SystemStock { get; } = "System Stock";
+        public string Header_StockCount { get; } = "Stock Count";
+        public string Header_StockLocation { get; } = "Stock Location";
+        public string Header_StockLocation_TblCode { get; } = "Stock Location TblCode";
+        public string Header_CountUnit { get; } = "Count Unit";
+        public string Header_UnitConversionRate { get; } = "Unit Conversion Rate";
+        public string Header_ActionPreview { get; } = "Action Preview";
+        public string Header_OutTo { get; } = "OutTo";
+        public string Header_InFrom { get; } = "InFrom";
+        public string Header_OutTo_TblCode { get; } = "OutTo Tbl Code";
+        public string Header_InFrom_TblCode { get; } = "InFrom Tbl Code";
+        public string Header_TableCode { get; } = "Table Code";
         public string Header_ReservedForOtherJobs { get; } = "Reserved For Other Jobs";
         public string Header_RequiredForCurrentJob { get; } = "Required For Current Job";
         public string Header_ParentStock { get; } = "PARENT STOCK";
@@ -435,7 +447,7 @@ namespace FactoryManagementSoftware.Module
 
 
 
-        public string Header_Unit { get; } = "UNIT";
+        public string Header_Unit { get; } = "Unit";
         public string Header_SearchMode { get; } = "SearchMode";
         public string Header_DescriptionIncludeCategory { get; } = "DescriptionIncludeCategory";
         public string Header_DescriptionIncludePackaging { get; } = "DescriptionIncludePackaging";

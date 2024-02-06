@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSaveRecord = new Guna.UI.WinForms.GunaGradientButton();
@@ -77,7 +77,7 @@
             this.tlpPOList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpPOList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpPOList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tlpPOList.Size = new System.Drawing.Size(1150, 583);
+            this.tlpPOList.Size = new System.Drawing.Size(1242, 663);
             this.tlpPOList.TabIndex = 172;
             // 
             // tableLayoutPanel1
@@ -89,12 +89,12 @@
             this.tableLayoutPanel1.Controls.Add(this.btnSaveRecord, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.btnStockUpdate, 2, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 533);
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 613);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(1150, 50);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1242, 50);
             this.tableLayoutPanel1.TabIndex = 174;
             // 
             // btnSaveRecord
@@ -114,7 +114,7 @@
             this.btnSaveRecord.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnSaveRecord.Image = null;
             this.btnSaveRecord.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSaveRecord.Location = new System.Drawing.Point(735, 5);
+            this.btnSaveRecord.Location = new System.Drawing.Point(827, 5);
             this.btnSaveRecord.Margin = new System.Windows.Forms.Padding(5);
             this.btnSaveRecord.Name = "btnSaveRecord";
             this.btnSaveRecord.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -147,7 +147,7 @@
             this.btnStockUpdate.ForeColor = System.Drawing.Color.White;
             this.btnStockUpdate.Image = null;
             this.btnStockUpdate.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnStockUpdate.Location = new System.Drawing.Point(875, 5);
+            this.btnStockUpdate.Location = new System.Drawing.Point(967, 5);
             this.btnStockUpdate.Margin = new System.Windows.Forms.Padding(5);
             this.btnStockUpdate.Name = "btnStockUpdate";
             this.btnStockUpdate.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -181,7 +181,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1150, 100);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1242, 100);
             this.tableLayoutPanel4.TabIndex = 167;
             // 
             // btnEdit
@@ -201,7 +201,7 @@
             this.btnEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnEdit.Image = null;
             this.btnEdit.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnEdit.Location = new System.Drawing.Point(875, 55);
+            this.btnEdit.Location = new System.Drawing.Point(967, 55);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(5);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -234,7 +234,7 @@
             this.btnAddItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnAddItem.Image = null;
             this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddItem.Location = new System.Drawing.Point(1015, 55);
+            this.btnAddItem.Location = new System.Drawing.Point(1107, 55);
             this.btnAddItem.Margin = new System.Windows.Forms.Padding(5);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -419,14 +419,14 @@
             this.dgvStockCountList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockCountList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockCountList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvStockCountList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockCountList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockCountList.Location = new System.Drawing.Point(5, 105);
@@ -437,7 +437,7 @@
             this.dgvStockCountList.RowHeadersWidth = 51;
             this.dgvStockCountList.RowTemplate.Height = 50;
             this.dgvStockCountList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvStockCountList.Size = new System.Drawing.Size(1140, 423);
+            this.dgvStockCountList.Size = new System.Drawing.Size(1232, 503);
             this.dgvStockCountList.TabIndex = 156;
             // 
             // contextMenuStrip1
@@ -456,7 +456,7 @@
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 1;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(1190, 623);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(1282, 703);
             this.tableLayoutPanel6.TabIndex = 173;
             // 
             // errorProvider1
@@ -468,7 +468,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(1190, 623);
+            this.ClientSize = new System.Drawing.Size(1282, 703);
             this.Controls.Add(this.tableLayoutPanel6);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
