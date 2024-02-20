@@ -1279,7 +1279,7 @@ namespace FactoryManagementSoftware.UI
                                     float facStock = dalFacStock.getQty(childItemCode, tool.getFactoryID(factoryName).ToString());
 
                                     float transferQty = 0;
-                                    if (callFromProductionRecord)
+                                    if (callFromProductionRecord || callFromStockCheckList || callFromStockCountList)
                                     {
                                         transferQty = childQty;
                                     }
@@ -2635,27 +2635,23 @@ namespace FactoryManagementSoftware.UI
 
                         diff = diff * -1;
 
-                        if (cmbTrfFromCategory.Text.Equals("Factory"))
+                        facStockDAL dalFacStock = new facStockDAL();
+                        float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(stockLocation).ToString());
+
+                        facStock = (float)Math.Truncate(facStock * 1000) / 1000;
+
+
+                        dgv.Rows[n].Cells[QtyColumnName].Value = diff.ToString();
+
+                        float transferQty = Convert.ToSingle(diff);
+
+                        float afterbal = facStock - transferQty;
+
+                        if (facStock - transferQty < 0)
                         {
-                            facStockDAL dalFacStock = new facStockDAL();
-                            float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(stockLocation).ToString());
-
-                            facStock = (float)Math.Truncate(facStock * 1000) / 1000;
-
-
-                            dgv.Rows[n].Cells[QtyColumnName].Value = diff.ToString();
-
-                            float transferQty = Convert.ToSingle(diff);
-
-                            float afterbal = facStock - transferQty;
-
-                            if (facStock - transferQty < 0)
-                            {
-                                //#############################################################################################################################################
-                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString("0.##") + ")";
-                            }
-
+                            //#############################################################################################################################################
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString("0.##") + ")";
                         }
                     }
                     else if(diff > 0)
@@ -2673,7 +2669,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             if (from == text.Assembly || from == text.Production)
                             {
-                                productionChildStockOut(to, itemCode, Convert.ToSingle(diff), -1, note, from);
+                                productionChildStockOut(stockLocation, itemCode, Convert.ToSingle(diff), -1, note, from);
                             }
                         }
                     }
@@ -3347,7 +3343,7 @@ namespace FactoryManagementSoftware.UI
 
                 txtTrfQty.Text = dgv.Rows[selectedRow].Cells[QtyColumnName].Value.ToString();
                 cmbTrfQtyUnit.Text = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
-                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName]?.Value.ToString();
             }
             
         }

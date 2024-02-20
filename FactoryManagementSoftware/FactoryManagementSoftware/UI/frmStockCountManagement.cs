@@ -41,7 +41,7 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvStockCountList, true);
 
             InitialSetting();
-
+            dtpStockCountDate.Value = DateTime.Now;
         }
       
         private void InitialSetting()
@@ -346,6 +346,8 @@ namespace FactoryManagementSoftware.UI
             {
                 return;
             }
+
+            dgvStockCountList.DataSource = null;
 
             if (cmbStockCountList.SelectedIndex != -1)
             {
@@ -757,17 +759,19 @@ namespace FactoryManagementSoftware.UI
                     // Retrieve "In From" location
                     
                     string inFrom = inFromCell.Value?.ToString() ?? "";
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
 
                     if (string.IsNullOrWhiteSpace(inFrom))
                     {
                         inFromCell.Style.BackColor = Color.Red;
                         inFrom = "[Missing Data]";
+                        dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = false;
+
                     }
 
 
                     actionPreview = "Stock in " + Math.Abs(diff) + " " + unit + " from " + inFrom;
                     dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Style.ForeColor = Color.Green;
-                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
 
                 }
                 else if(diff < 0)
@@ -775,16 +779,17 @@ namespace FactoryManagementSoftware.UI
                     // Retrieve "Out To" location
                    
                     string outTo = outToCell.Value?.ToString() ?? "";
-
+                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
                     if (string.IsNullOrWhiteSpace(outTo))
                     {
                         outToCell.Style.BackColor = Color.Red;
                         outTo = "[Missing Data]";
+                        dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = false;
                     }
 
                     actionPreview = "Stock out " + Math.Abs(diff) + " " + unit + " to " + outTo;
                     dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Difference].Style.ForeColor = Color.Red;
-                    dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Selection].Value = true;
+                    
 
                 }
 
@@ -812,6 +817,9 @@ namespace FactoryManagementSoftware.UI
 
                 if(STOCK_UPDATED)
                 {
+                    dgvStockCountList.DataSource = null;
+
+                    LoadFacStockData();
                     LoadStockCountListItem();
                 }
             }

@@ -138,12 +138,12 @@ namespace FactoryManagementSoftware.UI
         private void FieldReset()
         {
             txtItem.Text = ITEM_SEARCH_DEFAULT_TEXT;
-            cmbStockLocation.SelectedIndex = -1;
-            cmbDefaultInCat.SelectedIndex = -1;
-            cmbDefaultOutCat.SelectedIndex = -1;
-            txtCountUnit.Text = "pcs";
-            txtUnitConversionRate.Text = "1";
-            txtSystemUnit.Text = "pcs";
+            //cmbStockLocation.SelectedIndex = -1;
+            //cmbDefaultInCat.SelectedIndex = -1;
+            //cmbDefaultOutCat.SelectedIndex = -1;
+            //txtCountUnit.Text = "pcs";
+            //txtUnitConversionRate.Text = "1";
+            //txtSystemUnit.Text = "pcs";
             ITEM_CODE = "ITEM CODE";
             ITEM_CATEGORY = "CATEGORY";
         }

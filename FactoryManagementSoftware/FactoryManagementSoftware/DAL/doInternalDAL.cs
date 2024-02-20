@@ -6,6 +6,7 @@ using System.Data.SqlClient;
 using FactoryManagementSoftware.Module;
 using Accord;
 using System.Data.Entity.Core.Mapping;
+using FactoryManagementSoftware.UI;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -157,6 +158,7 @@ namespace FactoryManagementSoftware.DAL
 
         public bool Insert(internalDOBLL u)
         {
+            CreateTableOrUpdate();
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
 
@@ -467,6 +469,64 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
+        public bool SetInternalDOtoDraft(int tblCode)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_internal_do
+                            SET "
+                              + DoNoString + "=@do_no_string,"
+                              + IsDraft + "=@isDraft,"
+                              + IsProcessing + "=@isProcessing,"
+                              + IsCompleted + "=@isCompleted,"
+                              + IsCancelled + "=@isCancelled,"
+                              + updatedDate + "=@updated_date,"
+                              + updatedBy + "=@updated_by" +
+                              " WHERE tbl_code = @tbl_code";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@tbl_code", tblCode);
+                cmd.Parameters.AddWithValue("@do_no_string", "DRAFT");
+                cmd.Parameters.AddWithValue("@isDraft", true);
+                cmd.Parameters.AddWithValue("@isProcessing", false);
+                cmd.Parameters.AddWithValue("@isCompleted", false);
+                cmd.Parameters.AddWithValue("@isCancelled", false);
+                cmd.Parameters.AddWithValue("@updated_date", DateTime.Now);
+                cmd.Parameters.AddWithValue("@updated_by", MainDashboard.USER_ID);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
         public bool UpdateDeliveryDate(internalDOBLL u)
         {
             bool isSuccess = false;
@@ -617,6 +677,83 @@ namespace FactoryManagementSoftware.DAL
         }
 
         #endregion
+
+        public void CreateTableOrUpdate()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Command to create the table if it does not exist
+                    string createTableSql = @"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_internal_do')
+BEGIN
+    CREATE TABLE tbl_internal_do (
+        tbl_code INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+        do_format_tbl_code INT,
+        running_no INT,
+        do_no_string VARCHAR(255),
+        company_tbl_code INT,
+        shipping_address_tbl_code INT,
+        billing_address_tbl_code INT,
+        shipping_method VARCHAR(50),
+        delivery_date DATETIME,
+        isDraft BIT,
+        isProcessing BIT,
+        isCompleted BIT,
+        isCancelled BIT,
+        remark VARCHAR(255),
+        updated_date DATETIME NOT NULL,
+        updated_by INT NOT NULL
+    );
+END";
+                    SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
+                    createTableCmd.ExecuteNonQuery();
+
+                    // Commands to add missing columns if the table already exists
+                    string[] columnChecks = new string[]
+                    {
+                "do_format_tbl_code INT",
+                "running_no INT",
+                "do_no_string VARCHAR(255)",
+                "company_tbl_code INT",
+                "shipping_address_tbl_code INT",
+                "billing_address_tbl_code INT",
+                "shipping_method VARCHAR(50)",
+                "delivery_date DATETIME",
+                "isDraft BIT",
+                "isProcessing BIT",
+                "isCompleted BIT",
+                "isCancelled BIT",
+                "remark VARCHAR(255)",
+                "updated_date DATETIME",
+                "updated_by INT"
+                    };
+
+                    foreach (string columnCheck in columnChecks)
+                    {
+                        string columnName = columnCheck.Split(' ')[0];
+                        string alterTableSql = $@"
+                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_internal_do' AND COLUMN_NAME = '{columnName}')
+                    BEGIN
+                    ALTER TABLE tbl_internal_do ADD {columnCheck};
+                    END";
+                        SqlCommand cmd = new SqlCommand(alterTableSql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Tool tool = new Tool();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
 
 
     }

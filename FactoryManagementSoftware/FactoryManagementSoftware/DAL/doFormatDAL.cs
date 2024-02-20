@@ -6,6 +6,8 @@ using System.Data.SqlClient;
 using FactoryManagementSoftware.Module;
 using Accord;
 using System.Data.Entity.Core.Mapping;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -46,38 +48,102 @@ namespace FactoryManagementSoftware.DAL
 
         public DataTable SelectAll()
         {
-            //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
-            //to hold the data from database
             DataTable dt = new DataTable();
             try
             {
-                //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_do_format";
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                //getting data from database
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                //database connection open
                 conn.Open();
-                //fill data in our database
-                adapter.Fill(dt);
+                // Check if table exists and has data
+                string checkTableAndDataSql = @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_do_format';
+                                        SELECT COUNT(*) FROM tbl_do_format;";
+                SqlCommand checkCmd = new SqlCommand(checkTableAndDataSql, conn);
+                SqlDataAdapter adapter = new SqlDataAdapter(checkCmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds);
+                conn.Close();
 
+                int tableExists = (int)ds.Tables[0].Rows[0][0];
+                int dataExists = ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0 ? (int)ds.Tables[1].Rows[0][0] : 0;
 
+                // If table doesn't exist or is empty, create/update table and add sample data
+                if (tableExists == 0 || dataExists == 0)
+                {
+                    CreateTableOrUpdate(); // Ensure table is created and columns are updated
+
+                    // Insert sample data only if there is no data
+                    if (dataExists == 0)
+                    {
+                        doFormatBLL sampleDataOUG = new doFormatBLL()
+                        {
+                            letter_head_tbl_code = -1,
+                            sheet_format_tbl_code = -1,
+                            do_type = "Internal Transfer Note (From OUG)",
+                            no_format = "IT[YY]/000",
+                            prefix = "IT",
+                            date_format = "[yy]/",
+                            suffix = "",
+                            running_number_length = 3,
+                            last_number = 0,
+                            reset_running_number = "False",
+                            isInternal = true,
+                            remark = "",
+                            isRemoved = false,
+                            updated_by = 1,
+                            updated_date = DateTime.Now,
+                            isMonthlyReset = false,
+                            isYearlyReset = true,
+                            last_reset_date = DateTime.Now
+                        };
+                        Insert(sampleDataOUG); // Insert sample data
+
+                        doFormatBLL sampleDataSMY = new doFormatBLL()
+                        {
+                            letter_head_tbl_code = -1,
+                            sheet_format_tbl_code = -1,
+                            do_type = "Internal Transfer Note (From SMY)",
+                            no_format = "ITN[YY]/S000",
+                            prefix = "ITN",
+                            date_format = "[yy]/S",
+                            suffix = "",
+                            running_number_length = 3,
+                            last_number = 0,
+                            reset_running_number = "False",
+                            isInternal = true,
+                            remark = "",
+                            isRemoved = false,
+                            updated_by = 1,
+                            updated_date = DateTime.Now,
+                            isMonthlyReset = false,
+                            isYearlyReset = true,
+                            last_reset_date = DateTime.Now
+                        };
+                        Insert(sampleDataSMY); // Insert sample data
+                    }
+                }
+
+                // Re-fetch data to return
+                if (conn.State != ConnectionState.Open) conn.Open();
+                string sql = @"SELECT * FROM tbl_do_format";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataAdapter newAdapter = new SqlDataAdapter(cmd);
+                newAdapter.Fill(dt);
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
+                // Handle the exception
                 Module.Tool tool = new Module.Tool();
                 tool.saveToText(ex);
             }
             finally
             {
-                //closing connection
-                conn.Close();
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
             return dt;
         }
+
 
         public doFormatBLL GetDOFormatByID(string id)
         {
@@ -176,6 +242,7 @@ namespace FactoryManagementSoftware.DAL
                             "@date_format," +
                             "@suffix," +
                             "@running_number_length," +
+                            "@last_number," +
                             "@reset_running_number," +
                             "@isMonthlyReset," +
                             "@isYearlyReset," +
@@ -196,6 +263,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@date_format", u.date_format);
                 cmd.Parameters.AddWithValue("@suffix", u.suffix);
                 cmd.Parameters.AddWithValue("@running_number_length", u.running_number_length);
+                cmd.Parameters.AddWithValue("@last_number", u.last_number);
                 cmd.Parameters.AddWithValue("@reset_running_number", u.reset_running_number);
                 cmd.Parameters.AddWithValue("@isMonthlyReset", u.isMonthlyReset);
                 cmd.Parameters.AddWithValue("@isYearlyReset", u.isYearlyReset);
@@ -541,6 +609,84 @@ namespace FactoryManagementSoftware.DAL
                              .Replace("[dd]", date.ToString("dd"))
                              .Replace("[MMM]", date.ToString("MMM").ToUpper())
                              .Replace("[MMMM]", date.ToString("MMMM"));
+        }
+
+        public void CreateTableOrUpdate()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Command to check if the table exists and create it if it does not
+                    string createTableSql = @"
+            IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_do_format')
+            BEGIN
+                CREATE TABLE tbl_do_format(
+                    tbl_code INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+                    letter_head_tbl_code INT,
+                    sheet_format_tbl_code INT,
+                    do_type VARCHAR(50),
+                    no_format VARCHAR(50),
+                    prefix VARCHAR(50),
+                    date_format VARCHAR(50),
+                    suffix VARCHAR(50),
+                    running_number_length INT,
+                    last_number INT,
+                    reset_running_number BIT,
+                    isMonthlyReset BIT,
+                    isYearlyReset BIT,
+                    last_reset_date DATETIME,
+                    isInternal BIT,
+                    remark VARCHAR(200),
+                    isRemoved BIT,
+                    updated_date DATETIME NOT NULL,
+                    updated_by INT NOT NULL
+                );
+            END";
+                    SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
+                    createTableCmd.ExecuteNonQuery();
+
+                    // Commands to add missing columns if the table already exists
+                    string[] alterTableSql = new string[]
+                    {
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'letter_head_tbl_code') BEGIN ALTER TABLE tbl_do_format ADD letter_head_tbl_code INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'sheet_format_tbl_code') BEGIN ALTER TABLE tbl_do_format ADD sheet_format_tbl_code INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'do_type') BEGIN ALTER TABLE tbl_do_format ADD do_type VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'no_format') BEGIN ALTER TABLE tbl_do_format ADD no_format VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'prefix') BEGIN ALTER TABLE tbl_do_format ADD prefix VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'date_format') BEGIN ALTER TABLE tbl_do_format ADD date_format VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'suffix') BEGIN ALTER TABLE tbl_do_format ADD suffix VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'running_number_length') BEGIN ALTER TABLE tbl_do_format ADD running_number_length INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'last_number') BEGIN ALTER TABLE tbl_do_format ADD last_number INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'reset_running_number') BEGIN ALTER TABLE tbl_do_format ADD reset_running_number BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'isMonthlyReset') BEGIN ALTER TABLE tbl_do_format ADD isMonthlyReset BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'isYearlyReset') BEGIN ALTER TABLE tbl_do_format ADD isYearlyReset BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'last_reset_date') BEGIN ALTER TABLE tbl_do_format ADD last_reset_date DATETIME END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'isInternal') BEGIN ALTER TABLE tbl_do_format ADD isInternal BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'remark') BEGIN ALTER TABLE tbl_do_format ADD remark VARCHAR(200) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'isRemoved') BEGIN ALTER TABLE tbl_do_format ADD isRemoved BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_date') BEGIN ALTER TABLE tbl_do_format ADD updated_date DATETIME NOT NULL END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_by') BEGIN ALTER TABLE tbl_do_format ADD updated_by INT NOT NULL END"
+                    };
+
+                    foreach (var sql in alterTableSql)
+                    {
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Tool tool = new Tool(); 
+                    tool.saveToText(ex);
+
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
         }
 
     }

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using Guna.UI.WinForms;
+using System.Configuration;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -399,7 +400,20 @@ namespace FactoryManagementSoftware.UI
                 newRow[text.Header_QtyPerBox] = txtQtyPerBox.Text;
                 newRow[text.Header_BoxQty] = txtBoxQty.Text;
                 newRow[text.Header_BoxUnit] = txtBoxUnit.Text;
-                newRow[text.Header_Balance] = txtBalanceQty.Text;
+
+                if (string.IsNullOrEmpty(txtBalanceQty.Text))
+                {
+                    newRow[text.Header_Balance] = 0m; // Assigning a default value of 0 (as decimal) to the column
+                }
+                else
+                {
+                    // Try parsing the text as decimal. If parsing fails, assign a default value.
+                    decimal balanceQty;
+                    bool parseResult = decimal.TryParse(txtBalanceQty.Text, out balanceQty);
+                    newRow[text.Header_Balance] = parseResult ? balanceQty : 0m; // Use parsed value if successful, otherwise use 0
+                }
+
+               
 
                 newRow[text.Header_Remark] = txtRemark.Text;
 
@@ -500,12 +514,12 @@ namespace FactoryManagementSoftware.UI
             txtItemCodePreview.Text = dt.Rows[rowIndex][text.Header_ItemCode].ToString();
 
 
-            txtTotalQty.Text = dt.Rows[rowIndex][text.Header_TotalQty].ToString();
             txtTotalQtyUnit.Text = dt.Rows[rowIndex][text.Header_TotalQtyUnit].ToString();
             txtQtyPerBox.Text = dt.Rows[rowIndex][text.Header_QtyPerBox].ToString();
             txtBoxQty.Text = dt.Rows[rowIndex][text.Header_BoxQty].ToString();
             txtBoxUnit.Text = dt.Rows[rowIndex][text.Header_BoxUnit].ToString();
             txtBalanceQty.Text = dt.Rows[rowIndex][text.Header_Balance].ToString();
+            txtTotalQty.Text = dt.Rows[rowIndex][text.Header_TotalQty].ToString();
 
             txtRemark.Text = dt.Rows[rowIndex][text.Header_Remark].ToString();
 
@@ -1297,6 +1311,13 @@ namespace FactoryManagementSoftware.UI
                 boxUnit = "bag(s)";
                 txtQtyPerBox.Text = "25";
             }
+            else if (itemCategory.ToUpper() == text.Cat_SubMat.ToUpper() || itemCategory.ToUpper() == text.Cat_Mould.ToUpper() || itemCategory.ToUpper() == text.Cat_Carton.ToUpper())
+            {
+                qtyUnit = "pcs";
+                boxUnit = "";
+                txtQtyPerBox.Text = "";
+            }
+
             txtTotalQtyUnit.Text = qtyUnit;
             txtBoxUnit.Text = boxUnit;
             lblQty.Text = "Qty(" + qtyUnit + ")";
@@ -1539,9 +1560,57 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        public void InsertInternalDOFormat()
+        {
+            // Create a new instance of the doFormatBLL class and populate it with sample data
+            doFormatBLL InternalDOFormat = new doFormatBLL()
+            {
+                letter_head_tbl_code = -1,
+                sheet_format_tbl_code = -1,
+                do_type = "Internal Transfer Note",
+                no_format = "IT[YY]/000",
+                prefix = "IT",
+                date_format = "[yy]/",
+                suffix = "",
+                running_number_length = 3,
+                last_number = 0,
+                reset_running_number = "",
+                isMonthlyReset = false,
+                isYearlyReset = true,
+                last_reset_date = DateTime.Now, // Assuming DateTime type for date fields
+                isInternal = true,
+                remark = "",
+                isRemoved = false,
+                updated_date = DateTime.Now, // Assuming DateTime type for date fields
+                updated_by = MainDashboard.USER_ID
+            };
+
+            // Call the existing Insert function with the sample data
+            bool isSuccess = dalDoFormat.Insert(InternalDOFormat);
+
+            // Optionally, handle the success/failure of the operation
+            if (isSuccess)
+            {
+                
+            }
+            else
+            {
+                MessageBox.Show("Failed to insert the sample row.");
+            }
+        }
+
+
         private void LoadDoFormatDB()
         {
             DT_DO_FORMAT = dalDoFormat.SelectAll();
+
+            //if(DT_DO_FORMAT == null || DT_DO_FORMAT.Rows.Count == 0 )
+            //{
+            //    InsertInternalDOFormat();
+
+            //    DT_DO_FORMAT = dalDoFormat.SelectAll();
+
+            //}
         }
 
         private void LoadCompanyDB()
@@ -1717,18 +1786,38 @@ namespace FactoryManagementSoftware.UI
             txtDONoSample.Text = DOSample;
 
         }
+
+        private bool DO_TYPE_CHECKING = false;
+
         private void cmbDOType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmbDOType.SelectedIndex != -1)
+            if(cmbDOType.SelectedIndex != -1 && !DO_TYPE_CHECKING)
             {
-                errorProvider1.Clear();
+                DO_TYPE_CHECKING = true;
 
+                errorProvider1.Clear();
 
                 LoadDONumberSample(123);
 
                 if(CheckIfInternalDOType())
                 {
-                    
+                    string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+                    string doType = cmbDOType.Text.ToUpper().Replace(" ","");
+
+                    if (myconnstrng == text.DB_Semenyih && !doType.Contains("SMY") && !doType.Contains("SEMENYIH"))
+                    {
+                        MessageBox.Show("For internal DO types, please select a 'From SMY' DO type.");
+
+                        cmbDOType.SelectedIndex = -1;
+                    }
+                    else if (myconnstrng == text.DB_OUG && !doType.Contains("OUG"))
+                    {
+                        MessageBox.Show("For internal DO types, please select a 'From OUG' DO type.");
+                        cmbDOType.SelectedIndex = -1;
+
+                    }
+
                 }
                 else
                 {
@@ -1737,8 +1826,11 @@ namespace FactoryManagementSoftware.UI
 
                 LoadCompanyData();
                 internalTransferDataAutoLoad();
+
+                DO_TYPE_CHECKING = false;
+
             }
-          
+
         }
 
         private string WriteShippingAddress()
@@ -1875,7 +1967,7 @@ namespace FactoryManagementSoftware.UI
 
                 ////if location is between OUG and Semenyih
                 bool fromOUG = doType.ToUpper().Contains("OUG");
-                bool fromSemenyih = doType.ToUpper().Contains("SEMENYIH");
+                bool fromSemenyih = doType.ToUpper().Contains("SEMENYIH") || doType.ToUpper().Contains("SMY");
 
                 //cmbFromBranch.Enabled = false;
                 //cmbToDeliveryLocation.Enabled = false;
@@ -2005,6 +2097,12 @@ namespace FactoryManagementSoftware.UI
             if (success)
             {
                 tblCode = dalInternalDO.SelectTblCodeByDOCode(doCode);
+
+                if (isDraft)
+                {
+                    //update do no to draft
+                    dalInternalDO.SetInternalDOtoDraft(int.TryParse(tblCode, out int i)? i : -1);
+                }
             }
             else
             {
@@ -2032,6 +2130,8 @@ namespace FactoryManagementSoftware.UI
 
             if(dt?.Rows.Count > 0)
             {
+                dalInternalDOItem.CreateTableOrUpdate();
+
                 uInternalDOItem.updated_date = DateTime.Now;
                 uInternalDOItem.updated_by = MainDashboard.USER_ID;
                 uInternalDOItem.isRemoved = false;
@@ -2039,20 +2139,47 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt.Rows)
                 {
-                    uInternalDOItem.item_code = row[text.Header_ItemCode].ToString();
-                    uInternalDOItem.total_qty = Convert.ToDecimal(row[text.Header_Qty]);
-                    uInternalDOItem.qty_unit = row[text.Header_Unit].ToString();
-                    uInternalDOItem.qty_per_box = Convert.ToInt32(row[text.Header_QtyPerBox]);
-                    uInternalDOItem.box_qty = Convert.ToInt32(row[text.Header_BoxQty]);
-                    uInternalDOItem.box_unit = row[text.Header_BoxUnit].ToString();
-                    uInternalDOItem.balance_qty = Convert.ToDecimal(row[text.Header_Balance].ToString());
-                    uInternalDOItem.remark = row[text.Header_Remark].ToString();
-                    uInternalDOItem.search_mode = Convert.ToBoolean(row[text.Header_SearchMode]);
-                    uInternalDOItem.item_description = row[text.Header_ItemName].ToString();
-                    uInternalDOItem.description = row[text.Header_Description].ToString(); 
-                    uInternalDOItem.description_packing = Convert.ToBoolean(row[text.Header_DescriptionIncludePackaging]);
-                    uInternalDOItem.description_category = Convert.ToBoolean(row[text.Header_DescriptionIncludeCategory]);
-                    uInternalDOItem.description_remark = Convert.ToBoolean(row[text.Header_DescriptionIncludeRemark]);
+                    uInternalDOItem.item_code = row[text.Header_ItemCode]?.ToString() ?? string.Empty;
+                    uInternalDOItem.qty_unit = row[text.Header_Unit]?.ToString() ?? string.Empty;
+                    uInternalDOItem.box_unit = row[text.Header_BoxUnit]?.ToString() ?? string.Empty;
+                    uInternalDOItem.remark = row[text.Header_Remark]?.ToString() ?? string.Empty;
+                    uInternalDOItem.item_description = row[text.Header_ItemName]?.ToString() ?? string.Empty;
+                    uInternalDOItem.description = row[text.Header_Description]?.ToString() ?? string.Empty;
+
+                    // For decimal conversions
+                    if (decimal.TryParse(row[text.Header_Qty]?.ToString(), out decimal totalQty))
+                    {
+                        uInternalDOItem.total_qty = totalQty;
+                    }
+                    else
+                    {
+                        uInternalDOItem.total_qty = 0m; // Default value
+                    }
+
+                    if (int.TryParse(row[text.Header_BoxQty]?.ToString(), out int boxQty))
+                    {
+                        uInternalDOItem.box_qty = boxQty;
+                    }
+                    else
+                    {
+                        uInternalDOItem.box_qty = 0; // Default value
+                    }
+
+                    if (decimal.TryParse(row[text.Header_Balance]?.ToString(), out decimal balanceQty))
+                    {
+                        uInternalDOItem.balance_qty = balanceQty;
+                    }
+                    else
+                    {
+                        uInternalDOItem.balance_qty = 0m; // Default value
+                    }
+
+                    // For boolean conversions
+                    uInternalDOItem.search_mode = Convert.ToBoolean(row[text.Header_SearchMode]?.ToString() ?? "false");
+                    uInternalDOItem.description_packing = Convert.ToBoolean(row[text.Header_DescriptionIncludePackaging]?.ToString() ?? "false");
+                    uInternalDOItem.description_category = Convert.ToBoolean(row[text.Header_DescriptionIncludeCategory]?.ToString() ?? "false");
+                    uInternalDOItem.description_remark = Convert.ToBoolean(row[text.Header_DescriptionIncludeRemark]?.ToString() ?? "false");
+
 
                     success = dalInternalDOItem.Insert(uInternalDOItem);
 
@@ -2148,6 +2275,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void txtTotalQty_KeyUp(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void cmbDeliveryMethod_SelectedIndexChanged(object sender, EventArgs e)
         {
 
         }

@@ -205,7 +205,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToTextAndMessageToUser(ex);
+                Tool tool = new Tool(); 
+                tool.saveToTextAndMessageToUser(ex);
             }
             finally
             {
@@ -393,6 +394,88 @@ namespace FactoryManagementSoftware.DAL
 
         #endregion
 
+        public void CreateTableOrUpdate()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Command to check if the table exists and create it if it does not
+                    string createTableSql = @"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_internal_do_item')
+BEGIN
+    CREATE TABLE tbl_internal_do_item (
+        tbl_code INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+        internal_do_tbl_code INT,
+        item_code VARCHAR(50),
+        total_qty DECIMAL(18, 2),
+        qty_unit VARCHAR(50),
+        qty_per_box INT,
+        box_qty INT,
+        box_unit VARCHAR(50),
+        balance_qty DECIMAL(18, 2),
+        remark VARCHAR(255),
+        search_mode BIT,
+        item_description VARCHAR(255),
+        description VARCHAR(255),
+        description_packing BIT,
+        description_category BIT,
+        description_remark BIT,
+        isRemoved BIT,
+        updated_date DATETIME NOT NULL,
+        updated_by INT NOT NULL
+    );
+END";
+                    SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
+                    createTableCmd.ExecuteNonQuery();
+
+                    // Commands to add missing columns if the table already exists
+                    string[] columnChecks = new string[]
+                    {
+                "internal_do_tbl_code INT",
+                "item_code VARCHAR(50)",
+                "total_qty DECIMAL(18, 2)",
+                "qty_unit VARCHAR(50)",
+                "qty_per_box INT",
+                "box_qty INT",
+                "box_unit VARCHAR(50)",
+                "balance_qty DECIMAL(18, 2)",
+                "remark VARCHAR(255)",
+                "search_mode BIT",
+                "item_description VARCHAR(255)",
+                "description VARCHAR(255)",
+                "description_packing BIT",
+                "description_category BIT",
+                "description_remark BIT",
+                "isRemoved BIT",
+                "updated_date DATETIME",
+                "updated_by INT"
+                    };
+
+                    foreach (string columnCheck in columnChecks)
+                    {
+                        string columnName = columnCheck.Split(' ')[0];
+                        string alterTableSql = $@"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_internal_do_item' AND COLUMN_NAME = '{columnName}')
+BEGIN
+    ALTER TABLE tbl_internal_do_item ADD {columnCheck};
+END";
+                        SqlCommand cmd = new SqlCommand(alterTableSql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Tool tool = new Tool();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
 
     }
 }

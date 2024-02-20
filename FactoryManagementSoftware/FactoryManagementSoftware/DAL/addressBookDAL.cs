@@ -50,38 +50,115 @@ namespace FactoryManagementSoftware.DAL
 
         public DataTable SelectAll()
         {
-            //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
-            //to hold the data from database
             DataTable dt = new DataTable();
             try
             {
-                //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_address_book";
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                //getting data from database
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                //database connection open
                 conn.Open();
-                //fill data in our database
-                adapter.Fill(dt);
+                // Check if table exists and has data
+                string checkTableAndDataSql = @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_address_book';
+                                        SELECT COUNT(*) FROM tbl_address_book;";
+                SqlCommand checkCmd = new SqlCommand(checkTableAndDataSql, conn);
+                SqlDataAdapter adapter = new SqlDataAdapter(checkCmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds);
+                conn.Close();
 
+                int tableExists = (int)ds.Tables[0].Rows[0][0];
+                int dataExists = ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0 ? (int)ds.Tables[1].Rows[0][0] : 0;
 
+                // If table doesn't exist or is empty, create/update table and add sample data
+                if (tableExists == 0 || dataExists == 0)
+                {
+                    CreateTableOrUpdate(); // Ensure table is created and columns are updated
+
+                    // Insert sample data only if there is no data
+                    if (dataExists == 0)
+                    {
+                        AddressBookBLL sampleData = new AddressBookBLL()
+                        {
+                            company_tbl_code = 1, // Adjust as necessary
+                            route_tbl_code = -1, // Adjust as necessary
+                            full_name = "SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)",
+                            short_name = "Semenyih",
+                            registration_no = "198901011676 (188981-U)",
+                            address_1 = "NO.17, PT 2507, JLN HI-TECH 2,",
+                            address_2 = "KAW. PERIND. HI.TECH,",
+                            address_3 = "JALAN SG. LALANG,",
+                            address_state = "SEMENYIH, SELANGOR.",
+                            address_postal_code = "43500",
+                            address_country = "Malaysia",
+                            fax_no = "03 - 7782 0399",
+                            contact_number_1 = "016 - 282 8195",
+                            contact_name_1 = "Vincent",
+                            contact_number_2 = "",
+                            contact_name_2 = "",
+                            email_address = "safetyplastics.my@gmail.com",
+                            website = "www.safetyplastic.com.my",
+                            delivery_method_remark = "In-House",
+                            remark = "",
+                            isRemoved = false,
+                            updated_by = 1, // Assume an admin or system ID
+                            updated_date = DateTime.Now
+                        };
+
+                        // Insert sample data using the Insert function
+                        Insert(sampleData);
+
+                        sampleData = new AddressBookBLL()
+                        {
+                            company_tbl_code = 1, // Adjust as necessary
+                            route_tbl_code = -1, // Adjust as necessary
+                            full_name = "SAFETY PLASTICS SDN BHD (OUG FAC.)",
+                            short_name = "OUG",
+                            registration_no = "198901011676 (188981-U)",
+                            address_1 = "NO.2, JALAN 10/152,",
+                            address_2 = "TAMAN PERINDUSTRIAN O.U.G,",
+                            address_3 = "BATU 6, JALAN PUCHONG,",
+                            address_state = "KUALA LUMPUR.",
+                            address_postal_code = "58200",
+                            address_country = "MALAYSIA",
+                            fax_no = "03 - 7782 0399",
+                            contact_number_1 = "03 - 7785 5278",
+                            contact_name_1 = "Ms.Yong",
+                            contact_number_2 = "",
+                            contact_name_2 = "",
+                            email_address = "safety_plastic@yahoo.com",
+                            website = "www.safetyplastic.com.my",
+                            delivery_method_remark = "In-House",
+                            remark = "",
+                            isRemoved = false,
+                            updated_by = 1, // Assume an admin or system ID
+                            updated_date = DateTime.Now
+                        };
+
+                        // Insert sample data using the Insert function
+                        Insert(sampleData);
+                    }
+                }
+
+                // Re-fetch data to return
+                if (conn.State != ConnectionState.Open) conn.Open();
+                string sql = "SELECT * FROM tbl_address_book";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataAdapter newAdapter = new SqlDataAdapter(cmd);
+                newAdapter.Fill(dt);
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
-                Module.Tool tool = new Module.Tool();
+                Tool tool = new Tool();
                 tool.saveToText(ex);
             }
             finally
             {
-                //closing connection
-                conn.Close();
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
             return dt;
         }
+
 
         #endregion
 
@@ -202,7 +279,7 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
-        public bool JobUpdate(AddressBookBLL u)
+        public bool Update(AddressBookBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -281,7 +358,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                Tool tool = new Tool(); 
+                tool.saveToText(ex);
             }
             finally
             {
@@ -384,6 +462,98 @@ namespace FactoryManagementSoftware.DAL
         }
 
         #endregion
+
+        public void CreateTableOrUpdate()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Command to create the table if it does not exist
+                    string createTableSql = @"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_address_book')
+BEGIN
+    CREATE TABLE tbl_address_book (
+        tbl_code INT IDENTITY(1,1) PRIMARY KEY,
+        company_tbl_code INT,
+        route_tbl_code INT,
+        full_name VARCHAR(255),
+        short_name VARCHAR(255),
+        registration_no VARCHAR(100),
+        address_1 VARCHAR(255),
+        address_2 VARCHAR(255),
+        address_3 VARCHAR(255),
+        address_state VARCHAR(100),
+        address_postal_code VARCHAR(20),
+        address_country VARCHAR(100),
+        fax_no VARCHAR(20),
+        contact_number_1 VARCHAR(20),
+        contact_name_1 VARCHAR(255),
+        contact_number_2 VARCHAR(20),
+        contact_name_2 VARCHAR(255),
+        email_address VARCHAR(255),
+        website VARCHAR(255),
+        delivery_method_remark VARCHAR(255),
+        remark VARCHAR(255),
+        isRemoved BIT,
+        updated_date DATETIME,
+        updated_by INT
+    );
+END";
+                    SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
+                    createTableCmd.ExecuteNonQuery();
+
+                    // Commands to add missing columns if the table already exists
+                    string[] columns = new string[] {
+                "company_tbl_code INT",
+                "route_tbl_code INT",
+                "full_name VARCHAR(255)",
+                "short_name VARCHAR(255)",
+                "registration_no VARCHAR(100)",
+                "address_1 VARCHAR(255)",
+                "address_2 VARCHAR(255)",
+                "address_3 VARCHAR(255)",
+                "address_state VARCHAR(100)",
+                "address_postal_code VARCHAR(20)",
+                "address_country VARCHAR(100)",
+                "fax_no VARCHAR(20)",
+                "contact_number_1 VARCHAR(20)",
+                "contact_name_1 VARCHAR(255)",
+                "contact_number_2 VARCHAR(20)",
+                "contact_name_2 VARCHAR(255)",
+                "email_address VARCHAR(255)",
+                "website VARCHAR(255)",
+                "delivery_method_remark VARCHAR(255)",
+                "remark VARCHAR(255)",
+                "isRemoved BIT",
+                "updated_date DATETIME",
+                "updated_by INT"
+            };
+
+                    foreach (string column in columns)
+                    {
+                        string columnName = column.Split(' ')[0];
+                        string alterTableSql = $@"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_address_book' AND COLUMN_NAME = '{columnName}')
+BEGIN
+    ALTER TABLE tbl_address_book ADD {column};
+END";
+                        SqlCommand cmd = new SqlCommand(alterTableSql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Tool tool = new Tool(); 
+                    tool.saveToText(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
 
 
     }

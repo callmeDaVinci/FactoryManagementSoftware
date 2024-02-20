@@ -656,130 +656,130 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadDOList()
         {
-            btnEdit.Visible = false;
-            dgvDOItemList.DataSource = null;
-            ShowingDO = "";
+            //btnEdit.Visible = false;
+            //dgvDOItemList.DataSource = null;
+            //ShowingDO = "";
 
 
-            DataTable dt = NewDOTable();
-            DataRow dt_row;
+            //DataTable dt = NewDOTable();
+            //DataRow dt_row;
 
-            int preDOCode = -999999;
+            //int preDOCode = -999999;
 
-            string prePONo = "";
+            //string prePONo = "";
 
-            foreach (DataRow row in DB_DO_INFO.Rows)
-            {
-                int doCode = int.TryParse(row[dalSPP.DONo].ToString(), out doCode) ? doCode : -999999;
+            //foreach (DataRow row in DB_DO_INFO.Rows)
+            //{
+            //    int doCode = int.TryParse(row[dalSPP.DONo].ToString(), out doCode) ? doCode : -999999;
 
-                if ((preDOCode == -999999 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
-                {
-                    int deliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
+            //    if ((preDOCode == -999999 || preDOCode != doCode) && row[dalSPP.DONo] != DBNull.Value)
+            //    {
+            //        int deliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out deliveryQty) ? deliveryQty : 0;
 
-                    if(deliveryQty > 0)
-                    {
-                        bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
-                        bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
-                        string trfID = row[dalSPP.TrfTableCode].ToString();
+            //        if(deliveryQty > 0)
+            //        {
+            //            bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+            //            bool isDelivered = bool.TryParse(row[dalSPP.IsDelivered].ToString(), out isDelivered) ? isDelivered : false;
+            //            string trfID = row[dalSPP.TrfTableCode].ToString();
 
-                        bool dataMatched = true;
-                        string dataType = "";
+            //            bool dataMatched = true;
+            //            string dataType = "";
 
-                        #region DO TYPE
+            //            #region DO TYPE
 
-                        if (!isDelivered && cbInProgress.Checked)
-                        {
-                            dataMatched = dataMatched && true;
-                            dataType = DataType_InProgress;
-                        }
-                        else if (isDelivered && cbCompleted.Checked)
-                        {
-                            dataMatched = dataMatched && true;
-                            dataType = DataType_Delivered;
-                        }
-                        else
-                        {
-                            dataMatched = false;
-                        }
+            //            if (!isDelivered && cbInProgress.Checked)
+            //            {
+            //                dataMatched = dataMatched && true;
+            //                dataType = DataType_InProgress;
+            //            }
+            //            else if (isDelivered && cbCompleted.Checked)
+            //            {
+            //                dataMatched = dataMatched && true;
+            //                dataType = DataType_Delivered;
+            //            }
+            //            else
+            //            {
+            //                dataMatched = false;
+            //            }
 
-                        if (isRemoved && cbRemoved.Checked)
-                        {
-                            dataMatched = true;
-                            dataType = DataType_Removed;
-                        }
-                        else if (isRemoved)
-                        {
-                            dataMatched = false;
-                        }
+            //            if (isRemoved && cbRemoved.Checked)
+            //            {
+            //                dataMatched = true;
+            //                dataType = DataType_Removed;
+            //            }
+            //            else if (isRemoved)
+            //            {
+            //                dataMatched = false;
+            //            }
 
-                        #endregion
+            //            #endregion
 
-                        #region Customer Filter
+            //            #region Customer Filter
 
-                        string customer = cmbCustomer.Text;
+            //            string customer = cmbCustomer.Text;
 
-                        if (string.IsNullOrEmpty(customer) || customer == "ALL")
-                        {
-                            dataMatched = dataMatched && true;
-                        }
-                        else if (row[dalSPP.FullName].ToString() == customer)
-                        {
-                            dataMatched = dataMatched && true;
-                        }
-                        else
-                        {
-                            dataMatched = false;
-                        }
+            //            if (string.IsNullOrEmpty(customer) || customer == "ALL")
+            //            {
+            //                dataMatched = dataMatched && true;
+            //            }
+            //            else if (row[dalSPP.FullName].ToString() == customer)
+            //            {
+            //                dataMatched = dataMatched && true;
+            //            }
+            //            else
+            //            {
+            //                dataMatched = false;
+            //            }
 
-                        #endregion
+            //            #endregion
 
-                        if (dataMatched)
-                        {
-                            prePONo = row[dalSPP.PONo].ToString();
-                            preDOCode = doCode;
-                            dt_row = dt.NewRow();
+            //            if (dataMatched)
+            //            {
+            //                prePONo = row[dalSPP.PONo].ToString();
+            //                preDOCode = doCode;
+            //                dt_row = dt.NewRow();
 
-                            dt_row[header_DataType] = dataType;
-                            dt_row[header_DONo] = doCode;
-                            dt_row[header_DONoString] = doCode.ToString("D6");
-                            dt_row[header_PONo] = row[dalSPP.PONo];
-                            dt_row[header_POCode] = row[dalSPP.POCode];
-                            dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
-                            dt_row[header_Customer] = row[dalSPP.ShortName];
-                            dt_row[header_CustomerCode] = row[dalSPP.CustTblCode];
+            //                dt_row[header_DataType] = dataType;
+            //                dt_row[header_DONo] = doCode;
+            //                dt_row[header_DONoString] = doCode.ToString("D6");
+            //                dt_row[header_PONo] = row[dalSPP.PONo];
+            //                dt_row[header_POCode] = row[dalSPP.POCode];
+            //                dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+            //                dt_row[header_Customer] = row[dalSPP.ShortName];
+            //                dt_row[header_CustomerCode] = row[dalSPP.CustTblCode];
 
-                            if (isDelivered && !string.IsNullOrEmpty(trfID))
-                            {
-                                dt_row[header_DeliveredDate] = tool.GetTransferDate(trfID);
-                            }
+            //                if (isDelivered && !string.IsNullOrEmpty(trfID))
+            //                {
+            //                    dt_row[header_DeliveredDate] = tool.GetTransferDate(trfID);
+            //                }
 
-                            dt.Rows.Add(dt_row);
-                        }
-                    }
-                }
+            //                dt.Rows.Add(dt_row);
+            //            }
+            //        }
+            //    }
 
-                if(doCode != 999999 && preDOCode == doCode)
-                {
-                    string PONo = row[dalSPP.PONo].ToString();
+            //    if(doCode != 999999 && preDOCode == doCode)
+            //    {
+            //        string PONo = row[dalSPP.PONo].ToString();
 
-                    if (prePONo != "" && PONo != prePONo)
-                    {
-                        dt.Rows[dt.Rows.Count - 1][header_PONo] = Text_MultiPOCode;
+            //        if (prePONo != "" && PONo != prePONo)
+            //        {
+            //            dt.Rows[dt.Rows.Count - 1][header_PONo] = Text_MultiPOCode;
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
 
 
-            dt.DefaultView.Sort = header_DONo + " DESC";
-            dt = dt.DefaultView.ToTable();
+            //dt.DefaultView.Sort = header_DONo + " DESC";
+            //dt = dt.DefaultView.ToTable();
 
-            dgvDOList.DataSource = dt;
-            DgvUIEdit(dgvDOList);
-            dgvDOList.ClearSelection();
-            lblSubList.Text = text_DOItemList;
+            //dgvDOList.DataSource = dt;
+            //DgvUIEdit(dgvDOList);
+            //dgvDOList.ClearSelection();
+            //lblSubList.Text = text_DOItemList;
           
-            Focus();
+            //Focus();
 
         }
 

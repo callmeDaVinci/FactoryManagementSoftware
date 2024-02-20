@@ -36,38 +36,73 @@ namespace FactoryManagementSoftware.DAL
 
         public DataTable SelectAll()
         {
-            //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
-            //to hold the data from database
             DataTable dt = new DataTable();
             try
             {
-                //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_company";
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
-                //getting data from database
-                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
-                //database connection open
                 conn.Open();
-                //fill data in our database
-                adapter.Fill(dt);
+                // Check if table exists and has data
+                string checkTableAndDataSql = @"SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_company';
+                                        SELECT COUNT(*) FROM tbl_company;";
+                SqlCommand checkCmd = new SqlCommand(checkTableAndDataSql, conn);
+                SqlDataAdapter adapter = new SqlDataAdapter(checkCmd);
+                DataSet ds = new DataSet();
+                adapter.Fill(ds);
+                conn.Close();
 
+                int tableExists = (int)ds.Tables[0].Rows[0][0];
+                int dataExists = ds.Tables.Count > 1 && ds.Tables[1].Rows.Count > 0 ? (int)ds.Tables[1].Rows[0][0] : 0;
 
+                // If table doesn't exist or is empty, create/update table and add sample data
+                if (tableExists == 0 || dataExists == 0)
+                {
+                    CreateTableOrUpdate(); // Ensure table is created and columns are updated
+
+                    // Insert sample data only if there is no data
+                    if (dataExists == 0)
+                    {
+                        // Assuming there's an Insert method for companyBLL similar to the Insert function provided before
+                        companyBLL sampleData = new companyBLL()
+                        {
+                            // Initialize your sampleData object with appropriate values
+                            full_name = "Safety Plastics Sdn Bhd",
+                            short_name = "Safety Plastics",
+                            registration_no = "198901011676 (188981-U)",
+                            primary_billing_address_code = -1,
+                            primary_shipping_address_code = -1,
+                            isInternal = true,
+                            remark = "",
+                            isRemoved = false,
+                            updated_by = 1,
+                            updated_date = DateTime.Now
+                        };
+                        Insert(sampleData); // Insert sample data
+                    }
+                }
+
+                // Re-fetch data to return
+                if (conn.State != ConnectionState.Open) conn.Open();
+                string sql = @"SELECT * FROM tbl_company";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                SqlDataAdapter newAdapter = new SqlDataAdapter(cmd);
+                newAdapter.Fill(dt);
             }
             catch (Exception ex)
             {
-                //throw message if any error occurs
-                Module.Tool tool = new Module.Tool();
+                // Handle the exception
+                Tool tool = new Tool();
                 tool.saveToText(ex);
             }
             finally
             {
-                //closing connection
-                conn.Close();
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
             }
             return dt;
         }
+
 
         #endregion
 
@@ -149,7 +184,7 @@ namespace FactoryManagementSoftware.DAL
 
         #region Update data in Database
 
-        public bool JobUpdate(companyBLL u)
+        public bool Update(companyBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -306,6 +341,68 @@ namespace FactoryManagementSoftware.DAL
 
         #endregion
 
+        public void CreateTableOrUpdate()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Command to check if the table exists and create it if it does not
+                    string createTableSql = @"
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'tbl_company')
+BEGIN
+    CREATE TABLE tbl_company(
+        tbl_code INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+        primary_billing_address_code INT,
+        primary_shipping_address_code INT,
+        full_name VARCHAR(100),
+        short_name VARCHAR(50),
+        registration_no VARCHAR(50),
+        isInternal BIT,
+        remark VARCHAR(200),
+        isRemoved BIT,
+        updated_date DATETIME NOT NULL,
+        updated_by INT NOT NULL
+    );
+END";
+                    SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
+                    createTableCmd.ExecuteNonQuery();
+
+                    // Commands to add missing columns if the table already exists
+                    string[] alterTableSql = new string[]
+                    {
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'primary_billing_address_code') BEGIN ALTER TABLE tbl_company ADD primary_billing_address_code INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'primary_shipping_address_code') BEGIN ALTER TABLE tbl_company ADD primary_shipping_address_code INT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'full_name') BEGIN ALTER TABLE tbl_company ADD full_name VARCHAR(100) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'short_name') BEGIN ALTER TABLE tbl_company ADD short_name VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'registration_no') BEGIN ALTER TABLE tbl_company ADD registration_no VARCHAR(50) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'isInternal') BEGIN ALTER TABLE tbl_company ADD isInternal BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'remark') BEGIN ALTER TABLE tbl_company ADD remark VARCHAR(200) END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'isRemoved') BEGIN ALTER TABLE tbl_company ADD isRemoved BIT END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'updated_date') BEGIN ALTER TABLE tbl_company ADD updated_date DATETIME NOT NULL END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_company' AND COLUMN_NAME = 'updated_by') BEGIN ALTER TABLE tbl_company ADD updated_by INT NOT NULL END"
+                    };
+
+                    foreach (var sql in alterTableSql)
+                    {
+                        SqlCommand cmd = new SqlCommand(sql, conn);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Handle exception
+                    // Assuming Tool class has a method saveToText for logging exceptions
+                    Tool tool = new Tool();
+                    tool.saveToText(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
 
     }
 }

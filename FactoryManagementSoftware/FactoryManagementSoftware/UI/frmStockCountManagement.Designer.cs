@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.btnSaveRecord = new Guna.UI.WinForms.GunaGradientButton();
@@ -44,8 +44,8 @@
             this.lblAddNewList = new System.Windows.Forms.Label();
             this.lblStockCountList = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.dtpStockCountDate = new Guna.UI.WinForms.GunaDateTimePicker();
             this.lblStockCountDate = new System.Windows.Forms.Label();
+            this.dtpStockCountDate = new Guna.UI.WinForms.GunaDateTimePicker();
             this.dgvStockCountList = new System.Windows.Forms.DataGridView();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -356,8 +356,8 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.dtpStockCountDate, 0, 1);
             this.tableLayoutPanel3.Controls.Add(this.lblStockCountDate, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dtpStockCountDate, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(423, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
@@ -366,35 +366,6 @@
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(294, 94);
             this.tableLayoutPanel3.TabIndex = 259;
-            // 
-            // dtpStockCountDate
-            // 
-            this.dtpStockCountDate.BackColor = System.Drawing.Color.Transparent;
-            this.dtpStockCountDate.BaseColor = System.Drawing.Color.White;
-            this.dtpStockCountDate.BorderColor = System.Drawing.Color.Silver;
-            this.dtpStockCountDate.BorderSize = 1;
-            this.dtpStockCountDate.CustomFormat = null;
-            this.dtpStockCountDate.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dtpStockCountDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
-            this.dtpStockCountDate.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dtpStockCountDate.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.dtpStockCountDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dtpStockCountDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpStockCountDate.Location = new System.Drawing.Point(5, 54);
-            this.dtpStockCountDate.Margin = new System.Windows.Forms.Padding(5);
-            this.dtpStockCountDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
-            this.dtpStockCountDate.MaximumSize = new System.Drawing.Size(0, 31);
-            this.dtpStockCountDate.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
-            this.dtpStockCountDate.Name = "dtpStockCountDate";
-            this.dtpStockCountDate.OnHoverBaseColor = System.Drawing.Color.White;
-            this.dtpStockCountDate.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dtpStockCountDate.OnHoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.dtpStockCountDate.OnPressedColor = System.Drawing.Color.Black;
-            this.dtpStockCountDate.Radius = 3;
-            this.dtpStockCountDate.Size = new System.Drawing.Size(284, 31);
-            this.dtpStockCountDate.TabIndex = 240;
-            this.dtpStockCountDate.Text = "6/2/2024";
-            this.dtpStockCountDate.Value = new System.DateTime(2024, 2, 6, 0, 0, 0, 0);
             // 
             // lblStockCountDate
             // 
@@ -409,6 +380,34 @@
             this.lblStockCountDate.TabIndex = 166;
             this.lblStockCountDate.Text = "Stock Count Date";
             // 
+            // dtpStockCountDate
+            // 
+            this.dtpStockCountDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpStockCountDate.BackColor = System.Drawing.Color.Transparent;
+            this.dtpStockCountDate.BaseColor = System.Drawing.Color.White;
+            this.dtpStockCountDate.BorderColor = System.Drawing.Color.Silver;
+            this.dtpStockCountDate.BorderSize = 1;
+            this.dtpStockCountDate.CustomFormat = null;
+            this.dtpStockCountDate.DropDownAlign = System.Windows.Forms.LeftRightAlignment.Right;
+            this.dtpStockCountDate.FocusedColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.dtpStockCountDate.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.dtpStockCountDate.ForeColor = System.Drawing.Color.Black;
+            this.dtpStockCountDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpStockCountDate.Location = new System.Drawing.Point(3, 52);
+            this.dtpStockCountDate.MaxDate = new System.DateTime(9998, 12, 31, 0, 0, 0, 0);
+            this.dtpStockCountDate.MinDate = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
+            this.dtpStockCountDate.Name = "dtpStockCountDate";
+            this.dtpStockCountDate.OnHoverBaseColor = System.Drawing.Color.White;
+            this.dtpStockCountDate.OnHoverBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.dtpStockCountDate.OnHoverForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.dtpStockCountDate.OnPressedColor = System.Drawing.Color.Black;
+            this.dtpStockCountDate.Radius = 3;
+            this.dtpStockCountDate.Size = new System.Drawing.Size(288, 31);
+            this.dtpStockCountDate.TabIndex = 260;
+            this.dtpStockCountDate.Text = "16/2/2024";
+            this.dtpStockCountDate.Value = new System.DateTime(2024, 2, 16, 10, 40, 54, 609);
+            // 
             // dgvStockCountList
             // 
             this.dgvStockCountList.AllowUserToAddRows = false;
@@ -420,14 +419,14 @@
             this.dgvStockCountList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockCountList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockCountList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockCountList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvStockCountList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockCountList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockCountList.Location = new System.Drawing.Point(5, 105);
@@ -505,7 +504,6 @@
         private System.Windows.Forms.Label lblStockCountList;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
-        private Guna.UI.WinForms.GunaDateTimePicker dtpStockCountDate;
         private Guna.UI.WinForms.GunaComboBox cmbStockCountList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
@@ -519,5 +517,6 @@
         private System.Windows.Forms.Label lblEditList;
         private System.Windows.Forms.Label lblAddNewList;
         private System.Windows.Forms.ErrorProvider errorProvider1;
+        private Guna.UI.WinForms.GunaDateTimePicker dtpStockCountDate;
     }
 }
