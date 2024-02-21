@@ -13,6 +13,7 @@ namespace FactoryManagementSoftware.BLL
         public int running_no { get; set; }
         public string do_no_string { get; set; }
         public int company_tbl_code { get; set; }
+        public int internal_from_address_tbl_code { get; set; }
         public int shipping_address_tbl_code { get; set; }
         public int billing_address_tbl_code { get; set; }
         public string shipping_method { get; set; }

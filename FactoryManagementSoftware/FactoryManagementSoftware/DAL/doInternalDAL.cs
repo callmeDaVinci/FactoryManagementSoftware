@@ -20,8 +20,9 @@ namespace FactoryManagementSoftware.DAL
         public string CompanyTblCode { get; } = "company_tbl_code";
         public string ShippingAddressTblCode { get; } = "shipping_address_tbl_code";
         public string BillingAddressTblCode { get; } = "billing_address_tbl_code";
+        public string InternalFromAddressTblCode { get; } = "internal_from_address_tbl_code";
         public string ShippingMethod { get; } = "shipping_method";
-        public string DeliveryDate { get; } = "delivery_date";
+        public string DODate { get; } = "delivery_date";
         public string IsDraft { get; } = "isDraft";
         public string IsProcessing { get; } = "isProcessing";
         public string IsCompleted { get; } = "isCompleted";
@@ -64,7 +65,7 @@ namespace FactoryManagementSoftware.DAL
             catch (Exception ex)
             {
                 //throw message if any error occurs
-                Module.Tool tool = new Module.Tool();
+                Tool tool = new Tool();
                 tool.saveToText(ex);
             }
             finally
@@ -169,10 +170,11 @@ namespace FactoryManagementSoftware.DAL
                             + RunningNo + ","
                             + DoNoString + ","
                             + CompanyTblCode + ","
+                            + InternalFromAddressTblCode + ","
                             + ShippingAddressTblCode + ","
                             + BillingAddressTblCode + ","
                             + ShippingMethod + ","
-                            + DeliveryDate + ","
+                            + DODate + ","
                             + IsDraft + ","
                             + IsProcessing + ","
                             + IsCompleted + ","
@@ -184,6 +186,7 @@ namespace FactoryManagementSoftware.DAL
                             "@running_no," +
                             "@do_no_string," +
                             "@company_tbl_code," +
+                            "@internal_from_address_tbl_code," +
                             "@shipping_address_tbl_code," +
                             "@billing_address_tbl_code," +
                             "@shipping_method," +
@@ -200,6 +203,7 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@do_format_tbl_code", u.do_format_tbl_code);
                 cmd.Parameters.AddWithValue("@company_tbl_code", u.company_tbl_code);
+                cmd.Parameters.AddWithValue("@internal_from_address_tbl_code", u.internal_from_address_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_address_tbl_code", u.shipping_address_tbl_code);
                 cmd.Parameters.AddWithValue("@remark", u.remark);
                 cmd.Parameters.AddWithValue("@shipping_method", u.shipping_method);
@@ -255,10 +259,11 @@ namespace FactoryManagementSoftware.DAL
                             + RunningNo + ","
                             + DoNoString + ","
                             + CompanyTblCode + ","
+                            + InternalFromAddressTblCode + ","
                             + ShippingAddressTblCode + ","
                             + BillingAddressTblCode + ","
                             + ShippingMethod + ","
-                            + DeliveryDate + ","
+                            + DODate + ","
                             + IsDraft + ","
                             + IsProcessing + ","
                             + IsCompleted + ","
@@ -270,6 +275,7 @@ namespace FactoryManagementSoftware.DAL
                             "@running_no," +
                             "@do_no_string," +
                             "@company_tbl_code," +
+                            "@internal_from_address_tbl_code," +
                             "@shipping_address_tbl_code," +
                             "@billing_address_tbl_code," +
                             "@shipping_method," +
@@ -290,6 +296,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@do_no_string", "DRAFT");
                 cmd.Parameters.AddWithValue("@company_tbl_code", u.company_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_address_tbl_code", u.shipping_address_tbl_code);
+                cmd.Parameters.AddWithValue("@internal_from_address_tbl_code", u.internal_from_address_tbl_code);
                 cmd.Parameters.AddWithValue("@billing_address_tbl_code", u.billing_address_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_method", u.shipping_method);
                 cmd.Parameters.AddWithValue("@delivery_date", u.delivery_date);
@@ -347,10 +354,11 @@ namespace FactoryManagementSoftware.DAL
                            + RunningNo + "=@running_no,"
                            + DoNoString + "=@do_no_string,"
                            + CompanyTblCode + "=@company_tbl_code,"
+                           + InternalFromAddressTblCode + "=@internal_from_address_tbl_code,"
                            + ShippingAddressTblCode + "=@shipping_address_tbl_code,"
                            + BillingAddressTblCode + "=@billing_address_tbl_code,"
                            + ShippingMethod + "=@shipping_method,"
-                           + DeliveryDate + "=@delivery_date,"
+                           + DODate + "=@delivery_date,"
                            + IsDraft + "=@isDraft,"
                            + IsProcessing + "=@isProcessing,"
                            + IsCompleted + "=@isCompleted,"
@@ -368,6 +376,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@running_no", u.running_no);
                 cmd.Parameters.AddWithValue("@do_no_string", u.do_no_string);
                 cmd.Parameters.AddWithValue("@company_tbl_code", u.company_tbl_code);
+                cmd.Parameters.AddWithValue("@internal_from_address_tbl_code", u.internal_from_address_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_address_tbl_code", u.shipping_address_tbl_code);
                 cmd.Parameters.AddWithValue("@billing_address_tbl_code", u.billing_address_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_method", u.shipping_method);
@@ -536,7 +545,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_internal_do
                             SET "
-                              + DeliveryDate + "=@do_no_string,"
+                              + DODate + "=@do_no_string,"
                               + updatedDate + "=@updated_date,"
                               + updatedBy + "=@updated_by" +
                               " WHERE tbl_code = @tbl_code";
@@ -695,6 +704,7 @@ BEGIN
         running_no INT,
         do_no_string VARCHAR(255),
         company_tbl_code INT,
+        internal_from_address_tbl_code INT,        
         shipping_address_tbl_code INT,
         billing_address_tbl_code INT,
         shipping_method VARCHAR(50),
@@ -718,6 +728,7 @@ END";
                 "running_no INT",
                 "do_no_string VARCHAR(255)",
                 "company_tbl_code INT",
+                "internal_from_address_tbl_code INT",
                 "shipping_address_tbl_code INT",
                 "billing_address_tbl_code INT",
                 "shipping_method VARCHAR(50)",

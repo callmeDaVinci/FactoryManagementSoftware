@@ -38,11 +38,12 @@
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
-            this.gunaComboBox2 = new Guna.UI.WinForms.GunaComboBox();
+            this.cmbDOType = new Guna.UI.WinForms.GunaComboBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbRemoved = new System.Windows.Forms.CheckBox();
-            this.cbInProgress = new System.Windows.Forms.CheckBox();
+            this.cbDraftDO = new System.Windows.Forms.CheckBox();
             this.cbCompleted = new System.Windows.Forms.CheckBox();
+            this.cbCancelled = new System.Windows.Forms.CheckBox();
+            this.cbInProgress = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGroupBox5 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
@@ -189,7 +190,7 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Controls.Add(this.gunaComboBox2, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.cmbDOType, 0, 0);
             this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel15, 0, 2);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 33);
@@ -203,38 +204,39 @@
             this.tableLayoutPanel13.Size = new System.Drawing.Size(221, 142);
             this.tableLayoutPanel13.TabIndex = 258;
             // 
-            // gunaComboBox2
+            // cmbDOType
             // 
-            this.gunaComboBox2.BackColor = System.Drawing.Color.Transparent;
-            this.gunaComboBox2.BaseColor = System.Drawing.Color.White;
-            this.gunaComboBox2.BorderColor = System.Drawing.Color.Silver;
-            this.gunaComboBox2.BorderSize = 1;
-            this.gunaComboBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.gunaComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.gunaComboBox2.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaComboBox2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.gunaComboBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.gunaComboBox2.Items.AddRange(new object[] {
+            this.cmbDOType.BackColor = System.Drawing.Color.Transparent;
+            this.cmbDOType.BaseColor = System.Drawing.Color.White;
+            this.cmbDOType.BorderColor = System.Drawing.Color.Silver;
+            this.cmbDOType.BorderSize = 1;
+            this.cmbDOType.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbDOType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbDOType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbDOType.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbDOType.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cmbDOType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmbDOType.Items.AddRange(new object[] {
             "Internal Transfer Note"});
-            this.gunaComboBox2.Location = new System.Drawing.Point(5, 5);
-            this.gunaComboBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaComboBox2.Name = "gunaComboBox2";
-            this.gunaComboBox2.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaComboBox2.OnHoverItemForeColor = System.Drawing.Color.White;
-            this.gunaComboBox2.Radius = 3;
-            this.gunaComboBox2.Size = new System.Drawing.Size(211, 26);
-            this.gunaComboBox2.StartIndex = 0;
-            this.gunaComboBox2.TabIndex = 253;
+            this.cmbDOType.Location = new System.Drawing.Point(5, 5);
+            this.cmbDOType.Margin = new System.Windows.Forms.Padding(5);
+            this.cmbDOType.Name = "cmbDOType";
+            this.cmbDOType.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cmbDOType.OnHoverItemForeColor = System.Drawing.Color.White;
+            this.cmbDOType.Radius = 3;
+            this.cmbDOType.Size = new System.Drawing.Size(211, 26);
+            this.cmbDOType.StartIndex = 0;
+            this.cmbDOType.TabIndex = 253;
             // 
             // tableLayoutPanel15
             // 
             this.tableLayoutPanel15.ColumnCount = 2;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 52.0362F));
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 47.9638F));
-            this.tableLayoutPanel15.Controls.Add(this.cbRemoved, 1, 0);
-            this.tableLayoutPanel15.Controls.Add(this.cbInProgress, 0, 0);
+            this.tableLayoutPanel15.Controls.Add(this.cbDraftDO, 1, 0);
             this.tableLayoutPanel15.Controls.Add(this.cbCompleted, 0, 1);
+            this.tableLayoutPanel15.Controls.Add(this.cbCancelled, 1, 1);
+            this.tableLayoutPanel15.Controls.Add(this.cbInProgress, 0, 0);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel15.Location = new System.Drawing.Point(0, 46);
             this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
@@ -245,18 +247,47 @@
             this.tableLayoutPanel15.Size = new System.Drawing.Size(221, 96);
             this.tableLayoutPanel15.TabIndex = 263;
             // 
-            // cbRemoved
+            // cbDraftDO
             // 
-            this.cbRemoved.AutoSize = true;
-            this.cbRemoved.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbRemoved.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.cbRemoved.Location = new System.Drawing.Point(125, 5);
-            this.cbRemoved.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.cbRemoved.Name = "cbRemoved";
-            this.cbRemoved.Size = new System.Drawing.Size(86, 21);
-            this.cbRemoved.TabIndex = 248;
-            this.cbRemoved.Text = "Cancelled";
-            this.cbRemoved.UseVisualStyleBackColor = true;
+            this.cbDraftDO.AutoSize = true;
+            this.cbDraftDO.Checked = true;
+            this.cbDraftDO.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbDraftDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbDraftDO.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbDraftDO.Location = new System.Drawing.Point(125, 5);
+            this.cbDraftDO.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
+            this.cbDraftDO.Name = "cbDraftDO";
+            this.cbDraftDO.Size = new System.Drawing.Size(59, 21);
+            this.cbDraftDO.TabIndex = 247;
+            this.cbDraftDO.Text = "Draft";
+            this.cbDraftDO.UseVisualStyleBackColor = true;
+            this.cbDraftDO.CheckedChanged += new System.EventHandler(this.cbDraftDO_CheckedChanged);
+            // 
+            // cbCompleted
+            // 
+            this.cbCompleted.AutoSize = true;
+            this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCompleted.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.cbCompleted.Location = new System.Drawing.Point(10, 45);
+            this.cbCompleted.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
+            this.cbCompleted.Name = "cbCompleted";
+            this.cbCompleted.Size = new System.Drawing.Size(94, 21);
+            this.cbCompleted.TabIndex = 247;
+            this.cbCompleted.Text = "Completed";
+            this.cbCompleted.UseVisualStyleBackColor = true;
+            // 
+            // cbCancelled
+            // 
+            this.cbCancelled.AutoSize = true;
+            this.cbCancelled.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbCancelled.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.cbCancelled.Location = new System.Drawing.Point(125, 45);
+            this.cbCancelled.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
+            this.cbCancelled.Name = "cbCancelled";
+            this.cbCancelled.Size = new System.Drawing.Size(86, 21);
+            this.cbCancelled.TabIndex = 248;
+            this.cbCancelled.Text = "Cancelled";
+            this.cbCancelled.UseVisualStyleBackColor = true;
             // 
             // cbInProgress
             // 
@@ -272,19 +303,6 @@
             this.cbInProgress.TabIndex = 246;
             this.cbInProgress.Text = "In progress";
             this.cbInProgress.UseVisualStyleBackColor = true;
-            // 
-            // cbCompleted
-            // 
-            this.cbCompleted.AutoSize = true;
-            this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbCompleted.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.cbCompleted.Location = new System.Drawing.Point(10, 45);
-            this.cbCompleted.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.cbCompleted.Name = "cbCompleted";
-            this.cbCompleted.Size = new System.Drawing.Size(94, 21);
-            this.cbCompleted.TabIndex = 247;
-            this.cbCompleted.Text = "Completed";
-            this.cbCompleted.UseVisualStyleBackColor = true;
             // 
             // btnFilterApply
             // 
@@ -1245,10 +1263,10 @@
         private System.Windows.Forms.CheckBox cbCustomPeriod;
         private System.Windows.Forms.CheckBox cbAllTimeRange;
         private Guna.UI.WinForms.GunaTextBox txtSearch;
-        private System.Windows.Forms.CheckBox cbRemoved;
+        private System.Windows.Forms.CheckBox cbCancelled;
         private System.Windows.Forms.CheckBox cbCompleted;
         private System.Windows.Forms.CheckBox cbInProgress;
-        private Guna.UI.WinForms.GunaComboBox gunaComboBox2;
+        private Guna.UI.WinForms.GunaComboBox cmbDOType;
         private Guna.UI.WinForms.GunaComboBox gunaComboBox1;
         private Guna.UI.WinForms.GunaComboBox cmbCustomer;
         private Guna.UI.WinForms.GunaTextBox txtFrom;
@@ -1271,5 +1289,6 @@
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private Guna.UI.WinForms.GunaGradientButton btnNewJob;
+        private System.Windows.Forms.CheckBox cbDraftDO;
     }
 }

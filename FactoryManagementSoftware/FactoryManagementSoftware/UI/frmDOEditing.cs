@@ -40,13 +40,23 @@ namespace FactoryManagementSoftware.UI
         private string BUTTON_ADDTOLIST_TEXT = "Add to List";
         private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
         private bool DATA_SAVED = false;
-
+        private string DO_TBL_CODE;
         public frmDOEditing()
         {
             InitializeComponent();
             InitialSetting();
+            DO_ITEM_EDIT_MODE = false;
         }
 
+        public frmDOEditing(DataTable dt, string DOTblCode)
+        {
+            InitializeComponent();
+            InitialSetting();
+
+            DT_ITEM_LIST = dt.Copy();
+            DO_ITEM_EDIT_MODE = true;
+            DO_TBL_CODE = DOTblCode;
+        }
         protected override CreateParams CreateParams
         {
             get
@@ -97,7 +107,6 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_DescriptionIncludeCategory, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludePackaging, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludeRemark, typeof(bool));
-
 
             return dt;
         }
@@ -574,8 +583,6 @@ namespace FactoryManagementSoftware.UI
             if (DT_ITEM_LIST == null)
             {
                 DT_ITEM_LIST = NewItemList();
-
-
             }
 
             dgvDOItemList.DataSource = DT_ITEM_LIST;
@@ -815,6 +822,9 @@ namespace FactoryManagementSoftware.UI
             DataRowView selectedDOTypeRow;
             DataRowView selectedRecevingCompanyTypeRow;
             DataRowView selectedDeliveryLocationRow;
+            DataRowView selectedInternalFromLocationRow;
+
+            selectedInternalFromLocationRow = (DataRowView)cmbFromBranch.SelectedItem;
 
             if (cmbDOType.SelectedIndex == -1)
             {
@@ -865,6 +875,7 @@ namespace FactoryManagementSoftware.UI
                 uInternalDO = new internalDOBLL();
                 uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
                 uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
+                uInternalDO.internal_from_address_tbl_code = int.TryParse(selectedInternalFromLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_method = cmbDeliveryMethod.Text;
                 uInternalDO.remark = "";
@@ -2282,6 +2293,15 @@ namespace FactoryManagementSoftware.UI
         private void cmbDeliveryMethod_SelectedIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void frmDOEditing_Load(object sender, EventArgs e)
+        {
+            if(DO_ITEM_EDIT_MODE)
+            {
+                //load existing data
+                //dotype, from, to, address,remark, delivery method, item list, do number if have
+            }
         }
     }
 }

@@ -434,6 +434,15 @@ namespace FactoryManagementSoftware.Module
         public string Header_OutTo_TblCode { get; } = "OutTo Tbl Code";
         public string Header_InFrom_TblCode { get; } = "InFrom Tbl Code";
         public string Header_TableCode { get; } = "Table Code";
+        public string Header_RunningNo { get; } = "Running No";
+        public string Header_DONo { get; } = "D/O No.";
+        public string Header_DOType { get; } = "D/O Type";
+        public string Header_From { get; } = "From";
+        public string Header_BillTo{ get; } = "Bill To";
+        public string Header_ShipTo{ get; } = "Ship To";
+        public string Header_DODate{ get; } = "D/O Date";
+        public string Header_CompletedDate{ get; } = "Completed Date";
+        public string Header_DeliveredDate{ get; } = "Delivered Date";
         public string Header_ReservedForOtherJobs { get; } = "Reserved For Other Jobs";
         public string Header_RequiredForCurrentJob { get; } = "Required For Current Job";
         public string Header_ParentStock { get; } = "PARENT STOCK";
@@ -558,6 +567,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_WastageAllowed_Percentage { get; } = "MAT. WASTAGE ALLOWED (%)";
         public string Cmb_All { get; } = "ALL";
         public string All_Item { get; } = "ALL ITEM";
+        public string Internal { get; } = "Internal";
 
         public string Jump { get; } = "Jump";
 
@@ -713,6 +723,10 @@ namespace FactoryManagementSoftware.Module
         public string Delivery_Cancelled { get; } = "CANCELLED";
         public string Delivery_Delivered { get; } = "DELIVERED";
         public string Delivery_Removed { get; } = "REMOVED";
+        public string Status_InProgress { get; } = "In Progress";
+        public string Status_Draft { get; } = "Drafting";
+        public string Status_Completed { get; } = "Completed";
+        public string Status_Cancelled { get; } = "Cancelled";
 
         #endregion
 

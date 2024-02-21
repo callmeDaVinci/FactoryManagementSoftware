@@ -159,7 +159,60 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public string SearchShortName(string tblCode)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
 
+            try
+            {
+                // SQL query to get tbl_code from database where do_no matches
+                String sql = @"SELECT tbl_address_book FROM tbl_internal_do WHERE tbl_code = @tblCode";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@tblCode", tblCode);
+
+                conn.Open();
+
+                // Execute the query and get the tbl_code
+                object result = cmd.ExecuteScalar();
+
+                if (result != null && result != DBNull.Value)
+                {
+                    tblCode = result.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Close the connection
+                conn.Close();
+            }
+
+            return tblCode;
+        }
+
+        public string SearchShortName(DataTable dt, string addressTblCode)
+        {
+            string name = "";
+
+            if(dt?.Rows.Count > 0)
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    if(addressTblCode == row[tblCode].ToString())
+                    {
+                        name = row[shortName].ToString();   
+                        break;
+                    }
+                }
+            }
+            return name;
+        }
         #endregion
 
         #region Insert Data in Database
@@ -554,7 +607,6 @@ END";
                 }
             }
         }
-
 
     }
 }
