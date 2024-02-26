@@ -36,27 +36,75 @@ namespace FactoryManagementSoftware.UI
         private string ITEM_CODE = "ITEM CODE";
         private string ITEM_CATEGORY = "CATEGORY";
         bool DO_ITEM_EDIT_MODE = false;
+        bool DO_EDITING_MODE = false;
         private int EDITING_INDEX = -1;
         private string BUTTON_ADDTOLIST_TEXT = "Add to List";
         private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
+
         private bool DATA_SAVED = false;
-        private string DO_TBL_CODE;
         public frmDOEditing()
         {
             InitializeComponent();
             InitialSetting();
             DO_ITEM_EDIT_MODE = false;
+            DO_EDITING_MODE = false;
         }
 
-        public frmDOEditing(DataTable dt, string DOTblCode)
+        public frmDOEditing(DataRow DORow,DataTable dt)
         {
             InitializeComponent();
             InitialSetting();
 
+            DO_EDITING_MODE = true;
             DT_ITEM_LIST = dt.Copy();
-            DO_ITEM_EDIT_MODE = true;
-            DO_TBL_CODE = DOTblCode;
+            InternalDOEditInitialInfo(DORow);
         }
+
+        private void InternalDOEditInitialInfo(DataRow DORow)
+        {
+            // Assuming DO_TBL_CODE is a constant or variable that holds the name of the 'tbl_code' column
+            int tblCode = int.TryParse(DORow[text.Header_TableCode].ToString(), out tblCode) ? tblCode : -1;
+
+            if (tblCode < 0)
+            {
+                MessageBox.Show("DO info invalid!");
+                return;
+            }
+
+            uInternalDO.tbl_code = tblCode;
+            uInternalDO.do_no_string = DORow.Table.Columns.Contains(text.Header_DONo) ? DORow[text.Header_DONo].ToString() : null;
+
+            // Continue moving data from DORow to uInternalDO, when data can be found in DORow
+            uInternalDO.do_format_tbl_code = DORow.Table.Columns.Contains(dalInternalDO.DOFormatTblCode) && int.TryParse(DORow[dalInternalDO.DOFormatTblCode].ToString(), out int doFormatTblCode) ? doFormatTblCode : -1;
+            uInternalDO.company_tbl_code = DORow.Table.Columns.Contains(dalInternalDO.CompanyTblCode) && int.TryParse(DORow[dalInternalDO.CompanyTblCode].ToString(), out int companyTblCode) ? companyTblCode : -1;
+            uInternalDO.internal_from_address_tbl_code = DORow.Table.Columns.Contains(dalInternalDO.InternalFromAddressTblCode) && int.TryParse(DORow[dalInternalDO.InternalFromAddressTblCode].ToString(), out int internalFromAddressTblCode) ? internalFromAddressTblCode : -1;
+            uInternalDO.shipping_address_tbl_code = DORow.Table.Columns.Contains(dalInternalDO.ShippingAddressTblCode) && int.TryParse(DORow[dalInternalDO.ShippingAddressTblCode].ToString(), out int shippingAddressTblCode) ? shippingAddressTblCode : -1;
+            uInternalDO.billing_address_tbl_code = DORow.Table.Columns.Contains(dalInternalDO.BillingAddressTblCode) && int.TryParse(DORow[dalInternalDO.BillingAddressTblCode].ToString(), out int billingAddressTblCode) ? billingAddressTblCode : -1;
+            uInternalDO.shipping_method = DORow.Table.Columns.Contains(dalInternalDO.ShippingMethod) ? DORow[dalInternalDO.ShippingMethod].ToString() : null;
+            uInternalDO.remark = DORow.Table.Columns.Contains(dalInternalDO.Remark) ? DORow[dalInternalDO.Remark].ToString() : null;
+            uInternalDO.show_remark_in_do = DORow.Table.Columns.Contains(dalInternalDO.ShowRemarkInDO) && bool.TryParse(DORow[dalInternalDO.ShowRemarkInDO].ToString(), out bool showRemarkInDO) ? showRemarkInDO : false;
+
+            // Assuming delivery_date, updated_date are of DateTime type and need special handling if they are string in DORow
+            // Also assuming isDraft, isProcessing, isCompleted, isCancelled are boolean and need conversion
+
+            // For DateTime fields (example: delivery_date, updated_date)
+            if (DORow.Table.Columns.Contains(dalInternalDO.DODate) && DateTime.TryParse(DORow[dalInternalDO.DODate].ToString(), out DateTime deliveryDate))
+            {
+                uInternalDO.delivery_date = deliveryDate;
+                dtpDODate.Value = deliveryDate;
+            }
+
+            //// For boolean fields (example: isDraft, isProcessing, etc.)
+            //uInternalDO.isDraft = DORow.Table.Columns.Contains("IsDraft") && bool.TryParse(DORow["IsDraft"].ToString(), out bool isDraft) && isDraft;
+            //uInternalDO.isProcessing = DORow.Table.Columns.Contains("IsProcessing") && bool.TryParse(DORow["IsProcessing"].ToString(), out bool isProcessing) && isProcessing;
+            //uInternalDO.isCompleted = DORow.Table.Columns.Contains("IsCompleted") && bool.TryParse(DORow["IsCompleted"].ToString(), out bool isCompleted) && isCompleted;
+            //uInternalDO.isCancelled = DORow.Table.Columns.Contains("IsCancelled") && bool.TryParse(DORow["IsCancelled"].ToString(), out bool isCancelled) && isCancelled;
+
+            //// Assuming 'updated_by' needs to be handled, and it is an integer
+            //uInternalDO.updated_by = DORow.Table.Columns.Contains("UpdatedBy") && int.TryParse(DORow["UpdatedBy"].ToString(), out int updatedBy) ? updatedBy : -1;
+        }
+
+
         protected override CreateParams CreateParams
         {
             get
@@ -87,6 +135,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_TableCode, typeof(int));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_Description, typeof(string));
             dt.Columns.Add(text.Header_Qty, typeof(decimal));
@@ -132,6 +181,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+                dgv.Columns[text.Header_TableCode].Visible = false;
                 dgv.Columns[text.Header_SearchMode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
                 dgv.Columns[text.Header_TotalQty].Visible = false;
@@ -165,6 +215,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+                dgv.Columns[text.Header_TableCode].Visible = false;
                 dgv.Columns[text.Header_SearchMode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
                 dgv.Columns[text.Header_TotalQty].Visible = false;
@@ -333,6 +384,8 @@ namespace FactoryManagementSoftware.UI
             {
                 lblPreviewDORemark.Text += " (show in DO)";
             }
+
+
         }
 
         private bool Validation(int currentStep)
@@ -554,7 +607,7 @@ namespace FactoryManagementSoftware.UI
         private string ITEM_CUSTOM_DEFAULT_TEXT = "Fill in Item's Description";
         private bool SEARCH_ICON_UPDATING = false;
         private int CURRENT_STEP = 1;
-        private bool DO_EDITING_MODE = false;
+        //private bool DO_EDITING_MODE = false;
 
 
         private void cmbFromBranch_SelectedIndexChanged(object sender, EventArgs e)
@@ -675,6 +728,7 @@ namespace FactoryManagementSoftware.UI
                     btnPreviousStep.Visible = false;
                     btnContinue.Visible = true;
 
+                  
                     break;
                 #endregion
 
@@ -704,6 +758,7 @@ namespace FactoryManagementSoftware.UI
 
                     btnPreviousStep.Visible = true;
                     btnContinue.Visible = true;
+
                     InitialNameTextBox();
 
                     assignDOItemListtoDGV();
@@ -754,7 +809,16 @@ namespace FactoryManagementSoftware.UI
                     if (DO_EDITING_MODE)
                     {
                         btnAddAsDraft.Text = "Update as Draft";
-                        btnJobPublish.Text = "D/O Update";
+
+                        if(uInternalDO.isDraft || uInternalDO.isCancelled)
+                        {
+                            btnJobPublish.Text = "D/O Publish";
+                        }
+                        else
+                        {
+                            btnJobPublish.Text = "D/O Update";
+                        }
+                        
                     }
 
                     LoadSummaryData();
@@ -812,6 +876,7 @@ namespace FactoryManagementSoftware.UI
 
             return tableCode;
         }
+
         doFormatBLL uDoFormat = new doFormatBLL();
 
 
@@ -872,13 +937,19 @@ namespace FactoryManagementSoftware.UI
 
             if (isInternal)
             {
-                uInternalDO = new internalDOBLL();
+                if(!DO_EDITING_MODE)
+                {
+                    uInternalDO = new internalDOBLL();
+                }
+               
                 uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
                 uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.internal_from_address_tbl_code = int.TryParse(selectedInternalFromLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_method = cmbDeliveryMethod.Text;
-                uInternalDO.remark = "";
+                uInternalDO.remark = txtDORemark.Text;
+                uInternalDO.show_remark_in_do = cbShowRemarkinDO.Checked;
+
                 if (txtDORemark.Text != "Remark :")
                     uInternalDO.remark = txtDORemark.Text;
             }
@@ -888,6 +959,72 @@ namespace FactoryManagementSoftware.UI
             }
 
             return success;
+        }
+
+        private void LoadDBData(bool Reload)
+        {
+            if(Reload)
+            {
+                DT_DO_FORMAT = null;
+                DT_COMPANY = null;
+                DT_ADDRESS_BOOK = null;
+            }
+
+            if (DT_DO_FORMAT == null || DT_DO_FORMAT.Rows.Count == 0)
+            {
+                LoadDoFormatDB();
+            }
+
+            if (DT_COMPANY == null || DT_COMPANY.Rows.Count == 0)
+            {
+                LoadCompanyDB();
+            }
+
+            if (DT_ADDRESS_BOOK == null || DT_ADDRESS_BOOK.Rows.Count == 0)
+            {
+                LoadAddressBookDB();
+            }
+        }
+
+        private void setDOGeneralData()
+        {
+            LoadDBData(false);
+
+            // Set DO Type ComboBox
+            SetComboBoxByTableCode(cmbDOType, DT_DO_FORMAT, dalDoFormat.tblCode, uInternalDO.do_format_tbl_code);
+
+            SetComboBoxByTableCode(cmbFromCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
+
+            SetComboBoxByTableCode(cmbFromBranch, DT_ADDRESS_BOOK, dalAddressBook.tblCode, uInternalDO.internal_from_address_tbl_code);
+
+            SetComboBoxByTableCode(cmbToCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
+
+            // Set Delivery Location ComboBox
+            SetComboBoxByTableCode(cmbToDeliveryLocation, DT_ADDRESS_BOOK, dalAddressBook.tblCode, uInternalDO.shipping_address_tbl_code);
+
+            // Set Delivery Method directly
+            cmbDeliveryMethod.Text = uInternalDO.shipping_method;
+
+            // Set Show Remark in DO CheckBox
+            cbShowRemarkinDO.Checked = uInternalDO.show_remark_in_do;
+
+            // Set Remark TextBox
+            txtDORemark.Text = uInternalDO.remark;
+        }
+
+        private void SetComboBoxByTableCode(ComboBox comboBox, DataTable dataTable, string tableCodeColumnName, int tableCode)
+        {
+            DataRow[] rows = dataTable.Select($"{tableCodeColumnName} = {tableCode}");
+
+            if (rows.Length > 0)
+            {
+                int rowIndex = dataTable.Rows.IndexOf(rows[0]);
+                comboBox.SelectedIndex = rowIndex; // This sets the ComboBox to the found row
+            }
+            else
+            {
+                comboBox.SelectedIndex = -1; // No matching table code found, set ComboBox to no selection
+            }
         }
 
         private bool getItemList()
@@ -1214,8 +1351,6 @@ namespace FactoryManagementSoftware.UI
             //get category info & item name
             if (cbItemSearch.Checked && !string.IsNullOrEmpty(txtItemDescription.Text))
             {
-
-
                 if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT)
                 {
                     previewDescription += "[PLEASE SEARCH A ITEM]";
@@ -1224,11 +1359,26 @@ namespace FactoryManagementSoftware.UI
                 {
                     if (!cbDescriptionIncludeCategory.Checked)
                     {
-                        previewDescription += txtItemDescription.Text.Replace($"[{ITEM_CATEGORY}] ", "");
+                        if(cbReplaceCartonWithPackaging.Checked && ITEM_CATEGORY.ToUpper().Contains(text.Cat_Carton.ToUpper()))
+                        {
+                            previewDescription += txtItemDescription.Text.Replace($"[Packaging] ", "");
+
+                        }
+                        else
+                        {
+                            previewDescription += txtItemDescription.Text.Replace($"[{ITEM_CATEGORY}] ", "");
+
+                        }
                     }
                     else
                     {
                         previewDescription += txtItemDescription.Text;
+
+                        if (cbReplaceCartonWithPackaging.Checked && ITEM_CATEGORY.ToUpper().Contains(text.Cat_Carton.ToUpper()))
+                        {
+                            previewDescription = previewDescription.Replace($"[{ITEM_CATEGORY}] ", $"[Packaging] ");
+
+                        }
                     }
 
 
@@ -1257,6 +1407,7 @@ namespace FactoryManagementSoftware.UI
             {
                 previewDescription += "\r\n" + txtRemark.Text;
             }
+
 
             txtDescriptionPreview.Text = previewDescription;
 
@@ -1651,6 +1802,7 @@ namespace FactoryManagementSoftware.UI
             cmbFromBranch.SelectedIndex = -1; // Set selection to null
             cmbToDeliveryLocation.SelectedIndex = -1; // Set selection to null
 
+
             DO_TYPE_DATA_LOADED = true;
         }
 
@@ -1835,8 +1987,11 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+
                 LoadCompanyData();
-                internalTransferDataAutoLoad();
+
+                if(DO_EDITING_MODE)
+                    internalTransferDataAutoLoad();
 
                 DO_TYPE_CHECKING = false;
 
@@ -2070,56 +2225,121 @@ namespace FactoryManagementSoftware.UI
 
         private string SaveInternalDO(bool isDraft)
         {
+
             //to-do:
             string doCode = "";
             string tblCode = "-1";
             bool success = true;
 
-            //status set to draft
-            if (isDraft)
+            uInternalDO.isDraft = false;
+            uInternalDO.isProcessing = false;
+            uInternalDO.isCompleted = false;
+            uInternalDO.isCancelled = false;
+
+            if (DO_EDITING_MODE && uInternalDO.tbl_code > 0)
             {
-                uInternalDO.isDraft = true;
-                doCode = tool.GenerateRandomCode();
-                uInternalDO.running_no = -1;
-            }
-            else
-            {
-                uInternalDO.isProcessing = true;
-
-                doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
-
-                int runningNo =  dalDoFormat.GenerateDONumber(doFormat); 
-                doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
-
-                uInternalDO.running_no = runningNo;
-            }
-
-            //do no string set to random code: GenerateRandomCode()
-            uInternalDO.do_no_string = doCode;
-
-            uInternalDO.updated_date = DateTime.Now;
-            uInternalDO.updated_by = MainDashboard.USER_ID;
-            uInternalDO.delivery_date = dtpDODate.Value;
-            uInternalDO.remark = "";
-            //insert to tbl_internal_do: Insert(internalDOBLL u)
-            success = dalInternalDO.Insert(uInternalDO);
-
-            //if success, get tbl code base on random code
-            if (success)
-            {
-                tblCode = dalInternalDO.SelectTblCodeByDOCode(doCode);
-
+                //status set to draft
                 if (isDraft)
                 {
-                    //update do no to draft
-                    dalInternalDO.SetInternalDOtoDraft(int.TryParse(tblCode, out int i)? i : -1);
+                    uInternalDO.isDraft = true;
+                    uInternalDO.running_no = -1;
                 }
+                else
+                {
+                    uInternalDO.isProcessing = true;
+
+                    doCode = uInternalDO.do_no_string;
+
+                    if(doCode.ToUpper().Contains("DRAFT") || string.IsNullOrEmpty(doCode))
+                    {
+                        doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
+
+                        int runningNo = dalDoFormat.GenerateDONumber(doFormat);
+                        doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
+
+                        uInternalDO.running_no = runningNo;
+                        uInternalDO.do_no_string = doCode;
+                    }
+                }
+
+
+                uInternalDO.updated_date = DateTime.Now;
+                uInternalDO.updated_by = MainDashboard.USER_ID;
+                uInternalDO.delivery_date = dtpDODate.Value;
+
+
+                success = dalInternalDO.Update(uInternalDO);
+
+                //if success, get tbl code base on random code
+                if (success)
+                {
+                    tblCode = uInternalDO.tbl_code.ToString();
+
+                    if (isDraft)
+                    {
+                        //update do no to draft
+                        dalInternalDO.SetInternalDOtoDraft(int.TryParse(tblCode, out int i) ? i : -1);
+                    }
+                }
+                else
+                {
+                    //if not success, show error message (MessageBox)
+                    MessageBox.Show("Failed to save internal do data!");
+                }
+
             }
             else
             {
-                //if not success, show error message (MessageBox)
-                MessageBox.Show("Failed to save internal do data!");
+                //status set to draft
+                if (isDraft)
+                {
+                    uInternalDO.isDraft = true;
+                    doCode = tool.GenerateRandomCode();
+                    uInternalDO.running_no = -1;
+                }
+                else
+                {
+                    uInternalDO.isProcessing = true;
+
+                    doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
+
+                    int runningNo = dalDoFormat.GenerateDONumber(doFormat);
+                    doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
+
+                    uInternalDO.running_no = runningNo;
+                }
+
+                //do no string set to random code: GenerateRandomCode()
+                uInternalDO.do_no_string = doCode;
+
+                uInternalDO.updated_date = DateTime.Now;
+                uInternalDO.updated_by = MainDashboard.USER_ID;
+                uInternalDO.delivery_date = dtpDODate.Value;
+                uInternalDO.remark = "";
+                //insert to tbl_internal_do: Insert(internalDOBLL u)
+
+
+                success = dalInternalDO.Insert(uInternalDO);
+
+                //if success, get tbl code base on random code
+                if (success)
+                {
+                    tblCode = dalInternalDO.SelectTblCodeByDOCode(doCode);
+
+                    if (isDraft)
+                    {
+                        //update do no to draft
+                        dalInternalDO.SetInternalDOtoDraft(int.TryParse(tblCode, out int i) ? i : -1);
+                    }
+                }
+                else
+                {
+                    //if not success, show error message (MessageBox)
+                    MessageBox.Show("Failed to save internal do data!");
+                }
+
             }
+
 
 
             return tblCode;
@@ -2150,6 +2370,8 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataRow row in dt.Rows)
                 {
+                    uInternalDOItem.tbl_code = int.TryParse(row[text.Header_TableCode]?.ToString(), out int i) ? i : -1;
+
                     uInternalDOItem.item_code = row[text.Header_ItemCode]?.ToString() ?? string.Empty;
                     uInternalDOItem.qty_unit = row[text.Header_Unit]?.ToString() ?? string.Empty;
                     uInternalDOItem.box_unit = row[text.Header_BoxUnit]?.ToString() ?? string.Empty;
@@ -2191,10 +2413,18 @@ namespace FactoryManagementSoftware.UI
                     uInternalDOItem.description_category = Convert.ToBoolean(row[text.Header_DescriptionIncludeCategory]?.ToString() ?? "false");
                     uInternalDOItem.description_remark = Convert.ToBoolean(row[text.Header_DescriptionIncludeRemark]?.ToString() ?? "false");
 
+                    if(uInternalDOItem.tbl_code > 0)
+                    {
+                        success = dalInternalDOItem.Update(uInternalDOItem);
 
-                    success = dalInternalDOItem.Insert(uInternalDOItem);
+                    }
+                    else
+                    {
+                        success = dalInternalDOItem.Insert(uInternalDOItem);
 
-                    if(!success)
+                    }
+
+                    if (!success)
                     {
                         MessageBox.Show("Failed to save item: " + uInternalDOItem.item_description + " !");
                         return false;
@@ -2297,11 +2527,38 @@ namespace FactoryManagementSoftware.UI
 
         private void frmDOEditing_Load(object sender, EventArgs e)
         {
-            if(DO_ITEM_EDIT_MODE)
+            if (DO_EDITING_MODE)
             {
                 //load existing data
                 //dotype, from, to, address,remark, delivery method, item list, do number if have
+                setDOGeneralData();
             }
+        }
+
+        private void changedCartonNameToPackaging(bool changetoPackaging)
+        {
+            string description = txtDescriptionPreview.Text;
+
+            if(changetoPackaging)
+            {
+                txtDescriptionPreview.Text = description.Replace("[Carton]", "[Packaging]");
+            }
+            else
+            {
+                txtDescriptionPreview.Text = description.Replace("[Packaging]", "[Carton]");
+
+            }
+
+        }
+
+        private void cbReplaceCartonWithPackaging_CheckedChanged(object sender, EventArgs e)
+        {
+            changedCartonNameToPackaging(cbReplaceCartonWithPackaging.Checked);
+        }
+
+        private void tableLayoutPanel28_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

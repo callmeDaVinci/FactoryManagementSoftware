@@ -23,6 +23,7 @@ namespace FactoryManagementSoftware.BLL
         public bool isCompleted { get; set; }
         public bool isCancelled { get; set; }
         public string remark { get; set; }
+        public bool show_remark_in_do { get; set; }
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }
     }

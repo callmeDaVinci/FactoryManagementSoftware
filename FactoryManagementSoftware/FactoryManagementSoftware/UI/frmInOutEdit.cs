@@ -3372,8 +3372,9 @@ namespace FactoryManagementSoftware.UI
                 string category = dgvTransfer.Rows[selectedRow].Cells[CatColumnName].Value.ToString();
 
                 bool isRaworColorMaterial = category == text.Cat_RawMat || category == text.Cat_Pigment || category == text.Cat_MB;
+                bool isPackaging = category == text.Cat_Carton;
 
-                if(callFromProductionRecord && selectedRow+1 <= JOB_RECORD_ROW_COUNT && !isRaworColorMaterial)
+                if (callFromProductionRecord && selectedRow+1 <= JOB_RECORD_ROW_COUNT && !isRaworColorMaterial && !isPackaging)
                 {
                     string warning_en = "You cannot edit or remove items from the Transfer List while in [Daily Job Sheet] Mode. " +
                                         "\nIf the stock of a sub-part item or material is insufficient, or if the quantity is incorrect, " +

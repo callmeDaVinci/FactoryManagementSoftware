@@ -384,6 +384,8 @@ namespace FactoryManagementSoftware.UI
             dgvMeterReading.SuspendLayout();
             ClearData();
 
+            cbStockOutPackingMaterial.Checked = true;
+
             if (newSheet)
             {
                 if (dgvItemList.SelectedRows.Count > 0)

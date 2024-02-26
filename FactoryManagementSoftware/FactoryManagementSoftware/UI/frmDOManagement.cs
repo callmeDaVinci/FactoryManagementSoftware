@@ -200,13 +200,25 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_CompletedDate, typeof(string));
             dt.Columns.Add(text.Header_Status, typeof(string));
             dt.Columns.Add(text.Header_Selection, typeof(bool));
-            
+
+            dt.Columns.Add(dalInternalDO.DODate, typeof(DateTime));
+            dt.Columns.Add(dalInternalDO.DOFormatTblCode, typeof(string));
+            dt.Columns.Add(dalInternalDO.BillingAddressTblCode, typeof(string));
+            dt.Columns.Add(dalInternalDO.ShippingAddressTblCode, typeof(string));
+            dt.Columns.Add(dalInternalDO.ShippingMethod, typeof(string));
+            dt.Columns.Add(dalInternalDO.InternalFromAddressTblCode, typeof(string));
+            dt.Columns.Add(dalInternalDO.CompanyTblCode, typeof(string));
+            dt.Columns.Add(dalInternalDO.Remark, typeof(string));
+            dt.Columns.Add(dalInternalDO.ShowRemarkInDO, typeof(bool));
+
             return dt;
         }
+
         private DataTable NewItemList()
         {
             DataTable dt = new DataTable();
 
+            dt.Columns.Add(text.Header_TableCode, typeof(int));
             dt.Columns.Add(text.Header_Index, typeof(int));
             dt.Columns.Add(text.Header_ItemCode, typeof(string));
             dt.Columns.Add(text.Header_Description, typeof(string));
@@ -304,6 +316,17 @@ namespace FactoryManagementSoftware.UI
                 //dgv.Columns[header_DataType].Visible = false;
                 //dgv.Columns[header_POCode].Visible = false;
                 //dgv.Columns[header_CustomerCode].Visible = false;
+
+                dgv.Columns[dalInternalDO.DOFormatTblCode].Visible = false;
+                dgv.Columns[dalInternalDO.DODate].Visible = false;
+                dgv.Columns[dalInternalDO.ShippingAddressTblCode].Visible = false;
+                dgv.Columns[dalInternalDO.BillingAddressTblCode].Visible = false;
+                dgv.Columns[dalInternalDO.InternalFromAddressTblCode].Visible = false;
+                dgv.Columns[dalInternalDO.CompanyTblCode].Visible = false;
+                dgv.Columns[dalInternalDO.ShippingMethod].Visible = false;
+                dgv.Columns[dalInternalDO.Remark].Visible = false;
+                dgv.Columns[dalInternalDO.ShowRemarkInDO].Visible = false;
+              
             }
             else if(dgv == dgvDOItemList)
             {
@@ -323,6 +346,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
+                dgv.Columns[text.Header_TableCode].Visible = false;
                 dgv.Columns[text.Header_SearchMode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
                 dgv.Columns[text.Header_TotalQty].Visible = false;
@@ -743,6 +767,7 @@ namespace FactoryManagementSoftware.UI
                     string internalFromTblCode = row[dalInternalDO.InternalFromAddressTblCode].ToString();
                     string billToTblCode = row[dalInternalDO.BillingAddressTblCode].ToString();
                     string shipToTblCode = row[dalInternalDO.ShippingAddressTblCode].ToString();
+                    string companyTblCode = row[dalInternalDO.CompanyTblCode].ToString();
 
                     dt_row[text.Header_TableCode] = row[dalInternalDO.tblCode];
                     dt_row[text.Header_Status] = doStatus;
@@ -760,11 +785,22 @@ namespace FactoryManagementSoftware.UI
 
                     dt_row[text.Header_DODate] = DODate == DateTime.MinValue? "" :  DODate.ToString("dd/MM/yy");
 
+                    dt_row[text.Header_TableCode] = tblCode;
                     dt_row[text.Header_DOType] = text.Internal;
                     dt_row[text.Header_From] =  dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, internalFromTblCode);
                     dt_row[text.Header_BillTo] = dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, billToTblCode);
                     dt_row[text.Header_ShipTo] = dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, shipToTblCode);
                     dt_row[text.Header_Selection] = false;
+
+                    dt_row[dalInternalDO.DOFormatTblCode] = row[dalInternalDO.DOFormatTblCode].ToString();
+                    dt_row[dalInternalDO.DODate] = DODate;
+                    dt_row[dalInternalDO.ShippingAddressTblCode] = shipToTblCode;
+                    dt_row[dalInternalDO.BillingAddressTblCode] = billToTblCode;
+                    dt_row[dalInternalDO.InternalFromAddressTblCode] = internalFromTblCode;
+                    dt_row[dalInternalDO.CompanyTblCode] = companyTblCode;
+                    dt_row[dalInternalDO.ShippingMethod] = row[dalInternalDO.ShippingMethod].ToString();
+                    dt_row[dalInternalDO.Remark] = row[dalInternalDO.Remark].ToString();
+                    dt_row[dalInternalDO.ShowRemarkInDO] = bool.TryParse(row[dalInternalDO.ShowRemarkInDO].ToString(), out bool showRemark)? showRemark : false;
 
                     dt.Rows.Add(dt_row);
                 }
@@ -1189,13 +1225,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         DataRow newRow = dt_item_list.NewRow();
 
+                        newRow[text.Header_TableCode] = row[dalInternalDOItem.TblCode];
                         newRow[text.Header_ItemCode] = row[dalInternalDOItem.ItemCode];
                         newRow[text.Header_Description] = row[dalInternalDOItem.Description];
                         newRow[text.Header_Qty] = row[dalInternalDOItem.TotalQty];
                         newRow[text.Header_Unit] = row[dalInternalDOItem.QtyUnit];
 
                         newRow[text.Header_SearchMode] = row[dalInternalDOItem.SearchMode];
-                        //newRow[text.Header_ItemName] = txtItemDescription.Text;
+                        newRow[text.Header_ItemName] = row[dalInternalDOItem.ItemDesription];
 
                         newRow[text.Header_TotalQty] = row[dalInternalDOItem.TotalQty];
                         newRow[text.Header_TotalQtyUnit] = row[dalInternalDOItem.QtyUnit];
@@ -1275,33 +1312,29 @@ namespace FactoryManagementSoftware.UI
 
         private void btnEdit_Click(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvDOList;
+            int rowIndex = dgvDOList.CurrentCell.RowIndex;
 
-            int rowIndex = dgv.CurrentCell.RowIndex;
-
-            if(string.IsNullOrEmpty(CURRENT_SELECTED_DO_TBL_CODE))
+            if(string.IsNullOrEmpty(CURRENT_SELECTED_DO_TBL_CODE) || rowIndex < 0)
             {
                 MessageBox.Show("No valid DO found.Please select a DO from DO list to process DO edit.");
 
                 return;
             }
 
+            DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
+            DataTable dt_DO = (DataTable)dgvDOList.DataSource;
+            DataRow DORow = dt_DO.Rows[rowIndex];
 
-            if (rowIndex >= 0)
+            frmDOEditing frm = new frmDOEditing(DORow,dt_Item)
             {
-                DataTable dt = (DataTable)dgv.DataSource;
+                StartPosition = FormStartPosition.CenterScreen
+            };
 
-                frmDOEditing frm = new frmDOEditing(dt, CURRENT_SELECTED_DO_TBL_CODE)
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
+            //4664
+            frm.ShowDialog();
 
-                //4664
-                frm.ShowDialog();
-
-                ResetDBDOInfoList();
-                LoadInternalDOList();
-            }
+            ResetDBDOInfoList();
+            LoadInternalDOList();
         }
 
         private void DOListUI()

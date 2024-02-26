@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.DAL
         public string IsCompleted { get; } = "isCompleted";
         public string IsCancelled { get; } = "isCancelled";
         public string Remark { get; } = "remark";
+        public string ShowRemarkInDO { get; } = "show_remark_in_do";
         public string updatedDate { get; } = "updated_date";
         public string updatedBy { get; } = "updated_by";
 
@@ -180,6 +181,7 @@ namespace FactoryManagementSoftware.DAL
                             + IsCompleted + ","
                             + IsCancelled + ","
                             + Remark + ","
+                            + ShowRemarkInDO + ","
                             + updatedDate + ","
                             + updatedBy + ") VALUES" +
                             "(@do_format_tbl_code," +
@@ -196,6 +198,7 @@ namespace FactoryManagementSoftware.DAL
                             "@isCompleted," +
                             "@isCancelled," +
                             "@remark," +
+                            "@show_remark_in_do," +
                             "@updated_date," +
                             "@updated_by)";
 
@@ -206,6 +209,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@internal_from_address_tbl_code", u.internal_from_address_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_address_tbl_code", u.shipping_address_tbl_code);
                 cmd.Parameters.AddWithValue("@remark", u.remark);
+                cmd.Parameters.AddWithValue("@show_remark_in_do", u.show_remark_in_do);
                 cmd.Parameters.AddWithValue("@shipping_method", u.shipping_method);
 
                 cmd.Parameters.AddWithValue("@running_no", u.running_no);
@@ -269,6 +273,7 @@ namespace FactoryManagementSoftware.DAL
                             + IsCompleted + ","
                             + IsCancelled + ","
                             + Remark + ","
+                            + ShowRemarkInDO + ","
                             + updatedDate + ","
                             + updatedBy + ") VALUES" +
                             "(@do_format_tbl_code," +
@@ -285,6 +290,7 @@ namespace FactoryManagementSoftware.DAL
                             "@isCompleted," +
                             "@isCancelled," +
                             "@remark," +
+                            "@show_remark_in_do," +
                             "@isRemoved," +
                             "@updated_date," +
                             "@updated_by)";
@@ -294,6 +300,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@do_format_tbl_code", u.do_format_tbl_code);
                 cmd.Parameters.AddWithValue("@running_no", -1);
                 cmd.Parameters.AddWithValue("@do_no_string", "DRAFT");
+                cmd.Parameters.AddWithValue("@show_remark_in_do", u.show_remark_in_do);
+
                 cmd.Parameters.AddWithValue("@company_tbl_code", u.company_tbl_code);
                 cmd.Parameters.AddWithValue("@shipping_address_tbl_code", u.shipping_address_tbl_code);
                 cmd.Parameters.AddWithValue("@internal_from_address_tbl_code", u.internal_from_address_tbl_code);
@@ -364,6 +372,7 @@ namespace FactoryManagementSoftware.DAL
                            + IsCompleted + "=@isCompleted,"
                            + IsCancelled + "=@isCancelled,"
                            + Remark + "=@remark,"
+                           + ShowRemarkInDO + "=@show_remark_in_do,"
                            + updatedDate + "=@updated_date,"
                            + updatedBy + "=@updated_by" +
                            " WHERE tbl_code = @tbl_code";
@@ -386,6 +395,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@isCompleted", u.isCompleted);
                 cmd.Parameters.AddWithValue("@isCancelled", u.isCancelled);
                 cmd.Parameters.AddWithValue("@remark", u.remark);
+                cmd.Parameters.AddWithValue("@show_remark_in_do", u.show_remark_in_do);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 
@@ -526,7 +536,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                Tool tool = new Tool(); 
+                tool.saveToText(ex);
             }
             finally
             {
@@ -676,7 +687,8 @@ namespace FactoryManagementSoftware.DAL
             }
             catch (Exception ex)
             {
-                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+                Tool tool = new Tool(); 
+                tool.saveToText(ex);
             }
             finally
             {
@@ -712,7 +724,8 @@ BEGIN
         isDraft BIT,
         isProcessing BIT,
         isCompleted BIT,
-        isCancelled BIT,
+        isCancelled BIT,        
+        show_remark_in_do BIT,
         remark VARCHAR(255),
         updated_date DATETIME NOT NULL,
         updated_by INT NOT NULL
@@ -737,6 +750,7 @@ END";
                 "isProcessing BIT",
                 "isCompleted BIT",
                 "isCancelled BIT",
+                "show_remark_in_do BIT",
                 "remark VARCHAR(255)",
                 "updated_date DATETIME",
                 "updated_by INT"
