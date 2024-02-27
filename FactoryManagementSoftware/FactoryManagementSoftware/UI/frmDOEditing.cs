@@ -156,6 +156,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_DescriptionIncludeCategory, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludePackaging, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludeRemark, typeof(bool));
+            dt.Columns.Add(text.Header_ToRemove, typeof(bool));
 
             return dt;
         }
@@ -195,6 +196,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
+                dgv.Columns[text.Header_ToRemove].Visible = false;
 
             }
             else if (dgv == dgvPreviewItemList)
@@ -229,12 +231,12 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
+                dgv.Columns[text.Header_ToRemove].Visible = false;
 
             }
         }
 
         #endregion
-
 
 
 
@@ -375,7 +377,25 @@ namespace FactoryManagementSoftware.UI
             //txtDeliveryToFullName.Text = uShippingAddress.full_name;
             txtDeliverToAddress.Text = uShippingAddress.full_name + "\r\n" + SHIPPING_ADDRESS;
 
-            dgvPreviewItemList.DataSource = DT_ITEM_LIST;
+            DT_ITEM_LIST = (DataTable)dgvDOItemList.DataSource;
+
+            DataTable dt_ItemListPreview = DT_ITEM_LIST.Clone();
+
+            // Save data from DT_ITEM_LIST to dt_ItemListPreview when column "text.Header_ToRemove" is not true
+            int index = 1;
+            foreach (DataRow row in DT_ITEM_LIST.Rows)
+            {
+                bool toRemove = bool.TryParse(row[text.Header_ToRemove].ToString(), out toRemove) ? toRemove : false;
+
+                if (!toRemove) // Assuming "Header_ToRemove" column is of type Boolean
+                {
+                    dt_ItemListPreview.ImportRow(row);
+                    DataRow lastRow = dt_ItemListPreview.Rows[dt_ItemListPreview.Rows.Count - 1];
+                    lastRow[text.Header_Index] = index++;
+                }
+            }
+
+            dgvPreviewItemList.DataSource = dt_ItemListPreview;
             dgvUIEdit(dgvPreviewItemList);
 
             lblPreviewDORemark.Text = uInternalDO.remark;
@@ -558,6 +578,14 @@ namespace FactoryManagementSoftware.UI
 
                 dgvDOItemList.DataSource = null;
                 dgvDOItemList.DataSource = DT_ITEM_LIST;
+
+                // Change the format of the row back to default
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.BackColor = dgvDOItemList.DefaultCellStyle.BackColor;
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.ForeColor = dgvDOItemList.DefaultCellStyle.ForeColor;
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.Font = dgvDOItemList.DefaultCellStyle.Font;
+
+                // Optionally, if you have a specific column to mark as not removed
+                dgvDOItemList.Rows[rowIndex].Cells[text.Header_ToRemove].Value = false; // Replace YourColumnName with the actual column name
 
                 ItemFieldReset();
                 dgvUIEdit(dgvDOItemList);
@@ -1585,12 +1613,26 @@ namespace FactoryManagementSoftware.UI
             int rowIndex = dgvDOItemList.SelectedRows[0].Index;
             if (MessageBox.Show("Are you sure you want to remove this item?", "Confirmation", MessageBoxButtons.YesNo) == DialogResult.Yes)
             {
-                dgvDOItemList.Rows.RemoveAt(rowIndex);
 
-                for (int i = rowIndex; i < dgvDOItemList.Rows.Count; i++)
-                {
-                    dgvDOItemList.Rows[i].Cells[text.Header_Index].Value = i + 1;
-                }
+                ////to-do:
+
+                ////code to replace start:
+                //dgvDOItemList.Rows.RemoveAt(rowIndex);
+
+                //for (int i = rowIndex; i < dgvDOItemList.Rows.Count; i++)
+                //{
+                //    dgvDOItemList.Rows[i].Cells[text.Header_Index].Value = i + 1;
+                //}
+                ////code to replace end.
+
+                //instead of direct remove this row, please change the format for this row: background color to grey, font become red color and strighthrough
+                // Change the format of the row instead of removing
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.ForeColor = Color.Red;
+                dgvDOItemList.Rows[rowIndex].DefaultCellStyle.Font = new Font(dgvDOItemList.DefaultCellStyle.Font, FontStyle.Strikeout);
+
+                // Optionally, if you have a specific column to mark as removed
+                dgvDOItemList.Rows[rowIndex].Cells[text.Header_ToRemove].Value = true;
             }
         }
 
@@ -2242,7 +2284,6 @@ namespace FactoryManagementSoftware.UI
                 if (isDraft)
                 {
                     uInternalDO.isDraft = true;
-                    uInternalDO.running_no = -1;
                 }
                 else
                 {
@@ -2275,9 +2316,10 @@ namespace FactoryManagementSoftware.UI
                 {
                     tblCode = uInternalDO.tbl_code.ToString();
 
-                    if (isDraft)
+                    if (isDraft && uInternalDO.running_no == -1)
                     {
                         //update do no to draft
+
                         dalInternalDO.SetInternalDOtoDraft(int.TryParse(tblCode, out int i) ? i : -1);
                     }
                 }
@@ -2350,7 +2392,6 @@ namespace FactoryManagementSoftware.UI
 
             bool success = true;
 
-            DataTable dt = (DataTable) dgvPreviewItemList.DataSource;
             int tblCode_INT = int.TryParse(tblCode, out tblCode_INT) ? tblCode_INT : -1;
 
             if(tblCode_INT < 0)
@@ -2359,7 +2400,7 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            if(dt?.Rows.Count > 0)
+            if(DT_ITEM_LIST?.Rows.Count > 0)
             {
                 dalInternalDOItem.CreateTableOrUpdate();
 
@@ -2368,9 +2409,16 @@ namespace FactoryManagementSoftware.UI
                 uInternalDOItem.isRemoved = false;
                 uInternalDOItem.internal_do_tbl_code = tblCode_INT;
 
-                foreach (DataRow row in dt.Rows)
+                foreach (DataRow row in DT_ITEM_LIST.Rows)
                 {
                     uInternalDOItem.tbl_code = int.TryParse(row[text.Header_TableCode]?.ToString(), out int i) ? i : -1;
+                    bool toRemove = bool.TryParse(row[text.Header_ToRemove]?.ToString(), out toRemove) ? toRemove : false;
+
+                    if (toRemove)
+                    {
+                        dalInternalDOItem.RemovePermanently(uInternalDOItem);
+                        continue;
+                    }
 
                     uInternalDOItem.item_code = row[text.Header_ItemCode]?.ToString() ?? string.Empty;
                     uInternalDOItem.qty_unit = row[text.Header_Unit]?.ToString() ?? string.Empty;
@@ -2378,6 +2426,7 @@ namespace FactoryManagementSoftware.UI
                     uInternalDOItem.remark = row[text.Header_Remark]?.ToString() ?? string.Empty;
                     uInternalDOItem.item_description = row[text.Header_ItemName]?.ToString() ?? string.Empty;
                     uInternalDOItem.description = row[text.Header_Description]?.ToString() ?? string.Empty;
+
 
                     // For decimal conversions
                     if (decimal.TryParse(row[text.Header_Qty]?.ToString(), out decimal totalQty))
@@ -2387,6 +2436,16 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
                         uInternalDOItem.total_qty = 0m; // Default value
+                    }
+
+                    
+                    if (int.TryParse(row[text.Header_QtyPerBox]?.ToString(), out int qtyPerBox))
+                    {
+                        uInternalDOItem.qty_per_box = qtyPerBox;
+                    }
+                    else
+                    {
+                        uInternalDOItem.qty_per_box =0; // Default value
                     }
 
                     if (int.TryParse(row[text.Header_BoxQty]?.ToString(), out int boxQty))
@@ -2412,6 +2471,8 @@ namespace FactoryManagementSoftware.UI
                     uInternalDOItem.description_packing = Convert.ToBoolean(row[text.Header_DescriptionIncludePackaging]?.ToString() ?? "false");
                     uInternalDOItem.description_category = Convert.ToBoolean(row[text.Header_DescriptionIncludeCategory]?.ToString() ?? "false");
                     uInternalDOItem.description_remark = Convert.ToBoolean(row[text.Header_DescriptionIncludeRemark]?.ToString() ?? "false");
+
+                   
 
                     if(uInternalDOItem.tbl_code > 0)
                     {

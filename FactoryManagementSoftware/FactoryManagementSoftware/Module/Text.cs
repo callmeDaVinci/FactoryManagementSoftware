@@ -455,12 +455,12 @@ namespace FactoryManagementSoftware.Module
         public string Header_Order_Requesting { get; } = "ORDER REQUESTING";
 
 
-
         public string Header_Unit { get; } = "Unit";
         public string Header_SearchMode { get; } = "SearchMode";
         public string Header_DescriptionIncludeCategory { get; } = "DescriptionIncludeCategory";
         public string Header_DescriptionIncludePackaging { get; } = "DescriptionIncludePackaging";
         public string Header_DescriptionIncludeRemark { get; } = "DescriptionIncludeRemark";
+        public string Header_ToRemove { get; } = "ToRemove";
 
 
         public string Header_Percentage { get; } = "%";

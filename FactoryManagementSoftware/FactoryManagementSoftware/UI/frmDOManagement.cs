@@ -56,10 +56,12 @@ namespace FactoryManagementSoftware.UI
 
         readonly string text_ShowFilter = "Show Filter"; //SHOW FILTER...
         readonly string text_HideFilter = "Hide Filter";//HIDE FILTER
+        readonly string text_PublishDO = "Publish D/O";
+        readonly string text_DraftDO = "Draft D/O";
         readonly string text_CompleteDO = "Complete D/O";
         readonly string text_InCompleteDO = "D/O Incomplete";
         readonly string text_ChangeDeliveredDate = "Change Delivered Date";
-        readonly string text_UndoRemove = "Undo Remove";
+        readonly string text_UndoCancelled = "Undo Remove";
         readonly string text_ChangeDONumber = "Change D/O Number";
         readonly string text_SelectDO = "Select D/O";
         readonly string text_Excel= "Excel";
@@ -240,6 +242,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_DescriptionIncludeCategory, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludePackaging, typeof(bool));
             dt.Columns.Add(text.Header_DescriptionIncludeRemark, typeof(bool));
+            dt.Columns.Add(text.Header_ToRemove, typeof(bool));
 
             return dt;
         }
@@ -360,6 +363,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
                 dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
+                dgv.Columns[text.Header_ToRemove].Visible = false;
             }
 
         }
@@ -1236,6 +1240,7 @@ namespace FactoryManagementSoftware.UI
 
                         newRow[text.Header_TotalQty] = row[dalInternalDOItem.TotalQty];
                         newRow[text.Header_TotalQtyUnit] = row[dalInternalDOItem.QtyUnit];
+                        newRow[text.Header_QtyPerBox] = row[dalInternalDOItem.QtyPerBox];
                         newRow[text.Header_BoxQty] = row[dalInternalDOItem.BoxQty];
                         newRow[text.Header_BoxUnit] = row[dalInternalDOItem.BoxUnit];
                         newRow[text.Header_Balance] = row[dalInternalDOItem.BalanceQty];
@@ -1262,7 +1267,8 @@ namespace FactoryManagementSoftware.UI
         }
 
         private string CURRENT_SELECTED_DO_TBL_CODE;
-        private void dgvDOList_SelectionChanged(object sender, EventArgs e)
+
+        private void LoadItem()
         {
             CURRENT_SELECTED_DO_TBL_CODE = "";
 
@@ -1287,6 +1293,34 @@ namespace FactoryManagementSoftware.UI
                     btnEdit.Visible = true;
                 }
             }
+        }
+        private void dgvDOList_SelectionChanged(object sender, EventArgs e)
+        {
+            LoadItem();
+
+            //CURRENT_SELECTED_DO_TBL_CODE = "";
+
+            //if (FormLoaded)
+            //{
+            //    DataGridView dgv = dgvDOList;
+            //    int rowIndex = -1;
+            //    dgvDOItemList.DataSource = null;
+
+            //    if (dgv.SelectedRows.Count <= 0 || dgv.CurrentRow == null)
+            //    {
+            //        rowIndex = -1;
+            //        btnEdit.Visible = false;
+            //    }
+            //    else
+            //    {
+            //        rowIndex = dgv.CurrentRow.Index;
+            //        string DOTblCode = dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString();
+            //        CURRENT_SELECTED_DO_TBL_CODE = DOTblCode;
+
+            //        LoadDOItemList(DOTblCode, cmbDOType.Text.ToUpper().Contains("INTERNAL"));
+            //        btnEdit.Visible = true;
+            //    }
+            //}
         }
 
         private void RemoveDO(int DONo, string customer)
@@ -1436,51 +1470,33 @@ namespace FactoryManagementSoftware.UI
                         dgv.Focus();
                         int rowIndex = dgv.CurrentCell.RowIndex;
 
-                        string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+                        LoadItem();
+                        string code = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
 
-                        if (ShowingDO == "" || ShowingDO != code)
-                        {
-                            if (dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString() == Text_MultiPOCode)
-                            {
-                                NEWShowDOItemWithMultiPO(code);
-                                ShowingDO = code;
-                            }
-                            else
-                            {
-                                NewShowDOItem(code);
-                                ShowingDO = code;
 
-                            }
-                        }
-
-                        //if (dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString() == Text_MultiPOCode)
-                        //{
-                        //    ShowDOItemWithMultiPO(code);
-                        //}
-                        //else
-                        //{
-                        //    ShowDOItem(code);
-                        //}
-                        //ShowDOItem(code);
-
-                        string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
+                        string dataType = dgv.Rows[rowIndex].Cells[text.Header_Status].Value.ToString();
 
                         string showingText = "";
 
                         bool ableToChangeDONo = false;
-                        if (dataType == DataType_Removed)
+
+                        if (dataType == text.Status_Cancelled)
                         {
-                            showingText = text_UndoRemove;
+                            showingText = text_DraftDO;
                         }
-                        else if (dataType == DataType_Delivered)
+                        else if (dataType == text.Status_Completed)
                         {
                             my_menu.Items.Add(text_ChangeDeliveredDate).Name = text_ChangeDeliveredDate;
                             showingText = text_InCompleteDO;
-                            ableToChangeDONo = true;
                         }
-                        else if (dataType == DataType_InProgress)
+                        else if (dataType == text.Status_InProgress)
                         {
                             showingText = text_CompleteDO;
+                            ableToChangeDONo = true;
+                        }
+                        else if (dataType == text.Status_Draft)
+                        {
+                            showingText = text_PublishDO;
                             ableToChangeDONo = true;
                         }
 
@@ -1491,7 +1507,7 @@ namespace FactoryManagementSoftware.UI
                             my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
                         }
 
-                        my_menu.Items.Add(text_MasterList).Name = text_MasterList;
+                       // my_menu.Items.Add(text_MasterList).Name = text_MasterList;
                         my_menu.Items.Add(text_CancelDO).Name = text_CancelDO;
 
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
@@ -1759,7 +1775,7 @@ namespace FactoryManagementSoftware.UI
                     IncompleteDO(rowIndex);
                     //MessageBox.Show("incomplete do");
                 }
-                else if (ClickedItem.Equals(text_UndoRemove))
+                else if (ClickedItem.Equals(text_UndoCancelled))
                 {
                     DOUndoRemove(rowIndex);
                     //MessageBox.Show("undo remove");
