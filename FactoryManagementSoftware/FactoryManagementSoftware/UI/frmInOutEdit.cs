@@ -3343,9 +3343,10 @@ namespace FactoryManagementSoftware.UI
 
                 txtTrfQty.Text = dgv.Rows[selectedRow].Cells[QtyColumnName].Value.ToString();
                 cmbTrfQtyUnit.Text = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
-                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName]?.Value.ToString();
+                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName].Value == null ? string.Empty : dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+
             }
-            
+
         }
 
         private void changeButton()

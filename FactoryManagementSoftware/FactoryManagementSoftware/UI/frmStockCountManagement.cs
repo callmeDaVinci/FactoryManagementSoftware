@@ -712,7 +712,7 @@ namespace FactoryManagementSoftware.UI
             {
                 double stockCount = 0;
                 double unitConversionRate = 1; // Default value
-                double totalQty;
+                double totalQty = 0;
 
                 // Try to get the stock count value
                 if (!double.TryParse(dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_StockCount].Value?.ToString(), out stockCount))
@@ -740,7 +740,8 @@ namespace FactoryManagementSoftware.UI
 
                 double systemStock = double.TryParse(dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_SystemStock].Value.ToString(), out systemStock) ? systemStock : 0;
 
-                double diff = totalQty - systemStock;
+                double diff = Math.Round(totalQty - systemStock, 2);
+                //double diff = totalQty - systemStock;
                 string actionPreview = "";
                 string unit = dgvStockCountList.Rows[e.RowIndex].Cells[text.Header_Unit].Value.ToString();
 

@@ -145,7 +145,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                cbOldFormat.Checked = true;
+                //cbOldFormat.Checked = true;
             }
         }
 
@@ -156,18 +156,18 @@ namespace FactoryManagementSoftware.UI
 
         private void cbOldFormat_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbOldFormat.Checked)
-            {
-                cbNewFormat.Checked = false;
-            }
+            //if(cbOldFormat.Checked)
+            //{
+            //    cbNewFormat.Checked = false;
+            //}
         }
 
         private void cbNewFormat_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbNewFormat.Checked)
-            {
-                cbOldFormat.Checked = false;
-            }
+            //if (cbNewFormat.Checked)
+            //{
+            //    cbOldFormat.Checked = false;
+            //}
         }
     }
 }

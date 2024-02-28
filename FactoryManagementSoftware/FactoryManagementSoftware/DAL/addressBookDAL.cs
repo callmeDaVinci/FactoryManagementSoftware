@@ -213,6 +213,70 @@ namespace FactoryManagementSoftware.DAL
             }
             return name;
         }
+
+        public string SearchFullName(DataTable dt, string addressTblCode)
+        {
+            string name = "";
+
+            if (dt?.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (addressTblCode == row[tblCode].ToString())
+                    {
+                        name = row[fullName].ToString();
+                        break;
+                    }
+                }
+            }
+            return name;
+        }
+
+        public AddressBookBLL GetAddressInfo(DataTable dt, string addressTblCode)
+        {
+            AddressBookBLL uAddressBook = new AddressBookBLL();
+
+            if (dt?.Rows.Count > 0)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (addressTblCode == row[tblCode].ToString())
+                    {
+                        // Assuming AddressBookBLL properties are public and have setters.
+                        uAddressBook.full_name = row[fullName].ToString();
+                        uAddressBook.short_name = row[shortName].ToString();
+                        uAddressBook.registration_no = row[registrationNo].ToString();
+                        uAddressBook.address_1 = row[addressLine1].ToString();
+                        uAddressBook.address_2 = row[addressLine2].ToString();
+                        uAddressBook.address_3 = row[addressLine3].ToString();
+                        uAddressBook.address_state = row[addressState].ToString();
+                        uAddressBook.address_postal_code = row[addressPostalCode].ToString();
+                        uAddressBook.address_country = row[addressCountry].ToString();
+                        uAddressBook.fax_no = row[faxNo].ToString();
+                        uAddressBook.contact_number_1 = row[contactNo1].ToString();
+                        uAddressBook.contact_name_1 = row[contactName1].ToString();
+                        uAddressBook.contact_number_2 = row[contactNo2].ToString();
+                        uAddressBook.contact_name_2 = row[contactName2].ToString();
+                        uAddressBook.email_address = row[emailAddress].ToString();
+                        uAddressBook.website = row[website].ToString();
+                        uAddressBook.remark = row[remark].ToString();
+                        // Assuming isRemoved is a boolean in your BLL and string "true"/"false" in DataTable.
+                        uAddressBook.isRemoved = bool.Parse(row[isRemoved].ToString());
+                        // Assuming updated_by is an integer in your BLL.
+                        // Handle parsing since DataTable might return a string representation.
+                        if (int.TryParse(row[updatedBy].ToString(), out int updatedByValue))
+                        {
+                            uAddressBook.updated_by = updatedByValue;
+                        }
+                        break; // Break the loop once the matching row is found and processed.
+                    }
+                }
+            }
+
+            return uAddressBook;
+        }
+
+
         #endregion
 
         #region Insert Data in Database

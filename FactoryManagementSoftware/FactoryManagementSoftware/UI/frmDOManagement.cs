@@ -17,6 +17,8 @@ using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
 using Org.BouncyCastle.Bcpg.OpenPgp;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -63,8 +65,8 @@ namespace FactoryManagementSoftware.UI
         readonly string text_ChangeDeliveredDate = "Change Delivered Date";
         readonly string text_UndoCancelled = "Undo Remove";
         readonly string text_ChangeDONumber = "Change D/O Number";
-        readonly string text_SelectDO = "Select D/O";
-        readonly string text_Excel= "Excel";
+        readonly string text_SelectDO = "Select";
+        readonly string text_Export= "Export";
         readonly string text_CancelSelectingMode = "Cancel";
         readonly string text_RemoveDO = "Remove D/O";
         readonly string text_Select = "Select";
@@ -201,7 +203,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ShipTo, typeof(string));
             dt.Columns.Add(text.Header_CompletedDate, typeof(string));
             dt.Columns.Add(text.Header_Status, typeof(string));
-            dt.Columns.Add(text.Header_Selection, typeof(bool));
+            //dt.Columns.Add(text.Header_Selection, typeof(bool));
 
             dt.Columns.Add(dalInternalDO.DODate, typeof(DateTime));
             dt.Columns.Add(dalInternalDO.DOFormatTblCode, typeof(string));
@@ -299,6 +301,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_DODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_ShipTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgv.Columns[text.Header_TableCode].Visible = false;
                 dgv.Columns[text.Header_DOType].Visible = false;
@@ -316,9 +319,6 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_Status].Visible = StatusSelectedCount > 1;
 
-                //dgv.Columns[header_DataType].Visible = false;
-                //dgv.Columns[header_POCode].Visible = false;
-                //dgv.Columns[header_CustomerCode].Visible = false;
 
                 dgv.Columns[dalInternalDO.DOFormatTblCode].Visible = false;
                 dgv.Columns[dalInternalDO.DODate].Visible = false;
@@ -329,7 +329,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[dalInternalDO.ShippingMethod].Visible = false;
                 dgv.Columns[dalInternalDO.Remark].Visible = false;
                 dgv.Columns[dalInternalDO.ShowRemarkInDO].Visible = false;
-              
+
             }
             else if(dgv == dgvDOItemList)
             {
@@ -376,13 +376,13 @@ namespace FactoryManagementSoftware.UI
             {
                 btnFilter.Text = text_HideFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 210f);
+                tlpDOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 250f);
             }
             else
             {
                 btnFilter.Text = text_ShowFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                tlpDOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
             }
         }
 
@@ -392,13 +392,13 @@ namespace FactoryManagementSoftware.UI
             {
                 btnFilter.Text = text_HideFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 210f);
+                tlpDOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 250f);
             }
             else
             {
                 btnFilter.Text = text_ShowFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+                tlpDOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
             }
         }
 
@@ -427,8 +427,6 @@ namespace FactoryManagementSoftware.UI
                 {
                     //string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
 
-                    
-
                     //string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
 
                     //if(ShowingDO == "" || ShowingDO != code)
@@ -445,36 +443,35 @@ namespace FactoryManagementSoftware.UI
 
                     //    }
                     //}
-                   
 
 
-                    //if (DOSelectingMode)
-                    //{
-                    //    bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
+                    if (DOSelectingMode)
+                    {
+                        bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
 
-                    //    if (!selected)
-                    //    {
-                    //        dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
+                        if (!selected)
+                        {
+                            dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
 
-                    //        btnExcel.Text = text_Excel;
-                    //        btnExcel.Enabled = true;
-                    //    }
-                    //    else
-                    //    {
-                    //        dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
+                            btnExcel.Text = text_Export;
+                            btnExcel.Enabled = true;
+                        }
+                        else
+                        {
+                            dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
 
-                    //        if (!ifDOSelected())
-                    //        {
-                    //            btnExcel.Text = text_SelectDO;
-                    //            btnExcel.Enabled = false;
-                    //        }
-                    //        else
-                    //        {
-                    //            btnExcel.Text = text_Excel;
-                    //            btnExcel.Enabled = true;
-                    //        }
-                    //    }
-                    //}
+                            if (!ifDOSelected())
+                            {
+                                btnExcel.Text = text_SelectDO;
+                                btnExcel.Enabled = false;
+                            }
+                            else
+                            {
+                                btnExcel.Text = text_Export;
+                                btnExcel.Enabled = true;
+                            }
+                        }
+                    }
                     //else
                     //{
                     //    if (dataType == DataType_InProgress)
@@ -521,9 +518,11 @@ namespace FactoryManagementSoftware.UI
         {
             dgvDOItemList.DataSource = null;
 
+            
             DOSelectingMode = true;
-
+            
             btnEdit.Visible = false;
+            btnExportCancel.Visible = true;
 
             DataTable dt = (DataTable)dgvDOList.DataSource;
 
@@ -556,7 +555,7 @@ namespace FactoryManagementSoftware.UI
                 if(slectedrow > 0)
                 {
                     btnExcel.Enabled = true;
-                    btnExcel.Text = text_Excel;
+                    btnExcel.Text = text_Export;
                 }
                 else
                 {
@@ -571,7 +570,7 @@ namespace FactoryManagementSoftware.UI
             else if (ifDOSelected())
             {
                 btnExcel.Enabled = true;
-                btnExcel.Text = text_Excel;
+                btnExcel.Text = text_Export;
             }
             else
             {
@@ -794,7 +793,7 @@ namespace FactoryManagementSoftware.UI
                     dt_row[text.Header_From] =  dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, internalFromTblCode);
                     dt_row[text.Header_BillTo] = dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, billToTblCode);
                     dt_row[text.Header_ShipTo] = dalAddressBook.SearchShortName(DT_ADDRESS_BOOK, shipToTblCode);
-                    dt_row[text.Header_Selection] = false;
+                    //dt_row[text.Header_Selection] = false;
 
                     dt_row[dalInternalDO.DOFormatTblCode] = row[dalInternalDO.DOFormatTblCode].ToString();
                     dt_row[dalInternalDO.DODate] = DODate;
@@ -825,12 +824,12 @@ namespace FactoryManagementSoftware.UI
 
         private void ResetDBDOInfoList()
         {
-            frmLoading.ShowLoadingScreen();
-            DB_DO_INFO = dalSPP.DOWithInfoSelect();
-            DBDOListFilter();
-            DB_DO_INFO.DefaultView.Sort = dalSPP.DONo + " ASC," + dalSPP.TypeName + " ASC," + dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
-            DB_DO_INFO = DB_DO_INFO.DefaultView.ToTable();
-            frmLoading.CloseForm();
+            //frmLoading.ShowLoadingScreen();
+            //DB_DO_INFO = dalSPP.DOWithInfoSelect();
+            //DBDOListFilter();
+            //DB_DO_INFO.DefaultView.Sort = dalSPP.DONo + " ASC," + dalSPP.TypeName + " ASC," + dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
+            //DB_DO_INFO = DB_DO_INFO.DefaultView.ToTable();
+            //frmLoading.CloseForm();
 
         }
 
@@ -1266,6 +1265,55 @@ namespace FactoryManagementSoftware.UI
             dgvDOItemList.ClearSelection();
         }
 
+        private DataTable LoadDOItemList(string DOTblCode)
+        {
+            if (DT_INTERNAL_ITEM_LIST == null || DT_INTERNAL_ITEM_LIST.Rows.Count == 0)
+            {
+                LoadInternalDOItem();
+            }
+
+            DataTable dt_item_list = NewItemList();
+
+            dgvDOItemList.DataSource = dt_item_list;
+            int index = 1;
+            foreach (DataRow row in DT_INTERNAL_ITEM_LIST.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalInternalDOItem.IsRemoved].ToString(), out isRemoved) ? isRemoved : true;
+                string internalDOTblCode = row[dalInternalDOItem.InternalDoTblCode].ToString();
+
+                if (internalDOTblCode == DOTblCode && !isRemoved)
+                {
+                    DataRow newRow = dt_item_list.NewRow();
+
+                    newRow[text.Header_TableCode] = row[dalInternalDOItem.TblCode];
+                    newRow[text.Header_ItemCode] = row[dalInternalDOItem.ItemCode];
+                    newRow[text.Header_Description] = row[dalInternalDOItem.Description];
+                    newRow[text.Header_Qty] = row[dalInternalDOItem.TotalQty];
+                    newRow[text.Header_Unit] = row[dalInternalDOItem.QtyUnit];
+
+                    newRow[text.Header_SearchMode] = row[dalInternalDOItem.SearchMode];
+                    newRow[text.Header_ItemName] = row[dalInternalDOItem.ItemDesription];
+
+                    newRow[text.Header_TotalQty] = row[dalInternalDOItem.TotalQty];
+                    newRow[text.Header_TotalQtyUnit] = row[dalInternalDOItem.QtyUnit];
+                    newRow[text.Header_QtyPerBox] = row[dalInternalDOItem.QtyPerBox];
+                    newRow[text.Header_BoxQty] = row[dalInternalDOItem.BoxQty];
+                    newRow[text.Header_BoxUnit] = row[dalInternalDOItem.BoxUnit];
+                    newRow[text.Header_Balance] = row[dalInternalDOItem.BalanceQty];
+                    newRow[text.Header_Remark] = row[dalInternalDOItem.Remark];
+                    newRow[text.Header_DescriptionIncludeCategory] = row[dalInternalDOItem.DescriptionCategory];
+                    newRow[text.Header_DescriptionIncludePackaging] = row[dalInternalDOItem.DescriptionPacking];
+                    newRow[text.Header_DescriptionIncludeRemark] = row[dalInternalDOItem.DescriptionRemark];
+                    newRow[text.Header_Index] = index++;
+
+                    dt_item_list.Rows.Add(newRow);
+                }
+
+            }
+
+            return dt_item_list;
+
+        }
         private string CURRENT_SELECTED_DO_TBL_CODE;
 
         private void LoadItem()
@@ -1294,6 +1342,8 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
+
+       
         private void dgvDOList_SelectionChanged(object sender, EventArgs e)
         {
             LoadItem();
@@ -1344,6 +1394,59 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        internalDOBLL uInternalDO = new internalDOBLL();
+        doFormatDAL dalDoFormat = new doFormatDAL();
+
+        private void AssignInternalDONumber()
+        {
+            string doCode = uInternalDO.do_no_string;
+
+            if (doCode.ToUpper().Contains("DRAFT") || string.IsNullOrEmpty(doCode))
+            {
+                doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
+
+                int runningNo = dalDoFormat.GenerateDONumber(doFormat);
+                doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
+
+                uInternalDO.running_no = runningNo;
+                uInternalDO.do_no_string = doCode;
+            }
+        }
+
+        private void ChangeInternalDOStatus(int tblCode)
+        {
+
+            uInternalDO.updated_date = DateTime.Now;
+            uInternalDO.updated_by = MainDashboard.USER_ID;
+
+            string doCode = uInternalDO.do_no_string;
+
+            if ((doCode.ToUpper().Contains("DRAFT") || string.IsNullOrEmpty(doCode)) && uInternalDO.isProcessing)
+            {
+                AssignInternalDONumber();
+            }
+
+            bool success = dalInternalDO.Update(uInternalDO);
+
+            //if success, get tbl code base on random code
+            if (success)
+            {
+
+                if (uInternalDO.isDraft && uInternalDO.running_no == -1)
+                {
+                    //update do no to draft
+                    dalInternalDO.SetInternalDOtoDraft(uInternalDO.tbl_code);
+                }
+            }
+            else
+            {
+                //if not success, show error message (MessageBox)
+                MessageBox.Show("Failed to save internal do data!");
+            }
+
+        }
+
+
         private void btnEdit_Click(object sender, EventArgs e)
         {
             int rowIndex = dgvDOList.CurrentCell.RowIndex;
@@ -1391,7 +1494,7 @@ namespace FactoryManagementSoftware.UI
                 btnEdit.Visible = false;
                 btnExcel.Enabled = true;
                 btnExcel.Text = text_Select;
-               
+                btnExportCancel.Visible = false;
 
                 dgvDOList.ClearSelection();
 
@@ -1404,27 +1507,22 @@ namespace FactoryManagementSoftware.UI
         {
             DataGridView dgv = dgvDOList;
 
-            if (DOSelectingMode)
-            {
-                DOListUI();
-            }
-            else
-            {
-                int rowIndex = dgv.CurrentCell.RowIndex;
+            int rowIndex = dgv.CurrentCell.RowIndex;
 
-                if (rowIndex >= 0)
+            if (rowIndex >= 0)
+            {
+                int tableCode = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString());
+
+                string DONo = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
+                //string Customer = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to CANCEL DO: " + DONo + " ?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
                 {
-                    int DONo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString());
-                    string Customer = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
-
-                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to CANCEL DO: " + DONo.ToString("D6") + " ?", "Message",
-                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        RemoveDO(DONo, Customer);
-                        ResetDBDOInfoList();
-                        LoadInternalDOList();
-                    }
+                    //RemoveDO(tableCode);
+                    ResetDBDOInfoList();
+                    LoadInternalDOList();
                 }
             }
         }
@@ -1764,15 +1862,15 @@ namespace FactoryManagementSoftware.UI
                 
                 if (ClickedItem.Equals(text_CompleteDO))
                 {
-                    CompleteDO(rowIndex);
+                    //CompleteDO(rowIndex);
                 }
                 else if (ClickedItem.Equals(text_ChangeDeliveredDate))
                 {
-                    DOChangeDeliveredDate(rowIndex);
+                    //DOChangeDeliveredDate(rowIndex);
                 }
                 else if (ClickedItem.Equals(text_InCompleteDO))
                 {
-                    IncompleteDO(rowIndex);
+                    //IncompleteDO(rowIndex);
                     //MessageBox.Show("incomplete do");
                 }
                 else if (ClickedItem.Equals(text_UndoCancelled))
@@ -2449,7 +2547,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            if(btnExcel.Text == text_Excel)
+            if(btnExcel.Text == text_Export)
             {
                 ExportToExcel();
             }
@@ -2569,6 +2667,7 @@ namespace FactoryManagementSoftware.UI
         string areaDOInfo = "a6:w15";
         string rowDoInfoStart = "a6:w6";
         string areaBillTo = "a6:g6";
+
         string areaDeliverTo = "i6:o6";
         string areaSbbCustomerCopy = "q6:w6";
 
@@ -2671,6 +2770,433 @@ namespace FactoryManagementSoftware.UI
 
 
         #endregion
+
+        private void InitialInternalDOFormat(Worksheet xlWorkSheet,bool fromSemenyih)
+        {
+            //ItemColStart = "b";
+            //ItemColEnd = ":e";
+
+            //DescriptionColStart = "f";
+            //DescriptionColEnd = "r";
+
+            //areaItem = "b16:e16";
+            //areaDescription = "f16:r16";
+
+            #region Page Setting 
+
+            Range DOFormat = xlWorkSheet.get_Range(wholeSheetArea).Cells;
+            DOFormat.Interior.Color = Color.White;
+            DOFormat.Font.Name = "Calibri";
+            DOFormat.Font.Size = 9;
+            xlWorkSheet.PageSetup.PrintArea = wholeSheetArea;
+
+            ExcelColumnWidth(xlWorkSheet, sheetWidth, 3.2);
+
+            #endregion
+
+            #region LOGO
+
+            string tempPath = Path.GetTempFileName();
+            Resources.safetyblacklogo.Save(tempPath + "safetyblacklogo.png");
+            string filePath = tempPath + "safetyblacklogo.png";
+
+            //var filePath = @"D:\CodeBase\FactoryManagementSoftware\FactoryManagementSoftware\FactoryManagementSoftware\Resources\safety-logo-black.png";
+            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 10, 2, 88f, 49f);
+
+            //tempPath = Path.GetTempFileName();
+            //Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
+            //filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
+            //xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 375, 100, 164.28f, 28.95f);
+
+            #endregion
+
+            #region LETTER HEAD
+
+            DOFormat = xlWorkSheet.get_Range(rowCompanyNameCN).Cells;
+            DOFormat.Merge();
+            DOFormat.RowHeight = 21.60;
+            DOFormat.Value = text.Company_Name_CN;
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 22;
+            DOFormat.Font.Name = text.Font_Type_KaiTi;
+
+            DOFormat = xlWorkSheet.get_Range(rowCompanyNameEN).Cells;
+            DOFormat.Merge();
+            DOFormat.RowHeight = 18.60;
+            DOFormat.Value = text.Company_Name_EN;
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 20;
+            DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
+            DOFormat.Font.Bold = true;
+
+            DOFormat = xlWorkSheet.get_Range(rowSyarikatNo).Cells;
+            DOFormat.Merge();
+            DOFormat.RowHeight = 15.60;
+            DOFormat.Value = text.Company_RegistrationNo;
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
+            DOFormat.Font.Bold = true;
+
+            /////////////////////////////////////////////////////////////////////////////////////////
+            ///
+
+            DOFormat = xlWorkSheet.get_Range("a5:w5").Cells;
+            ExcelRowHeight(xlWorkSheet, "a5:w5", 12);
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+
+            Range DOFormatTitle = xlWorkSheet.get_Range(rowDoInfoStart).Cells;
+            DOFormatTitle.Merge();
+            DOFormatTitle.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormatTitle.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormatTitle.Font.Size = 16;
+            DOFormatTitle.Font.Name = "Arial Black";
+            DOFormatTitle.Font.Bold = true;
+            DOFormatTitle.Font.Underline = true;
+
+
+            DOFormat = xlWorkSheet.get_Range(rowCompanyAddress).Cells;
+            DOFormat.Merge();
+            DOFormat.RowHeight = 22.20;
+
+            if (fromSemenyih)
+            {
+                DOFormat.Value = text.Company_Semenyih_AddressAndContact;
+                DOFormatTitle.Value = "INTERNAL TRANSFER NOTE (FROM SEMENYIH)";
+
+            }
+            else
+            {
+                DOFormat.Value = text.Company_OUG_AddressAndContact;
+                DOFormatTitle.Value = "INTERNAL TRANSFER NOTE (FROM OUG)";
+
+            }
+
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 8;
+            DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
+
+
+            //DOFormat = xlWorkSheet.get_Range(rowDocumentVersionControl).Cells;
+            //DOFormat.Merge();
+            //DOFormat.Value = text.SBB_DO_Version_Control;
+            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
+            //DOFormat.Font.Size = 8;
+            //DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
+
+            //DOFormat = xlWorkSheet.get_Range(rowDocumentVersionControl).Cells;
+
+
+
+            #endregion
+
+            #region DO Info
+
+            ExcelRowHeight(xlWorkSheet, areaDOInfo, 13.2);
+            ExcelRowHeight(xlWorkSheet, rowDoInfoStart, 41.4);
+
+            DOFormat = xlWorkSheet.get_Range(areaDeliverTo).Cells;
+
+            DOFormat.Merge();
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+            DOFormat.Value = "DELIVER TO";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine1, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine2, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine3, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine4, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryLine5, alignLeft, alignVCenter);
+            ExcelMergeandAlign(xlWorkSheet, areaDeliveryTel, alignLeft, alignVCenter);
+
+            DOFormat = xlWorkSheet.get_Range("a8:j14").Cells;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaDeliveryName).Cells;
+            DOFormat.Merge();
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+            
+
+            DOFormat = xlWorkSheet.get_Range(areaDONo).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "NUMBER";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Bold = true;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaDate).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "DATE";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Bold = true;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaPage).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "PAGE";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaDONoData).Cells;
+            DOFormat.Merge();
+            DOFormat.NumberFormat = "@";
+            //DOFormat.Value = "00345";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaDateData).Cells;
+            DOFormat.Merge();
+            DOFormat.EntireRow.NumberFormat = "DD/MM/YYYY";
+            //DOFormat.Value = DateTime.Now.Date.ToString("dd/MM/yyyy");
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaPageData).Cells;
+            DOFormat.Merge();
+            DOFormat.NumberFormat = "@";
+            //DOFormat.Value = "1    of   3";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            #endregion
+
+            #region Item List
+
+            int itemListFontSize = 9;
+
+            //item list title
+            DOFormat = xlWorkSheet.get_Range(rowListTitle).Cells;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat.RowHeight = 19.8;
+            DOFormat.Font.Size = 9;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+            DOFormat.HorizontalAlignment = alignLeft;
+            DOFormat.VerticalAlignment = alignVCenter;
+
+            //item list content
+            DOFormat = xlWorkSheet.get_Range(areaItemList).Cells;
+            DOFormat.RowHeight = 18.6;
+            DOFormat.Font.Size = itemListFontSize;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+
+            DOFormat = xlWorkSheet.get_Range(areaIndex).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "#";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+
+            DOFormat = xlWorkSheet.get_Range(areaItem).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "ITEM";
+
+            DOFormat = xlWorkSheet.get_Range(areaDescription).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "DESCRIPTION";
+
+            DOFormat = xlWorkSheet.get_Range(areaQuantity).Cells;
+            DOFormat.Merge();
+            DOFormat.HorizontalAlignment = alignRight;
+            DOFormat.Value = "QUANTITY";
+
+            DOFormat = xlWorkSheet.get_Range(areaUOM).Cells;
+            DOFormat.Merge();
+            DOFormat.HorizontalAlignment = alignVCenter;
+            DOFormat.Value = "UOM";
+
+            for (int i = 1; i <= maxRow; i++)
+            {
+                string area = indexColStart + (itemRowOffset + i).ToString() + indexColEnd + (itemRowOffset + i).ToString();
+
+                DOFormat = xlWorkSheet.get_Range(area).Cells;
+                DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+                DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+                DOFormat.Font.Size = 9;
+
+                area = ItemColStart + (itemRowOffset + i).ToString() + ItemColEnd + (itemRowOffset + i).ToString();
+                DOFormat = xlWorkSheet.get_Range(area).Cells;
+                DOFormat.Merge();
+                DOFormat.Font.Size = 8;
+                //DOFormat.Value = "SBBEE 32";
+
+                area = DescriptionColStart + (itemRowOffset + i).ToString() + DescriptionColEnd + (itemRowOffset + i).ToString();
+                DOFormat = xlWorkSheet.get_Range(area).Cells;
+                DOFormat.Merge();
+                DOFormat.Font.Size = itemListFontSize;
+
+                //DOFormat.Value = "25 MM EQUAL ELBOW";
+
+                area = qtyColStart + (itemRowOffset + i).ToString() + qtyColEnd + (itemRowOffset + i).ToString();
+                DOFormat = xlWorkSheet.get_Range(area).Cells;
+                DOFormat.Merge();
+                DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                //DOFormat.Value = "1200";
+                DOFormat.Font.Size = 9;
+
+                area = uomColStart + (itemRowOffset + i).ToString() + uomColEnd + (itemRowOffset + i).ToString();
+                DOFormat = xlWorkSheet.get_Range(area).Cells;
+                DOFormat.Merge();
+                DOFormat.Font.Size = 9;
+                DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+
+            }
+
+            DOFormat = xlWorkSheet.get_Range(areaRemarkInDO).Cells;
+            DOFormat.Merge();
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 16;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+            DOFormat.ShrinkToFit = true;
+
+
+            DOFormat = xlWorkSheet.get_Range(rowItemListLastRow).Cells;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+            DOFormat.RowHeight = 26.40;
+            DOFormat.Font.Size = 16;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+
+            #endregion
+
+            #region Sign And Chop
+
+            DOFormat = xlWorkSheet.get_Range(areaSafetySign).Cells;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaSafetyCompanyName).Cells;
+            DOFormat.Merge();
+
+            if(fromSemenyih)
+            {
+                DOFormat.Value = "SAFETY PLASTICS SDN. BHD. (SEMENYIH)";
+
+            }
+            else
+            {
+                DOFormat.Value = "SAFETY PLASTICS SDN. BHD. (OUG)";
+
+            }
+
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 12;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Font.Bold = true;
+
+            DOFormat = xlWorkSheet.get_Range(areaIssuedBy).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "Issued By";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 10;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaPreparedBy).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "Prepared By";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 10;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range(areaDriver).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "Driver";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 10;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+
+
+            DOFormat = xlWorkSheet.get_Range(areaGoodsCheckedandReceivedBy).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "Goods checked and received by";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 12;
+            DOFormat.Font.Name = "Cambria";
+
+            DOFormat = xlWorkSheet.get_Range(areaCustomerChopandSign).Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "Customer's Chop & Signature";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.Font.Size = 10;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+
+            #endregion
+
+        }
 
         private void NewInitialDOFormat(Worksheet xlWorkSheet, bool MultiPo)
         {
@@ -2780,7 +3306,7 @@ namespace FactoryManagementSoftware.UI
             #region DO Info
 
             ExcelRowHeight(xlWorkSheet, areaDOInfo, 13.2);
-            ExcelRowHeight(xlWorkSheet, rowDoInfoStart, 24.6);
+            //ExcelRowHeight(xlWorkSheet, rowDoInfoStart, 24.6);
 
             DOFormat = xlWorkSheet.get_Range(areaBillTo).Cells;
             DOFormat.Merge();
@@ -3312,7 +3838,7 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(HeadOfficeAddress).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_Head_AddressAndContact;
+            DOFormat.Value = text.Company_OUG_AddressAndContact;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
             DOFormat.Font.Size = 8;
@@ -3815,6 +4341,525 @@ namespace FactoryManagementSoftware.UI
             return type_ShortName;
         }
 
+        private void InternalDOExcel()
+        {
+            #region Excel marking
+
+            alignLeft = XlHAlign.xlHAlignLeft;
+            alignRight = XlHAlign.xlHAlignRight;
+            alignVCenter = XlVAlign.xlVAlignCenter;
+
+            Color BorderColor = Color.Black;
+
+            itemRowOffset = 16;
+            maxRow = 20;
+
+            sheetWidth = "a1:w1";
+            wholeSheetArea = "a1:w45";
+
+            #region Letterhead: Company Info
+
+            rowCompanyNameCN = "a1:w1";
+            rowCompanyNameEN = "a2:w2";
+            rowSyarikatNo = "a3:w3";
+            rowCompanyAddress = "a4:w4";
+
+            //rowDocumentVersionControl = "a5:w5";
+
+           // areaTransporterTitle = "q14:w14";
+
+            //areaOwnDORemark = "b38:o38";
+            #endregion
+
+            #region DO Info
+
+            areaDOInfo = "a6:w15";
+            rowDoInfoStart = "a6:w6";
+            //areaBillTo = "a6:g6";
+           
+            //areaSbbCustomerCopy = "q6:w6";
+
+            //rowDeliveryOrder = "a7:w7";
+
+            //areaBillName = "a7:g7";
+            //areaBillLine1 = "a8:g8";
+            //areaBillLine2 = "a9:g9";
+            //areaBillLine3 = "a10:g10";
+            //areaBillLine4 = "a11:g11";
+            //areaBillLine5 = "a12:g12";
+            //areaBillTel = "a13:g13";
+
+            areaDeliverTo = "a7:j7";
+            areaDeliveryName = "a8:j8";
+            areaDeliveryLine1 = "a9:j9";
+            areaDeliveryLine2 = "a10:j10";
+            areaDeliveryLine3 = "a11:j11";
+            areaDeliveryLine4 = "a12:j12";
+            areaDeliveryLine5 = "a13:j13";
+            areaDeliveryTel = "a14:j14";
+
+            areaDONo = "p7:s8";
+            areaDate = "p9:s10";
+            areaPage = "p11:s12";
+
+            areaDONoData = "t7:w8";
+            areaDateData = "t9:w10";
+            areaPageData = "t11:w12";
+
+            //areaTransportCompany1Title = "q13:s13";
+            //areaTransportCompany2Title = "q14:s14";
+            //areaTransporterName = "t13:w15";
+
+            rowDOInfoLastRow = "a15:w15";
+
+            #endregion
+
+            #region Item List
+
+            rowListTitle = "a16:w16";
+            areaItemList = "a17:w36";
+
+            areaIndex = "a16:a16";
+            areaItem = "b16:e16";
+            areaDescription = "f16:r16";
+            areaQuantity = "s16:u16";
+            areaUOM = "v16:w16";
+
+            itemListColStart = "a";
+            itemListColEnd = ":w";
+
+            indexColStart = "a";
+            indexColEnd = ":a";
+
+            ItemColStart = "b";
+            ItemColEnd = ":e";
+
+            DescriptionColStart = "f";
+            DescriptionColEnd = ":r";
+
+            qtyColStart = "t";
+            qtyColEnd = ":u";
+
+            uomColStart = "v";
+            uomColEnd = ":w";
+
+            //poColStart = "b";
+            //poColEnd = ":e";
+
+            areaRemarkInDO = "a37:w37";
+
+            //areaTotalData = "s37:w37";
+
+            rowItemListLastRow = "a37:w37";
+
+            //pcsColStart = "p";
+            //pcsColEnd = ":q";
+
+            //pcsUnitColStart = "r";
+            //pcsUnitColEnd = ":r";
+
+            //remarkColStart = "t";
+
+            //remarkColEnd = ":w";
+            #endregion
+
+            #region Sign & Chop
+
+            areaSafetySign = "a39:m45";
+            areaSafetyCompanyName = "a39:m39";
+            areaIssuedBy = "b45:d45";
+            areaPreparedBy = "f45:h45";
+            areaDriver = "j45:l45";
+            areaGoodsCheckedandReceivedBy = "p39:w39";
+            areaCustomerChopandSign = "p45:w45";
+
+            #endregion
+
+
+            #endregion
+
+            #region Export Settings
+
+            DateTime DODate = frmExportSetting.DODate;
+            bool openFile = frmExportSetting.openFileAfterExport;
+            bool printFile = frmExportSetting.printFileAfterExport;
+            bool printPreview = frmExportSetting.printPreview;
+            string DODate_String = DODate.ToString("dd/MM/yyyy");
+
+            #endregion
+
+            #region export excel
+
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt_DOList = (DataTable)dgv.DataSource;
+
+            if (dgv.DataSource == null)
+            {
+                MessageBox.Show("No data found!");
+            }
+            else if (dt_DOList.Columns.Contains(header_Selected))
+            {
+                dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+              
+                string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+                string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
+
+                string path = @"\\SAFETY-SERVER\Server\(INTERNAL)\(INTERNAL TRANSFER)" + folderName;
+
+                if (myconnstrng == text.DB_Semenyih)
+                {
+
+                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(INTERNAL TRANSFER)" + folderName;
+                }
+
+                Directory.CreateDirectory(path);
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+
+                bool fromSemenyih = true;
+
+                foreach (DataRow rowDO in dt_DOList.Rows)
+                {
+                    bool selected = bool.TryParse(rowDO[header_Selected].ToString(), out selected) ? selected : false;
+
+                    if (selected)
+                    {
+                        string InternalDOTblCode = rowDO[text.Header_TableCode].ToString();
+                        string deliveryDate = rowDO[text.Header_DODate].ToString();
+
+                        DODate = DateTime.TryParse(deliveryDate, out DateTime test) ? test : frmExportSetting.DODate;
+
+                        SaveFileDialog sfd = new SaveFileDialog();
+                        sfd.InitialDirectory = path;
+
+                        string shipToTblCode = rowDO[dalInternalDO.ShippingAddressTblCode].ToString();
+
+                        AddressBookBLL uShippingInfo = new AddressBookBLL();
+                        uShippingInfo = dalAddressBook.GetAddressInfo(DT_ADDRESS_BOOK, shipToTblCode);
+
+                        string customerName = uShippingInfo.full_name;
+
+                        if (customerName.ToUpper().Contains("SEMENYIH"))
+                        {
+                            fromSemenyih = false;
+                        }
+
+                        string DONo = rowDO[text.Header_DONo].ToString();
+                        string DONoString = DONo.Replace("/","-");
+
+                        sfd.Filter = "Excel Documents (*.xls)|*.xls";
+                        sfd.FileName = DONoString + ".xls";
+
+                        if (sfd.ShowDialog() == DialogResult.OK)
+                        {
+                            frmLoading.ShowLoadingScreen();
+                            tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
+
+                            // Copy DataGridView results to clipboard
+                            copyAlltoClipboard();
+                            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                            object misValue = Missing.Value;
+
+                            Excel.Application xlexcel = new Excel.Application
+                            {
+                                PrintCommunication = false,
+                                ScreenUpdating = false,
+                                DisplayAlerts = false // Without this you will get two confirm overwrite prompts
+                            };
+
+                            Workbook xlWorkBook = xlexcel.Workbooks.Add(misValue);
+
+
+                            xlexcel.StandardFont = "Calibri";
+                            xlexcel.StandardFontSize = 12;
+
+                            xlexcel.Calculation = XlCalculation.xlCalculationManual;
+                            xlexcel.PrintCommunication = false;
+
+                            int sheetNo = 0;
+                            int pageNo = 1;
+                            int rowNo = 0;
+
+                            Worksheet xlWorkSheet = xlWorkBook.ActiveSheet as Worksheet;
+
+                            if (sheetNo > 0)
+                            {
+                                xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                            }
+
+                            sheetNo++;
+
+
+                            xlWorkSheet.Name = uShippingInfo.short_name + DONoString;
+
+                            var printers = System.Drawing.Printing.PrinterSettings.InstalledPrinters;
+
+                            int printerIndex = 0;
+
+                            foreach (String s in printers)
+                            {
+                                if (myconnstrng == text.DB_Semenyih && s.Equals("RICOH MP C3503"))
+                                {
+                                    break;
+                                }
+                                else if (s.Equals("RICOH MP C3004 PCL 6"))
+                                {
+                                    break;
+                                }
+                                printerIndex++;
+                            }
+
+                            NewExcelPageSetup(xlWorkSheet);
+                            xlexcel.PrintCommunication = true;
+                            xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+
+                            InitialInternalDOFormat(xlWorkSheet, fromSemenyih);
+
+                            InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
+                            InsertToSheet(xlWorkSheet, areaDONoData, DONo);
+                            InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
+
+                            string RemarkInDO = "";
+
+                            int indexNo = 1;
+                          
+                            DataTable dt_ItemList = LoadDOItemList(InternalDOTblCode);
+
+                            bool showDOinRemark = bool.TryParse(rowDO[dalInternalDO.ShowRemarkInDO].ToString(), out showDOinRemark) ? showDOinRemark : false;   
+
+                            if(showDOinRemark)
+                            {
+                                RemarkInDO = rowDO[dalInternalDO.Remark].ToString();
+                            }
+
+
+                            int addressLineCount = 0;
+
+                            foreach (DataRow rowItem in dt_ItemList.Rows)
+                            {
+                                decimal deliveryQty = decimal.TryParse(rowItem[text.Header_TotalQty].ToString(), out deliveryQty) ? deliveryQty : 0;
+
+                                if (deliveryQty > 0)
+                                {
+                                    string itemCode = rowItem[text.Header_ItemCode].ToString();
+                                    string Description = rowItem[text.Header_Description].ToString();
+                                    string Unit = rowItem[text.Header_Unit].ToString();
+
+                                    //check current row vs max row
+                                    if (rowNo + 1 > maxRow)
+                                    {
+                                        rowNo = 1;
+                                        pageNo++;
+                                        //create new sheet
+                                        xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
+
+                                        if (pageNo > 1)
+                                            xlWorkSheet.Name = customerName + "_" + DONoString + "_" + pageNo;
+
+                                        NewExcelPageSetup(xlWorkSheet);
+
+                                        InitialInternalDOFormat(xlWorkSheet, fromSemenyih);
+
+                                        InsertToSheet(xlWorkSheet, areaDONoData, DONoString);
+
+                                        InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
+
+                                        InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
+
+                                        Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString];
+
+                                        InsertToSheet(previousSheet, areaPageData, 1 + " of " + pageNo);
+
+                                        addressLineCount = 0;
+
+                                        if (!string.IsNullOrEmpty(uShippingInfo.address_1))
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine1, uShippingInfo.address_1);
+                                            addressLineCount++;
+                                        }
+
+                                        if (!string.IsNullOrEmpty(uShippingInfo.address_2))
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine2, uShippingInfo.address_2);
+                                            addressLineCount++;
+                                        }
+
+                                        if (!string.IsNullOrEmpty(uShippingInfo.address_3))
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine3, uShippingInfo.address_3);
+                                            addressLineCount++;
+                                        }
+
+                                        if (addressLineCount == 1)
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine2, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                            InsertToSheet(previousSheet, areaDeliveryLine3, uShippingInfo.contact_number_1);
+                                        }
+                                        else if (addressLineCount == 2)
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine3, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                            InsertToSheet(previousSheet, areaDeliveryLine4, uShippingInfo.contact_number_1);
+
+                                        }
+                                        else if (addressLineCount == 3)
+                                        {
+                                            InsertToSheet(previousSheet, areaDeliveryLine4, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                            InsertToSheet(previousSheet, areaDeliveryLine5, uShippingInfo.contact_number_1);
+                                        }
+
+                                        //change total page number in previous sheet(s)
+                                        for (int i = 2; i < pageNo; i++)
+                                        {
+                                            previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString + "_" + i];
+
+                                            InsertToSheet(previousSheet, areaPageData, i + " of " + pageNo);
+                                            InsertToSheet(previousSheet, areaRemarkInDO, RemarkInDO);
+                                        }
+
+                                        sheetNo++;
+
+                                    }
+                                    else
+                                    {
+                                        rowNo++;
+                                    }
+                                    //insert data
+
+                                    string RowToInsert = itemListColStart + (itemRowOffset + rowNo).ToString() + itemListColEnd + (itemRowOffset + rowNo).ToString();
+
+                                    RowBorder(xlWorkSheet, RowToInsert);
+
+                                    RowToInsert = indexColStart + (itemRowOffset + rowNo).ToString() + indexColEnd + (itemRowOffset + rowNo).ToString();
+
+                                    InsertToSheet(xlWorkSheet, RowToInsert, indexNo);
+
+                                    indexNo++;
+
+                                    RowToInsert = ItemColStart + (itemRowOffset + rowNo).ToString() + ItemColEnd + (itemRowOffset + rowNo).ToString();
+                                    InsertToSheet(xlWorkSheet, RowToInsert, itemCode);
+
+                                    RowToInsert = DescriptionColStart + (itemRowOffset + rowNo).ToString() + DescriptionColEnd + (itemRowOffset + rowNo).ToString();
+                                    InsertToSheet(xlWorkSheet, RowToInsert, Description);
+
+                                    RowToInsert = qtyColStart + (itemRowOffset + rowNo).ToString() + qtyColEnd + (itemRowOffset + rowNo).ToString();
+                                    InsertToSheet(xlWorkSheet, RowToInsert, deliveryQty.ToString("0.##"));
+
+                                    RowToInsert = uomColStart + (itemRowOffset + rowNo).ToString() + uomColEnd + (itemRowOffset + rowNo).ToString();
+                                    InsertToSheet(xlWorkSheet, RowToInsert, Unit);
+                                }
+                            }
+                         
+                            InsertToSheet(xlWorkSheet, areaRemarkInDO, RemarkInDO);
+
+                            InsertToSheet(xlWorkSheet, areaDeliveryName, uShippingInfo.full_name);
+
+                            addressLineCount = 0;
+
+                            if(!string.IsNullOrEmpty(uShippingInfo.address_1))
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine1, uShippingInfo.address_1);
+                                addressLineCount++;
+                            }
+
+                            if (!string.IsNullOrEmpty(uShippingInfo.address_2))
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine2, uShippingInfo.address_2);
+                                addressLineCount++;
+                            }
+
+                            if (!string.IsNullOrEmpty(uShippingInfo.address_3))
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine3, uShippingInfo.address_3);
+                                addressLineCount++;
+                            }
+
+                            if (addressLineCount == 1)
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine2, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine3, uShippingInfo.contact_number_1);
+                            }
+                            else if (addressLineCount == 2)
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine3, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine4, uShippingInfo.contact_number_1);
+
+                            }
+                            else if (addressLineCount == 3)
+                            {
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine4, uShippingInfo.address_postal_code + " " + uShippingInfo.address_state);
+                                InsertToSheet(xlWorkSheet, areaDeliveryLine5, uShippingInfo.contact_number_1);
+                            }
+
+
+                            tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(InternalDOTblCode));
+
+                            pageNo = 1;
+                            rowNo = 0;
+
+                            if (sheetNo > 0)
+                            {
+                                xlWorkBook.SaveAs(sfd.FileName, XlFileFormat.xlWorkbookNormal,
+                               misValue, misValue, misValue, misValue, XlSaveAsAccessMode.xlExclusive, misValue, misValue, misValue, misValue, misValue);
+                            }
+
+                            // Clear Clipboard and DataGridView selection
+                            Clipboard.Clear();
+                            dgv.ClearSelection();
+
+                            frmLoading.CloseForm();
+                            Focus();
+
+                            // Open the newly saved excel file
+                            if (File.Exists(sfd.FileName))
+                            {
+
+                                if (openFile)
+                                {
+                                    Excel.Application excel = new Excel.Application();
+                                    excel.Visible = true;
+                                    excel.DisplayAlerts = false;
+                                    Workbook wb = excel.Workbooks.Open(sfd.FileName, ReadOnly: false, Notify: false);
+                                    excel.DisplayAlerts = true;
+
+                                    //wb.ExportAsFixedFormat(XlFixedFormatType.xlTypePDF, "D:\\x.pdf");
+
+                                    //System.Diagnostics.Process.Start(sfd.FileName);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("D/O export successful!");
+                                }
+
+                                if (printFile)
+                                {
+                                    xlexcel.Visible = printPreview;
+                                    xlWorkBook.PrintOut(Preview: printPreview, Collate: true);
+
+                                    //xlWorkBook.PrintOut(Type.Missing, Type.Missing, Type.Missing, printPreview, Type.Missing, Type.Missing, true, Type.Missing);
+                                }
+
+                            }
+
+                            xlexcel.DisplayAlerts = true;
+
+                            xlWorkBook.Close(true, misValue, misValue);
+                            xlexcel.Quit();
+
+                            releaseObject(xlWorkSheet);
+
+                            releaseObject(xlWorkBook);
+                            releaseObject(xlexcel);
+                        }
+
+                    }
+                }
+
+            }
+            #endregion
+        }
+
         private void NewExcel()
         {
 
@@ -3978,14 +5023,14 @@ namespace FactoryManagementSoftware.UI
                 dt_PO = dt_PO.DefaultView.ToTable();
 
                 string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+                string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                string path = @"D:\StockAssistant\Document\SBB DO Report";
+                string path = @"\\SAFETY-SERVER\Server\(INTERNAL)\(INTERNAL TRANSFER)" + folderName;
 
                 if (myconnstrng == text.DB_Semenyih)
                 {
-                    string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(1.DO)\" + folderName;
+                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(INTERNAL TRANSFER)" + folderName;
                 }
 
                 Directory.CreateDirectory(path);
@@ -3998,9 +5043,9 @@ namespace FactoryManagementSoftware.UI
 
                     if (selected)
                     {
-                        string deliveredDate = row[header_DeliveredDate].ToString();
+                        string deliveryDate = row[text.Header_DODate].ToString();
 
-                        DODate = DateTime.TryParse(deliveredDate, out DateTime test) ? test : frmExportSetting.DODate;
+                        DODate = DateTime.TryParse(deliveryDate, out DateTime test) ? test : frmExportSetting.DODate;
 
                         SaveFileDialog sfd = new SaveFileDialog();
                         sfd.InitialDirectory = path;
@@ -5541,16 +6586,18 @@ namespace FactoryManagementSoftware.UI
             if(frmExportSetting.settingApplied)
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+                
+                InternalDOExcel();
 
-                if (frmExportSetting.newFormat)
-                {
-                    NewExcel();
-                }
-                else
-                {
-                    OldExcel();
-                }
-            
+                //if (frmExportSetting.newFormat)
+                //{
+                //    NewExcel();
+                //}
+                //else
+                //{
+                //    OldExcel();
+                //}
+
             }
 
             Cursor = Cursors.Arrow;
@@ -5849,6 +6896,14 @@ namespace FactoryManagementSoftware.UI
         private void cbDraftDO_CheckedChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnExportCancel_Click(object sender, EventArgs e)
+        {
+            if (DOSelectingMode)
+            {
+                DOListUI();
+            }
         }
     }
 }

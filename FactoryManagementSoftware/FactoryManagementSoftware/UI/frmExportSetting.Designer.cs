@@ -39,9 +39,7 @@
             this.btnApply = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.cbNewFormat = new System.Windows.Forms.CheckBox();
-            this.cbOldFormat = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -62,7 +60,7 @@
             this.groupBox1.Controls.Add(this.cbPrintFile);
             this.groupBox1.Controls.Add(this.cbOpenFile);
             this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox1.Location = new System.Drawing.Point(44, 135);
+            this.groupBox1.Location = new System.Drawing.Point(44, 251);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(314, 110);
             this.groupBox1.TabIndex = 175;
@@ -122,7 +120,7 @@
             // 
             this.cbAllInOne.AutoSize = true;
             this.cbAllInOne.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbAllInOne.Location = new System.Drawing.Point(204, 91);
+            this.cbAllInOne.Location = new System.Drawing.Point(13, 87);
             this.cbAllInOne.Name = "cbAllInOne";
             this.cbAllInOne.Size = new System.Drawing.Size(154, 23);
             this.cbAllInOne.TabIndex = 177;
@@ -138,7 +136,7 @@
             this.cbSeparate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSeparate.Enabled = false;
             this.cbSeparate.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbSeparate.Location = new System.Drawing.Point(44, 91);
+            this.cbSeparate.Location = new System.Drawing.Point(13, 58);
             this.cbSeparate.Name = "cbSeparate";
             this.cbSeparate.Size = new System.Drawing.Size(84, 23);
             this.cbSeparate.TabIndex = 178;
@@ -211,55 +209,31 @@
             // groupBox2
             // 
             this.groupBox2.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Controls.Add(this.cbNewFormat);
-            this.groupBox2.Controls.Add(this.cbOldFormat);
+            this.groupBox2.Controls.Add(this.cbSeparate);
+            this.groupBox2.Controls.Add(this.cbAllInOne);
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox2.Location = new System.Drawing.Point(46, 260);
+            this.groupBox2.Location = new System.Drawing.Point(46, 96);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(312, 138);
             this.groupBox2.TabIndex = 232;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "D/O FORMAT";
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.label2.ForeColor = System.Drawing.Color.Green;
-            this.label2.Location = new System.Drawing.Point(33, 88);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(202, 15);
-            this.label2.TabIndex = 233;
-            this.label2.Text = "(Effective from 1st Dec 2023 Delivery)";
-            // 
             // cbNewFormat
             // 
             this.cbNewFormat.AutoSize = true;
+            this.cbNewFormat.Checked = true;
+            this.cbNewFormat.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbNewFormat.Enabled = false;
             this.cbNewFormat.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbNewFormat.Location = new System.Drawing.Point(15, 66);
+            this.cbNewFormat.Location = new System.Drawing.Point(13, 29);
             this.cbNewFormat.Name = "cbNewFormat";
-            this.cbNewFormat.Size = new System.Drawing.Size(106, 23);
+            this.cbNewFormat.Size = new System.Drawing.Size(60, 23);
             this.cbNewFormat.TabIndex = 2;
-            this.cbNewFormat.Text = "New Format";
+            this.cbNewFormat.Text = "Excel";
             this.cbNewFormat.UseVisualStyleBackColor = true;
             this.cbNewFormat.CheckedChanged += new System.EventHandler(this.cbNewFormat_CheckedChanged);
-            // 
-            // cbOldFormat
-            // 
-            this.cbOldFormat.AutoSize = true;
-            this.cbOldFormat.Checked = true;
-            this.cbOldFormat.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbOldFormat.Enabled = false;
-            this.cbOldFormat.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbOldFormat.Location = new System.Drawing.Point(15, 28);
-            this.cbOldFormat.Name = "cbOldFormat";
-            this.cbOldFormat.Size = new System.Drawing.Size(101, 23);
-            this.cbOldFormat.TabIndex = 0;
-            this.cbOldFormat.Text = "Old Format";
-            this.cbOldFormat.UseVisualStyleBackColor = true;
-            this.cbOldFormat.CheckedChanged += new System.EventHandler(this.cbOldFormat_CheckedChanged);
             // 
             // frmExportSetting
             // 
@@ -270,8 +244,6 @@
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnApply);
-            this.Controls.Add(this.cbSeparate);
-            this.Controls.Add(this.cbAllInOne);
             this.Controls.Add(this.dtpDODate);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -303,7 +275,5 @@
         private Guna.UI.WinForms.GunaGradientButton btnCancel;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox cbNewFormat;
-        private System.Windows.Forms.CheckBox cbOldFormat;
-        private System.Windows.Forms.Label label2;
     }
 }

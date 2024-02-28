@@ -4120,7 +4120,7 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(HeadOfficeAddress).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.Company_Head_AddressAndContact;
+            DOFormat.Value = text.Company_OUG_AddressAndContact;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
             DOFormat.Font.Size = 8;

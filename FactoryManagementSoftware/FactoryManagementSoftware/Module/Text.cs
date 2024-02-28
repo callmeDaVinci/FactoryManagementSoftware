@@ -80,13 +80,13 @@ namespace FactoryManagementSoftware.Module
         public string Company_Name_EN { get; } = "SAFETY PLASTICS SDN. BHD.";
         public string Company_RegistrationNo { get; } = "No. Syarikat: 198901011676 (188981-U)";
 
-        public string Company_Head_AddressAndContact { get; } =
+        public string Company_OUG_AddressAndContact { get; } =
  @"No. 2, Jalan 10/152, Taman Perindustrian O.U.G, Batu 6,Jalan Puchong, 58200 Kuala Lumpur.
 (Tel) 03 - 7785 5278, 03 - 7782 0399 (Fax) 03 - 7782 0399 (Email) safety_plastic@yahoo.com";
 
         public string Company_Semenyih_AddressAndContact { get; } =
  @"No.17, PT 2507, Jalan Hi-Tech 2, Kawasan Perindustrian Hi-Tech, Jalan Sungai Lalang, 43500 Semenyih, Selangor.
-(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
+(Tel) 016 - 282 8195 (Email) sales@safetyplastics.com.my";
 
         public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
         public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
