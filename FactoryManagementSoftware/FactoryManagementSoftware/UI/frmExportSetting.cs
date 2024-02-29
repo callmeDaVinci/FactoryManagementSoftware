@@ -22,7 +22,7 @@ namespace FactoryManagementSoftware.UI
 
         static public bool allInOne = false;
 
-        static public bool newFormat = false;
+        static public bool newFormat = true;
 
         static public bool openFileAfterExport = false;
         static public bool printFileAfterExport = false;

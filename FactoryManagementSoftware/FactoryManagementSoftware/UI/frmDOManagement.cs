@@ -301,6 +301,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_DONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_DODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_ShipTo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_ShipTo].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 dgv.Columns[text.Header_TableCode].Visible = false;

@@ -3026,7 +3026,7 @@ namespace FactoryManagementSoftware.UI
             tempPath = Path.GetTempFileName();
             Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
             filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
-            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 372, 100, 164.28f, 28.95f);
+            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
 
             #endregion
 
@@ -5959,15 +5959,17 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                if (frmExportSetting.newFormat)
-                {
-                    NewExcel();
-                }
-                else
-                {
-                    OldExcel();
-                }
-            
+                NewExcel();
+
+                //if (frmExportSetting.newFormat)
+                //{
+                //    NewExcel();
+                //}
+                //else
+                //{
+                //    OldExcel();
+                //}
+
             }
 
             Cursor = Cursors.Arrow;
