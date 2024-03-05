@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.UI
         }
 
         Tool tool = new Tool();
+      
 
         private readonly string text_Available = "Number is Available !";
         private readonly string text_Used = "Number is Used !";

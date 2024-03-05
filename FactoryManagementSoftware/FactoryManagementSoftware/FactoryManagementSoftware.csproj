@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>596</ApplicationRevision>
+    <ApplicationRevision>598</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -262,6 +262,18 @@
     </Compile>
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDONumberChange_v2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDONumberChange_v2.Designer.cs">
+      <DependentUpon>frmDONumberChange_v2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmOUG.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOUG.Designer.cs">
+      <DependentUpon>frmOUG.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmStockCountListItemSetting.cs">
       <SubType>Form</SubType>
@@ -1183,6 +1195,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDONumberChange_v2.resx">
+      <DependentUpon>frmDONumberChange_v2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOUG.resx">
+      <DependentUpon>frmOUG.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockCountListItemSetting.resx">
       <DependentUpon>frmStockCountListItemSetting.cs</DependentUpon>

@@ -4779,7 +4779,7 @@ namespace FactoryManagementSoftware.Module
         private static HashSet<string> specialWords = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
         {
             "BAR", "BOX", "ROD", "LID", "FAN", "PAN",
-            "LUG", "AIR", "CAP", "TOP", "INS", "PLCKF"
+            "LUG", "AIR", "BAG", "CAP", "TOP", "INS", "PLCKF"
         };
 
         public string ConvertToTitleCase(string input)

@@ -389,7 +389,7 @@ namespace FactoryManagementSoftware.UI
         private void lblPermissions_Click(object sender, EventArgs e)
         {
 
-            frmVerification frm = new frmVerification(text.PW_TopManagement);
+            frmVerification frm = new frmVerification(text.PW_Level_4);
 
             frm.StartPosition = FormStartPosition.CenterScreen;
             frm.ShowDialog();

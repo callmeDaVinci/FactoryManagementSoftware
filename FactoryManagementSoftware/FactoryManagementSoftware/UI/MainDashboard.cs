@@ -39,6 +39,7 @@ namespace FactoryManagementSoftware.UI
         static public bool NewDailyJobSheetFormOpenVer3 = false;
         static public bool ProductionReportFormOpen = false;
         static public bool SBBFormOpen = false;
+        static public bool OUGFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
         static public bool OUGPOFormOpen = false;
         static public bool NewItemListFormOpen = false;
@@ -1526,6 +1527,29 @@ namespace FactoryManagementSoftware.UI
                 //    frm2.StartPosition = FormStartPosition.CenterScreen;
                 //    frm2.Show();
                 //}
+            }
+
+        }
+
+        private void oUGToolStripMenuItem_Click_2(object sender, EventArgs e)
+        {
+            if (!OUGFormOpen)
+            {
+                //frmLoading.ShowLoadingScreen();
+                frmOUG frm = new frmOUG();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                SBBFormOpen = true;
+                //frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOUG>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOUG>().First().BringToFront();
+                }
             }
 
         }

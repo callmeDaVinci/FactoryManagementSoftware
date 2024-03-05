@@ -1537,7 +1537,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(cbShowQuotationItem.Checked)
             {
-                frmVerification frm = new frmVerification(text.PW_TopManagement);
+                frmVerification frm = new frmVerification(text.PW_Level_4);
 
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.ShowDialog();

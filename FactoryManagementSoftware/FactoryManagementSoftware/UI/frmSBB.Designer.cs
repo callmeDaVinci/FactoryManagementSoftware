@@ -323,7 +323,7 @@
             this.button8.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.button8.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.button8.UseVisualStyleBackColor = false;
-            this.button8.Click += new System.EventHandler(this.WorkInProgress_Click);
+            this.button8.Click += new System.EventHandler(this.DailyJobSheet_Click);
             // 
             // tableLayoutPanel5
             // 
@@ -436,7 +436,7 @@
             // 
             this.btnDeliveryPlanning.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(118)))), ((int)(((byte)(117)))));
             this.btnDeliveryPlanning.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnDeliveryPlanning.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnDeliveryPlanning.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnDeliveryPlanning.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnDeliveryPlanning.Image = ((System.Drawing.Image)(resources.GetObject("btnDeliveryPlanning.Image")));
             this.btnDeliveryPlanning.ImageAlign = System.Drawing.ContentAlignment.TopLeft;
@@ -446,7 +446,7 @@
             this.btnDeliveryPlanning.Padding = new System.Windows.Forms.Padding(7, 0, 0, 0);
             this.btnDeliveryPlanning.Size = new System.Drawing.Size(217, 133);
             this.btnDeliveryPlanning.TabIndex = 146;
-            this.btnDeliveryPlanning.Text = "Delivery Schedule";
+            this.btnDeliveryPlanning.Text = "Internal D/O List";
             this.btnDeliveryPlanning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDeliveryPlanning.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnDeliveryPlanning.UseVisualStyleBackColor = false;

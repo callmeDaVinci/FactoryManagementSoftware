@@ -20,21 +20,21 @@ using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmSBB : Form
+    public partial class frmOUG : Form
     {
-        public frmSBB()
+        public frmOUG()
         {
             InitializeComponent();
-            tool.DoubleBuffered(dgvStockAlert, true);
-            _instance = this;
+            //tool.DoubleBuffered(dgvStockAlert, true);
+            //_instance = this;
 
             //MonthlyDateStart = tool.GetSBBMonthlyStartDate();
             //MonthlyDateEnd = tool.GetSBBMonthlyEndDate();
 
-            MonthlyDateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            MonthlyDateEnd = MonthlyDateStart.AddMonths(1).AddDays(-1);
+            //MonthlyDateStart = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            //MonthlyDateEnd = MonthlyDateStart.AddMonths(1).AddDays(-1);
 
-            InitialMonthlyDate();
+            //InitialMonthlyDate();
         }
         protected override CreateParams CreateParams
         {
@@ -61,7 +61,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            lblMonthlyDeliveredBag.Text = Text_GB_MonthlyDeliveredBags + " (" + MonthlyDateStart.ToString("dd/MM") + " - " + MonthlyDateEnd.ToString("dd/MM") + ")";
+            //lblMonthlyDeliveredBag.Text = Text_GB_MonthlyDeliveredBags + " (" + MonthlyDateStart.ToString("dd/MM") + " - " + MonthlyDateEnd.ToString("dd/MM") + ")";
 
         }
 
@@ -392,20 +392,20 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_TotalAssembly, typeof(int));
             
 
-            DateTime dateStart = dtpDate1.Value;
-            DateTime dateEnd = dtpDate2.Value;
+            //DateTime dateStart = dtpDate1.Value;
+            //DateTime dateEnd = dtpDate2.Value;
 
-            if (dateStart > dateEnd)
-            {
-                dateStart = dtpDate2.Value;
-                dateEnd = dtpDate1.Value;
-            }
+            //if (dateStart > dateEnd)
+            //{
+            //    dateStart = dtpDate2.Value;
+            //    dateEnd = dtpDate1.Value;
+            //}
 
-            int totalDay = tool.getNumberOfDayBetweenTwoDate(dateStart, dateEnd, false);
+            //int totalDay = tool.getNumberOfDayBetweenTwoDate(dateStart, dateEnd, false);
 
-            header_AVGAssembly = "AVG. ASSY ("+totalDay+" days)" ;
+            //header_AVGAssembly = "AVG. ASSY ("+totalDay+" days)" ;
 
-            dt.Columns.Add(header_AVGAssembly, typeof(int));
+            //dt.Columns.Add(header_AVGAssembly, typeof(int));
 
             return dt;
         }
@@ -421,100 +421,100 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[header_ItemCode].Visible = false;
 
-            if (dgv == dgvStockAlert)
-            {
-                dgv.Columns[header_Produced].Visible = false;
-                dgv.Columns[header_ProduceTarget].Visible = false;
-                dgv.Columns[header_Status].Visible = false;
-                dgv.Columns[header_QtyPerBag].Visible = false;
-                dgv.Columns[header_ItemType].Visible = false;
-                dgv.Columns[header_ItemCategory].Visible = false;
-                dgv.Columns[header_ItemCode].Visible = true;
+            //if (dgv == dgvStockAlert)
+            //{
+            //    dgv.Columns[header_Produced].Visible = false;
+            //    dgv.Columns[header_ProduceTarget].Visible = false;
+            //    dgv.Columns[header_Status].Visible = false;
+            //    dgv.Columns[header_QtyPerBag].Visible = false;
+            //    dgv.Columns[header_ItemType].Visible = false;
+            //    dgv.Columns[header_ItemCategory].Visible = false;
+            //    dgv.Columns[header_ItemCode].Visible = true;
 
-                dgv.Columns[header_StdPacking_Bag].Visible = false;
-                dgv.Columns[header_StdPacking_Ctn].Visible = false;
-                dgv.Columns[header_StdPacking_String].Visible = false;
-                dgv.Columns[header_ActualStock_PCS].Visible = false;
-                dgv.Columns[header_ActualStock_BAG].Visible = false;
-                dgv.Columns[header_ActualStock_CTN].Visible = false;
+            //    dgv.Columns[header_StdPacking_Bag].Visible = false;
+            //    dgv.Columns[header_StdPacking_Ctn].Visible = false;
+            //    dgv.Columns[header_StdPacking_String].Visible = false;
+            //    dgv.Columns[header_ActualStock_PCS].Visible = false;
+            //    dgv.Columns[header_ActualStock_BAG].Visible = false;
+            //    dgv.Columns[header_ActualStock_CTN].Visible = false;
 
-                //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
-                //dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            //    //dgv.Columns[header_ItemCode].DefaultCellStyle.ForeColor = Color.Gray;
+            //    //dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
-                dgv.Columns[header_ItemName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            //    dgv.Columns[header_ItemName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+            //    dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
 
                 
 
-                dgv.Columns[header_Stock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[header_BalAfter].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_ActualStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[header_StockDiff].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[header_BalAfterBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_BalAfterPcs].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    dgv.Columns[header_Stock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //    dgv.Columns[header_BalAfter].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    dgv.Columns[header_ActualStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //    dgv.Columns[header_StockDiff].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            //    dgv.Columns[header_BalAfterBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    dgv.Columns[header_BalAfterPcs].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                dgv.Columns[header_ActualStock].DefaultCellStyle.BackColor = SystemColors.Info;
-
-
-                if (stockCheckMode)
-                {
-                    dgv.Columns[header_BalAfter].Visible = false;
-                    dgv.Columns[header_ProDaysNeeded].Visible = false;
-                }
-                else
-                {
-                    dgv.Columns[header_ActualStock].Visible = false;
-                    dgv.Columns[header_StockDiff].Visible = false;
-
-                    if (cmbType.Text == Type_Part)
-                    {
-                        dgv.Columns[header_Stock].Visible = true;
-
-                        dgv.Columns[header_BalAfter].Visible = true;
-                        dgv.Columns[header_BalAfterBag].Visible = false;
-                        dgv.Columns[header_BalAfterPcs].Visible = false;
-                        dgv.Columns[header_ProDaysNeeded].Visible = true;
-                    }
-                    else if (cmbType.Text == Type_Product)
-                    {
-                        dgv.Columns[header_Stock].Visible = false;
-                        dgv.Columns[header_ProDaysNeeded].Visible = false;
-                        if (cbInBagUnit.Checked)
-                        {
-
-                            dgv.Columns[header_BalAfter].Visible = false;
-                            dgv.Columns[header_BalAfterBag].Visible = true;
-                            dgv.Columns[header_BalAfterPcs].Visible = true;
-
-                        }
-                        else if (cbInPcsUnit.Checked)
-                        {
-
-                            dgv.Columns[header_BalAfter].Visible = true;
-                            dgv.Columns[header_BalAfterBag].Visible = false;
-                            dgv.Columns[header_BalAfterPcs].Visible = false;
-
-                        }
-
-                    }
+            //    dgv.Columns[header_ActualStock].DefaultCellStyle.BackColor = SystemColors.Info;
 
 
-                    dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                }
-            }
+            //    if (stockCheckMode)
+            //    {
+            //        dgv.Columns[header_BalAfter].Visible = false;
+            //        dgv.Columns[header_ProDaysNeeded].Visible = false;
+            //    }
+            //    else
+            //    {
+            //        dgv.Columns[header_ActualStock].Visible = false;
+            //        dgv.Columns[header_StockDiff].Visible = false;
 
-            else if (dgv == dgvUsage)
-            {
-                dgv.Columns[header_TotalProduction].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_TotalAssembly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_AVGAssembly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            }
+            //        if (cmbType.Text == Type_Part)
+            //        {
+            //            dgv.Columns[header_Stock].Visible = true;
+
+            //            dgv.Columns[header_BalAfter].Visible = true;
+            //            dgv.Columns[header_BalAfterBag].Visible = false;
+            //            dgv.Columns[header_BalAfterPcs].Visible = false;
+            //            dgv.Columns[header_ProDaysNeeded].Visible = true;
+            //        }
+            //        else if (cmbType.Text == Type_Product)
+            //        {
+            //            dgv.Columns[header_Stock].Visible = false;
+            //            dgv.Columns[header_ProDaysNeeded].Visible = false;
+            //            if (cbInBagUnit.Checked)
+            //            {
+
+            //                dgv.Columns[header_BalAfter].Visible = false;
+            //                dgv.Columns[header_BalAfterBag].Visible = true;
+            //                dgv.Columns[header_BalAfterPcs].Visible = true;
+
+            //            }
+            //            else if (cbInPcsUnit.Checked)
+            //            {
+
+            //                dgv.Columns[header_BalAfter].Visible = true;
+            //                dgv.Columns[header_BalAfterBag].Visible = false;
+            //                dgv.Columns[header_BalAfterPcs].Visible = false;
+
+            //            }
+
+            //        }
+
+
+            //        dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    }
+            //}
+
+            //else if (dgv == dgvUsage)
+            //{
+            //    dgv.Columns[header_TotalProduction].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    dgv.Columns[header_TotalAssembly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //    dgv.Columns[header_AVGAssembly].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            //}
 
         }
 
-        private void frmSPP_FormClosed(object sender, FormClosedEventArgs e)
+        private void frmOUG_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.SBBFormOpen = false;
+            MainDashboard.OUGFormOpen = false;
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -554,397 +554,397 @@ namespace FactoryManagementSoftware.UI
         private DataTable NEWLoadMatPartList(DataTable dt_Product)
         {
             DataTable dt_ChildPart = NewStockAlertTable();
-            DataTable dt_ChildMat = NewStockAlertTable();
-            DataTable dt_Packaging = NewStockAlertTable();
+            //DataTable dt_ChildMat = NewStockAlertTable();
+            //DataTable dt_Packaging = NewStockAlertTable();
 
-            string stockLocation = cmbStockLocation.Text;
+            //string stockLocation = cmbStockLocation.Text;
 
-            if (string.IsNullOrEmpty(stockLocation))
-            {
-                cmbStockLocation.Text = text.Factory_Semenyih;
-                stockLocation = text.Factory_Semenyih;
-            }
+            //if (string.IsNullOrEmpty(stockLocation))
+            //{
+            //    cmbStockLocation.Text = text.Factory_Semenyih;
+            //    stockLocation = text.Factory_Semenyih;
+            //}
 
-            foreach (DataRow row in dt_Product.Rows)
-            {
-                string itemCode = row[header_ItemCode].ToString();
+            //foreach (DataRow row in dt_Product.Rows)
+            //{
+            //    string itemCode = row[header_ItemCode].ToString();
 
-                if(itemCode == "(OK) CFEE 90")
-                {
-                    var checkpoint = 1;
-                }
+            //    if(itemCode == "(OK) CFEE 90")
+            //    {
+            //        var checkpoint = 1;
+            //    }
                 
-                string parentCode = itemCode;
+            //    string parentCode = itemCode;
 
-                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9")
-                {
-                    parentCode = GetChildCode(dt_JoinSelectWithChildCat, row[header_ItemCode].ToString());
-                }
+            //    if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9")
+            //    {
+            //        parentCode = GetChildCode(dt_JoinSelectWithChildCat, row[header_ItemCode].ToString());
+            //    }
 
-                int stillNeed = int.TryParse(row[header_BalAfter].ToString(), out stillNeed) ? stillNeed : 0;
+            //    int stillNeed = int.TryParse(row[header_BalAfter].ToString(), out stillNeed) ? stillNeed : 0;
 
-                stillNeed = stillNeed > 0 ? 0 : stillNeed * -1;
+            //    stillNeed = stillNeed > 0 ? 0 : stillNeed * -1;
 
-                foreach (DataRow rowJoin in dt_JoinSelectWithChildCat.Rows)
-                {
-                    if (rowJoin[dalJoin.ParentCode].ToString() == parentCode)
-                    {
-                        int itemType = int.TryParse(rowJoin[dalSBB.TypeTblCode].ToString(), out int i) ? i : 99;
-                        int itemCat = int.TryParse(rowJoin[dalSBB.CategoryTblCode].ToString(), out  i) ? i : 99;
+            //    foreach (DataRow rowJoin in dt_JoinSelectWithChildCat.Rows)
+            //    {
+            //        if (rowJoin[dalJoin.ParentCode].ToString() == parentCode)
+            //        {
+            //            int itemType = int.TryParse(rowJoin[dalSBB.TypeTblCode].ToString(), out int i) ? i : 99;
+            //            int itemCat = int.TryParse(rowJoin[dalSBB.CategoryTblCode].ToString(), out  i) ? i : 99;
 
-                        string childCat = rowJoin[dalJoin.ChildCat].ToString();
-                        string childCode = rowJoin[dalJoin.ChildCode].ToString();
-                        string childName = rowJoin[dalJoin.ChildName].ToString();
+            //            string childCat = rowJoin[dalJoin.ChildCat].ToString();
+            //            string childCode = rowJoin[dalJoin.ChildCode].ToString();
+            //            string childName = rowJoin[dalJoin.ChildName].ToString();
 
-                        if (!string.IsNullOrEmpty(childCode))
-                        {
-                            string childMat = rowJoin[dalItem.ItemMaterial].ToString();
-                            string childRecycle = rowJoin[dalItem.ItemRecycleMat].ToString();
-                            string childColorMat = rowJoin[dalItem.ItemMBatch].ToString();
+            //            if (!string.IsNullOrEmpty(childCode))
+            //            {
+            //                string childMat = rowJoin[dalItem.ItemMaterial].ToString();
+            //                string childRecycle = rowJoin[dalItem.ItemRecycleMat].ToString();
+            //                string childColorMat = rowJoin[dalItem.ItemMBatch].ToString();
 
-                            float childRawRatio = float.TryParse(rowJoin[dalItem.ItemRawRatio].ToString(), out childRawRatio) ? childRawRatio : 0;
-                            float childRecycleRatio = float.TryParse(rowJoin[dalItem.ItemRecycleRatio].ToString(), out childRecycleRatio) ? childRecycleRatio : 0;
-                            float childPWPerShot = float.TryParse(rowJoin[dalItem.ItemProPWShot].ToString(), out childPWPerShot) ? childPWPerShot : 0;
-                            float childRWPerShot = float.TryParse(rowJoin[dalItem.ItemProRWShot].ToString(), out childRWPerShot) ? childRWPerShot : 0;
-                            float childCavity = float.TryParse(rowJoin[dalItem.ItemCavity].ToString(), out childCavity) ? childCavity : 1;
-                            float childColorRate = float.TryParse(rowJoin[dalItem.ItemMBRate].ToString(), out childColorRate) ? childColorRate : 0;
+            //                float childRawRatio = float.TryParse(rowJoin[dalItem.ItemRawRatio].ToString(), out childRawRatio) ? childRawRatio : 0;
+            //                float childRecycleRatio = float.TryParse(rowJoin[dalItem.ItemRecycleRatio].ToString(), out childRecycleRatio) ? childRecycleRatio : 0;
+            //                float childPWPerShot = float.TryParse(rowJoin[dalItem.ItemProPWShot].ToString(), out childPWPerShot) ? childPWPerShot : 0;
+            //                float childRWPerShot = float.TryParse(rowJoin[dalItem.ItemProRWShot].ToString(), out childRWPerShot) ? childRWPerShot : 0;
+            //                float childCavity = float.TryParse(rowJoin[dalItem.ItemCavity].ToString(), out childCavity) ? childCavity : 1;
+            //                float childColorRate = float.TryParse(rowJoin[dalItem.ItemMBRate].ToString(), out childColorRate) ? childColorRate : 0;
 
-                            if (childColorRate >= 1)
-                            {
-                                childColorRate /= 100;
-                            }
+            //                if (childColorRate >= 1)
+            //                {
+            //                    childColorRate /= 100;
+            //                }
 
-                            float RawMaterialPercentage = 1 - childColorRate;
+            //                float RawMaterialPercentage = 1 - childColorRate;
 
-                            float PWRWPerPcs = (childPWPerShot + childRWPerShot) / childCavity;
+            //                float PWRWPerPcs = (childPWPerShot + childRWPerShot) / childCavity;
 
-                            if (childCavity <= 0)
-                            {
-                                PWRWPerPcs = 0;
-                            }
+            //                if (childCavity <= 0)
+            //                {
+            //                    PWRWPerPcs = 0;
+            //                }
 
-                            int readyStock = int.TryParse(rowJoin[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+            //                int readyStock = int.TryParse(rowJoin[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
 
 
-                            if (stockLocation != "ALL")
-                            {
-                                readyStock = (int)loadStockList(childCode, stockLocation);
-                            }
+            //                if (stockLocation != "ALL")
+            //                {
+            //                    readyStock = (int)loadStockList(childCode, stockLocation);
+            //                }
 
-                            int joinQty = int.TryParse(rowJoin[dalJoin.JoinQty].ToString(), out joinQty) ? joinQty : 0;
-                            int joinMax = int.TryParse(rowJoin[dalJoin.JoinMax].ToString(), out joinMax) ? joinMax : 0;
-                            int joinMin = int.TryParse(rowJoin[dalJoin.JoinMin].ToString(), out joinMin) ? joinMin : 0;
+            //                int joinQty = int.TryParse(rowJoin[dalJoin.JoinQty].ToString(), out joinQty) ? joinQty : 0;
+            //                int joinMax = int.TryParse(rowJoin[dalJoin.JoinMax].ToString(), out joinMax) ? joinMax : 0;
+            //                int joinMin = int.TryParse(rowJoin[dalJoin.JoinMin].ToString(), out joinMin) ? joinMin : 0;
 
 
 
-                            float rawRatio = 0;
-                            float recycleRatio = 0;
+            //                float rawRatio = 0;
+            //                float recycleRatio = 0;
 
-                            if (childRawRatio > 0 && childRecycleRatio <= 0)
-                            {
-                                rawRatio = 1;
-                                recycleRatio = 0;
-                            }
-                            else if (childRecycleRatio > 0 && childRawRatio <= 0)
-                            {
-                                recycleRatio = 1;
-                                rawRatio = 0;
-                            }
-                            else if (childRecycleRatio != 0 && childRawRatio != 0)
-                            {
-                                rawRatio = childRawRatio / (childRawRatio + childRecycleRatio);
-                                recycleRatio = childRecycleRatio / (childRawRatio + childRecycleRatio);
-                            }
+            //                if (childRawRatio > 0 && childRecycleRatio <= 0)
+            //                {
+            //                    rawRatio = 1;
+            //                    recycleRatio = 0;
+            //                }
+            //                else if (childRecycleRatio > 0 && childRawRatio <= 0)
+            //                {
+            //                    recycleRatio = 1;
+            //                    rawRatio = 0;
+            //                }
+            //                else if (childRecycleRatio != 0 && childRawRatio != 0)
+            //                {
+            //                    rawRatio = childRawRatio / (childRawRatio + childRecycleRatio);
+            //                    recycleRatio = childRecycleRatio / (childRawRatio + childRecycleRatio);
+            //                }
 
-                            float rawMat_Need = 0;
-                            float recycleMat_Need = 0;
-                            float colorMat_Need = 0;
+            //                float rawMat_Need = 0;
+            //                float recycleMat_Need = 0;
+            //                float colorMat_Need = 0;
 
-                            int child_StillNeed = 0;
+            //                int child_StillNeed = 0;
 
-                            joinMax = joinMax <= 0 ? 1 : joinMax;
-                            joinMin = joinMin <= 0 ? 1 : joinMin;
+            //                joinMax = joinMax <= 0 ? 1 : joinMax;
+            //                joinMin = joinMin <= 0 ? 1 : joinMin;
 
-                            child_StillNeed = stillNeed / joinMax * joinQty;
+            //                child_StillNeed = stillNeed / joinMax * joinQty;
 
-                            child_StillNeed = stillNeed % joinMax >= joinMin ? child_StillNeed + joinQty : child_StillNeed;
+            //                child_StillNeed = stillNeed % joinMax >= joinMin ? child_StillNeed + joinQty : child_StillNeed;
 
 
-                            int bal = readyStock - child_StillNeed;
+            //                int bal = readyStock - child_StillNeed;
 
-                            float totalMaterialNeededInKG = child_StillNeed * PWRWPerPcs / 1000;
+            //                float totalMaterialNeededInKG = child_StillNeed * PWRWPerPcs / 1000;
 
-                            rawMat_Need = (float)Math.Round(totalMaterialNeededInKG * RawMaterialPercentage * rawRatio, 3);
-                            recycleMat_Need = (float)Math.Round(totalMaterialNeededInKG * recycleRatio, 3);
-                            colorMat_Need = (float)Math.Round(totalMaterialNeededInKG * childColorRate * rawRatio, 3);
+            //                rawMat_Need = (float)Math.Round(totalMaterialNeededInKG * RawMaterialPercentage * rawRatio, 3);
+            //                recycleMat_Need = (float)Math.Round(totalMaterialNeededInKG * recycleRatio, 3);
+            //                colorMat_Need = (float)Math.Round(totalMaterialNeededInKG * childColorRate * rawRatio, 3);
 
-                            bool childInserted = false;
-
-                            foreach (DataRow mat_row in dt_ChildPart.Rows)
-                            {
-                                if (childCode == mat_row[header_ItemCode].ToString())
-                                {
-                                    childInserted = true;
-
-                                    int previousBal = int.TryParse(mat_row[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
-
-                                    bal = previousBal - child_StillNeed;
-
-                                    mat_row[header_BalAfter] = bal;
-
-
-                                    break;
-                                }
-                            }
-
-                            if (!childInserted && childCat == text.Cat_Part)
-                            {
-                                DataRow alert_row = dt_ChildPart.NewRow();
-
-                                alert_row[header_ItemType] = itemType;
-                                alert_row[header_ItemCategory] = itemCat;
-                                alert_row[header_ItemCode] = childCode;
-                                alert_row[header_ItemName] = childName;
-                                alert_row[header_BalAfter] = bal;
-                                alert_row[header_Stock] = readyStock;
-
-                                dt_ChildPart.Rows.Add(alert_row);
-
-                                bool matFound = false;
-                                bool recycleFound = false;
-                                bool colorMatFound = false;
-
-                                foreach (DataRow part in dt_ChildMat.Rows)
-                                {
-                                    double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
-
-                                    if (childMat == part[header_ItemCode].ToString())
-                                    {
-                                        matFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
-
-                                    }
-
-                                    if (childRecycle == part[header_ItemCode].ToString())
-                                    {
-                                        recycleFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
-                                    }
-
-                                    if (childColorMat == part[header_ItemCode].ToString())
-                                    {
-                                        colorMatFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
-                                    }
-                                }
-
-                                if (!matFound && !string.IsNullOrEmpty(childMat))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childMat);
-                                    //int rawMat_Int
-                                    alert_row[header_ItemType] = 91;
-                                    alert_row[header_ItemCategory] = 91;
-                                    alert_row[header_ItemCode] = childMat;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
-                                    alert_row[header_BalAfter] = rawMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-
-                                if (!recycleFound && !string.IsNullOrEmpty(childRecycle))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childRecycle);
-
-                                    alert_row[header_ItemType] = 92;
-                                    alert_row[header_ItemCategory] = 92;
-                                    alert_row[header_ItemCode] = childRecycle;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
-                                    alert_row[header_BalAfter] = recycleMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-
-                                if (!colorMatFound && !string.IsNullOrEmpty(childColorMat))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childColorMat);
-
-                                    alert_row[header_ItemType] = 93;
-                                    alert_row[header_ItemCategory] = 93;
-                                    alert_row[header_ItemCode] = childColorMat;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
-                                    alert_row[header_BalAfter] = colorMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-
-                            }
-                            else if (childCat == text.Cat_Part)
-                            {
-
-                                DataRow alert_row;
-                                bool matFound = false;
-                                bool recycleFound = false;
-                                bool colorMatFound = false;
-
-                                foreach (DataRow part in dt_ChildMat.Rows)
-                                {
-                                    double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
-
-                                    if (childMat == part[header_ItemCode].ToString())
-                                    {
-                                        matFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
-
-                                    }
-
-                                    if (childRecycle == part[header_ItemCode].ToString())
-                                    {
-                                        recycleFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
-                                    }
-
-                                    if (childColorMat == part[header_ItemCode].ToString())
-                                    {
-                                        colorMatFound = true;
-                                        part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
-                                    }
-                                }
-
-                                if (!matFound && !string.IsNullOrEmpty(childMat))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childMat);
-                                    //int rawMat_Int
-                                    alert_row[header_ItemType] = 94;
-                                    alert_row[header_ItemCategory] = 94;
-                                    alert_row[header_ItemCode] = childMat;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
-                                    alert_row[header_BalAfter] = rawMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-
-                                if (!recycleFound && !string.IsNullOrEmpty(childRecycle))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childRecycle);
-
-                                    alert_row[header_ItemType] = 95;
-                                    alert_row[header_ItemCategory] = 95;
-                                    alert_row[header_ItemCode] = childRecycle;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
-                                    alert_row[header_BalAfter] = recycleMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-
-                                if (!colorMatFound && !string.IsNullOrEmpty(childColorMat))
-                                {
-                                    alert_row = dt_ChildMat.NewRow();
-
-                                    float stock = tool.getStockQtyFromDataTable(dt_Item, childColorMat);
-
-                                    alert_row[header_ItemType] = 96;
-                                    alert_row[header_ItemCategory] = 96;
-                                    alert_row[header_ItemCode] = childColorMat;
-                                    alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
-                                    alert_row[header_BalAfter] = colorMat_Need;
-                                    alert_row[header_Stock] = stock;
-
-                                    dt_ChildMat.Rows.Add(alert_row);
-                                }
-                            }
-                            else if (childCat != text.Cat_Part)
-                            {
-                                DataRow alert_row;
-                                bool otherMaterialFound = false;
-
-                                foreach (DataRow part in dt_Packaging.Rows)
-                                {
-                                    if (childCode == part[header_ItemCode].ToString())
-                                    {
-                                        otherMaterialFound = true;
-
-                                        int previousBal = int.TryParse(part[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
-
-                                        bal = previousBal - child_StillNeed;
-
-                                        part[header_BalAfter] = bal;
-
-                                        break;
-                                    }
-
-                                }
-
-                                if (!otherMaterialFound && !string.IsNullOrEmpty(childCode))
-                                {
-
-                                    alert_row = dt_Packaging.NewRow();
-                                    alert_row[header_ItemType] = itemType;
-                                    alert_row[header_ItemCategory] = itemCat;
-                                    alert_row[header_ItemCode] = childCode;
-                                    alert_row[header_ItemName] = childName;
-                                    alert_row[header_BalAfter] = bal;
-                                    alert_row[header_Stock] = readyStock;
-
-                                    dt_Packaging.Rows.Add(alert_row);
-
-                                }
-                            }
-                        }
+            //                bool childInserted = false;
+
+            //                foreach (DataRow mat_row in dt_ChildPart.Rows)
+            //                {
+            //                    if (childCode == mat_row[header_ItemCode].ToString())
+            //                    {
+            //                        childInserted = true;
+
+            //                        int previousBal = int.TryParse(mat_row[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
+
+            //                        bal = previousBal - child_StillNeed;
+
+            //                        mat_row[header_BalAfter] = bal;
+
+
+            //                        break;
+            //                    }
+            //                }
+
+            //                if (!childInserted && childCat == text.Cat_Part)
+            //                {
+            //                    DataRow alert_row = dt_ChildPart.NewRow();
+
+            //                    alert_row[header_ItemType] = itemType;
+            //                    alert_row[header_ItemCategory] = itemCat;
+            //                    alert_row[header_ItemCode] = childCode;
+            //                    alert_row[header_ItemName] = childName;
+            //                    alert_row[header_BalAfter] = bal;
+            //                    alert_row[header_Stock] = readyStock;
+
+            //                    dt_ChildPart.Rows.Add(alert_row);
+
+            //                    bool matFound = false;
+            //                    bool recycleFound = false;
+            //                    bool colorMatFound = false;
+
+            //                    foreach (DataRow part in dt_ChildMat.Rows)
+            //                    {
+            //                        double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
+
+            //                        if (childMat == part[header_ItemCode].ToString())
+            //                        {
+            //                            matFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
+
+            //                        }
+
+            //                        if (childRecycle == part[header_ItemCode].ToString())
+            //                        {
+            //                            recycleFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
+            //                        }
+
+            //                        if (childColorMat == part[header_ItemCode].ToString())
+            //                        {
+            //                            colorMatFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
+            //                        }
+            //                    }
+
+            //                    if (!matFound && !string.IsNullOrEmpty(childMat))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childMat);
+            //                        //int rawMat_Int
+            //                        alert_row[header_ItemType] = 91;
+            //                        alert_row[header_ItemCategory] = 91;
+            //                        alert_row[header_ItemCode] = childMat;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
+            //                        alert_row[header_BalAfter] = rawMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+
+            //                    if (!recycleFound && !string.IsNullOrEmpty(childRecycle))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childRecycle);
+
+            //                        alert_row[header_ItemType] = 92;
+            //                        alert_row[header_ItemCategory] = 92;
+            //                        alert_row[header_ItemCode] = childRecycle;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
+            //                        alert_row[header_BalAfter] = recycleMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+
+            //                    if (!colorMatFound && !string.IsNullOrEmpty(childColorMat))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childColorMat);
+
+            //                        alert_row[header_ItemType] = 93;
+            //                        alert_row[header_ItemCategory] = 93;
+            //                        alert_row[header_ItemCode] = childColorMat;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
+            //                        alert_row[header_BalAfter] = colorMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+
+            //                }
+            //                else if (childCat == text.Cat_Part)
+            //                {
+
+            //                    DataRow alert_row;
+            //                    bool matFound = false;
+            //                    bool recycleFound = false;
+            //                    bool colorMatFound = false;
+
+            //                    foreach (DataRow part in dt_ChildMat.Rows)
+            //                    {
+            //                        double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
+
+            //                        if (childMat == part[header_ItemCode].ToString())
+            //                        {
+            //                            matFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
+
+            //                        }
+
+            //                        if (childRecycle == part[header_ItemCode].ToString())
+            //                        {
+            //                            recycleFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
+            //                        }
+
+            //                        if (childColorMat == part[header_ItemCode].ToString())
+            //                        {
+            //                            colorMatFound = true;
+            //                            part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
+            //                        }
+            //                    }
+
+            //                    if (!matFound && !string.IsNullOrEmpty(childMat))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childMat);
+            //                        //int rawMat_Int
+            //                        alert_row[header_ItemType] = 94;
+            //                        alert_row[header_ItemCategory] = 94;
+            //                        alert_row[header_ItemCode] = childMat;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
+            //                        alert_row[header_BalAfter] = rawMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+
+            //                    if (!recycleFound && !string.IsNullOrEmpty(childRecycle))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childRecycle);
+
+            //                        alert_row[header_ItemType] = 95;
+            //                        alert_row[header_ItemCategory] = 95;
+            //                        alert_row[header_ItemCode] = childRecycle;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
+            //                        alert_row[header_BalAfter] = recycleMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+
+            //                    if (!colorMatFound && !string.IsNullOrEmpty(childColorMat))
+            //                    {
+            //                        alert_row = dt_ChildMat.NewRow();
+
+            //                        float stock = tool.getStockQtyFromDataTable(dt_Item, childColorMat);
+
+            //                        alert_row[header_ItemType] = 96;
+            //                        alert_row[header_ItemCategory] = 96;
+            //                        alert_row[header_ItemCode] = childColorMat;
+            //                        alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
+            //                        alert_row[header_BalAfter] = colorMat_Need;
+            //                        alert_row[header_Stock] = stock;
+
+            //                        dt_ChildMat.Rows.Add(alert_row);
+            //                    }
+            //                }
+            //                else if (childCat != text.Cat_Part)
+            //                {
+            //                    DataRow alert_row;
+            //                    bool otherMaterialFound = false;
+
+            //                    foreach (DataRow part in dt_Packaging.Rows)
+            //                    {
+            //                        if (childCode == part[header_ItemCode].ToString())
+            //                        {
+            //                            otherMaterialFound = true;
+
+            //                            int previousBal = int.TryParse(part[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
+
+            //                            bal = previousBal - child_StillNeed;
+
+            //                            part[header_BalAfter] = bal;
+
+            //                            break;
+            //                        }
+
+            //                    }
+
+            //                    if (!otherMaterialFound && !string.IsNullOrEmpty(childCode))
+            //                    {
+
+            //                        alert_row = dt_Packaging.NewRow();
+            //                        alert_row[header_ItemType] = itemType;
+            //                        alert_row[header_ItemCategory] = itemCat;
+            //                        alert_row[header_ItemCode] = childCode;
+            //                        alert_row[header_ItemName] = childName;
+            //                        alert_row[header_BalAfter] = bal;
+            //                        alert_row[header_Stock] = readyStock;
+
+            //                        dt_Packaging.Rows.Add(alert_row);
+
+            //                    }
+            //                }
+            //            }
 
                         
 
-                    }
-                }
-            }
+            //        }
+            //    }
+            //}
 
-            if (dt_ChildMat != null && dt_ChildMat.Rows.Count > 0 && cbMat.Checked)
-            {
-                foreach (DataRow row in dt_ChildMat.Rows)
-                {
-                    DataRow newRow = dt_ChildPart.NewRow();
+            //if (dt_ChildMat != null && dt_ChildMat.Rows.Count > 0 && cbMat.Checked)
+            //{
+            //    foreach (DataRow row in dt_ChildMat.Rows)
+            //    {
+            //        DataRow newRow = dt_ChildPart.NewRow();
 
-                    newRow[header_ItemType] = 98;
-                    newRow[header_ItemCategory] = 98;
-                    newRow[header_ItemCode] = row[header_ItemCode];
-                    newRow[header_ItemName] = row[header_ItemName];
-                    newRow[header_BalAfter] = row[header_BalAfter];
-                    newRow[header_Stock] = row[header_Stock];
+            //        newRow[header_ItemType] = 98;
+            //        newRow[header_ItemCategory] = 98;
+            //        newRow[header_ItemCode] = row[header_ItemCode];
+            //        newRow[header_ItemName] = row[header_ItemName];
+            //        newRow[header_BalAfter] = row[header_BalAfter];
+            //        newRow[header_Stock] = row[header_Stock];
 
-                    dt_ChildPart.Rows.Add(newRow);
-                }
-            }
+            //        dt_ChildPart.Rows.Add(newRow);
+            //    }
+            //}
 
-            if (dt_Packaging != null && dt_Packaging.Rows.Count > 0 && cbPackaging.Checked)
-            {
-                foreach (DataRow row in dt_Packaging.Rows)
-                {
-                    DataRow newRow = dt_ChildPart.NewRow();
+            //if (dt_Packaging != null && dt_Packaging.Rows.Count > 0 && cbPackaging.Checked)
+            //{
+            //    foreach (DataRow row in dt_Packaging.Rows)
+            //    {
+            //        DataRow newRow = dt_ChildPart.NewRow();
 
-                    newRow[header_ItemType] = 97;
-                    newRow[header_ItemCategory] = 97;
-                    newRow[header_ItemCode] = row[header_ItemCode];
-                    newRow[header_ItemName] = row[header_ItemName];
-                    newRow[header_BalAfter] = row[header_BalAfter];
-                    newRow[header_Stock] = row[header_Stock];
+            //        newRow[header_ItemType] = 97;
+            //        newRow[header_ItemCategory] = 97;
+            //        newRow[header_ItemCode] = row[header_ItemCode];
+            //        newRow[header_ItemName] = row[header_ItemName];
+            //        newRow[header_BalAfter] = row[header_BalAfter];
+            //        newRow[header_Stock] = row[header_Stock];
 
-                    dt_ChildPart.Rows.Add(newRow);
-                }
-            }
+            //        dt_ChildPart.Rows.Add(newRow);
+            //    }
+            //}
 
 
             return dt_ChildPart;
@@ -1145,139 +1145,139 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadStockAlert()
         {
-            Cursor = Cursors.WaitCursor;
+            //Cursor = Cursors.WaitCursor;
 
-            //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
+            ////DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
 
-            DataTable dt_FillAll = NewStockAlertTable();
+            //DataTable dt_FillAll = NewStockAlertTable();
 
-            string stockLocation = cmbStockLocation.Text;
+            //string stockLocation = cmbStockLocation.Text;
 
-            if(string.IsNullOrEmpty(stockLocation))
-            {
-                cmbStockLocation.Text = text.Factory_Semenyih;
-                stockLocation = text.Factory_Semenyih;
-            }
+            //if(string.IsNullOrEmpty(stockLocation))
+            //{
+            //    cmbStockLocation.Text = text.Factory_Semenyih;
+            //    stockLocation = text.Factory_Semenyih;
+            //}
 
-            //Load SBB GOODS FILL ALL ALERT
-            foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
-            {
-                string itemCode = pendingRow[dalSBB.ItemCode].ToString();
-                string itemName = pendingRow[dalSBB.ItemName].ToString();
+            ////Load SBB GOODS FILL ALL ALERT
+            //foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
+            //{
+            //    string itemCode = pendingRow[dalSBB.ItemCode].ToString();
+            //    string itemName = pendingRow[dalSBB.ItemName].ToString();
 
-                if(!string.IsNullOrEmpty(itemCode))
-                {
-                    int itemStock = int.TryParse(pendingRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
+            //    if(!string.IsNullOrEmpty(itemCode))
+            //    {
+            //        int itemStock = int.TryParse(pendingRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
 
-                    if (stockLocation != "ALL")
-                    {
-                        itemStock = (int)loadStockList(itemCode, stockLocation);
-                    }
-
-
-                    int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
-                    int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
-                    int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
-
-                    int pendingQty = itemPOQty - itemDeliveredQty;
-
-                    DataRow newRow;
-                    bool itemFound = false;
-
-                    if (dt_PendingPOSelect != null && dt_PendingPOSelect.Rows.Count > 0)
-                    {
-                        foreach (DataRow fillAllRow in dt_FillAll.Rows)
-                        {
-                            if (itemCode == fillAllRow[header_ItemCode].ToString())
-                            {
-                                itemFound = true;
-
-                                int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
-
-                                fillAllRow[header_BalAfter] = itemBal - pendingQty;
-
-                                fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
-                                fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
-
-                                break;
-                            }
-                        }
-
-                    }
-
-                    if (!itemFound)
-                    {
-                        newRow = dt_FillAll.NewRow();
-
-                        newRow[header_ItemCode] = itemCode;
-                        newRow[header_ItemName] = itemName;
-                        newRow[header_BalAfter] = itemStock - pendingQty;
-                        newRow[header_QtyPerBag] = itemPerBag;
-
-                        if(itemPerBag == 0)
-                        {
-                            itemPerBag = 1;
-                        }
-                        newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
-                        newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
-
-                        dt_FillAll.Rows.Add(newRow);
-                    }
-
-                }
-            }
-
-            if (cmbType.Text == Type_Part)
-            {
-                dt_FillAll = NEWLoadMatPartList(dt_FillAll);
-            }
-
-            //dt_FillAll.DefaultView.Sort = header_BalAfter + " ASC";
-            //dt_FillAll = dt_FillAll.DefaultView.ToTable();
+            //        if (stockLocation != "ALL")
+            //        {
+            //            itemStock = (int)loadStockList(itemCode, stockLocation);
+            //        }
 
 
-            List<DataRow> toDelete = new List<DataRow>();
+            //        int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
+            //        int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
+            //        int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
+
+            //        int pendingQty = itemPOQty - itemDeliveredQty;
+
+            //        DataRow newRow;
+            //        bool itemFound = false;
+
+            //        if (dt_PendingPOSelect != null && dt_PendingPOSelect.Rows.Count > 0)
+            //        {
+            //            foreach (DataRow fillAllRow in dt_FillAll.Rows)
+            //            {
+            //                if (itemCode == fillAllRow[header_ItemCode].ToString())
+            //                {
+            //                    itemFound = true;
+
+            //                    int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
+
+            //                    fillAllRow[header_BalAfter] = itemBal - pendingQty;
+
+            //                    fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
+            //                    fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
+
+            //                    break;
+            //                }
+            //            }
+
+            //        }
+
+            //        if (!itemFound)
+            //        {
+            //            newRow = dt_FillAll.NewRow();
+
+            //            newRow[header_ItemCode] = itemCode;
+            //            newRow[header_ItemName] = itemName;
+            //            newRow[header_BalAfter] = itemStock - pendingQty;
+            //            newRow[header_QtyPerBag] = itemPerBag;
+
+            //            if(itemPerBag == 0)
+            //            {
+            //                itemPerBag = 1;
+            //            }
+            //            newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
+            //            newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
+
+            //            dt_FillAll.Rows.Add(newRow);
+            //        }
+
+            //    }
+            //}
+
+            //if (cmbType.Text == Type_Part)
+            //{
+            //    dt_FillAll = NEWLoadMatPartList(dt_FillAll);
+            //}
+
+            ////dt_FillAll.DefaultView.Sort = header_BalAfter + " ASC";
+            ////dt_FillAll = dt_FillAll.DefaultView.ToTable();
+
+
+            //List<DataRow> toDelete = new List<DataRow>();
            
-            foreach (DataRow row in dt_FillAll.Rows)
-            {
-                string itemCode = row[header_ItemCode].ToString();
-                int bal = int.TryParse(row[header_BalAfter].ToString(), out int i) ? i : 0;
+            //foreach (DataRow row in dt_FillAll.Rows)
+            //{
+            //    string itemCode = row[header_ItemCode].ToString();
+            //    int bal = int.TryParse(row[header_BalAfter].ToString(), out int i) ? i : 0;
 
-                if(string.IsNullOrEmpty(row[header_ItemName].ToString()))
-                {
-                    toDelete.Add(row);
-                }
-                else if(bal < 0)
-                {
-                    row[header_ProDaysNeeded] = tool.GetProductionDayNeeded(dt_Item, itemCode, bal * -1);
-                }
+            //    if(string.IsNullOrEmpty(row[header_ItemName].ToString()))
+            //    {
+            //        toDelete.Add(row);
+            //    }
+            //    else if(bal < 0)
+            //    {
+            //        row[header_ProDaysNeeded] = tool.GetProductionDayNeeded(dt_Item, itemCode, bal * -1);
+            //    }
 
-            }
+            //}
 
-            foreach (DataRow dr in toDelete)
-            {
-                dt_FillAll.Rows.Remove(dr);
-            }
-
-
-            dt_FillAll.AcceptChanges();
-
-            DataView dv = dt_FillAll.DefaultView;
-            dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+            //foreach (DataRow dr in toDelete)
+            //{
+            //    dt_FillAll.Rows.Remove(dr);
+            //}
 
 
-            dt_FillAll = dv.ToTable();
+            //dt_FillAll.AcceptChanges();
 
-            RearrangeIndex(dt_FillAll);
-
-            dgvStockAlert.DataSource = dt_FillAll;
-
-            DgvUIEdit(dgvStockAlert);
-
-            dgvStockAlert.ClearSelection();
+            //DataView dv = dt_FillAll.DefaultView;
+            //dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
 
 
-            Cursor = Cursors.Arrow;
+            //dt_FillAll = dv.ToTable();
+
+            //RearrangeIndex(dt_FillAll);
+
+            //dgvStockAlert.DataSource = dt_FillAll;
+
+            //DgvUIEdit(dgvStockAlert);
+
+            //dgvStockAlert.ClearSelection();
+
+
+            //Cursor = Cursors.Arrow;
         }
 
         private Tuple<int, int, int> GetDeliveredQty(DataTable dt_SppCustomer, DataTable dt_Trf, int month_1, int month_2, int month_3, string itemCode)
@@ -1893,7 +1893,7 @@ namespace FactoryManagementSoftware.UI
 
         private void ShowDataSourceUI()
         {
-            tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
+            //tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
             //if (MainDashboard.myconnstrng == text.DB_Semenyih)
             //{
             //    tlpSummary.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
@@ -1907,28 +1907,28 @@ namespace FactoryManagementSoftware.UI
 
         private void LayoutPanelDisplay(bool show)
         {
-            tlpSBB.Visible = show;
+            //tlpSBB.Visible = show;
 
-            tableLayoutPanel15.Visible = show;
-            tableLayoutPanel16.Visible = show;
-            tableLayoutPanel17.Visible = show;
-            tableLayoutPanel18.Visible = show;
-            tableLayoutPanel19.Visible = show;
-            tableLayoutPanel20.Visible = show;
-            tableLayoutPanel21.Visible = show;
-            tableLayoutPanel23.Visible = show;
-            tableLayoutPanel24.Visible = show;
-            tableLayoutPanel25.Visible = show;
-            tableLayoutPanel26.Visible = show;
-            tableLayoutPanel27.Visible = show;
-            tableLayoutPanel28.Visible = show;
-            tableLayoutPanel29.Visible = show;
-            tableLayoutPanel30.Visible = show;
-            tableLayoutPanel33.Visible = show;
-            tableLayoutPanel34.Visible = show;
+            //tableLayoutPanel15.Visible = show;
+            //tableLayoutPanel16.Visible = show;
+            //tableLayoutPanel17.Visible = show;
+            //tableLayoutPanel18.Visible = show;
+            //tableLayoutPanel19.Visible = show;
+            //tableLayoutPanel20.Visible = show;
+            //tableLayoutPanel21.Visible = show;
+            //tableLayoutPanel23.Visible = show;
+            //tableLayoutPanel24.Visible = show;
+            //tableLayoutPanel25.Visible = show;
+            //tableLayoutPanel26.Visible = show;
+            //tableLayoutPanel27.Visible = show;
+            //tableLayoutPanel28.Visible = show;
+            //tableLayoutPanel29.Visible = show;
+            //tableLayoutPanel30.Visible = show;
+            //tableLayoutPanel33.Visible = show;
+            //tableLayoutPanel34.Visible = show;
 
-            lblPendingDO.Visible = show;
-            tlpDashBoard.Visible = show;
+            //lblPendingDO.Visible = show;
+            //tlpDashBoard.Visible = show;
 
 
 
@@ -1936,33 +1936,35 @@ namespace FactoryManagementSoftware.UI
         private void frmSBB_Load(object sender, EventArgs e)
         {
             //TempChildStdPackingUpload();
-            Loaded = false;
-            SuspendLayout();
+            //Loaded = false;
+            //SuspendLayout();
             //SBBItemUpload();
 
-            LayoutPanelDisplay(false);
+            //LayoutPanelDisplay(false);
 
             //ShowDataSourceUI();
-            dtpDate1.Value = DateTime.Now;
+            //dtpDate1.Value = DateTime.Now;
 
-            LoadTypeCMB(cmbType);
-            LoadStockLocationCMB(cmbStockLocation);
+            //LoadTypeCMB(cmbType);
+            //LoadStockLocationCMB(cmbStockLocation);
 
-            RefreshPage();
+            //RefreshPage();
 
-            Loaded = true;
+            //Loaded = true;
 
-            dgvStockAlert.ClearSelection();
-            dgvUsage.ClearSelection();
+            //dgvStockAlert.ClearSelection();
+            //dgvUsage.ClearSelection();
 
             //var now = DateTime.Now;
             //var startOfMonth = new DateTime(now.Year, now.Month, 1);
-            LayoutPanelDisplay(true);
+            //LayoutPanelDisplay(true);
 
             //NewItemUpdates();
 
-            ResumeLayout();
+            //ResumeLayout();
         }
+
+
         SBBDataDAL dalData = new SBBDataDAL();
         SBBDataBLL uData = new SBBDataBLL();
 
@@ -2564,127 +2566,127 @@ namespace FactoryManagementSoftware.UI
 
         private void ResetTopCustomerData()
         {
-            lblTopCust_1.Text = "";
-            lblTopCustomer_Bag_1.Text = "";
-            lblTopCustomer_Bal_1.Text = "";
+            //lblTopCust_1.Text = "";
+            //lblTopCustomer_Bag_1.Text = "";
+            //lblTopCustomer_Bal_1.Text = "";
 
-            lblTopCust_2.Text = "";
-            lblTopCustomer_Bag_2.Text = "";
-            lblTopCustomer_Bal_2.Text = "";
+            //lblTopCust_2.Text = "";
+            //lblTopCustomer_Bag_2.Text = "";
+            //lblTopCustomer_Bal_2.Text = "";
 
-            lblTopCust_3.Text = "";
-            lblTopCustomer_Bag_3.Text = "";
-            lblTopCustomer_Bal_3.Text = "";
+            //lblTopCust_3.Text = "";
+            //lblTopCustomer_Bag_3.Text = "";
+            //lblTopCustomer_Bal_3.Text = "";
 
-            lblTopCust_4.Text = "";
-            lblTopCustomer_Bag_4.Text = "";
-            lblTopCustomer_Bal_4.Text = "";
+            //lblTopCust_4.Text = "";
+            //lblTopCustomer_Bag_4.Text = "";
+            //lblTopCustomer_Bal_4.Text = "";
 
-            lblTopCust_5.Text = "";
-            lblTopCustomer_Bag_5.Text = "";
-            lblTopCustomer_Bal_5.Text = "";
+            //lblTopCust_5.Text = "";
+            //lblTopCustomer_Bag_5.Text = "";
+            //lblTopCustomer_Bal_5.Text = "";
 
-            lblTopCust_6.Text = "";
-            lblTopCustomer_Bag_6.Text = "";
-            lblTopCustomer_Bal_6.Text = "";
+            //lblTopCust_6.Text = "";
+            //lblTopCustomer_Bag_6.Text = "";
+            //lblTopCustomer_Bal_6.Text = "";
 
-            lblTopCust_7.Text = "";
-            lblTopCustomer_Bag_7.Text = "";
-            lblTopCustomer_Bal_7.Text = "";
+            //lblTopCust_7.Text = "";
+            //lblTopCustomer_Bag_7.Text = "";
+            //lblTopCustomer_Bal_7.Text = "";
 
-            lblTopCust_8.Text = "";
-            lblTopCustomer_Bag_8.Text = "";
-            lblTopCustomer_Bal_8.Text = "";
+            //lblTopCust_8.Text = "";
+            //lblTopCustomer_Bag_8.Text = "";
+            //lblTopCustomer_Bal_8.Text = "";
 
-            lblTopCust_9.Text = "";
-            lblTopCustomer_Bag_9.Text = "";
-            lblTopCustomer_Bal_9.Text = "";
+            //lblTopCust_9.Text = "";
+            //lblTopCustomer_Bag_9.Text = "";
+            //lblTopCustomer_Bal_9.Text = "";
 
-            lblTopCust_10.Text = "";
-            lblTopCustomer_Bag_10.Text = "";
-            lblTopCustomer_Bal_10.Text = "";
+            //lblTopCust_10.Text = "";
+            //lblTopCustomer_Bag_10.Text = "";
+            //lblTopCustomer_Bal_10.Text = "";
 
         }
 
         private void ResetDeliveredData()
         {
-            ResetTopCustomerData();
-            lblMonthlyDelivered.Text = "-";
-            lblDeliveredBalance.Text = "-";
+            //ResetTopCustomerData();
+            //lblMonthlyDelivered.Text = "-";
+            //lblDeliveredBalance.Text = "-";
         }
 
         private void ShowDeliverdPercentage(int totalBagDelivered)
         {
-            double Percentage = 0;
+            //double Percentage = 0;
 
-            if (int.TryParse(lblTopCustomer_Bag_1.Text, out int deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
-                lblTopCustomer_Bag_1.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //if (int.TryParse(lblTopCustomer_Bag_1.Text, out int deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
+            //    lblTopCustomer_Bag_1.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_2.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_2.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_2.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_2.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_3.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_3.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_3.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_3.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_4.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_4.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_4.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_4.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_5.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_5.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_5.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_5.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_6.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_6.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_6.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_6.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_7.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_7.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_7.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_7.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_8.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_8.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_8.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_8.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_9.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_9.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_9.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_9.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
 
-            if (int.TryParse(lblTopCustomer_Bag_10.Text, out deliverd))
-            {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+            //if (int.TryParse(lblTopCustomer_Bag_10.Text, out deliverd))
+            //{
+            //    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_10.Text += " (" + Percentage.ToString("0.#") + "%)";
-            }
+            //    lblTopCustomer_Bag_10.Text += " (" + Percentage.ToString("0.#") + "%)";
+            //}
         }
 
 
@@ -3052,11 +3054,11 @@ namespace FactoryManagementSoftware.UI
 
             if (ORingDeliveredQty > 0)
             {
-                lblORingDelivered.Text = "+ O Ring " + ORingDeliveredQty.ToString() + " Packet(s)";
+                //lblORingDelivered.Text = "+ O Ring " + ORingDeliveredQty.ToString() + " Packet(s)";
             }
             else
             {
-                lblORingDelivered.Text = "-";
+                //lblORingDelivered.Text = "-";
 
             }
 
@@ -3145,69 +3147,69 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                if (i == 0)
-                {
-                    lblTopCust_1.Text = custShortName;
-                    lblTopCustomer_Bag_1.Text = deliveredBag;
-                    lblTopCustomer_Bal_1.Text = bal;
-                }
-                else if (i == 1)
-                {
-                    lblTopCust_2.Text = custShortName;
-                    lblTopCustomer_Bag_2.Text = deliveredBag;
-                    lblTopCustomer_Bal_2.Text = bal;
-                }
-                else if (i == 2)
-                {
+                //if (i == 0)
+                //{
+                //    lblTopCust_1.Text = custShortName;
+                //    lblTopCustomer_Bag_1.Text = deliveredBag;
+                //    lblTopCustomer_Bal_1.Text = bal;
+                //}
+                //else if (i == 1)
+                //{
+                //    lblTopCust_2.Text = custShortName;
+                //    lblTopCustomer_Bag_2.Text = deliveredBag;
+                //    lblTopCustomer_Bal_2.Text = bal;
+                //}
+                //else if (i == 2)
+                //{
 
-                    lblTopCust_3.Text = custShortName;
-                    lblTopCustomer_Bag_3.Text = deliveredBag;
-                    lblTopCustomer_Bal_3.Text = bal;
-                }
-                else if (i == 3)
-                {
-                    lblTopCust_4.Text = custShortName;
-                    lblTopCustomer_Bag_4.Text = deliveredBag;
-                    lblTopCustomer_Bal_4.Text = bal;
-                }
-                else if (i == 4)
-                {
-                    lblTopCust_5.Text = custShortName;
-                    lblTopCustomer_Bag_5.Text = deliveredBag;
-                    lblTopCustomer_Bal_5.Text = bal;
-                }
-                else if (i == 5)
-                {
-                    lblTopCust_6.Text = custShortName;
-                    lblTopCustomer_Bag_6.Text = deliveredBag;
-                    lblTopCustomer_Bal_6.Text = bal;
-                }
-                else if (i == 6)
-                {
-                    lblTopCust_7.Text = custShortName;
-                    lblTopCustomer_Bag_7.Text = deliveredBag;
-                    lblTopCustomer_Bal_7.Text = bal;
-                }
-                else if (i == 7)
-                {
-                    lblTopCust_8.Text = custShortName;
-                    lblTopCustomer_Bag_8.Text = deliveredBag;
-                    lblTopCustomer_Bal_8.Text = bal;
-                }
-                else if (i == 8)
-                {
-                    lblTopCust_9.Text = custShortName;
-                    lblTopCustomer_Bag_9.Text = deliveredBag;
-                    lblTopCustomer_Bal_9.Text = bal;
-                }
-                else if (i >= 9)
-                {
+                //    lblTopCust_3.Text = custShortName;
+                //    lblTopCustomer_Bag_3.Text = deliveredBag;
+                //    lblTopCustomer_Bal_3.Text = bal;
+                //}
+                //else if (i == 3)
+                //{
+                //    lblTopCust_4.Text = custShortName;
+                //    lblTopCustomer_Bag_4.Text = deliveredBag;
+                //    lblTopCustomer_Bal_4.Text = bal;
+                //}
+                //else if (i == 4)
+                //{
+                //    lblTopCust_5.Text = custShortName;
+                //    lblTopCustomer_Bag_5.Text = deliveredBag;
+                //    lblTopCustomer_Bal_5.Text = bal;
+                //}
+                //else if (i == 5)
+                //{
+                //    lblTopCust_6.Text = custShortName;
+                //    lblTopCustomer_Bag_6.Text = deliveredBag;
+                //    lblTopCustomer_Bal_6.Text = bal;
+                //}
+                //else if (i == 6)
+                //{
+                //    lblTopCust_7.Text = custShortName;
+                //    lblTopCustomer_Bag_7.Text = deliveredBag;
+                //    lblTopCustomer_Bal_7.Text = bal;
+                //}
+                //else if (i == 7)
+                //{
+                //    lblTopCust_8.Text = custShortName;
+                //    lblTopCustomer_Bag_8.Text = deliveredBag;
+                //    lblTopCustomer_Bal_8.Text = bal;
+                //}
+                //else if (i == 8)
+                //{
+                //    lblTopCust_9.Text = custShortName;
+                //    lblTopCustomer_Bag_9.Text = deliveredBag;
+                //    lblTopCustomer_Bal_9.Text = bal;
+                //}
+                //else if (i >= 9)
+                //{
 
-                    otherBagDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalBag].ToString(), out int x) ? x : 0;
-                    otherBalPacketDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalPkt].ToString(), out int y) ? y : 0;
-                    otherBalPcsDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalBalPcs].ToString(), out int z) ? z : 0;
+                //    otherBagDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalBag].ToString(), out int x) ? x : 0;
+                //    otherBalPacketDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalPkt].ToString(), out int y) ? y : 0;
+                //    otherBalPcsDelivered += int.TryParse(dt_Merge.Rows[i][header_TotalBalPcs].ToString(), out int z) ? z : 0;
 
-                }
+                //}
 
             }
 
@@ -3231,29 +3233,29 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            lblTopCust_10.Text = "OTHER";
+            //lblTopCust_10.Text = "OTHER";
 
-            if(otherBagDelivered - otherORingDelivered < 0)
-            {
-                lblTopCustomer_Bag_10.Text = "0";
+            //if(otherBagDelivered - otherORingDelivered < 0)
+            //{
+            //    lblTopCustomer_Bag_10.Text = "0";
 
-            }
-            else
-            {
-                lblTopCustomer_Bag_10.Text = (otherBagDelivered - otherORingDelivered).ToString();
+            //}
+            //else
+            //{
+            //    lblTopCustomer_Bag_10.Text = (otherBagDelivered - otherORingDelivered).ToString();
 
-            }
+            //}
 
-            if (!string.IsNullOrEmpty(otherbal))
-            {
-                lblTopCustomer_Bal_10.Text = otherbal;
-            }
-            else
-            {
-                lblTopCustomer_Bal_10.Text = "";
-            }
+            //if (!string.IsNullOrEmpty(otherbal))
+            //{
+            //    lblTopCustomer_Bal_10.Text = otherbal;
+            //}
+            //else
+            //{
+            //    lblTopCustomer_Bal_10.Text = "";
+            //}
 
-            lblMonthlyDelivered.Text = (totalBagDelivered - ORingDeliveredQty).ToString();
+            //lblMonthlyDelivered.Text = (totalBagDelivered - ORingDeliveredQty).ToString();
 
             ShowDeliverdPercentage(totalBagDelivered);
 
@@ -3272,7 +3274,7 @@ namespace FactoryManagementSoftware.UI
 
             balDelivered += " (TOTAL " + totalPcsDelivered + " PCS)";
 
-            lblDeliveredBalance.Text = balDelivered;
+            //lblDeliveredBalance.Text = balDelivered;
         }
 
         private void LoadDeliveredData()
@@ -3381,38 +3383,38 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadPendingSummary()
         {
-            //string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            ////string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-            LoadDeliveredData();
+            //LoadDeliveredData();
 
-            var result = LoadPendingPOQty();
+            //var result = LoadPendingPOQty();
 
-            lblPendingPO.Text = result.Item1.ToString();
-            lblPendingPOCust.Text = result.Item2.ToString();
-            lblPOBagQty.Text = result.Item3.ToString();
+            //lblPendingPO.Text = result.Item1.ToString();
+            //lblPendingPOCust.Text = result.Item2.ToString();
+            //lblPOBagQty.Text = result.Item3.ToString();
 
-            if (result.Item4 > 0)
-            {
-                lblBalancePkt.Text = " + " + result.Item4.ToString() + " PKT(s)";
-            }
-            else
-            {
-                lblBalancePkt.Text = "";
-            }
+            //if (result.Item4 > 0)
+            //{
+            //    lblBalancePkt.Text = " + " + result.Item4.ToString() + " PKT(s)";
+            //}
+            //else
+            //{
+            //    lblBalancePkt.Text = "";
+            //}
 
-            if (result.Item5 > 0)
-            {
-                lblBalancePcs.Text = " + " + result.Item5.ToString() + " PC(s)";
-            }
-            else
-            {
-                lblBalancePcs.Text = "";
-            }
-            //262->226
-            var result2 = LoadPendingDOQty();//729
-            lblPendingDO.Text = result2.Item1.ToString();
-            lblPendingDOCust.Text = result2.Item2.ToString();
-            lblDOBagQty.Text = result2.Item3.ToString();//574
+            //if (result.Item5 > 0)
+            //{
+            //    lblBalancePcs.Text = " + " + result.Item5.ToString() + " PC(s)";
+            //}
+            //else
+            //{
+            //    lblBalancePcs.Text = "";
+            //}
+            ////262->226
+            //var result2 = LoadPendingDOQty();//729
+            //lblPendingDO.Text = result2.Item1.ToString();
+            //lblPendingDOCust.Text = result2.Item2.ToString();
+            //lblDOBagQty.Text = result2.Item3.ToString();//574
         }
 
         private void RefreshPage()
@@ -3441,284 +3443,97 @@ namespace FactoryManagementSoftware.UI
             frmLoading.CloseForm();
         }
 
-        private DataTable LoadUsageItemList()
-        {
-            //DataTable dt_Item = dalItem.Select();
-            //string itemCust = text.SPP_BrandName;
-            //DataTable dt_SBBItemSelect = dalItemCust.SBBItemSelect(itemCust);
-
-            DataTable dt_UsageItemList = NewUsageTable();
-            DataTable dt_ChildPart = NewUsageTable();
-
-            DataTable dt_ChildMat = new DataTable();
-
-            dt_ChildMat.Columns.Add(dalSBB.ItemCode, typeof(string));
-            dt_ChildMat.Columns.Add(dalSBB.ItemName, typeof(string));
-
-            DataTable dt_Packaging = new DataTable();
-
-            dt_Packaging.Columns.Add(dalSBB.ItemCode, typeof(string));
-            dt_Packaging.Columns.Add(dalSBB.ItemName, typeof(string));
-
-            foreach (DataRow row in dt_SBBItemSelect.Rows)
-            {
-                string parentCode = row[dalSBB.ItemCode].ToString();
-
-                if (!string.IsNullOrEmpty(parentCode) && parentCode.Length > 7 && parentCode[7].ToString() == "E" && parentCode[8].ToString() != "C")
-                {
-                    parentCode = GetChildCode(dt_JoinSelectWithChildCat, parentCode);
-                }
-
-                //if parentCode is production part
-
-                foreach (DataRow join in dt_JoinSelectWithChildCat.Rows)
-                {
-                    if (parentCode == join[dalJoin.ParentCode].ToString())
-                    {
-                        string childCat = join[dalJoin.ChildCat].ToString();
-                        string childCode = join[dalJoin.ChildCode].ToString();
-                        string childName = join[dalJoin.ChildName].ToString();
-
-                        string childMat = join[dalItem.ItemMaterial].ToString();
-                        string childRecycle = join[dalItem.ItemRecycleMat].ToString();
-                        string childColorMat = join[dalItem.ItemMBatch].ToString();
-
-
-                        bool childPartDuplicate = false;
-
-                        if (dt_ChildPart != null && dt_ChildPart.Rows.Count > 0)
-                        {
-                            foreach (DataRow part in dt_ChildPart.Rows)
-                            {
-                                if (childCode == part[header_ItemCode].ToString())
-                                {
-                                    childPartDuplicate = true;
-                                    break;
-                                }
-                            }
-                        }
-
-                        if (!childPartDuplicate && childCat == text.Cat_Part)
-                        {
-                            DataRow newRow = dt_ChildPart.NewRow();
-
-                            newRow[header_ItemCode] = childCode;
-                            newRow[header_ItemName] = childName;
-
-                            dt_ChildPart.Rows.Add(newRow);
-
-                            bool matFound = false;
-                            bool recycleFound = false;
-                            bool colorMatFound = false;
-
-                            foreach (DataRow part in dt_ChildMat.Rows)
-                            {
-                                if (childMat == part[dalSBB.ItemCode].ToString())
-                                {
-                                    matFound = true;
-                                }
-
-                                if (childRecycle == part[dalSBB.ItemCode].ToString())
-                                {
-                                    recycleFound = true;
-                                }
-
-                                if (childColorMat == part[dalSBB.ItemCode].ToString())
-                                {
-                                    colorMatFound = true;
-                                }
-                            }
-
-                            if(!matFound && !string.IsNullOrEmpty(childMat))
-                            {
-                                newRow = dt_ChildMat.NewRow();
-
-                                newRow[dalSBB.ItemCode] = childMat;
-                                newRow[dalSBB.ItemName] = tool.getItemNameFromDataTable(dt_Item,childMat);
-
-                                dt_ChildMat.Rows.Add(newRow);
-                            }
-
-                            if (!recycleFound && !string.IsNullOrEmpty(childRecycle))
-                            {
-                                newRow = dt_ChildMat.NewRow();
-
-                                newRow[dalSBB.ItemCode] = childRecycle;
-                                newRow[dalSBB.ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
-
-                                dt_ChildMat.Rows.Add(newRow);
-                            }
-
-                            if (!colorMatFound && !string.IsNullOrEmpty(childColorMat))
-                            {
-                                newRow = dt_ChildMat.NewRow();
-
-                                newRow[dalSBB.ItemCode] = childColorMat;
-                                newRow[dalSBB.ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
-
-                                dt_ChildMat.Rows.Add(newRow);
-                            }
-                        }
-                        else if(childCat != text.Cat_Part)
-                        {
-                            bool otherMaterialFound = false;
-
-                            foreach (DataRow part in dt_Packaging.Rows)
-                            {
-                                if (childCode == part[dalSBB.ItemCode].ToString())
-                                {
-                                    otherMaterialFound = true;
-                                }
-
-                            }
-
-                            if (!otherMaterialFound && !string.IsNullOrEmpty(childCode))
-                            {
-                                DataRow newRow = dt_Packaging.NewRow();
-
-                                newRow[dalSBB.ItemCode] = childCode;
-                                newRow[dalSBB.ItemName] = childName;
-
-                                dt_Packaging.Rows.Add(newRow);
-                            }
-                        }
-                    }
-                }
-
-
-            }
-
-            if (dt_ChildPart != null && dt_ChildPart.Rows.Count > 0 && cbParts.Checked)
-            {
-                foreach (DataRow row in dt_ChildPart.Rows)
-                {
-                    DataRow newRow = dt_UsageItemList.NewRow();
-
-                    newRow[header_ItemCode] = row[header_ItemCode];
-                    newRow[header_ItemName] = row[header_ItemName];
-
-                    dt_UsageItemList.Rows.Add(newRow);
-                }
-            }
-
-            if (dt_ChildMat != null && dt_ChildMat.Rows.Count > 0 && cbMat.Checked)
-            {
-                foreach(DataRow row in dt_ChildMat.Rows)
-                {
-                    DataRow newRow = dt_UsageItemList.NewRow();
-
-                    newRow[header_ItemCode] = row[dalSBB.ItemCode];
-                    newRow[header_ItemName] = row[dalSBB.ItemName];
-
-                    dt_UsageItemList.Rows.Add(newRow);
-                }
-            }
-
-            if (dt_Packaging != null && dt_Packaging.Rows.Count > 0 && cbPackaging.Checked)
-            {
-                foreach (DataRow row in dt_Packaging.Rows)
-                {
-                    DataRow newRow = dt_UsageItemList.NewRow();
-
-                    newRow[header_ItemCode] = row[dalSBB.ItemCode];
-                    newRow[header_ItemName] = row[dalSBB.ItemName];
-
-                    dt_UsageItemList.Rows.Add(newRow);
-                }
-            }
-
-            return dt_UsageItemList;
-        }
+    
 
         private void LoadUsage()
         {
-            Cursor = Cursors.WaitCursor;
+            //Cursor = Cursors.WaitCursor;
 
-            #region indicate start and end date
+            //#region indicate start and end date
 
-            string start;
-            string end;
+            //string start;
+            //string end;
 
-            DateTime dateStart = dtpDate1.Value;
-            DateTime dateEnd = dtpDate2.Value;
+            //DateTime dateStart = dtpDate1.Value;
+            //DateTime dateEnd = dtpDate2.Value;
 
-            if(dateStart > dateEnd)
-            {
-                dateStart = dtpDate2.Value;
-                dateEnd = dtpDate1.Value;
-            }
-            start = dateStart.ToString("yyyy/MM/dd");
-            end = dateEnd.ToString("yyyy/MM/dd");
-
-            int totalDay = tool.getNumberOfDayBetweenTwoDate(dateStart, dateEnd, false);
-            dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
-            //if (Loaded)
+            //if(dateStart > dateEnd)
             //{
-            //    dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
-
+            //    dateStart = dtpDate2.Value;
+            //    dateEnd = dtpDate1.Value;
             //}
-            //else
+            //start = dateStart.ToString("yyyy/MM/dd");
+            //end = dateEnd.ToString("yyyy/MM/dd");
+
+            //int totalDay = tool.getNumberOfDayBetweenTwoDate(dateStart, dateEnd, false);
+            //dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
+            ////if (Loaded)
+            ////{
+            ////    dt_TrfRangeUsageSearch = dalTrfHist.SBBPageRangeUsageSearch(start, end);
+
+            ////}
+            ////else
+            ////{
+            ////    dt_TrfRangeUsageSearch = frmLogIn.dt_TrfRangeUsageSearch;
+
+            ////}
+
+            //#endregion
+
+            //DataTable dt_ItemList = LoadUsageItemList();
+            //dt_ItemList = RearrangeIndex(dt_ItemList);
+
+            ////dt_TrfRangeUsageSearch = dalTrfHist.RangeUsageSearch(start, end);
+
+            //foreach(DataRow row in dt_ItemList.Rows)
             //{
-            //    dt_TrfRangeUsageSearch = frmLogIn.dt_TrfRangeUsageSearch;
+            //    string itemCode = row[header_ItemCode].ToString();
 
+            //    int totPro = 0;
+            //    int totAssy = 0;
+
+            //    foreach (DataRow trfRow in dt_TrfRangeUsageSearch.Rows)
+            //    {
+            //        string trfResult = trfRow[dalTrfHist.TrfResult].ToString();
+            //        string trfItemCode = trfRow[dalTrfHist.TrfItemCode].ToString();
+
+            //        if (trfResult == text.Passed && itemCode == trfItemCode)
+            //        {
+            //            int trfQty = int.TryParse(trfRow[dalTrfHist.TrfQty].ToString(),out  trfQty) ? trfQty : 0;
+
+            //            string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
+            //            string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
+
+            //            if(trfFrom == text.Production || trfTo == text.Production)
+            //            {
+            //                totPro += trfQty;
+            //            }
+
+            //            if (trfTo == text.Assembly)
+            //            {
+            //                totAssy += trfQty;
+            //            }
+
+            //            row[header_TotalProduction] = totPro;
+            //            row[header_TotalAssembly] = totAssy;
+            //            row[header_AVGAssembly] = totAssy / totalDay;
+            //        }
+            //    }
             //}
-
-            #endregion
-
-            DataTable dt_ItemList = LoadUsageItemList();
-            dt_ItemList = RearrangeIndex(dt_ItemList);
-
-            //dt_TrfRangeUsageSearch = dalTrfHist.RangeUsageSearch(start, end);
-
-            foreach(DataRow row in dt_ItemList.Rows)
-            {
-                string itemCode = row[header_ItemCode].ToString();
-
-                int totPro = 0;
-                int totAssy = 0;
-
-                foreach (DataRow trfRow in dt_TrfRangeUsageSearch.Rows)
-                {
-                    string trfResult = trfRow[dalTrfHist.TrfResult].ToString();
-                    string trfItemCode = trfRow[dalTrfHist.TrfItemCode].ToString();
-
-                    if (trfResult == text.Passed && itemCode == trfItemCode)
-                    {
-                        int trfQty = int.TryParse(trfRow[dalTrfHist.TrfQty].ToString(),out  trfQty) ? trfQty : 0;
-
-                        string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
-                        string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
-
-                        if(trfFrom == text.Production || trfTo == text.Production)
-                        {
-                            totPro += trfQty;
-                        }
-
-                        if (trfTo == text.Assembly)
-                        {
-                            totAssy += trfQty;
-                        }
-
-                        row[header_TotalProduction] = totPro;
-                        row[header_TotalAssembly] = totAssy;
-                        row[header_AVGAssembly] = totAssy / totalDay;
-                    }
-                }
-            }
 
            
-            Cursor = Cursors.Arrow;
+            //Cursor = Cursors.Arrow;
 
-            dgvUsage.DataSource = dt_ItemList;
+            //dgvUsage.DataSource = dt_ItemList;
 
-            DgvUIEdit(dgvUsage);
+            //DgvUIEdit(dgvUsage);
 
-            dgvUsage.ClearSelection();
+            //dgvUsage.ClearSelection();
         }
 
         public static void Reload()
         {
-            _instance.RefreshPage(true);
+            //_instance.RefreshPage(true);
         }
 
         private void OpenDOList(object sender, EventArgs e)
@@ -3784,29 +3599,9 @@ namespace FactoryManagementSoftware.UI
             WorkInProgressMessage();
         }
 
-        private void DailyJobSheet_Click(object sender, EventArgs e)
+        private void WorkInProgress_Click(object sender, EventArgs e)
         {
-            int count = Application.OpenForms.OfType<frmProductionRecordVer3>().Count();
-
-
-            if (count == 1)
-            {
-                //Form is already open
-                Application.OpenForms.OfType<frmProductionRecordVer3>().First().BringToFront();
-                Application.OpenForms.OfType<frmProductionRecordVer3>().First().WindowState = FormWindowState.Normal;
-            }
-            else
-            {
-                // Form is not open
-                frmProductionRecordVer3 frm = new frmProductionRecordVer3
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-
-
-                frm.Show();
-            }
-
+            WorkInProgressMessage();
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -3841,31 +3636,21 @@ namespace FactoryManagementSoftware.UI
                 frm.Show();
             }
 
+
+
+
         }
 
         private void OpenDeliveryPlanning(object sender, EventArgs e)
         {
+            WorkInProgressMessage();
 
-            int count = Application.OpenForms.OfType<frmDOManagement>().Count();
+            //frmDeliverySchedule frm = new frmDeliverySchedule
+            //{
+            //    StartPosition = FormStartPosition.CenterScreen
+            //};
 
-
-            if (count == 1)
-            {
-                //Form is already open
-                Application.OpenForms.OfType<frmDOManagement>().First().BringToFront();
-                Application.OpenForms.OfType<frmDOManagement>().First().WindowState = FormWindowState.Normal;
-            }
-            else
-            {
-                // Form is not open
-                frmDOManagement frm = new frmDOManagement
-                {
-                    StartPosition = FormStartPosition.CenterScreen
-                };
-
-
-                frm.Show();
-            }
+            //frm.ShowDialog();
 
         }
 
@@ -3895,222 +3680,222 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvStockAlert_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            DataGridView dgv = dgvStockAlert;
-            dgv.SuspendLayout();
-            int row = e.RowIndex;
-            int col = e.ColumnIndex;
+            //DataGridView dgv = dgvStockAlert;
+            //dgv.SuspendLayout();
+            //int row = e.RowIndex;
+            //int col = e.ColumnIndex;
 
-            if (dgv.Columns[col].Name == header_Stock ||  dgv.Columns[col].Name == header_BalAfter || dgv.Columns[col].Name == header_BalAfterBag || dgv.Columns[col].Name == header_BalAfterPcs)
-            {
-                if (dgv.Rows[row].Cells[col].Value != null)
-                {
-                    if (!string.IsNullOrEmpty(dgv.Rows[row].Cells[col].Value.ToString()))
-                    {
-                        float num = dgv.Rows[row].Cells[col].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[col].Value.ToString());
+            //if (dgv.Columns[col].Name == header_Stock ||  dgv.Columns[col].Name == header_BalAfter || dgv.Columns[col].Name == header_BalAfterBag || dgv.Columns[col].Name == header_BalAfterPcs)
+            //{
+            //    if (dgv.Rows[row].Cells[col].Value != null)
+            //    {
+            //        if (!string.IsNullOrEmpty(dgv.Rows[row].Cells[col].Value.ToString()))
+            //        {
+            //            float num = dgv.Rows[row].Cells[col].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[col].Value.ToString());
 
-                        if (num < 0)
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                        }
-                        else
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
-                        }
-                    }
-                }
-            }
-            else if (dgv.Columns[col].Name == header_ProDaysNeeded)
-            {
-                string status = dgv.Rows[row].Cells[header_Status].Value.ToString();
+            //            if (num < 0)
+            //            {
+            //                dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
+            //            }
+            //            else
+            //            {
+            //                dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+            //            }
+            //        }
+            //    }
+            //}
+            //else if (dgv.Columns[col].Name == header_ProDaysNeeded)
+            //{
+            //    string status = dgv.Rows[row].Cells[header_Status].Value.ToString();
 
-                if (status == text.planning_status_running)
-                {
-                    //dgv.Rows[row].Cells[header_ProDaysNeeded].Style.ForeColor = Color.FromArgb(52, 139, 209);
-                }
-                else
-                {
-                    //dgv.Rows[row].Cells[header_ProDaysNeeded].Style.ForeColor = Color.Black;
-                }
-            }
+            //    if (status == text.planning_status_running)
+            //    {
+            //        //dgv.Rows[row].Cells[header_ProDaysNeeded].Style.ForeColor = Color.FromArgb(52, 139, 209);
+            //    }
+            //    else
+            //    {
+            //        //dgv.Rows[row].Cells[header_ProDaysNeeded].Style.ForeColor = Color.Black;
+            //    }
+            //}
 
-            dgv.ResumeLayout();
+            //dgv.ResumeLayout();
 
 
         }
 
         private void cbInPcsUnit_CheckedChanged(object sender, EventArgs e)
         {
-            if (Loaded)
-            {
-                if (cbInPcsUnit.Checked)
-                {
-                    if (cmbType.Text == Type_Product)
-                        cbInBagUnit.Checked = false;
+            //if (Loaded)
+            //{
+            //    if (cbInPcsUnit.Checked)
+            //    {
+            //        if (cmbType.Text == Type_Product)
+            //            cbInBagUnit.Checked = false;
 
-                    //LoadStockAlert();
-                    LoadStockAlert();
-                }
-                else
-                {
-                    if (cmbType.Text == Type_Product)
-                    {
-                        cbInBagUnit.Checked = true;
-                    }
-                    else
-                    {
-                        cbInPcsUnit.Checked = true;
-                    }
+            //        //LoadStockAlert();
+            //        LoadStockAlert();
+            //    }
+            //    else
+            //    {
+            //        if (cmbType.Text == Type_Product)
+            //        {
+            //            cbInBagUnit.Checked = true;
+            //        }
+            //        else
+            //        {
+            //            cbInPcsUnit.Checked = true;
+            //        }
 
 
-                }
+            //    }
 
-                // dgvStockAlert.DataSource = null;
-            }
+            //    // dgvStockAlert.DataSource = null;
+            //}
 
         }
 
         private void cbInBagUnit_CheckedChanged(object sender, EventArgs e)
         {
-            if (Loaded)
-            {
-                if (cbInBagUnit.Checked)
-                {
+            //if (Loaded)
+            //{
+            //    if (cbInBagUnit.Checked)
+            //    {
 
-                    if (cmbType.Text == Type_Product)
-                    {
-                        cbInPcsUnit.Checked = false;
-                        //LoadStockAlert();
-                        LoadStockAlert();
-                    }
-                    else
-                    {
-                        cbInBagUnit.Checked = false;
-                        cbInPcsUnit.Checked = true;
-                    }
+            //        if (cmbType.Text == Type_Product)
+            //        {
+            //            cbInPcsUnit.Checked = false;
+            //            //LoadStockAlert();
+            //            LoadStockAlert();
+            //        }
+            //        else
+            //        {
+            //            cbInBagUnit.Checked = false;
+            //            cbInPcsUnit.Checked = true;
+            //        }
 
-                }
-                else if (!cbInPcsUnit.Checked)
-                {
-                    cbInBagUnit.Checked = true;
-                }
+            //    }
+            //    else if (!cbInPcsUnit.Checked)
+            //    {
+            //        cbInBagUnit.Checked = true;
+            //    }
 
-                //dgvStockAlert.DataSource = null;
-            }
+            //    //dgvStockAlert.DataSource = null;
+            //}
 
         }
 
         private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (Loaded)
-            {
-                dgvStockAlert.DataSource = null;
+            //if (Loaded)
+            //{
+            //    dgvStockAlert.DataSource = null;
 
-                if (cmbType.Text == Type_Product)
-                {
-                    cbInBagUnit.Visible = true;
-                    cbInPcsUnit.Enabled = true;
+            //    if (cmbType.Text == Type_Product)
+            //    {
+            //        cbInBagUnit.Visible = true;
+            //        cbInPcsUnit.Enabled = true;
 
-                    btnStockCheck.Enabled = false;
-                }
-                else
-                {
-                    cbInPcsUnit.Checked = true;
-                    cbInBagUnit.Checked = false;
-                    cbInPcsUnit.Enabled = false;
-                    cbInBagUnit.Visible = false;
+            //        btnStockCheck.Enabled = false;
+            //    }
+            //    else
+            //    {
+            //        cbInPcsUnit.Checked = true;
+            //        cbInBagUnit.Checked = false;
+            //        cbInPcsUnit.Enabled = false;
+            //        cbInBagUnit.Visible = false;
 
-                    btnStockCheck.Enabled = true;
+            //        btnStockCheck.Enabled = true;
 
-                }
-                //LoadStockAlert();
-                LoadStockAlert();
-            }
+            //    }
+            //    //LoadStockAlert();
+            //    LoadStockAlert();
+            //}
 
         }
 
         private void StockCheckUIMode(bool turnOn)
         {
-            DataGridView dgv = dgvStockAlert;
+        //    DataGridView dgv = dgvStockAlert;
 
-            if (turnOn)
-            {
-                tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
-                tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
-                dgv.Columns[header_ItemName].Frozen = true;
-                cmbStockLocation.Enabled = false;
-                stockCheckMode = true;
+        //    if (turnOn)
+        //    {
+        //        tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
+        //        tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+        //        dgv.Columns[header_ItemName].Frozen = true;
+        //        cmbStockLocation.Enabled = false;
+        //        stockCheckMode = true;
 
-                btnCancelStockCheck.Visible = true;
-                btnStockCheck.Enabled = false;
+        //        btnCancelStockCheck.Visible = true;
+        //        btnStockCheck.Enabled = false;
 
-                btnStockCheck.Text = "TALLY ALL";
-                lblStockAlert.Text = "Stock Check";
+        //        btnStockCheck.Text = "TALLY ALL";
+        //        lblStockAlert.Text = "Stock Check";
 
-                btnStockRefresh.Visible = false;
-                cmbType.Visible = false;
-                cbInPcsUnit.Visible = false;
-                cbInBagUnit.Visible = false;
+        //        btnStockRefresh.Visible = false;
+        //        cmbType.Visible = false;
+        //        cbInPcsUnit.Visible = false;
+        //        cbInBagUnit.Visible = false;
 
-                dgv.Columns[header_BalAfter].Visible = false;
-                dgv.Columns[header_BalAfterBag].Visible = false;
-                dgv.Columns[header_BalAfterPcs].Visible = false;
+        //        dgv.Columns[header_BalAfter].Visible = false;
+        //        dgv.Columns[header_BalAfterBag].Visible = false;
+        //        dgv.Columns[header_BalAfterPcs].Visible = false;
 
-                dgv.Columns[header_ProDaysNeeded].Visible = false;
+        //        dgv.Columns[header_ProDaysNeeded].Visible = false;
 
-                dgv.Columns[header_ActualStock].Visible = true;
-                dgv.Columns[header_StockDiff].Visible = true;
+        //        dgv.Columns[header_ActualStock].Visible = true;
+        //        dgv.Columns[header_StockDiff].Visible = true;
 
-                dgv.Columns[header_StdPacking_Bag].Visible = false;
-                dgv.Columns[header_StdPacking_Ctn].Visible = false;
-                dgv.Columns[header_StdPacking_String].Visible = false;
-                dgv.Columns[header_ActualStock_PCS].Visible = false;
-                dgv.Columns[header_ActualStock_BAG].Visible = false;
-                dgv.Columns[header_ActualStock_CTN].Visible = false;
+        //        dgv.Columns[header_StdPacking_Bag].Visible = false;
+        //        dgv.Columns[header_StdPacking_Ctn].Visible = false;
+        //        dgv.Columns[header_StdPacking_String].Visible = false;
+        //        dgv.Columns[header_ActualStock_PCS].Visible = false;
+        //        dgv.Columns[header_ActualStock_BAG].Visible = false;
+        //        dgv.Columns[header_ActualStock_CTN].Visible = false;
 
-                //DataTable dt = (DataTable)dgv.DataSource;
+        //        //DataTable dt = (DataTable)dgv.DataSource;
 
-                //dt.DefaultView.Sort = header_ItemName + " asc";
-                //dt = dt.DefaultView.ToTable();
-            }
-            else
-            {
-                cmbStockLocation.Enabled = true;
-                dgv.Columns[header_ItemName].Frozen = false;
-                tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 40f);
-                tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 184f);
-                dgv.Columns[header_ActualStock].Visible = false;
-                dgv.Columns[header_StockDiff].Visible = false;
+        //        //dt.DefaultView.Sort = header_ItemName + " asc";
+        //        //dt = dt.DefaultView.ToTable();
+        //    }
+        //    else
+        //    {
+        //        cmbStockLocation.Enabled = true;
+        //        dgv.Columns[header_ItemName].Frozen = false;
+        //        tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 40f);
+        //        tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 184f);
+        //        dgv.Columns[header_ActualStock].Visible = false;
+        //        dgv.Columns[header_StockDiff].Visible = false;
 
-                dgv.Columns[header_StdPacking_Bag].Visible = false;
-                dgv.Columns[header_StdPacking_Ctn].Visible = false;
-                //dgv.Columns[header_StdPacking_String].Visible = false;
-                dgv.Columns[header_ActualStock_PCS].Visible = false;
-                dgv.Columns[header_ActualStock_BAG].Visible = false;
-                dgv.Columns[header_ActualStock_CTN].Visible = false;
+        //        dgv.Columns[header_StdPacking_Bag].Visible = false;
+        //        dgv.Columns[header_StdPacking_Ctn].Visible = false;
+        //        //dgv.Columns[header_StdPacking_String].Visible = false;
+        //        dgv.Columns[header_ActualStock_PCS].Visible = false;
+        //        dgv.Columns[header_ActualStock_BAG].Visible = false;
+        //        dgv.Columns[header_ActualStock_CTN].Visible = false;
 
-                dgv.Columns[header_BalAfter].Visible = true;
+        //        dgv.Columns[header_BalAfter].Visible = true;
 
-                dgv.Columns[header_ProDaysNeeded].Visible = true;
+        //        dgv.Columns[header_ProDaysNeeded].Visible = true;
 
-                stockCheckMode = false;
+        //        stockCheckMode = false;
 
-                btnCancelStockCheck.Visible = false;
+        //        btnCancelStockCheck.Visible = false;
 
-                btnStockCheck.Enabled = true;
+        //        btnStockCheck.Enabled = true;
 
-                btnStockCheck.Text = "Stock Check";
-                lblStockAlert.Text = "Stock Alert";
+        //        btnStockCheck.Text = "Stock Check";
+        //        lblStockAlert.Text = "Stock Alert";
 
-                btnStockRefresh.Visible = true;
-                cmbType.Visible = true;
-                cbInPcsUnit.Visible = true;
-                cbInBagUnit.Visible = true;
+        //        btnStockRefresh.Visible = true;
+        //        cmbType.Visible = true;
+        //        cbInPcsUnit.Visible = true;
+        //        cbInBagUnit.Visible = true;
 
-                //change table 
-                //LoadStockAlert();
-                LoadStockAlert();
+        //        //change table 
+        //        //LoadStockAlert();
+        //        LoadStockAlert();
 
-            }
+        //    }
         }
 
         private void LoadProductionPlanning(string itemCode, string itemName)
@@ -4125,37 +3910,37 @@ namespace FactoryManagementSoftware.UI
 
         private void btnLOAD_Click(object sender, EventArgs e)
         {
-            if (lblStockAlert.Text == "Stock Alert")
-                StockCheckUIMode(true);
-            else
-            {
-                string stockLocation = cmbStockLocation.Text;
+            //if (lblStockAlert.Text == "Stock Alert")
+            //    StockCheckUIMode(true);
+            //else
+            //{
+            //    string stockLocation = cmbStockLocation.Text;
 
-                if(string.IsNullOrEmpty(stockLocation))
-                {
-                    stockLocation = text.Factory_Semenyih;
-                    cmbStockLocation.Text = stockLocation;
+            //    if(string.IsNullOrEmpty(stockLocation))
+            //    {
+            //        stockLocation = text.Factory_Semenyih;
+            //        cmbStockLocation.Text = stockLocation;
 
-                }
+            //    }
 
-                if(stockLocation != "ALL")
-                {
-                    frmInOutEdit frm = new frmInOutEdit((DataTable)dgvStockAlert.DataSource, true, true, stockLocation);
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.ShowDialog();//Item Edit
+            //    if(stockLocation != "ALL")
+            //    {
+            //        frmInOutEdit frm = new frmInOutEdit((DataTable)dgvStockAlert.DataSource, true, true, stockLocation);
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.ShowDialog();//Item Edit
 
-                    if (frmInOutEdit.TrfSuccess)
-                    {
-                        StockCheckUIMode(false);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Stock Tally Location Invalid!");
-                }
+            //        if (frmInOutEdit.TrfSuccess)
+            //        {
+            //            StockCheckUIMode(false);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Stock Tally Location Invalid!");
+            //    }
             
-            }
-            dgvStockAlert.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //}
+            //dgvStockAlert.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
 
@@ -4171,97 +3956,80 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCancelStockCheck_Click(object sender, EventArgs e)
         {
-            if (MessageBox.Show("Cancel will lose all the unsaved changes.\nAre you sure you want to cancel stock check?", "Message",
-                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
-            {
-                StockCheckUIMode(false);
+            //if (MessageBox.Show("Cancel will lose all the unsaved changes.\nAre you sure you want to cancel stock check?", "Message",
+            //                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            //{
+            //    StockCheckUIMode(false);
 
-            }
-            dgvStockAlert.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //}
+            //dgvStockAlert.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
 
         }
 
         private void dgvStockAlert_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
         {
-            DataGridView dgv = dgvStockAlert;
+            //DataGridView dgv = dgvStockAlert;
 
-            if (e.RowIndex != -1 && stockCheckMode)
-            {
-                int col = e.ColumnIndex;
-                int row = e.RowIndex;
+            //if (e.RowIndex != -1 && stockCheckMode)
+            //{
+            //    int col = e.ColumnIndex;
+            //    int row = e.RowIndex;
 
-                if (dgv.Columns[col].Name == header_ActualStock)
-                {
-                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
-                    dgv.Rows[row].Cells[col].Selected = true;
-                    dgv.ReadOnly = false;
-                }
-                else
-                {
-                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-                    dgv.Rows[row].Cells[col].Selected = true;
-                    dgv.ReadOnly = true;
-                }
-            }
+            //    if (dgv.Columns[col].Name == header_ActualStock)
+            //    {
+            //        dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            //        dgv.Rows[row].Cells[col].Selected = true;
+            //        dgv.ReadOnly = false;
+            //    }
+            //    else
+            //    {
+            //        dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            //        dgv.Rows[row].Cells[col].Selected = true;
+            //        dgv.ReadOnly = true;
+            //    }
+            //}
         }
 
         private void dgvStockAlert_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
-            //compare old value with new value
-            DataGridView dgv = dgvStockAlert;
+            ////compare old value with new value
+            //DataGridView dgv = dgvStockAlert;
 
-            int rowIndex = e.RowIndex;
-            int colIndex = e.ColumnIndex;
+            //int rowIndex = e.RowIndex;
+            //int colIndex = e.ColumnIndex;
 
-            int actualStock = int.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out actualStock) ? actualStock : 0;
-            int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value.ToString(), out systemStock) ? systemStock : 0;
+            //int actualStock = int.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out actualStock) ? actualStock : 0;
+            //int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value.ToString(), out systemStock) ? systemStock : 0;
 
-            if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_ActualStock))
-            {
-                int stockDiff = actualStock - systemStock;
+            //if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_ActualStock))
+            //{
+            //    int stockDiff = actualStock - systemStock;
 
-                dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
+            //    dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
 
-                if (stockDiff > 0)
-                {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Blue;
+            //    if (stockDiff > 0)
+            //    {
+            //        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Blue;
 
-                    btnStockCheck.Enabled = true;
-                }
-                else if (stockDiff < 0)
-                {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Red;
-                    btnStockCheck.Enabled = true;
+            //        btnStockCheck.Enabled = true;
+            //    }
+            //    else if (stockDiff < 0)
+            //    {
+            //        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Red;
+            //        btnStockCheck.Enabled = true;
 
-                }
-                else
-                {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Black;
+            //    }
+            //    else
+            //    {
+            //        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Black;
 
-                    btnStockCheck.Enabled = StockDiffExist();
-                }
-            }
+            //        btnStockCheck.Enabled = StockDiffExist();
+            //    }
+            //}
         }
 
 
-        private bool StockDiffExist()
-        {
-            if (stockCheckMode)
-            {
-                DataTable dt = (DataTable)dgvStockAlert.DataSource;
-
-                foreach (DataRow row in dt.Rows)
-                {
-                    string stockDiff = row[header_StockDiff].ToString();
-
-                    if (!string.IsNullOrEmpty(stockDiff) && stockDiff != "0")
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+       
 
         private void Column1_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -4280,41 +4048,7 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private void dgvStockAlert_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
-        {
-            try
-            {
-
-                DataGridView dgv = dgvStockAlert;
-
-                e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
-                e.Control.KeyPress -= new KeyPressEventHandler(Column2_KeyPress);
-
-                int colIndex = dgv.CurrentCell.ColumnIndex;
-                int rowIndex = dgv.CurrentCell.RowIndex;
-
-                if (dgv.Columns[colIndex].Name.Contains(header_ActualStock) && stockCheckMode) //Desired Column
-                {
-                    if (e.Control is TextBox tb)
-                    {
-                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
-                    }
-                }
-                else
-                {
-
-                    if (e.Control is TextBox tb)
-                    {
-                        tb.KeyPress += new KeyPressEventHandler(Column2_KeyPress);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
-        }
-
+    
         private void tableLayoutPanel17_Paint(object sender, PaintEventArgs e)
         {
 
@@ -4332,36 +4066,7 @@ namespace FactoryManagementSoftware.UI
             LoadPendingSummary();
         }
 
-        private void dgvPartsAlert_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            DataGridView dgv = dgvUsage;
-
-            dgv.SuspendLayout();
-            int row = e.RowIndex;
-            int col = e.ColumnIndex;
-
-            if (dgv.Columns[col].Name == header_BalAfter)
-            {
-                if (dgv.Rows[row].Cells[col].Value != null)
-                {
-                    if (!string.IsNullOrEmpty(dgv.Rows[row].Cells[col].Value.ToString()))
-                    {
-                        float num = dgv.Rows[row].Cells[col].Value == DBNull.Value ? 0 : Convert.ToSingle(dgv.Rows[row].Cells[col].Value.ToString());
-
-                        if (num < 0)
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Red;
-                        }
-                        else
-                        {
-                            dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
-                        }
-                    }
-                }
-            }
-
-            dgv.ResumeLayout();
-        }
+        
 
         private void dgvStockAlert_Sorted(object sender, EventArgs e)
         {
@@ -4371,7 +4076,7 @@ namespace FactoryManagementSoftware.UI
 
             //dgvStockAlert.DataSource = dt;
 
-            dgvStockAlert.ClearSelection();
+            //dgvStockAlert.ClearSelection();
         }
 
         private void dtpDate1_ValueChanged(object sender, EventArgs e)
@@ -4394,8 +4099,8 @@ namespace FactoryManagementSoftware.UI
         {
             
 
-            dgvStockAlert.ClearSelection();
-            dgvUsage.ClearSelection();
+            //dgvStockAlert.ClearSelection();
+            //dgvUsage.ClearSelection();
         }
 
         private void cbParts_CheckedChanged(object sender, EventArgs e)
@@ -4416,241 +4121,9 @@ namespace FactoryManagementSoftware.UI
                 LoadUsage();
         }
 
-        private void dgvStockAlert_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if(lblStockAlert.Text == "Stock Alert")
-            {
-                DataGridView dgv = dgvStockAlert;
 
-                int rowIndex = dgv.CurrentCell.RowIndex;
+   
 
-                if (rowIndex >= 0 )
-                {
-                    try
-                    {
-                        string itemCode = dgv.Rows[rowIndex].Cells[header_ItemCode].Value.ToString();
-                        string itemName = dgv.Rows[rowIndex].Cells[header_ItemName].Value.ToString();
-
-                        if(tool.getItemCat(itemCode) == text.Cat_Part)
-                        {
-                            LoadProductionPlanning(itemCode, itemName);
-
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        tool.saveToTextAndMessageToUser(ex);
-                    }
-                }
-            }
-           
-        }
-
-        private void lblMonthlyDelivered_Click(object sender, EventArgs e)
-        {
-            if(!DeliveredBags_FullScreen)
-            {
-                int count = Application.OpenForms.OfType<frmSBBDeliveredReport>().Count();
-
-                if (count == 1)
-                {
-                    //Form is already open
-                    Application.OpenForms.OfType<frmSBBDeliveredReport>().First().BringToFront();
-                    Application.OpenForms.OfType<frmSBBDeliveredReport>().First().WindowState = FormWindowState.Normal;
-                }
-                else
-                {
-                    // Form is not open
-                    frmSBBDeliveredReport frm = new frmSBBDeliveredReport
-                    {
-                        StartPosition = FormStartPosition.CenterScreen
-                    };
-
-                    //frm.WindowState = FormWindowState.Maximized;
-
-
-                    frm.Show();
-
-                    MainDashboard.SBBDeliveredFormOpen = true;
-                }
-
-            }
-
-        }
-
-        private void cmbDataSource_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(Loaded)
-            {
-                RefreshPage();
-            }
-        }
-
-        private void MonthlyDeliveredBagFullScreen()
-        {
-            //if(DeliveredBags_FullScreen)
-            //{
-            //    btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_exit_full_screen_64;
-
-            //    tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-            //    tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 0f);
-
-            //    tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Percent, 0f);
-            //    tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
-            //    tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 0f);
-
-
-            //    tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Percent, 100f);
-            //    tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Absolute, 0);
-
-            //    DeliveredBag_FontSize = 250;
-
-            //    lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
-
-            //    tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
-            //    tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
-            //    tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
-
-            //    tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-            //    tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
-
-            //    //btnFullScreenRefresh.Visible = true;
-            //}
-            //else
-            //{
-            //    btnDeliveredFullScreen.BackgroundImage = Properties.Resources.icons8_toggle_full_screen_50;
-
-            //    tlpMonthlyDeliveredBag.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 300f);
-            //    tlpMonthlyDeliveredBag.ColumnStyles[1] = new ColumnStyle(SizeType.Percent, 100f);
-
-            //    tlpDashBoard.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
-            //    tlpDashBoard.RowStyles[1] = new RowStyle(SizeType.Absolute, 270f);
-            //    tlpDashBoard.RowStyles[2] = new RowStyle(SizeType.Percent, 100f);
-
-            //    tlpDeliveredQtyAndDetail.RowStyles[0] = new RowStyle(SizeType.Absolute, 163f);
-            //    tlpDeliveredQtyAndDetail.RowStyles[1] = new RowStyle(SizeType.Percent, 100f);
-
-            //    DeliveredBag_FontSize = 60;
-            //    lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
-
-            //    tlpSummary.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 230f);
-            //    tlpSummary.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 230f);
-            //    tlpSummary.ColumnStyles[2] = new ColumnStyle(SizeType.Percent, 100f);
-
-            //    tlpSBB.ColumnStyles[0] = new ColumnStyle(SizeType.Percent, 100f);
-            //    tlpSBB.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 372f);
-
-            //    //btnFullScreenRefresh.Visible = false;
-
-            //}
-        }
-
-        private void btnDeliveredFullScreen_Click(object sender, EventArgs e)
-        {
-            //if(DeliveredBags_FullScreen)
-            //{
-            //    DeliveredBags_FullScreen = false;
-
-              
-            //}
-            //else
-            //{
-            //    DeliveredBags_FullScreen = true;
-
-            //}
-
-            //MonthlyDeliveredBagFullScreen();
-        }
-
-        private void btnFullScreenRefresh_Click(object sender, EventArgs e)
-        {
-            NewInitialDBData();
-            LoadPendingSummary();
-        }
-
-        private void label12_Click(object sender, EventArgs e)
-        {
-           
-
-            frmChangeDate frm = new frmChangeDate(MonthlyDateStart,MonthlyDateEnd);
-            frm.StartPosition = FormStartPosition.CenterScreen;
-            frm.ShowDialog();
-
-            if (frmChangeDate.dateChanged)
-            {
-                frmLoading.ShowLoadingScreen();
-                InitialMonthlyDate();
-                NewInitialDBData();
-                LoadPendingSummary();
-                frmLoading.CloseForm();
-
-            }
-
-        }
-
-        private void label13_Click(object sender, EventArgs e)
-        {
-            if(DeliveredBags_FullScreen)
-            {
-                DeliveredBag_FontSize += 20;
-
-            }
-            else
-            {
-                DeliveredBag_FontSize += 5;
-
-            }
-
-            lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
-        }
-
-        private void label19_Click(object sender, EventArgs e)
-        {
-            if (DeliveredBags_FullScreen)
-            {
-                DeliveredBag_FontSize -= 20;
-
-
-            }
-            else
-            {
-                DeliveredBag_FontSize -= 5;
-
-
-            }
-            lblMonthlyDelivered.Font = new Font("Segoe UI", DeliveredBag_FontSize, FontStyle.Regular);
-
-        }
-
-        private void cmbStockLocation_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(Loaded)
-            {
-                string stockLocation = cmbStockLocation.Text;
-
-                if (stockLocation.Equals("ALL"))
-                {
-                    btnStockCheck.Enabled = false;
-                }
-                else
-                {
-                    btnStockCheck.Enabled = true;
-                }
-
-
-                header_Stock = "STOCK ";
-                if (string.IsNullOrEmpty(stockLocation))
-                {
-                    stockLocation = text.Factory_Semenyih;
-                    cmbStockLocation.Text = text.Factory_Semenyih;
-
-                }
-
-                header_Stock += stockLocation + " (PCS / KG)";
-
-                LoadStockAlert();//166
-            }
-        }
 
         private void btnCustomer_Click(object sender, EventArgs e)
         {
@@ -4670,6 +4143,31 @@ namespace FactoryManagementSoftware.UI
 
         private void guna2GradientPanel5_Paint(object sender, PaintEventArgs e)
         {
+
+        }
+
+        private void button2_Click_3(object sender, EventArgs e)
+        {
+            int count = Application.OpenForms.OfType<frmDOManagement>().Count();
+
+
+            if (count == 1)
+            {
+                //Form is already open
+                Application.OpenForms.OfType<frmDOManagement>().First().BringToFront();
+                Application.OpenForms.OfType<frmDOManagement>().First().WindowState = FormWindowState.Normal;
+            }
+            else
+            {
+                // Form is not open
+                frmDOManagement frm = new frmDOManagement
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+
+                frm.Show();
+            }
 
         }
     }

@@ -22,12 +22,10 @@ namespace FactoryManagementSoftware.Module
         public string System { get; } = "System";
 
         //password
-        public string PW_TopManagement { get; } = "Safplas19892020!";
-        public string PW_UnlockPmmaStock { get; } = "038989!";
-        public string PW_UnlockSBBCustomerDiscount { get; } = "038989";
-        public string PW_UnlockSBBSalesReport { get; } = "Safplas038989!";
-
-
+        public string PW_Level_1 { get; } = "038989";
+        public string PW_Level_2 { get; } = "038989!";
+        public string PW_Level_3 { get; } = "Safplas038989!";
+        public string PW_Level_4 { get; } = "Safplas19892020!";
 
         #region Admin
         public string Terminated { get; } = "Terminated";
@@ -455,7 +453,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_Order_Requesting { get; } = "ORDER REQUESTING";
 
 
-        public string Header_Unit { get; } = "Unit";
+        public string Header_Unit { get; } = "UOM";
         public string Header_SearchMode { get; } = "SearchMode";
         public string Header_DescriptionIncludeCategory { get; } = "DescriptionIncludeCategory";
         public string Header_DescriptionIncludePackaging { get; } = "DescriptionIncludePackaging";

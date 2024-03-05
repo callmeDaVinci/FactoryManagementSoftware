@@ -26,5 +26,9 @@ namespace FactoryManagementSoftware.BLL
         public bool show_remark_in_do { get; set; }
         public DateTime updated_date { get; set; }
         public int updated_by { get; set; }
+
+        public string old_do { get; set; }
+        public string new_do { get; set; }
+
     }
 }

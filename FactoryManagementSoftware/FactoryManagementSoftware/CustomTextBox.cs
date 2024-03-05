@@ -123,6 +123,67 @@ namespace FactoryManagementSoftware
             if (Text == _formerValue)
                 return;
 
+            _formerValue = this.Text;
+            string word = this.Text;
+
+            if (_values != null && word.Length > 0)
+            {
+                var searchTerms = word.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string[] matches = Array.FindAll(_values, x =>
+                {
+                    if (x == null) return false;
+                    var text = x.ToLower();
+
+                    // Ensure all search terms are present in the text
+                    return searchTerms.All(term => text.Contains(term));
+                });
+
+                if (matches.Length > 0)
+                {
+                    ShowListBox();
+                    _listBox.BeginUpdate();
+                    _listBox.Items.Clear();
+                    Array.ForEach(matches, x => _listBox.Items.Add(x));
+                    _listBox.SelectedIndex = 0;
+                    _listBox.Height = 0;
+                    _listBox.Width = 0;
+                    Focus();
+                    using (Graphics graphics = _listBox.CreateGraphics())
+                    {
+                        for (int i = 0; i < _listBox.Items.Count && i < 20; i++)
+                        {
+                            _listBox.Height += _listBox.GetItemHeight(i);
+                        }
+                        int maxWidth = 0;
+                        foreach (var item in _listBox.Items)
+                        {
+                            int itemWidth = (int)graphics.MeasureString(item.ToString() + "_", _listBox.Font).Width;
+                            maxWidth = Math.Max(maxWidth, itemWidth);
+                        }
+                        _listBox.Width = Math.Max(this.Width, maxWidth);
+                    }
+                    _listBox.EndUpdate();
+                }
+                else
+                {
+                    ResetListBox();
+                }
+            }
+            else
+            {
+                ResetListBox();
+            }
+        }
+
+
+
+
+        private void OLDUpdateListBox()
+        {
+            if (Text == _formerValue)
+                return;
+
             //wait(1000);
 
             _formerValue = this.Text;
@@ -131,7 +192,7 @@ namespace FactoryManagementSoftware
             if (_values != null && word.Length > 0)
             {
                 string[] matches = Array.FindAll(_values,
-     x => x != null && x.ToLower().Contains(word.ToLower()));
+                x => x != null && x.ToLower().Contains(word.ToLower()));
 
                 if (matches.Length > 0)
                 {
@@ -177,7 +238,6 @@ namespace FactoryManagementSoftware
                 ResetListBox();
             }
         }
-
         public void wait(int milliseconds)
         {
             var timer1 = new Timer();

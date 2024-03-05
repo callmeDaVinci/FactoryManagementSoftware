@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpInventory = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.btnBack = new System.Windows.Forms.Button();
@@ -37,6 +37,7 @@
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.label2 = new System.Windows.Forms.Label();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblDiscountRate = new System.Windows.Forms.Label();
             this.cbShowRemovedDataOnly = new System.Windows.Forms.CheckBox();
             this.label1 = new System.Windows.Forms.Label();
             this.tlptest = new System.Windows.Forms.TableLayoutPanel();
@@ -94,7 +95,6 @@
             this.errorProvider7 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider8 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider9 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.lblDiscountRate = new System.Windows.Forms.Label();
             this.tlpInventory.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
@@ -208,10 +208,10 @@
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(535, 17);
+            this.label2.Location = new System.Drawing.Point(535, 19);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(121, 19);
+            this.label2.Size = new System.Drawing.Size(111, 17);
             this.label2.TabIndex = 172;
             this.label2.Text = "BILLING ADDRESS";
             // 
@@ -232,6 +232,21 @@
             this.tableLayoutPanel11.Size = new System.Drawing.Size(517, 40);
             this.tableLayoutPanel11.TabIndex = 172;
             // 
+            // lblDiscountRate
+            // 
+            this.lblDiscountRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblDiscountRate.AutoSize = true;
+            this.lblDiscountRate.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblDiscountRate.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDiscountRate.ForeColor = System.Drawing.Color.Blue;
+            this.lblDiscountRate.Location = new System.Drawing.Point(118, 23);
+            this.lblDiscountRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
+            this.lblDiscountRate.Name = "lblDiscountRate";
+            this.lblDiscountRate.Size = new System.Drawing.Size(79, 12);
+            this.lblDiscountRate.TabIndex = 172;
+            this.lblDiscountRate.Text = "DISCOUNT RATE";
+            this.lblDiscountRate.Click += new System.EventHandler(this.lblDiscountRate_Click);
+            // 
             // cbShowRemovedDataOnly
             // 
             this.cbShowRemovedDataOnly.AutoSize = true;
@@ -250,10 +265,10 @@
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(2, 16);
+            this.label1.Location = new System.Drawing.Point(2, 18);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(109, 19);
+            this.label1.Size = new System.Drawing.Size(102, 17);
             this.label1.TabIndex = 166;
             this.label1.Text = "CUSTOMER LIST";
             // 
@@ -340,9 +355,9 @@
             this.lblEditRoute.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblEditRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblEditRoute.ForeColor = System.Drawing.Color.Blue;
-            this.lblEditRoute.Location = new System.Drawing.Point(295, 6);
+            this.lblEditRoute.Location = new System.Drawing.Point(300, 8);
             this.lblEditRoute.Name = "lblEditRoute";
-            this.lblEditRoute.Size = new System.Drawing.Size(84, 19);
+            this.lblEditRoute.Size = new System.Drawing.Size(79, 17);
             this.lblEditRoute.TabIndex = 173;
             this.lblEditRoute.Text = "EDIT ROUTE";
             this.lblEditRoute.Visible = false;
@@ -352,9 +367,9 @@
             this.lblRoute.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRoute.AutoSize = true;
             this.lblRoute.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRoute.Location = new System.Drawing.Point(3, 6);
+            this.lblRoute.Location = new System.Drawing.Point(3, 8);
             this.lblRoute.Name = "lblRoute";
-            this.lblRoute.Size = new System.Drawing.Size(52, 19);
+            this.lblRoute.Size = new System.Drawing.Size(49, 17);
             this.lblRoute.TabIndex = 172;
             this.lblRoute.Text = "ROUTE";
             // 
@@ -363,9 +378,9 @@
             this.lblCountry.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCountry.AutoSize = true;
             this.lblCountry.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCountry.Location = new System.Drawing.Point(395, 6);
+            this.lblCountry.Location = new System.Drawing.Point(395, 8);
             this.lblCountry.Name = "lblCountry";
-            this.lblCountry.Size = new System.Drawing.Size(78, 19);
+            this.lblCountry.Size = new System.Drawing.Size(72, 17);
             this.lblCountry.TabIndex = 14;
             this.lblCountry.Text = "COUNTRY*";
             // 
@@ -432,9 +447,9 @@
             this.lblWebsite.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblWebsite.AutoSize = true;
             this.lblWebsite.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblWebsite.Location = new System.Drawing.Point(395, 6);
+            this.lblWebsite.Location = new System.Drawing.Point(395, 8);
             this.lblWebsite.Name = "lblWebsite";
-            this.lblWebsite.Size = new System.Drawing.Size(62, 19);
+            this.lblWebsite.Size = new System.Drawing.Size(58, 17);
             this.lblWebsite.TabIndex = 24;
             this.lblWebsite.Text = "WEBSITE";
             // 
@@ -443,9 +458,9 @@
             this.lblEmail.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEmail.AutoSize = true;
             this.lblEmail.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblEmail.Location = new System.Drawing.Point(3, 6);
+            this.lblEmail.Location = new System.Drawing.Point(3, 8);
             this.lblEmail.Name = "lblEmail";
-            this.lblEmail.Size = new System.Drawing.Size(55, 19);
+            this.lblEmail.Size = new System.Drawing.Size(49, 17);
             this.lblEmail.TabIndex = 22;
             this.lblEmail.Text = "EMAIL*";
             // 
@@ -477,9 +492,9 @@
             this.lblShortName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblShortName.AutoSize = true;
             this.lblShortName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblShortName.Location = new System.Drawing.Point(465, 6);
+            this.lblShortName.Location = new System.Drawing.Point(465, 8);
             this.lblShortName.Name = "lblShortName";
-            this.lblShortName.Size = new System.Drawing.Size(94, 19);
+            this.lblShortName.Size = new System.Drawing.Size(89, 17);
             this.lblShortName.TabIndex = 172;
             this.lblShortName.Text = "SHORT NAME";
             // 
@@ -499,9 +514,9 @@
             this.lblName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblName.AutoSize = true;
             this.lblName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblName.Location = new System.Drawing.Point(3, 6);
+            this.lblName.Location = new System.Drawing.Point(3, 8);
             this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(54, 19);
+            this.lblName.Size = new System.Drawing.Size(50, 17);
             this.lblName.TabIndex = 0;
             this.lblName.Text = "NAME*";
             // 
@@ -530,9 +545,9 @@
             this.lblRegistrationNo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblRegistrationNo.AutoSize = true;
             this.lblRegistrationNo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRegistrationNo.Location = new System.Drawing.Point(625, 6);
+            this.lblRegistrationNo.Location = new System.Drawing.Point(625, 8);
             this.lblRegistrationNo.Name = "lblRegistrationNo";
-            this.lblRegistrationNo.Size = new System.Drawing.Size(125, 19);
+            this.lblRegistrationNo.Size = new System.Drawing.Size(118, 17);
             this.lblRegistrationNo.TabIndex = 2;
             this.lblRegistrationNo.Text = "REGISTRATION NO";
             // 
@@ -564,9 +579,9 @@
             this.lblPhone1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPhone1.AutoSize = true;
             this.lblPhone1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone1.Location = new System.Drawing.Point(3, 6);
+            this.lblPhone1.Location = new System.Drawing.Point(3, 8);
             this.lblPhone1.Name = "lblPhone1";
-            this.lblPhone1.Size = new System.Drawing.Size(67, 19);
+            this.lblPhone1.Size = new System.Drawing.Size(62, 17);
             this.lblPhone1.TabIndex = 16;
             this.lblPhone1.Text = "PHONE 1";
             // 
@@ -575,9 +590,9 @@
             this.lblPhone2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPhone2.AutoSize = true;
             this.lblPhone2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPhone2.Location = new System.Drawing.Point(261, 6);
+            this.lblPhone2.Location = new System.Drawing.Point(261, 8);
             this.lblPhone2.Name = "lblPhone2";
-            this.lblPhone2.Size = new System.Drawing.Size(67, 19);
+            this.lblPhone2.Size = new System.Drawing.Size(62, 17);
             this.lblPhone2.TabIndex = 18;
             this.lblPhone2.Text = "PHONE 2";
             // 
@@ -586,9 +601,9 @@
             this.lblFax.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblFax.AutoSize = true;
             this.lblFax.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFax.Location = new System.Drawing.Point(519, 6);
+            this.lblFax.Location = new System.Drawing.Point(519, 8);
             this.lblFax.Name = "lblFax";
-            this.lblFax.Size = new System.Drawing.Size(32, 19);
+            this.lblFax.Size = new System.Drawing.Size(29, 17);
             this.lblFax.TabIndex = 20;
             this.lblFax.Text = "FAX";
             // 
@@ -665,9 +680,9 @@
             this.lblState.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblState.AutoSize = true;
             this.lblState.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblState.Location = new System.Drawing.Point(395, 126);
+            this.lblState.Location = new System.Drawing.Point(395, 128);
             this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(50, 19);
+            this.lblState.Size = new System.Drawing.Size(47, 17);
             this.lblState.TabIndex = 10;
             this.lblState.Text = "STATE*";
             // 
@@ -676,9 +691,9 @@
             this.lblCity.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCity.AutoSize = true;
             this.lblCity.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCity.Location = new System.Drawing.Point(395, 66);
+            this.lblCity.Location = new System.Drawing.Point(395, 68);
             this.lblCity.Name = "lblCity";
-            this.lblCity.Size = new System.Drawing.Size(43, 19);
+            this.lblCity.Size = new System.Drawing.Size(38, 17);
             this.lblCity.TabIndex = 8;
             this.lblCity.Text = "CITY*";
             // 
@@ -696,9 +711,9 @@
             this.lblAddress3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress3.AutoSize = true;
             this.lblAddress3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress3.Location = new System.Drawing.Point(3, 126);
+            this.lblAddress3.Location = new System.Drawing.Point(3, 128);
             this.lblAddress3.Name = "lblAddress3";
-            this.lblAddress3.Size = new System.Drawing.Size(190, 19);
+            this.lblAddress3.Size = new System.Drawing.Size(177, 17);
             this.lblAddress3.TabIndex = 205;
             this.lblAddress3.Text = "ADDRESS LINE 3 (OPTIONAL)";
             // 
@@ -707,9 +722,9 @@
             this.lblPostalCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblPostalCode.AutoSize = true;
             this.lblPostalCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblPostalCode.Location = new System.Drawing.Point(395, 6);
+            this.lblPostalCode.Location = new System.Drawing.Point(395, 8);
             this.lblPostalCode.Name = "lblPostalCode";
-            this.lblPostalCode.Size = new System.Drawing.Size(104, 19);
+            this.lblPostalCode.Size = new System.Drawing.Size(95, 17);
             this.lblPostalCode.TabIndex = 12;
             this.lblPostalCode.Text = "POSTAL CODE*";
             // 
@@ -727,9 +742,9 @@
             this.lblAddress2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress2.AutoSize = true;
             this.lblAddress2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress2.Location = new System.Drawing.Point(3, 66);
+            this.lblAddress2.Location = new System.Drawing.Point(3, 68);
             this.lblAddress2.Name = "lblAddress2";
-            this.lblAddress2.Size = new System.Drawing.Size(190, 19);
+            this.lblAddress2.Size = new System.Drawing.Size(177, 17);
             this.lblAddress2.TabIndex = 205;
             this.lblAddress2.Text = "ADDRESS LINE 2 (OPTIONAL)";
             // 
@@ -738,9 +753,9 @@
             this.lblAddress1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAddress1.AutoSize = true;
             this.lblAddress1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblAddress1.Location = new System.Drawing.Point(3, 6);
+            this.lblAddress1.Location = new System.Drawing.Point(3, 8);
             this.lblAddress1.Name = "lblAddress1";
-            this.lblAddress1.Size = new System.Drawing.Size(117, 19);
+            this.lblAddress1.Size = new System.Drawing.Size(109, 17);
             this.lblAddress1.TabIndex = 204;
             this.lblAddress1.Text = "ADDRESS LINE 1*";
             // 
@@ -850,14 +865,14 @@
             this.dgvCustomer.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvCustomer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvCustomer.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvCustomer.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvCustomer.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvCustomer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvCustomer.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvCustomer.Location = new System.Drawing.Point(3, 1);
@@ -865,6 +880,7 @@
             this.dgvCustomer.Name = "dgvCustomer";
             this.dgvCustomer.ReadOnly = true;
             this.dgvCustomer.RowHeadersVisible = false;
+            this.dgvCustomer.RowHeadersWidth = 51;
             this.dgvCustomer.RowTemplate.Height = 50;
             this.dgvCustomer.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvCustomer.Size = new System.Drawing.Size(517, 586);
@@ -907,21 +923,6 @@
             // errorProvider9
             // 
             this.errorProvider9.ContainerControl = this;
-            // 
-            // lblDiscountRate
-            // 
-            this.lblDiscountRate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblDiscountRate.AutoSize = true;
-            this.lblDiscountRate.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblDiscountRate.Font = new System.Drawing.Font("Segoe UI", 6F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblDiscountRate.ForeColor = System.Drawing.Color.Blue;
-            this.lblDiscountRate.Location = new System.Drawing.Point(118, 23);
-            this.lblDiscountRate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 10);
-            this.lblDiscountRate.Name = "lblDiscountRate";
-            this.lblDiscountRate.Size = new System.Drawing.Size(79, 12);
-            this.lblDiscountRate.TabIndex = 172;
-            this.lblDiscountRate.Text = "DISCOUNT RATE";
-            this.lblDiscountRate.Click += new System.EventHandler(this.lblDiscountRate_Click);
             // 
             // frmSPPCustomerEdit
             // 

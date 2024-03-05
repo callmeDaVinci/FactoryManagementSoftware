@@ -636,7 +636,7 @@ namespace FactoryManagementSoftware.UI
                 if (LastTimeOfUnlockSalesReport == DateTime.MaxValue || duration.Minutes >= 1)
                 {
                     //key in password
-                    frmVerification frm = new frmVerification(text.PW_UnlockSBBSalesReport)
+                    frmVerification frm = new frmVerification(text.PW_Level_3)
                     {
                         StartPosition = FormStartPosition.CenterScreen
                     };

@@ -26,6 +26,7 @@ namespace FactoryManagementSoftware
             //Application.Run(new frmMaterialAlertNotice());
 
             //Application.Run(new frmDOManagement());
+
             //Application.Run(new frmDOEditing());
 
             //Application.Run(new frmStockCountManagement());
@@ -34,9 +35,9 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmReadSemenyihData());
 
-            //Application.Run(new MainDashboard(1));
+            Application.Run(new MainDashboard(1));
 
-            Application.Run(new frmLogIn());
+            //Application.Run(new frmLogIn());
 
         }
 

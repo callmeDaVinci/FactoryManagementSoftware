@@ -841,7 +841,7 @@ namespace FactoryManagementSoftware.UI
                         if (dialogResult == DialogResult.Yes)
                         {
                             //password
-                            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
+                            frmVerification frm = new frmVerification(text.PW_Level_1)
                             {
                                 StartPosition = FormStartPosition.CenterScreen
                             };
@@ -1515,7 +1515,7 @@ namespace FactoryManagementSoftware.UI
             if(showQuotationData)
             {
                 //request password
-                frmVerification frm = new frmVerification(text.PW_TopManagement)
+                frmVerification frm = new frmVerification(text.PW_Level_4)
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };

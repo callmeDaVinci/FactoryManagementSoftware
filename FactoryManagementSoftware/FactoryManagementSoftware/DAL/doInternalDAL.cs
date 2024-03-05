@@ -427,7 +427,7 @@ namespace FactoryManagementSoftware.DAL
 
         }
 
-        public bool UpdateDoNo(internalDOBLL u)
+        public bool UpdateDoNoAndStatus(internalDOBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -457,6 +457,55 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@isProcessing", u.isProcessing);
                 cmd.Parameters.AddWithValue("@isCompleted", u.isCompleted);
                 cmd.Parameters.AddWithValue("@isCancelled", u.isCancelled);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool UpdateDoNo(internalDOBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_internal_do
+                            SET "
+                              + DoNoString + "=@do_no_string,"
+                              + updatedDate + "=@updated_date,"
+                              + updatedBy + "=@updated_by" +
+                              " WHERE tbl_code = @tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@do_no_string", u.do_no_string);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 

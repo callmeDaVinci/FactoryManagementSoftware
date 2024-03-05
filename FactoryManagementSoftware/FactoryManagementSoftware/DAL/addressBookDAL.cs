@@ -93,9 +93,9 @@ namespace FactoryManagementSoftware.DAL
                             contact_name_1 = "Vincent",
                             contact_number_2 = "",
                             contact_name_2 = "",
-                            email_address = "safetyplastics.my@gmail.com",
+                            email_address = "sales@safetyplastics.com.my",
                             website = "www.safetyplastic.com.my",
-                            delivery_method_remark = "In-House",
+                            delivery_method_remark = "In-House Delivery",
                             remark = "",
                             isRemoved = false,
                             updated_by = 1, // Assume an admin or system ID
@@ -125,7 +125,7 @@ namespace FactoryManagementSoftware.DAL
                             contact_name_2 = "",
                             email_address = "safety_plastic@yahoo.com",
                             website = "www.safetyplastic.com.my",
-                            delivery_method_remark = "In-House",
+                            delivery_method_remark = "In-House Delivery",
                             remark = "",
                             isRemoved = false,
                             updated_by = 1, // Assume an admin or system ID

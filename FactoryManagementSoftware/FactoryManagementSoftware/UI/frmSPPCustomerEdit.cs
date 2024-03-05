@@ -789,7 +789,7 @@ namespace FactoryManagementSoftware.UI
         {
 
             //password
-            frmVerification frm = new frmVerification(text.PW_UnlockSBBCustomerDiscount)
+            frmVerification frm = new frmVerification(text.PW_Level_1)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };

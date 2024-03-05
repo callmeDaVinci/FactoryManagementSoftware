@@ -422,7 +422,45 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool UpdateLastNumber(doFormatBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
 
+            try
+            {
+                String sql = @"UPDATE tbl_do_format SET "
+                            + lastNumber + "=@last_number, "
+                            + updatedDate + "=@updated_date, "
+                            + updatedBy + "=@updated_by "
+                            + "WHERE " + tblCode + "=@tbl_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@last_number", u.last_number);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                // If the query is executed successfully then the rows value > 0
+                isSuccess = rows > 0;
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                // Close the connection
+                conn.Close();
+            }
+
+            return isSuccess;
+        }
         #endregion
 
         #region Remove

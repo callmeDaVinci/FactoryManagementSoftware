@@ -11,6 +11,7 @@ using System.Threading;
 using Syncfusion.XlsIO.Parser.Biff_Records;
 using Guna.UI.WinForms;
 using System.Configuration;
+using Syncfusion.XlsIO;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -1251,10 +1252,7 @@ namespace FactoryManagementSoftware.UI
 
         private void txtNumericWithDecimal_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back & e.KeyChar != '.')
-            {
-                e.Handled = true;
-            }
+
         }
 
         private void totalQty_KeyPress(object sender, KeyPressEventArgs e)
@@ -1323,12 +1321,18 @@ namespace FactoryManagementSoftware.UI
             string boxUnit = string.IsNullOrEmpty(txtBoxUnit.Text) ? "ctn" : txtBoxUnit.Text;
             string pcsUnit = string.IsNullOrEmpty(txtTotalQtyUnit.Text) ? "pcs" : txtTotalQtyUnit.Text;
 
+            // Correctly handle pluralization, including cases where qty is 1 but unit ends with 's'
+            boxUnit = (boxQty == 1 && boxUnit.EndsWith("s")) ? boxUnit.TrimEnd('s') : (boxQty > 1 && !boxUnit.EndsWith("s") ? boxUnit + "s" : boxUnit);
+            pcsUnit = (qtyPerBox == 1 && pcsUnit.EndsWith("s")) ? pcsUnit.TrimEnd('s') : (qtyPerBox > 1  && !pcsUnit.EndsWith("s") ? pcsUnit + "s" : pcsUnit);
+           
             // Construct the packaging info string
             string packagingInfo = $"{qtyPerBox}{pcsUnit} x {boxQty}{boxUnit}";
 
             // Add balance part if balanceQty is not zero
             if (balanceQty > 0)
             {
+                pcsUnit = (balanceQty == 1 && pcsUnit.EndsWith("s")) ? pcsUnit.TrimEnd('s') : (balanceQty > 1 && !pcsUnit.EndsWith("s") ? pcsUnit + "s" : pcsUnit);
+
                 packagingInfo += $" + bal. {balanceQty}{pcsUnit}";
             }
 
@@ -1376,31 +1380,34 @@ namespace FactoryManagementSoftware.UI
         {
             string previewDescription = "";
 
+            string itemDescription = txtItemDescription.Text;
+
             //get category info & item name
-            if (cbItemSearch.Checked && !string.IsNullOrEmpty(txtItemDescription.Text))
+            if (cbItemSearch.Checked && !string.IsNullOrEmpty(itemDescription))
             {
-                if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT)
+                if (itemDescription == ITEM_SEARCH_DEFAULT_TEXT)
                 {
                     previewDescription += "[PLEASE SEARCH A ITEM]";
                 }
                 else
                 {
+                   
                     if (!cbDescriptionIncludeCategory.Checked)
                     {
                         if(cbReplaceCartonWithPackaging.Checked && ITEM_CATEGORY.ToUpper().Contains(text.Cat_Carton.ToUpper()))
                         {
-                            previewDescription += txtItemDescription.Text.Replace($"[Packaging] ", "");
+                            previewDescription += itemDescription.Replace($"[Packaging] ", "");
 
                         }
                         else
                         {
-                            previewDescription += txtItemDescription.Text.Replace($"[{ITEM_CATEGORY}] ", "");
+                            previewDescription += itemDescription.Replace($"[{ITEM_CATEGORY}] ", "");
 
                         }
                     }
                     else
                     {
-                        previewDescription += txtItemDescription.Text;
+                        previewDescription += itemDescription;
 
                         if (cbReplaceCartonWithPackaging.Checked && ITEM_CATEGORY.ToUpper().Contains(text.Cat_Carton.ToUpper()))
                         {
@@ -1414,15 +1421,21 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
+                if (itemDescription == ITEM_CUSTOM_DEFAULT_TEXT)
                 {
                     previewDescription += "[PLEASE FILL IN ITEM'S DESCRIPTION]";
                 }
                 else
                 {
-                    previewDescription += txtItemDescription.Text;
+                    previewDescription += itemDescription;
                 }
             }
+
+            if (itemDescription.Contains(" - (" + ITEM_CODE + ")"))
+            {
+                previewDescription = previewDescription.Replace(" - (" + ITEM_CODE + ")", "");
+            }
+
 
             //get packaging info
             if (txtTotalQty.Text != "0" && !string.IsNullOrEmpty(txtTotalQty.Text) && cbDescriptionIncludePackaging.Checked && IsTotalQtyCorrect())
@@ -1498,18 +1511,18 @@ namespace FactoryManagementSoftware.UI
             if(itemCategory.ToUpper() == text.Cat_RawMat.ToUpper())
             {
                 qtyUnit = "kg";
-                boxUnit = "bag(s)";
+                boxUnit = "bag";
                 txtQtyPerBox.Text = "25";
             }
             else if (itemCategory.ToUpper() == text.Cat_SubMat.ToUpper() || itemCategory.ToUpper() == text.Cat_Mould.ToUpper() || itemCategory.ToUpper() == text.Cat_Carton.ToUpper())
             {
                 qtyUnit = "pcs";
-                boxUnit = "";
+                boxUnit = "ctn";
                 txtQtyPerBox.Text = "";
             }
 
             txtTotalQtyUnit.Text = qtyUnit;
-            txtBoxUnit.Text = boxUnit;
+            txtBoxUnit.Text = String.IsNullOrEmpty(boxUnit)? "ctn" : boxUnit;
             lblQty.Text = "Qty(" + qtyUnit + ")";
         }
 
@@ -1745,11 +1758,13 @@ namespace FactoryManagementSoftware.UI
                     var itemName = row[dalItem.ItemName].ToString();
                     var itemCode = row[dalItem.ItemCode].ToString();
 
-                    var masterCode = $"[{category}] {itemName}";
+                    var shortItemName = tool.ConvertToTitleCase(itemName);
+
+                    var masterCode = $"[{category}] - {shortItemName}";
 
                     if (itemName != itemCode)
                     {
-                        masterCode += $" ({itemCode})";
+                        masterCode += $" - ({itemCode})";
                     }
 
                     row[header_MasterCode] = masterCode;
@@ -1982,7 +1997,14 @@ namespace FactoryManagementSoftware.UI
                 string prefix= selectedRow[dalDoFormat.prefix].ToString();
                 string dateFormat= selectedRow[dalDoFormat.dateFormat].ToString();
                 string suffix= selectedRow[dalDoFormat.suffix].ToString();
+
                 int numberLength= int.TryParse(selectedRow[dalDoFormat.runningNumberLength].ToString(), out int i)? i : 3;
+                int lastNumber= int.TryParse(selectedRow[dalDoFormat.lastNumber].ToString(), out i)? i : 0;
+
+                int nextNumber = lastNumber + 1;
+
+                string formatString = "D" + numberLength;
+                txtNextRunningNumber.Text = nextNumber.ToString(formatString);
 
                 DOSample = DONumberConvert(prefix, dateFormat, suffix, runningNumber, numberLength);
             }
@@ -2032,7 +2054,7 @@ namespace FactoryManagementSoftware.UI
 
                 LoadCompanyData();
 
-                if(DO_EDITING_MODE)
+                if(!DO_EDITING_MODE)
                     internalTransferDataAutoLoad();
 
                 DO_TYPE_CHECKING = false;
@@ -2129,14 +2151,15 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            // Get the DataRowView for the selected item
-            DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
+            //// Get the DataRowView for the selected item
+            //DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
 
-            // Extract the table code from the selected row
-            bool isInternal = bool.TryParse(selectedRow[dalDoFormat.isInternal].ToString(), out isInternal) ? isInternal : false;
+            //// Extract the table code from the selected row
+            //bool isInternal = bool.TryParse(selectedRow[dalDoFormat.isInternal].ToString(), out isInternal) ? isInternal : false;
 
 
-            return isInternal;
+            //return isInternal;
+            return cbInternalDOType.Checked;
 
         }
 
@@ -2201,6 +2224,8 @@ namespace FactoryManagementSoftware.UI
                 cmbFromBranch.Enabled = false;
                 cmbToDeliveryLocation.Enabled = false;
 
+                cmbDeliveryMethod.SelectedIndex = 0;
+
             }
 
         }
@@ -2264,7 +2289,11 @@ namespace FactoryManagementSoftware.UI
             SaveAsDraft();
         }
 
-
+        private DataTable DT_INTERNAL_DO;
+        private void LoadInternalDO()
+        {
+            DT_INTERNAL_DO = dalInternalDO.SelectAll();
+        }
         private string SaveInternalDO(bool isDraft)
         {
 
@@ -2345,10 +2374,43 @@ namespace FactoryManagementSoftware.UI
 
                     doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
 
+                    LoadInternalDO();
+                    bool duplicatedFound = false;
                     int runningNo = dalDoFormat.GenerateDONumber(doFormat);
                     doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
 
+                    do
+                    {
+                        duplicatedFound = false;
+                        foreach (DataRow row in DT_INTERNAL_DO.Rows)
+                        {
+                            string DOFormatTblCode = row[dalInternalDO.DOFormatTblCode].ToString();
+                            string usedDONumber = row[dalInternalDO.DoNoString].ToString().Replace(" ", "").ToUpper();
+                            bool isCancelled = bool.TryParse(row[dalInternalDO.IsCancelled].ToString(), out bool rowIsCancelled) ? rowIsCancelled : false;
+
+                            if (!isCancelled && uInternalDO.do_format_tbl_code.ToString() == DOFormatTblCode)
+                            {
+                                duplicatedFound = usedDONumber == doCode.Replace(" ", "").ToUpper();
+
+                                if (duplicatedFound)
+                                {
+                                    MessageBox.Show("Duplicate DO number found. Attempting to find a unique number.", "Duplicate Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                                    // If duplicate is found, increment runningNo and reapply DO format
+                                    runningNo++;
+                                    doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
+                                    break; // Exit the foreach loop to start the search again with the new doCode
+                                }
+                            }
+                        }
+                    } while (duplicatedFound); // Continue looping if a duplicate was found
+
+                    //to-do:
+                    //modify this code if duplicated found, then runningNO++, apply again DOFormat to docde, then check again
+
+
                     uInternalDO.running_no = runningNo;
+
                 }
 
                 //do no string set to random code: GenerateRandomCode()
@@ -2620,6 +2682,137 @@ namespace FactoryManagementSoftware.UI
         private void tableLayoutPanel28_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+            //password
+            frmVerification frm = new frmVerification(text.PW_Level_1)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.ShowDialog();
+
+            if (frmVerification.PASSWORD_MATCHED)
+            {
+                txtNextRunningNumber.Enabled = true;
+                txtNextRunningNumber.ReadOnly = false;
+                txtNextRunningNumber.BaseColor = Color.FromArgb(255, 255, 192);
+
+                btnSaveRunningNumber.Visible = true;
+            }
+            else
+            {
+                txtNextRunningNumber.Enabled = false;
+                txtNextRunningNumber.ReadOnly = true;
+                txtNextRunningNumber.BaseColor = Color.Gainsboro;
+
+                btnSaveRunningNumber.Visible = false;
+
+            }
+        }
+
+        private bool DO_TYPE_UPDATING = false;
+
+        private void cbInternalDOType_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!DO_TYPE_UPDATING)
+            {
+                DO_TYPE_UPDATING = true;
+                cbSBBDOType.Checked = !cbInternalDOType.Checked;
+                DO_TYPE_UPDATING = false;
+            }
+        }
+
+        private void cbSBBDOType_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!DO_TYPE_UPDATING)
+            {
+                DO_TYPE_UPDATING = true;
+                cbInternalDOType.Checked = !cbSBBDOType.Checked;
+                DO_TYPE_UPDATING = false;
+            }
+        }
+
+        private void txtNextRunningNumber_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void btnSaveRunningNumber_Click(object sender, EventArgs e)
+        {
+            if (cmbDOType.SelectedIndex != -1)
+            {
+                // Ask user if confirm to change the next running number
+                var confirmResult = MessageBox.Show("Are you sure you want to change the next running number?",
+                                                     "Confirm Update",
+                                                     MessageBoxButtons.YesNo,
+                                                     MessageBoxIcon.Question);
+
+                // Check if the user clicked Yes
+                if (confirmResult == DialogResult.Yes)
+                {
+                    frmVerification frm = new frmVerification(text.PW_Level_1)
+                    {
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
+
+                    frm.ShowDialog();
+
+                    if (frmVerification.PASSWORD_MATCHED)
+                    {
+                        DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
+                        string tblcode = selectedRow[dalDoFormat.prefix].ToString();
+                        string dateFormat = selectedRow[dalDoFormat.dateFormat].ToString();
+                        string suffix = selectedRow[dalDoFormat.suffix].ToString();
+
+                        uDoFormat.tbl_code = int.TryParse(selectedRow[dalDoFormat.tblCode].ToString(), out int i) ? i : -1;
+                        uDoFormat.updated_date = DateTime.Now;
+                        uDoFormat.updated_by = MainDashboard.USER_ID;
+
+                        int nextNumber = int.TryParse(txtNextRunningNumber.Text, out i) ? i : 1;
+
+                        int lastNumber = nextNumber - 1;
+
+                        if (lastNumber < 0)
+                        {
+                            lastNumber = 0;
+                        }
+                        uDoFormat.last_number = lastNumber;
+
+                        bool success = dalDoFormat.UpdateLastNumber(uDoFormat);
+
+                        if(success)
+                        {
+                            LoadDoFormatDB();
+                            selectedRow[dalDoFormat.lastNumber] = lastNumber;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Failed to change next runnung number.");
+                        }
+
+
+                    }
+                }
+
+
+                txtNextRunningNumber.Enabled = false;
+                txtNextRunningNumber.ReadOnly = true;
+                txtNextRunningNumber.BaseColor = Color.Gainsboro;
+
+                btnSaveRunningNumber.Visible = false;
+
+            }
+        }
+
+        private void txtBoxUnit_TextChanged(object sender, EventArgs e)
+        {
+            UpdatePreviewDescription();
         }
     }
 }

@@ -2457,7 +2457,7 @@ namespace FactoryManagementSoftware.UI
             if(lockStatus == text_Unlock)
             {
                 //key in password
-                frmVerification frm = new frmVerification(text.PW_UnlockPmmaStock)
+                frmVerification frm = new frmVerification(text.PW_Level_2)
                 {
                     StartPosition = FormStartPosition.CenterScreen
                 };

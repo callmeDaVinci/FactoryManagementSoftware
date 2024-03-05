@@ -1,4 +1,6 @@
-﻿using System;
+﻿using FactoryManagementSoftware.Module;
+using Syncfusion.XlsIO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +17,8 @@ namespace FactoryManagementSoftware.UI
         public frmExportSetting()
         {
             InitializeComponent();
+            PDF_TYPE = true;
+            EXCEL_TYPE= false;
         }
 
         static public bool settingApplied = false;
@@ -27,6 +31,9 @@ namespace FactoryManagementSoftware.UI
         static public bool openFileAfterExport = false;
         static public bool printFileAfterExport = false;
         static public bool printPreview = false;
+        static public bool EXCEL_TYPE = false;
+        static public bool PDF_TYPE = true;
+        Text text = new Text();
 
         private void frmExportSetting_Load(object sender, EventArgs e)
         {
@@ -43,7 +50,8 @@ namespace FactoryManagementSoftware.UI
         {
             DODate = dtpDODate.Value;
 
-            newFormat = cbNewFormat.Checked;
+            EXCEL_TYPE = cbExcel.Checked;
+            PDF_TYPE = !cbExcel.Checked;
             allInOne = cbSeparate.Checked;
             openFileAfterExport = cbOpenFile.Checked;
             printFileAfterExport = cbPrintFile.Checked;
@@ -141,7 +149,7 @@ namespace FactoryManagementSoftware.UI
             // Check if the selected date is on or after the start date
             if (dtpDODate.Value.Date >= startDate)
             {
-                cbNewFormat.Checked= true;
+                //cbExcel.Checked= true;
             }
             else
             {
@@ -162,12 +170,83 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
-        private void cbNewFormat_CheckedChanged(object sender, EventArgs e)
+        private bool FORMAT_TYPE_UPDATING = false;
+
+        private void cbExcel_CheckedChanged(object sender, EventArgs e)
         {
-            //if (cbNewFormat.Checked)
-            //{
-            //    cbOldFormat.Checked = false;
-            //}
+            if(!FORMAT_TYPE_UPDATING)
+            {
+                FORMAT_TYPE_UPDATING = true;
+
+                if (cbExcel.Checked)
+                {
+                    //password
+                    frmVerification frm = new frmVerification(text.PW_Level_1)
+                    {
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
+
+
+                    frm.ShowDialog();
+
+                    if (!frmVerification.PASSWORD_MATCHED)
+                    {
+                        cbExcel.Checked = false;
+                    }
+                }
+
+                cbPDF.Checked = !cbExcel.Checked;
+
+                cbSeparate.Checked = cbExcel.Checked;
+                cbAllInOne.Checked = false;
+
+                EXCEL_TYPE = cbExcel.Checked;
+                PDF_TYPE= !cbExcel.Checked;
+
+                FORMAT_TYPE_UPDATING = false;
+
+                cbSeparate.Visible= cbExcel.Checked;
+                cbAllInOne.Visible= cbExcel.Checked;
+            }
+        }
+
+        private void cbPDF_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!FORMAT_TYPE_UPDATING)
+            {
+                FORMAT_TYPE_UPDATING = true;
+                cbExcel.Checked = !cbPDF.Checked;
+
+                if (cbExcel.Checked)
+                {
+                    //password
+                    frmVerification frm = new frmVerification(text.PW_Level_1)
+                    {
+                        StartPosition = FormStartPosition.CenterScreen
+                    };
+
+
+                    frm.ShowDialog();
+
+                    if (!frmVerification.PASSWORD_MATCHED)
+                    {
+                        cbExcel.Checked = false;
+                        cbPDF.Checked = true;
+                    }
+                }
+
+
+                EXCEL_TYPE = cbExcel.Checked;
+                PDF_TYPE = !cbExcel.Checked;
+
+                cbSeparate.Checked = cbExcel.Checked;
+                cbAllInOne.Checked = false;
+
+                cbSeparate.Visible = cbExcel.Checked;
+                cbAllInOne.Visible = cbExcel.Checked;
+
+                FORMAT_TYPE_UPDATING = false;
+            }
         }
     }
 }
