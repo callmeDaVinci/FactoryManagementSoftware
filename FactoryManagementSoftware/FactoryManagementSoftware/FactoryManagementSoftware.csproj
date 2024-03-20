@@ -263,6 +263,12 @@
     <Compile Include="UI\ExcelUpload.Designer.cs">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmDOCompleteSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOCompleteSetting.Designer.cs">
+      <DependentUpon>frmDOCompleteSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmDONumberChange_v2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1195,6 +1201,10 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOCompleteSetting.resx">
+      <DependentUpon>frmDOCompleteSetting.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDONumberChange_v2.resx">
       <DependentUpon>frmDONumberChange_v2.cs</DependentUpon>

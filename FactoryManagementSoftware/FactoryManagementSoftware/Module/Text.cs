@@ -384,6 +384,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
         public string Header_GroupLevel { get; } = "LEVEL";
+        public string Header_GroupCode { get; } = "Group Code";
         public string Header_ID { get; } = "ID";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
@@ -434,10 +435,15 @@ namespace FactoryManagementSoftware.Module
         public string Header_TableCode { get; } = "Table Code";
         public string Header_RunningNo { get; } = "Running No";
         public string Header_DONo { get; } = "D/O No.";
+        public string Header_DO_Table_Code { get; } = "D/O Table Code";
+        public string Header_Trf_Table_Code { get; } = "Tranfer Table Code";
+        public string Header_Random_Code { get; } = "Random Code";
         public string Header_DOType { get; } = "D/O Type";
+        public string Header_From_Cat { get; } = "Cat From";
         public string Header_From { get; } = "From";
         public string Header_BillTo{ get; } = "Bill To";
         public string Header_ShipTo{ get; } = "Ship To";
+        public string Header_To_Cat {get; } = "Cat Ship To";
         public string Header_DODate{ get; } = "D/O Date";
         public string Header_CompletedDate{ get; } = "Completed Date";
         public string Header_DeliveredDate{ get; } = "Delivered Date";

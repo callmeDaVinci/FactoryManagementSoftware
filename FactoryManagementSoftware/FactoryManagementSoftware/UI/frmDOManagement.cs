@@ -171,6 +171,29 @@ namespace FactoryManagementSoftware.UI
 
         }
        
+        private DataTable NewBasicTransferTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(text.Header_DeliveredDate, typeof(DateTime));
+            dt.Columns.Add(text.Header_TableCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemName, typeof(string));
+            dt.Columns.Add(text.Header_From_Cat, typeof(string));
+            dt.Columns.Add(text.Header_From, typeof(string));
+            dt.Columns.Add(text.Header_To_Cat, typeof(string));
+            dt.Columns.Add(text.Header_ShipTo, typeof(string));
+            dt.Columns.Add(text.Header_Qty, typeof(string));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
+            dt.Columns.Add(text.Header_DONo, typeof(string));
+            dt.Columns.Add(text.Header_DO_Table_Code, typeof(string));
+            dt.Columns.Add(text.Header_Trf_Table_Code, typeof(string));
+            dt.Columns.Add(text.Header_Random_Code, typeof(string));
+
+            return dt;
+
+        }
         private DataTable NewDOTable()
         {
             DataTable dt = new DataTable();
@@ -1847,7 +1870,7 @@ namespace FactoryManagementSoftware.UI
                 
                 if (ClickedItem.Equals(text_CompleteDO))
                 {
-                    CompleteDO(rowIndex);
+                    CompleteInternalDO(rowIndex);
                 }
                 else if (ClickedItem.Equals(text_ChangeDeliveredDate))
                 {
@@ -2033,7 +2056,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void CompleteDO(int rowIndex)
+        private void OLDCompleteDO(int rowIndex)
         {
             DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
             DataGridView dgv = dgvDOList;
@@ -2098,26 +2121,144 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void CompleteInternalDO(int rowIndex)
+        {
+
+            DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
+            DataGridView dgv = dgvDOList;
+            DataTable dt_ItemInfo = dalItem.Select();
+
+            string doCode = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
+            string dotblCode = dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString();
+
+            string shipTo = dgv.Rows[rowIndex].Cells[text.Header_ShipTo].Value.ToString();
+            string shipFrom = dgv.Rows[rowIndex].Cells[text.Header_From].Value.ToString();
+
+            string groupCode = tool.GenerateRandomCode();
+
+            DataTable dt_Transfer_Item = NewBasicTransferTable();
+
+            DataRow dt_Row;
+
+            DateTime today = DateTime.Now;
+
+            string defaultFrom = "Store";
+            string defaultTo = "Semenyih";
+
+            bool OUGtoSMY = false;
+            bool SMYtoOUG = false;
+
+            if (shipTo.ToUpper() == "OUG" && shipFrom.ToUpper() == "SEMENYIH")
+            {
+                defaultFrom = "Semenyih";
+                defaultTo = "Store";
+                SMYtoOUG = true;
+            }
+            else if (shipFrom.ToUpper() == "OUG" && shipTo.ToUpper() == "SEMENYIH")
+            {
+                defaultFrom = "Store";
+                defaultTo = "Semenyih";
+                OUGtoSMY = true;
+            }
+
+            foreach (DataRow row in dt_Item.Rows)
+            {
+                string tblCode = row[text.Header_TableCode].ToString();
+                string itemCode = row[text.Header_ItemCode].ToString();
+                string itemName = tool.getItemNameFromDataTable(dt_ItemInfo,itemCode);
+                string PcsQty = row[text.Header_TotalQty].ToString();
+                string unit = row[text.Header_Unit].ToString();
+                string remark = row[text.Header_Remark].ToString();
+
+                bool toRemove = bool.TryParse(row[text.Header_ToRemove].ToString(), out toRemove) ? toRemove : false;
+
+                if (!string.IsNullOrEmpty(itemCode) && !toRemove)
+                {
+                    dt_Row = dt_Transfer_Item.NewRow();
+
+                    dt_Row[text.Header_DeliveredDate] = today;
+                    dt_Row[text.Header_TableCode] = tblCode;
+                    dt_Row[text.Header_ItemCode] = itemCode;
+                    dt_Row[text.Header_ItemName] = itemName;
+
+
+                    dt_Row[text.Header_From_Cat] = text.Factory;
+                    dt_Row[text.Header_From] = defaultFrom;
+                    dt_Row[text.Header_To_Cat] = text.Factory;
+                    dt_Row[text.Header_ShipTo] = defaultTo;
+
+                    dt_Row[text.Header_Qty] = PcsQty;
+                    dt_Row[text.Header_Unit] = unit;
+
+                    dt_Row[text.Header_DONo] = doCode;
+
+                    remark = doCode + (string.IsNullOrEmpty(remark)? "" : " : " + remark);
+
+                    dt_Row[text.Header_Remark] = remark;
+
+                    dt_Row[text.Header_DO_Table_Code] = dotblCode;
+                    dt_Row[text.Header_Random_Code] = groupCode;
+                    dt_Row[text.Header_Trf_Table_Code] = "";
+
+                    dt_Transfer_Item.Rows.Add(dt_Row);
+                }
+
+
+            }
+
+            frmDOCompleteSetting frm = new frmDOCompleteSetting(dt_Transfer_Item, OUGtoSMY,SMYtoOUG)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frm.ShowDialog();//Item Edit
+
+            if (frmDOCompleteSetting.transferred)
+            {
+                MessageBox.Show("Internal Transfer success!");
+
+
+                //need to check if all item fully stock updated
+
+                uInternalDO.tbl_code = int.TryParse(dotblCode, out int i) ? i : -1;
+                uInternalDO.isCompleted = true;
+                uInternalDO.isCancelled = false;
+                uInternalDO.isProcessing = false;
+                uInternalDO.isDraft = false;
+                uInternalDO.updated_date = DateTime.Now;
+                uInternalDO.updated_by = MainDashboard.USER_ID;
+
+                dalInternalDO.DOStatusUpdate(uInternalDO);
+
+                LoadInternalDOList();
+                tool.historyRecord(text.DO_Delivered, "["+doCode+"] " + shipFrom + " -> " + shipTo, DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(dotblCode));
+            }
+            else
+            {
+                MessageBox.Show("Transfer cancelled!");
+            }
+        }
+
         private bool ClearToDeliveryQtyAfterDelivered(DataTable dt)
         {
             bool dataUpdated = true;
 
-            uSpp.Updated_By = MainDashboard.USER_ID;
-            uSpp.Updated_Date = DateTime.Now;
+            //uSpp.Updated_By = MainDashboard.USER_ID;
+            //uSpp.Updated_Date = DateTime.Now;
 
-            foreach (DataRow row in dt.Rows)
-            {
-                uSpp.Table_Code = int.TryParse(row[header_POTblCode].ToString(), out int i) ? i : 0;
+            //foreach (DataRow row in dt.Rows)
+            //{
+            //    uSpp.Table_Code = int.TryParse(row[header_POTblCode].ToString(), out int i) ? i : 0;
 
-                uSpp.To_delivery_qty = 0;
+            //    uSpp.To_delivery_qty = 0;
 
-                dataUpdated = dalSPP.POToDeliveryDataUpdate(uSpp);
+            //    dataUpdated = dalSPP.POToDeliveryDataUpdate(uSpp);
 
-                if (!dataUpdated)
-                {
-                    MessageBox.Show("Failed to update to delivery qty.\nPO Table Code: " + uSpp.Table_Code + "\nTo Delivery Qty: " + uSpp.To_delivery_qty);
-                }
-            }
+            //    if (!dataUpdated)
+            //    {
+            //        MessageBox.Show("Failed to update to delivery qty.\nPO Table Code: " + uSpp.Table_Code + "\nTo Delivery Qty: " + uSpp.To_delivery_qty);
+            //    }
+            //}
 
            
             return dataUpdated;

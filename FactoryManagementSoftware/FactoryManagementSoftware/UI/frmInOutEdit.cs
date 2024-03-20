@@ -40,6 +40,21 @@ namespace FactoryManagementSoftware.UI
             callFromMatChecklist = true;
         }
 
+
+        //BASIC
+        public frmInOutEdit(DataTable dt, double defaultflag)
+        {
+            InitializeComponent();
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //#################################################################################################################################
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
+
+            createDGV();
+
+            DT_BASIC = dt;
+            CALL_FROM_BASIC = true;
+        }
+
         //CALL FROM D/O LIST
         public frmInOutEdit(DataTable dt, DateTime date)
         {
@@ -259,6 +274,7 @@ namespace FactoryManagementSoftware.UI
         private string unit = "!";
         private float qty = -1;
         private string note = "!";
+        private string groupCode = "";
         private string failedNote = "!";
         private int index = 0;
         private int selectedRow = -1;
@@ -266,6 +282,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool dgvEdit = false;
         private bool callFromMatChecklist = false;
+        private bool CALL_FROM_BASIC = false;
         private bool callFromDOlist = false;
         private bool callFromStockCountList = false;
         private bool callFromStockCheckList = false;
@@ -276,6 +293,7 @@ namespace FactoryManagementSoftware.UI
         static public bool TrfSuccess = false;
 
         static public DataTable dt_MatChecklist;
+        static public DataTable DT_BASIC;
         private DataTable dt_DOItem;
         private DataTable DT_STOCK_COUNT_LIST;
         private DataTable dt_StockTallyList;
@@ -321,6 +339,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, QtyColumnName, QtyColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, UnitColumnName, UnitColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, text.Header_GroupCode, text.Header_GroupCode, DisplayedCells);
 
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -334,6 +353,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[ToCatColumnName].DefaultCellStyle.BackColor = Color.LightSteelBlue;
             dgv.Columns[ToColumnName].DefaultCellStyle.BackColor = Color.LightSteelBlue;
+            dgv.Columns[text.Header_GroupCode].Visible = false;
 
             UpdateFont();
         }
@@ -674,7 +694,11 @@ namespace FactoryManagementSoftware.UI
 
             txtTrfQty.Focus();
 
-            if (callFromMatChecklist)
+            if(CALL_FROM_BASIC)
+            {
+                addBasicToDGV();
+            }
+            else if (callFromMatChecklist)
             {
                 addMatToDGV(dt_MatChecklist);
             }
@@ -1005,6 +1029,7 @@ namespace FactoryManagementSoftware.UI
             string locationFrom = string.IsNullOrEmpty(from) ? fromCat : from;
             string locationTo = string.IsNullOrEmpty(to) ? toCat : to;
 
+            utrfHist.group_code = groupCode;
             utrfHist.trf_hist_item_code = itemCode;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
@@ -1784,6 +1809,8 @@ namespace FactoryManagementSoftware.UI
         {
             string result = "Passed";
             int TrfID = -1;
+
+            daltrfHist.AddGroupCodeColumnIfMissing();
 
             //part in out
             if (category.Equals("Part"))
@@ -2962,6 +2989,68 @@ namespace FactoryManagementSoftware.UI
             dgv.ClearSelection();
         }
 
+        private void addBasicToDGV()
+        {
+            DataGridView dgv = dgvTransfer;
+            facStockDAL dalFacStock = new facStockDAL();
+            DataTable dt_ItemInfo = dalItem.Select();
+
+            int n;
+
+            foreach (DataRow row in DT_BASIC.Rows)
+            {
+                n = dgv.Rows.Add();
+                index = n + 1;
+
+                string groupCode = row[text.Header_Random_Code].ToString();
+                string itemCode = row[text.Header_ItemCode].ToString();
+                string itemName = row[text.Header_ItemName].ToString();
+                string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo,itemCode);
+
+                string fromCat = row[text.Header_From_Cat].ToString();
+                string from = row[text.Header_From].ToString();
+
+                string toCat = row[text.Header_To_Cat].ToString();
+                string to = row[text.Header_ShipTo].ToString();
+
+                string pcsQty = row[text.Header_Qty].ToString();
+                string unit = row[text.Header_Unit].ToString();
+                string DONo = row[text.Header_DONo].ToString();
+                string remark = row[text.Header_Remark].ToString();
+
+                dgv.Rows[n].Cells[IndexColumnName].Value = index;
+                dgv.Rows[n].Cells[IndexColumnName].Style.BackColor = Color.Red;
+
+                dgv.Rows[n].Cells[DateColumnName].Value = (DateTime.TryParse(row[text.Header_DeliveredDate].ToString(), out DateTime deliveredDate) ?deliveredDate : DateTime.MaxValue).ToShortDateString();
+                dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+                dgv.Rows[n].Cells[FromCatColumnName].Value = fromCat;
+                dgv.Rows[n].Cells[FromColumnName].Value = from;
+
+                dgv.Rows[n].Cells[ToCatColumnName].Value = toCat;
+                dgv.Rows[n].Cells[ToColumnName].Value = to;
+                dgv.Rows[n].Cells[QtyColumnName].Value = pcsQty;
+
+                dgv.Rows[n].Cells[UnitColumnName].Value = unit;
+                dgv.Rows[n].Cells[NoteColumnName].Value = remark;
+                dgv.Rows[n].Cells[text.Header_GroupCode].Value = groupCode;
+
+                if (cmbTrfFromCategory.Text.Equals("Factory"))
+                {
+                    float facStock = dalFacStock.getQty(itemCode, tool.getFactoryID(from).ToString());
+                    float transferQty = Convert.ToSingle(pcsQty);
+
+                    if (facStock - transferQty < 0 && from != to)
+                    {
+                        //#############################################################################################################################################
+                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                        dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString() + ")";
+                    }
+                }
+            }
+            dgv.ClearSelection();
+        }
         private void StockAdjustToDGV(DataTable dt)
         {
             DataGridView dgv = dgvTransfer;
@@ -3448,6 +3537,7 @@ namespace FactoryManagementSoftware.UI
             unit = dgv.Rows[n].Cells[UnitColumnName].Value.ToString();
             qty = Convert.ToSingle(dgv.Rows[n].Cells[QtyColumnName].Value);
             note = dgv.Rows[n].Cells[NoteColumnName].Value == null ?string.Empty : dgv.Rows[n].Cells[NoteColumnName].Value.ToString();
+            groupCode = dgv.Rows[n].Cells[text.Header_GroupCode].Value.ToString();
 
             qty = unitCheck(qty, unit);
             unit = checkUnit(unit);

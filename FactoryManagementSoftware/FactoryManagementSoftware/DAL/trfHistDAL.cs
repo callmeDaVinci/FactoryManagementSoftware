@@ -359,6 +359,7 @@ namespace FactoryManagementSoftware.DAL
                             trf_hist_unit, 
                             trf_hist_trf_date, 
                             trf_hist_note, 
+                            group_code, 
                             trf_hist_added_date, 
                             trf_hist_added_by, 
                             trf_result, 
@@ -371,6 +372,7 @@ namespace FactoryManagementSoftware.DAL
                             @trf_hist_unit, 
                             @trf_hist_trf_date, 
                             @trf_hist_note, 
+                            @group_code,
                             @trf_hist_added_date, 
                             @trf_hist_added_by, 
                             @trf_result, 
@@ -379,6 +381,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
+                cmd.Parameters.AddWithValue("@group_code", u.group_code);
                 cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
                 cmd.Parameters.AddWithValue("@trf_hist_from", u.trf_hist_from);
                 cmd.Parameters.AddWithValue("@trf_hist_to", u.trf_hist_to);
@@ -3485,5 +3488,36 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public void AddGroupCodeColumnIfMissing()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Check if the "group_code" column exists and add it if it does not
+                    string alterTableSql = @"
+                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_trf_hist' AND COLUMN_NAME = 'group_code')
+                    BEGIN
+                    ALTER TABLE tbl_trf_hist ADD group_code VARCHAR(100);
+                       END";
+
+                    SqlCommand cmd = new SqlCommand(alterTableSql, conn);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    // Assuming Tool is a custom class for error handling
+                    Tool tool = new Tool();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
+
     }
 }
