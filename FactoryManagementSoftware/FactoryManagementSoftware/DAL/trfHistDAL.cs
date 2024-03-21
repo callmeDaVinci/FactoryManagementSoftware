@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.DAL
         public string TrfUpdatedDate { get; } = "trf_hist_updated_date";
         public string TrfUpdatedBy { get; } = "trf_hist_updated_by";
         public string TrfFromOrder { get; } = "trf_hist_from_order";
+        public string TrfTableKey { get; } = "trf_table_key";
 
         public string Balance { get; } = "balance";
 
@@ -359,7 +360,7 @@ namespace FactoryManagementSoftware.DAL
                             trf_hist_unit, 
                             trf_hist_trf_date, 
                             trf_hist_note, 
-                            group_code, 
+                            trf_table_key, 
                             trf_hist_added_date, 
                             trf_hist_added_by, 
                             trf_result, 
@@ -372,7 +373,7 @@ namespace FactoryManagementSoftware.DAL
                             @trf_hist_unit, 
                             @trf_hist_trf_date, 
                             @trf_hist_note, 
-                            @group_code,
+                            @trf_table_key,
                             @trf_hist_added_date, 
                             @trf_hist_added_by, 
                             @trf_result, 
@@ -381,7 +382,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
-                cmd.Parameters.AddWithValue("@group_code", u.group_code);
+                cmd.Parameters.AddWithValue("@trf_table_key", u.trf_table_key);
                 cmd.Parameters.AddWithValue("@trf_hist_item_code", u.trf_hist_item_code);
                 cmd.Parameters.AddWithValue("@trf_hist_from", u.trf_hist_from);
                 cmd.Parameters.AddWithValue("@trf_hist_to", u.trf_hist_to);
@@ -2859,7 +2860,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable rangeTrfSearch(string start, string end)
+        public DataTable rangeTrfSearchWithItemInfo(string start, string end)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -3133,7 +3134,7 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
-        public DataTable TrfSearch(string itemCode, string month, string year)
+        public DataTable TrfSearchWithItemInfo(string itemCode, string month, string year)
         {
             //static methodd to connect database
             SqlConnection conn = new SqlConnection(myconnstrng);
@@ -3156,6 +3157,55 @@ namespace FactoryManagementSoftware.DAL
                 SqlCommand cmd = new SqlCommand(sql, conn);
 
                 cmd.Parameters.AddWithValue("@itemCode", itemCode);
+                cmd.Parameters.AddWithValue("@month", month);
+                cmd.Parameters.AddWithValue("@year", year);
+
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_added_date DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+        public DataTable TrfSearch(string month, string year)
+        {
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            String sql = null;
+            try
+            {
+
+                //sql query to get data from database
+                sql = @"SELECT * FROM tbl_trf_hist 
+                                WHERE 
+                               MONTH(trf_hist_trf_date) = @month AND  YEAR(trf_hist_trf_date) = @year";
+
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@month", month);
                 cmd.Parameters.AddWithValue("@year", year);
 
@@ -3489,7 +3539,7 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
-        public void AddGroupCodeColumnIfMissing()
+        public void AddTrfTableKeyColumnIfMissing()
         {
             using (SqlConnection conn = new SqlConnection(myconnstrng))
             {
@@ -3498,9 +3548,9 @@ namespace FactoryManagementSoftware.DAL
                     conn.Open();
                     // Check if the "group_code" column exists and add it if it does not
                     string alterTableSql = @"
-                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_trf_hist' AND COLUMN_NAME = 'group_code')
+                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_trf_hist' AND COLUMN_NAME = 'trf_table_key')
                     BEGIN
-                    ALTER TABLE tbl_trf_hist ADD group_code VARCHAR(100);
+                    ALTER TABLE tbl_trf_hist ADD trf_table_key VARCHAR(100);
                        END";
 
                     SqlCommand cmd = new SqlCommand(alterTableSql, conn);

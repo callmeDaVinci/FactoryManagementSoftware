@@ -385,6 +385,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_DirectUseOn { get; } = "DIRECT USE ON (PARENT)";
         public string Header_GroupLevel { get; } = "LEVEL";
         public string Header_GroupCode { get; } = "Group Code";
+        public string Header_TrfTableKey { get; } = "TrfTableKey";
         public string Header_ID { get; } = "ID";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";

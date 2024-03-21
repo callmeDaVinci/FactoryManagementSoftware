@@ -12,12 +12,14 @@ namespace FactoryManagementSoftware.BLL
         public int do_format_tbl_code { get; set; }
         public int running_no { get; set; }
         public string do_no_string { get; set; }
+        public string trf_table_key { get; set; }
         public int company_tbl_code { get; set; }
         public int internal_from_address_tbl_code { get; set; }
         public int shipping_address_tbl_code { get; set; }
         public int billing_address_tbl_code { get; set; }
         public string shipping_method { get; set; }
         public DateTime delivery_date { get; set; }
+        public DateTime completed_date { get; set; }
         public bool isDraft { get; set; }
         public bool isProcessing { get; set; }
         public bool isCompleted { get; set; }

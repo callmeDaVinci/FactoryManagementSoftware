@@ -7,12 +7,16 @@ using FactoryManagementSoftware.Module;
 using Accord;
 using System.Data.Entity.Core.Mapping;
 using FactoryManagementSoftware.UI;
+using System.Data.Entity;
 
 namespace FactoryManagementSoftware.DAL
 {
     class doInternalDAL
     {
         #region data string name getter
+
+        public string InternalDOTableName { get; } = "tbl_internal_do";
+
         public string tblCode { get; } = "tbl_code";
         public string DOFormatTblCode { get; } = "do_format_tbl_code";
         public string RunningNo { get; } = "running_no";
@@ -23,6 +27,8 @@ namespace FactoryManagementSoftware.DAL
         public string InternalFromAddressTblCode { get; } = "internal_from_address_tbl_code";
         public string ShippingMethod { get; } = "shipping_method";
         public string DODate { get; } = "delivery_date";
+        public string CompletedDate { get; } = "completed_date";
+        public string TrfTableKey { get; } = "trf_table_key";
         public string IsDraft { get; } = "isDraft";
         public string IsProcessing { get; } = "isProcessing";
         public string IsCompleted { get; } = "isCompleted";
@@ -702,6 +708,183 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
 
         }
+
+        public bool DOComplete(internalDOBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_internal_do
+                            SET "
+                              + IsDraft + "=@isDraft,"
+                              + IsProcessing + "=@isProcessing,"
+                              + IsCompleted + "=@isCompleted,"
+                              + IsCancelled + "=@isCancelled,"
+                              + CompletedDate + "=@completed_date,"
+                              + TrfTableKey + "=@trf_table_key,"
+                              + updatedDate + "=@updated_date,"
+                              + updatedBy + "=@updated_by" +
+                              " WHERE tbl_code = @tbl_code";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@isDraft", false);
+                cmd.Parameters.AddWithValue("@isProcessing", false);
+                cmd.Parameters.AddWithValue("@isCompleted", true);
+                cmd.Parameters.AddWithValue("@isCancelled", false);
+                cmd.Parameters.AddWithValue("@trf_table_key", u.trf_table_key);
+                cmd.Parameters.AddWithValue("@completed_date", u.completed_date);
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool DOInComplete(internalDOBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_internal_do
+                            SET "
+                              + IsDraft + "=@isDraft,"
+                              + IsProcessing + "=@isProcessing,"
+                              + IsCompleted + "=@isCompleted,"
+                              + IsCancelled + "=@isCancelled,"
+                              + CompletedDate + "=@completed_date,"
+                              + TrfTableKey + "=@trf_table_key,"
+                              + updatedDate + "=@updated_date,"
+                              + updatedBy + "=@updated_by" +
+                              " WHERE tbl_code = @tbl_code";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@isDraft", false);
+                cmd.Parameters.AddWithValue("@isProcessing", true);
+                cmd.Parameters.AddWithValue("@isCompleted", false);
+                cmd.Parameters.AddWithValue("@isCancelled", false);
+                cmd.Parameters.AddWithValue("@trf_table_key", u.trf_table_key);
+                cmd.Parameters.Add("@completed_date", SqlDbType.DateTime).Value = DBNull.Value;
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
+
+        public bool DOCancel(internalDOBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_internal_do
+                            SET "
+                              + IsDraft + "=@isDraft,"
+                              + IsProcessing + "=@isProcessing,"
+                              + IsCompleted + "=@isCompleted,"
+                              + IsCancelled + "=@isCancelled,"
+                              + CompletedDate + "=@completed_date,"
+                              + DoNoString + "=@DoNo,"
+                              + updatedDate + "=@updated_date,"
+                              + updatedBy + "=@updated_by" +
+                              " WHERE tbl_code = @tbl_code";
+
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
+                cmd.Parameters.AddWithValue("@isDraft", false);
+                cmd.Parameters.AddWithValue("@isProcessing", false);
+                cmd.Parameters.AddWithValue("@isCompleted", false);
+                cmd.Parameters.AddWithValue("@isCancelled", true);
+                cmd.Parameters.AddWithValue("@DoNo", u.do_no_string);
+                cmd.Parameters.Add("@completed_date", SqlDbType.DateTime).Value = DBNull.Value;
+                cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
+                cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+
+        }
         #endregion
 
         #region Remove
@@ -776,6 +959,8 @@ BEGIN
         isCancelled BIT,        
         show_remark_in_do BIT,
         remark VARCHAR(255),
+        completed_date DATETIME,        
+        trf_table_key VARCHAR(255),
         updated_date DATETIME NOT NULL,
         updated_by INT NOT NULL
     );
@@ -801,6 +986,8 @@ END";
                 "isCancelled BIT",
                 "show_remark_in_do BIT",
                 "remark VARCHAR(255)",
+                "completed_date DATETIME",
+                 "trf_table_key VARCHAR(255)",
                 "updated_date DATETIME",
                 "updated_by INT"
                     };
@@ -829,6 +1016,35 @@ END";
             }
         }
 
+        public void AddTrfTableKeyColumnIfMissing()
+        {
+            using (SqlConnection conn = new SqlConnection(myconnstrng))
+            {
+                try
+                {
+                    conn.Open();
+                    // Check if the "group_code" column exists and add it if it does not
+                    string alterTableSql = @"
+                    IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_internal_do' AND COLUMN_NAME = 'trf_table_key')
+                    BEGIN
+                    ALTER TABLE tbl_internal_do ADD trf_table_key VARCHAR(255);
+                       END";
+
+                    SqlCommand cmd = new SqlCommand(alterTableSql, conn);
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    // Assuming Tool is a custom class for error handling
+                    Tool tool = new Tool();
+                    tool.saveToTextAndMessageToUser(ex);
+                }
+                finally
+                {
+                    conn.Close();
+                }
+            }
+        }
 
     }
 }

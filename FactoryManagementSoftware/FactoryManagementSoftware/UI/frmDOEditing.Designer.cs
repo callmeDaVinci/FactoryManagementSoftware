@@ -32,10 +32,10 @@ namespace FactoryManagementSoftware.UI
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDOEditing));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel28 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpStepPanel = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox2 = new Guna.UI.WinForms.GunaGroupBox();
@@ -129,10 +129,10 @@ namespace FactoryManagementSoftware.UI
             this.btnSaveRunningNumber = new Guna.UI.WinForms.GunaGradientButton();
             this.txtNextRunningNumber = new Guna.UI.WinForms.GunaTextBox();
             this.txtDONoSample = new Guna.UI.WinForms.GunaTextBox();
-            this.gunaTextBox1 = new Guna.UI.WinForms.GunaTextBox();
+            this.lblPreviewText = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel36 = new System.Windows.Forms.TableLayoutPanel();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblRunningNumberEdit = new System.Windows.Forms.Label();
+            this.lblNextRunningNumber = new System.Windows.Forms.Label();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox3 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
@@ -649,24 +649,24 @@ namespace FactoryManagementSoftware.UI
             this.dgvPreviewItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvPreviewItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvPreviewItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPreviewItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPreviewItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvPreviewItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPreviewItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPreviewItemList.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPreviewItemList.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvPreviewItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPreviewItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPreviewItemList.Location = new System.Drawing.Point(10, 347);
@@ -858,24 +858,24 @@ namespace FactoryManagementSoftware.UI
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle8;
             this.dgvDOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOItemList.Location = new System.Drawing.Point(5, 40);
@@ -1737,7 +1737,7 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tableLayoutPanel12.ColumnCount = 4;
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 75F));
-            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 81F));
+            this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 98F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel12.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel12.Controls.Add(this.cbSBBDOType, 2, 0);
@@ -1760,7 +1760,7 @@ namespace FactoryManagementSoftware.UI
             this.cbSBBDOType.Enabled = false;
             this.cbSBBDOType.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbSBBDOType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbSBBDOType.Location = new System.Drawing.Point(159, 6);
+            this.cbSBBDOType.Location = new System.Drawing.Point(176, 6);
             this.cbSBBDOType.Name = "cbSBBDOType";
             this.cbSBBDOType.Size = new System.Drawing.Size(51, 21);
             this.cbSBBDOType.TabIndex = 250;
@@ -1933,7 +1933,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel35.Controls.Add(this.btnSaveRunningNumber, 0, 4);
             this.tableLayoutPanel35.Controls.Add(this.txtNextRunningNumber, 0, 3);
             this.tableLayoutPanel35.Controls.Add(this.txtDONoSample, 0, 1);
-            this.tableLayoutPanel35.Controls.Add(this.gunaTextBox1, 0, 0);
+            this.tableLayoutPanel35.Controls.Add(this.lblPreviewText, 0, 0);
             this.tableLayoutPanel35.Controls.Add(this.tableLayoutPanel36, 0, 2);
             this.tableLayoutPanel35.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel35.Location = new System.Drawing.Point(3, 17);
@@ -2035,32 +2035,32 @@ namespace FactoryManagementSoftware.UI
             this.txtDONoSample.TabIndex = 250;
             this.txtDONoSample.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // gunaTextBox1
+            // lblPreviewText
             // 
-            this.gunaTextBox1.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gunaTextBox1.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gunaTextBox1.BorderSize = 1;
-            this.gunaTextBox1.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox1.Enabled = false;
-            this.gunaTextBox1.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox1.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox1.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox1.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.gunaTextBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.gunaTextBox1.Location = new System.Drawing.Point(10, 3);
-            this.gunaTextBox1.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.gunaTextBox1.Multiline = true;
-            this.gunaTextBox1.Name = "gunaTextBox1";
-            this.gunaTextBox1.PasswordChar = '\0';
-            this.gunaTextBox1.Radius = 3;
-            this.gunaTextBox1.SelectedText = "";
-            this.gunaTextBox1.Size = new System.Drawing.Size(292, 44);
-            this.gunaTextBox1.TabIndex = 251;
-            this.gunaTextBox1.Text = "If the order number is 123, the delivery order number would be";
-            this.gunaTextBox1.TextChanged += new System.EventHandler(this.gunaTextBox1_TextChanged);
+            this.lblPreviewText.BackColor = System.Drawing.Color.Transparent;
+            this.lblPreviewText.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.lblPreviewText.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lblPreviewText.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.lblPreviewText.BorderSize = 1;
+            this.lblPreviewText.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.lblPreviewText.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblPreviewText.Enabled = false;
+            this.lblPreviewText.FocusedBaseColor = System.Drawing.Color.White;
+            this.lblPreviewText.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.lblPreviewText.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.lblPreviewText.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
+            this.lblPreviewText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblPreviewText.Location = new System.Drawing.Point(10, 3);
+            this.lblPreviewText.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.lblPreviewText.Multiline = true;
+            this.lblPreviewText.Name = "lblPreviewText";
+            this.lblPreviewText.PasswordChar = '\0';
+            this.lblPreviewText.Radius = 3;
+            this.lblPreviewText.SelectedText = "";
+            this.lblPreviewText.Size = new System.Drawing.Size(292, 44);
+            this.lblPreviewText.TabIndex = 251;
+            this.lblPreviewText.Text = "If the order number is 123, the delivery order number would be";
+            this.lblPreviewText.TextChanged += new System.EventHandler(this.gunaTextBox1_TextChanged);
             // 
             // tableLayoutPanel36
             // 
@@ -2068,8 +2068,8 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68F));
             this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel36.Controls.Add(this.label4, 1, 0);
-            this.tableLayoutPanel36.Controls.Add(this.label2, 0, 0);
+            this.tableLayoutPanel36.Controls.Add(this.lblRunningNumberEdit, 1, 0);
+            this.tableLayoutPanel36.Controls.Add(this.lblNextRunningNumber, 0, 0);
             this.tableLayoutPanel36.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel36.Location = new System.Drawing.Point(0, 90);
             this.tableLayoutPanel36.Margin = new System.Windows.Forms.Padding(0);
@@ -2079,33 +2079,33 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel36.Size = new System.Drawing.Size(312, 50);
             this.tableLayoutPanel36.TabIndex = 254;
             // 
-            // label4
+            // lblRunningNumberEdit
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.label4.AutoSize = true;
-            this.label4.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(274, 30);
-            this.label4.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 17);
-            this.label4.TabIndex = 162;
-            this.label4.Text = "Edit";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            this.lblRunningNumberEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblRunningNumberEdit.AutoSize = true;
+            this.lblRunningNumberEdit.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblRunningNumberEdit.Font = new System.Drawing.Font("Segoe UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblRunningNumberEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblRunningNumberEdit.Location = new System.Drawing.Point(274, 30);
+            this.lblRunningNumberEdit.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.lblRunningNumberEdit.Name = "lblRunningNumberEdit";
+            this.lblRunningNumberEdit.Size = new System.Drawing.Size(28, 17);
+            this.lblRunningNumberEdit.TabIndex = 162;
+            this.lblRunningNumberEdit.Text = "Edit";
+            this.lblRunningNumberEdit.Click += new System.EventHandler(this.label4_Click);
             // 
-            // label2
+            // lblNextRunningNumber
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.Location = new System.Drawing.Point(10, 28);
-            this.label2.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(144, 19);
-            this.label2.TabIndex = 161;
-            this.label2.Text = "Next Running number";
+            this.lblNextRunningNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblNextRunningNumber.AutoSize = true;
+            this.lblNextRunningNumber.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblNextRunningNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblNextRunningNumber.Location = new System.Drawing.Point(10, 28);
+            this.lblNextRunningNumber.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
+            this.lblNextRunningNumber.Name = "lblNextRunningNumber";
+            this.lblNextRunningNumber.Size = new System.Drawing.Size(144, 19);
+            this.lblNextRunningNumber.TabIndex = 161;
+            this.lblNextRunningNumber.Text = "Next Running number";
             // 
             // tableLayoutPanel4
             // 
@@ -2886,10 +2886,10 @@ namespace FactoryManagementSoftware.UI
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 33F));
             this.tlpButton.Controls.Add(this.btnContinue, 3, 1);
-            this.tlpButton.Controls.Add(this.btnAddAsDraft, 5, 1);
-            this.tlpButton.Controls.Add(this.btnCancel, 4, 1);
             this.tlpButton.Controls.Add(this.btnPreviousStep, 1, 1);
             this.tlpButton.Controls.Add(this.btnJobPublish, 6, 1);
+            this.tlpButton.Controls.Add(this.btnCancel, 5, 1);
+            this.tlpButton.Controls.Add(this.btnAddAsDraft, 4, 1);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpButton.Location = new System.Drawing.Point(0, 633);
             this.tlpButton.Margin = new System.Windows.Forms.Padding(0);
@@ -2945,13 +2945,14 @@ namespace FactoryManagementSoftware.UI
             this.btnAddAsDraft.BorderColor = System.Drawing.Color.Black;
             this.btnAddAsDraft.BorderSize = 1;
             this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAddAsDraft.Enabled = false;
             this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
             this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
             this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
             this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnAddAsDraft.Location = new System.Drawing.Point(925, 10);
+            this.btnAddAsDraft.Location = new System.Drawing.Point(775, 10);
             this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnAddAsDraft.Name = "btnAddAsDraft";
             this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2961,10 +2962,11 @@ namespace FactoryManagementSoftware.UI
             this.btnAddAsDraft.OnHoverImage = null;
             this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
             this.btnAddAsDraft.Radius = 5;
-            this.btnAddAsDraft.Size = new System.Drawing.Size(180, 50);
+            this.btnAddAsDraft.Size = new System.Drawing.Size(130, 50);
             this.btnAddAsDraft.TabIndex = 224;
             this.btnAddAsDraft.Text = "Save as Draft";
             this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddAsDraft.Visible = false;
             this.btnAddAsDraft.Click += new System.EventHandler(this.btnAddAsDraft_Click);
             // 
             // btnCancel
@@ -2984,7 +2986,7 @@ namespace FactoryManagementSoftware.UI
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(775, 10);
+            this.btnCancel.Location = new System.Drawing.Point(925, 10);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -2994,7 +2996,7 @@ namespace FactoryManagementSoftware.UI
             this.btnCancel.OnHoverImage = null;
             this.btnCancel.OnPressedColor = System.Drawing.Color.Black;
             this.btnCancel.Radius = 5;
-            this.btnCancel.Size = new System.Drawing.Size(130, 50);
+            this.btnCancel.Size = new System.Drawing.Size(180, 50);
             this.btnCancel.TabIndex = 223;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -3563,7 +3565,7 @@ namespace FactoryManagementSoftware.UI
         private TableLayoutPanel tableLayoutPanel29;
         private TableLayoutPanel tableLayoutPanel33;
         private GroupBox groupBox1;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox1;
+        private Guna.UI.WinForms.GunaTextBox lblPreviewText;
         private TableLayoutPanel tableLayoutPanel35;
         private ErrorProvider errorProvider4;
         private ErrorProvider errorProvider5;
@@ -3575,8 +3577,8 @@ namespace FactoryManagementSoftware.UI
         private CheckBox cbInternalDOType;
         private Guna.UI.WinForms.GunaTextBox txtNextRunningNumber;
         private TableLayoutPanel tableLayoutPanel36;
-        private Label label4;
-        private Label label2;
+        private Label lblRunningNumberEdit;
+        private Label lblNextRunningNumber;
         private Guna.UI.WinForms.GunaGradientButton btnSaveRunningNumber;
     }
 }

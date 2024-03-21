@@ -1513,7 +1513,7 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
-                        MessageBox.Show("Please go to the ORDER PAGE to change the record");
+                        MessageBox.Show("This transfer record was added from other page and cannot be UNDO here.\nPlease revert changes on the original page (e.g.,Order Page, DO Page).\n\nFor assistance, contact the system support team.");
                     }
 
 

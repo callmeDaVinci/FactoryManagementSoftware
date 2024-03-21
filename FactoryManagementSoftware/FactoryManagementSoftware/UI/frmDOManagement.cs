@@ -61,6 +61,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_PublishDO = "Publish D/O";
         readonly string text_DraftDO = "Draft D/O";
         readonly string text_CompleteDO = "Complete D/O";
+        readonly string text_CompleteDOWithoutTransfer = "Complete D/O Without Transfer";
         readonly string text_InCompleteDO = "D/O Incomplete";
         readonly string text_ChangeDeliveredDate = "Change Delivered Date";
         readonly string text_UndoCancelled = "Undo Remove";
@@ -218,6 +219,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(dalInternalDO.CompanyTblCode, typeof(string));
             dt.Columns.Add(dalInternalDO.Remark, typeof(string));
             dt.Columns.Add(dalInternalDO.ShowRemarkInDO, typeof(bool));
+            dt.Columns.Add(dalInternalDO.TrfTableKey, typeof(string));
 
             return dt;
         }
@@ -304,6 +306,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[text.Header_DONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_DODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[text.Header_CompletedDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_Status].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_ShipTo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[text.Header_From].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -316,6 +319,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_From].Visible = cmbDOType.Text.ToUpper().Contains(text.Internal.ToUpper());
 
                 dgv.Columns[text.Header_CompletedDate].Visible = cbCompleted.Checked;
+
 
                 int StatusSelectedCount = 0;
 
@@ -336,6 +340,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[dalInternalDO.ShippingMethod].Visible = false;
                 dgv.Columns[dalInternalDO.Remark].Visible = false;
                 dgv.Columns[dalInternalDO.ShowRemarkInDO].Visible = false;
+                dgv.Columns[dalInternalDO.TrfTableKey].Visible = false;
 
             }
             else if(dgv == dgvDOItemList)
@@ -614,7 +619,8 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPPDOList_Load(object sender, EventArgs e)
         {
-           
+            //dalInternalDO.CreateTableOrUpdate();
+            dalInternalDO.AddTrfTableKeyColumnIfMissing();
 
         }
         private void DBDOListFilter()
@@ -775,6 +781,7 @@ namespace FactoryManagementSoftware.UI
 
                     string DONo = row[dalInternalDO.DoNoString].ToString();
 
+                    string trfTableKey = row[dalInternalDO.TrfTableKey].ToString();
                     string internalFromTblCode = row[dalInternalDO.InternalFromAddressTblCode].ToString();
                     string billToTblCode = row[dalInternalDO.BillingAddressTblCode].ToString();
                     string shipToTblCode = row[dalInternalDO.ShippingAddressTblCode].ToString();
@@ -811,7 +818,15 @@ namespace FactoryManagementSoftware.UI
                     dt_row[dalInternalDO.CompanyTblCode] = companyTblCode;
                     dt_row[dalInternalDO.ShippingMethod] = row[dalInternalDO.ShippingMethod].ToString();
                     dt_row[dalInternalDO.Remark] = row[dalInternalDO.Remark].ToString();
+                    dt_row[dalInternalDO.TrfTableKey] = trfTableKey;
                     dt_row[dalInternalDO.ShowRemarkInDO] = bool.TryParse(row[dalInternalDO.ShowRemarkInDO].ToString(), out bool showRemark)? showRemark : false;
+
+                    if(isCompleted && dt.Columns.Contains(text.Header_CompletedDate))
+                    {
+                        DateTime CompletedDate = DateTime.TryParse(row[dalInternalDO.CompletedDate].ToString(), out CompletedDate) ? CompletedDate : DateTime.MinValue;
+
+                        dt_row[text.Header_CompletedDate] = CompletedDate == DateTime.MinValue ? "" : CompletedDate.ToString("dd/MM/yy");
+                    }
 
                     dt.Rows.Add(dt_row);
                 }
@@ -1356,6 +1371,7 @@ namespace FactoryManagementSoftware.UI
         {
             LoadItem();
 
+            
             //CURRENT_SELECTED_DO_TBL_CODE = "";
 
             //if (FormLoaded)
@@ -1466,6 +1482,15 @@ namespace FactoryManagementSoftware.UI
                 return;
             }
 
+            string Status = dgvDOList.Rows[rowIndex].Cells[text.Header_Status].Value.ToString();
+
+            if(Status.ToUpper().Contains("COMPLETED"))
+            {
+                MessageBox.Show("You cannot edit a COMPLETED DO.\n\nPlease right-click and select the 'DO INCOMPLETE' action to undo completion before editing.");
+
+                return;
+            }
+
             DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
             DataTable dt_DO = (DataTable)dgvDOList.DataSource;
             DataRow DORow = dt_DO.Rows[rowIndex];
@@ -1511,7 +1536,7 @@ namespace FactoryManagementSoftware.UI
             
         }
 
-        private void CancelDO()
+        private void OldCancelDO()
         {
             DataGridView dgv = dgvDOList;
 
@@ -1530,6 +1555,34 @@ namespace FactoryManagementSoftware.UI
                 {
                     //RemoveDO(tableCode);
                     ResetDBDOInfoList();
+                    LoadInternalDOList();
+                }
+            }
+        }
+
+        private void CancelInternalDO()
+        {
+            DataGridView dgv = dgvDOList;
+
+            int rowIndex = dgv.CurrentCell.RowIndex;
+
+            if (rowIndex >= 0)
+            {
+                int tableCode = Convert.ToInt32(dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString());
+
+                string DONo = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
+                //string Customer = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
+
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to CANCEL DO: " + DONo + " ?", "Message",
+                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    uInternalDO.tbl_code = tableCode;
+                    uInternalDO.do_no_string = DONo + "-Cancelled";
+                    uInternalDO.updated_date = DateTime.Now;
+                    uInternalDO.updated_by = MainDashboard.USER_ID;
+
+                    dalInternalDO.DOCancel(uInternalDO);
                     LoadInternalDOList();
                 }
             }
@@ -1553,6 +1606,7 @@ namespace FactoryManagementSoftware.UI
             //LoadDOList();
         }
 
+        ContextMenuStrip my_menu;
 
         private void dgvDOList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
@@ -1567,7 +1621,7 @@ namespace FactoryManagementSoftware.UI
                     //handle the row selection on right click
                     if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
                     {
-                        ContextMenuStrip my_menu = new ContextMenuStrip();
+                        my_menu = new ContextMenuStrip();
 
 
                         dgv.CurrentCell = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex];
@@ -1592,13 +1646,16 @@ namespace FactoryManagementSoftware.UI
                         }
                         else if (dataType == text.Status_Completed)
                         {
-                            my_menu.Items.Add(text_ChangeDeliveredDate).Name = text_ChangeDeliveredDate;
+                            //my_menu.Items.Add(text_ChangeDeliveredDate).Name = text_ChangeDeliveredDate;
                             showingText = text_InCompleteDO;
                         }
                         else if (dataType == text.Status_InProgress)
                         {
                             showingText = text_CompleteDO;
                             ableToChangeDONo = true;
+
+
+
                         }
                         else if (dataType == text.Status_Draft)
                         {
@@ -1606,15 +1663,28 @@ namespace FactoryManagementSoftware.UI
                             ableToChangeDONo = true;
                         }
 
-                        my_menu.Items.Add(showingText).Name = showingText;
+                        if (dataType != text.Status_Cancelled)
+                            my_menu.Items.Add(showingText).Name = showingText;
+                        
 
                         if (ableToChangeDONo)
                         {
-                            my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
+                            //my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
                         }
 
-                       // my_menu.Items.Add(text_MasterList).Name = text_MasterList;
-                        my_menu.Items.Add(text_CancelDO).Name = text_CancelDO;
+                        if (dataType == text.Status_InProgress)
+                        {
+                            my_menu.Items.Add(text_ChangeDONumber).Name = text_ChangeDONumber;
+                            my_menu.Items.Add(text_CancelDO).Name = text_CancelDO;
+
+                            if(MainDashboard.USER_ID == 1)
+                            {
+                                my_menu.Items.Add(text_CompleteDOWithoutTransfer).Name = text_CompleteDOWithoutTransfer;
+
+                            }
+                        }
+
+                        // my_menu.Items.Add(text_MasterList).Name = text_MasterList;
 
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
@@ -1867,10 +1937,16 @@ namespace FactoryManagementSoftware.UI
             if (rowIndex >= 0)
             {
                 string ClickedItem = e.ClickedItem.Name.ToString();
-                
+
+                my_menu.Hide();
+
                 if (ClickedItem.Equals(text_CompleteDO))
                 {
                     CompleteInternalDO(rowIndex);
+                }
+                else if (ClickedItem.Equals(text_CompleteDOWithoutTransfer))
+                {
+                    CompleteInternalDOWithoutTransfer(rowIndex);
                 }
                 else if (ClickedItem.Equals(text_ChangeDeliveredDate))
                 {
@@ -1878,27 +1954,29 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if (ClickedItem.Equals(text_InCompleteDO))
                 {
-                    //IncompleteDO(rowIndex);
+                    IncompleteInternalDO(rowIndex);
                     //MessageBox.Show("incomplete do");
                 }
-                else if (ClickedItem.Equals(text_UndoCancelled))
+                else if (ClickedItem.Equals(text_CancelDO))
                 {
-                    DOUndoRemove(rowIndex);
-                    //MessageBox.Show("undo remove");
+                    CancelInternalDO();
                 }
                 else if (ClickedItem.Equals(text_ChangeDONumber))
                 {
                     ChangeDONumber(rowIndex);
                     //MessageBox.Show("Change D/O Number");
                 }
-                else if (ClickedItem.Equals(text_MasterList))
-                {
-                    GetMasterList();
-                }
-                else if (ClickedItem.Equals(text_CancelDO))
-                {
-                    CancelDO();
-                }
+                //else if (ClickedItem.Equals(text_UndoCancelled))
+                //{
+                //    DOUndoRemove(rowIndex);
+                //    //MessageBox.Show("undo remove");
+                //}
+
+                //else if (ClickedItem.Equals(text_MasterList))
+                //{
+                //    GetMasterList();
+                //}
+
             }
 
 
@@ -1967,7 +2045,7 @@ namespace FactoryManagementSoftware.UI
             if(deliveredDate != DateTime.MaxValue)
             {
                 //search trf hist by delivered date
-                DataTable dt_TrfHist = dalTrfHist.rangeTrfSearch(deliveredDate.ToString("yyyy/MM/dd"), deliveredDate.ToString("yyyy/MM/dd"));
+                DataTable dt_TrfHist = dalTrfHist.rangeTrfSearchWithItemInfo(deliveredDate.ToString("yyyy/MM/dd"), deliveredDate.ToString("yyyy/MM/dd"));
 
                 bool itemList_InspectionPass = false;
 
@@ -2134,7 +2212,7 @@ namespace FactoryManagementSoftware.UI
             string shipTo = dgv.Rows[rowIndex].Cells[text.Header_ShipTo].Value.ToString();
             string shipFrom = dgv.Rows[rowIndex].Cells[text.Header_From].Value.ToString();
 
-            string groupCode = tool.GenerateRandomCode();
+            string trfTableKey = tool.GenerateRandomCode("["+dotblCode+"]");
 
             DataTable dt_Transfer_Item = NewBasicTransferTable();
 
@@ -2197,7 +2275,7 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[text.Header_Remark] = remark;
 
                     dt_Row[text.Header_DO_Table_Code] = dotblCode;
-                    dt_Row[text.Header_Random_Code] = groupCode;
+                    dt_Row[text.Header_Random_Code] = trfTableKey;
                     dt_Row[text.Header_Trf_Table_Code] = "";
 
                     dt_Transfer_Item.Rows.Add(dt_Row);
@@ -2221,14 +2299,13 @@ namespace FactoryManagementSoftware.UI
                 //need to check if all item fully stock updated
 
                 uInternalDO.tbl_code = int.TryParse(dotblCode, out int i) ? i : -1;
-                uInternalDO.isCompleted = true;
-                uInternalDO.isCancelled = false;
-                uInternalDO.isProcessing = false;
-                uInternalDO.isDraft = false;
+              
+                uInternalDO.trf_table_key = trfTableKey;
+                uInternalDO.completed_date = frmDOCompleteSetting.selectedDate;
                 uInternalDO.updated_date = DateTime.Now;
                 uInternalDO.updated_by = MainDashboard.USER_ID;
 
-                dalInternalDO.DOStatusUpdate(uInternalDO);
+                dalInternalDO.DOComplete(uInternalDO);
 
                 LoadInternalDOList();
                 tool.historyRecord(text.DO_Delivered, "["+doCode+"] " + shipFrom + " -> " + shipTo, DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(dotblCode));
@@ -2237,6 +2314,34 @@ namespace FactoryManagementSoftware.UI
             {
                 MessageBox.Show("Transfer cancelled!");
             }
+        }
+
+        private void CompleteInternalDOWithoutTransfer(int rowIndex)
+        {
+            DataGridView dgv = dgvDOList;
+
+            string doCode = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
+            string dotblCode = dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString();
+
+            string shipTo = dgv.Rows[rowIndex].Cells[text.Header_ShipTo].Value.ToString();
+            string shipFrom = dgv.Rows[rowIndex].Cells[text.Header_From].Value.ToString();
+            DateTime doDate = DateTime.TryParse(dgv.Rows[rowIndex].Cells[text.Header_DODate].Value.ToString(), out doDate)?doDate : DateTime.MaxValue;
+
+            string trfTableKey = "CompleteInternalDOWithoutTransfer";
+
+            MessageBox.Show("Internal Transfer success (without transfer)!");
+
+
+            uInternalDO.tbl_code = int.TryParse(dotblCode, out int i) ? i : -1;
+
+            uInternalDO.trf_table_key = trfTableKey;
+            uInternalDO.completed_date = doDate;
+            uInternalDO.updated_date = DateTime.Now;
+            uInternalDO.updated_by = MainDashboard.USER_ID;
+
+            dalInternalDO.DOComplete(uInternalDO);
+            LoadInternalDOList();
+            tool.historyRecord(text.DO_Delivered, "[" + doCode + "] " + shipFrom + " -> " + shipTo, DateTime.Now, MainDashboard.USER_ID, dalInternalDO.InternalDOTableName, Convert.ToInt32(dotblCode));
         }
 
         private bool ClearToDeliveryQtyAfterDelivered(DataTable dt)
@@ -2348,41 +2453,6 @@ namespace FactoryManagementSoftware.UI
             return success;
         }
 
-        private void CompleteDOWithoutTransfer(int rowIndex)
-        {
-            DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
-            DataGridView dgv = dgvDOList;
-
-            string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
-            string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
-            string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
-
-            DataTable dt_DODataBase = dalSPP.DOSelect();
-            DataTable dt_PODataBase = dalSPP.POSelect();
-
-            bool result = true;
-            foreach (DataRow row in dt_Item.Rows)
-            {
-                string doTableCode = row[header_DOTblCode].ToString();
-                string itemCode = row[header_ItemCode].ToString();
-                string PcsQty = row[header_DeliveryPCS].ToString();
-                string BagQty = row[header_DeliveryBAG].ToString();
-
-               if( !UpdateDOandPO(dt_DODataBase, dt_PODataBase, itemCode,-1, PcsQty))
-                {
-                    result = false;
-                    MessageBox.Show("Failed to transfer!");
-                }
-            }
-
-            if (result)
-            {
-                MessageBox.Show("transfer success");
-                ResetDBDOInfoList();
-                LoadInternalDOList();
-                tool.historyRecord(text.DO_Delivered, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
-            }
-        }
 
         private int GetPODeliveredQty(DataTable dt_PO, string poTableCode)
         {
@@ -2399,7 +2469,91 @@ namespace FactoryManagementSoftware.UI
             return deliveredQty;
         }
 
-        private void IncompleteDO(int rowIndex)
+
+        private void IncompleteInternalDO(int rowIndex)
+        {
+            bool success = true;
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            string trfTableKey = dgv.Rows[rowIndex].Cells[dalInternalDO.TrfTableKey].Value.ToString();
+            string shipFrom = dgv.Rows[rowIndex].Cells[text.Header_From].Value.ToString();
+            string shipTo = dgv.Rows[rowIndex].Cells[text.Header_ShipTo].Value.ToString();
+            string doCode = dgv.Rows[rowIndex].Cells[text.Header_DONo].Value.ToString();
+            string tableCode = dgv.Rows[rowIndex].Cells[text.Header_TableCode].Value.ToString();
+            DateTime completedDate = DateTime.TryParse(dgv.Rows[rowIndex].Cells[text.Header_CompletedDate].Value.ToString(), out completedDate) ? completedDate : DateTime.MaxValue;
+
+            if(string.IsNullOrEmpty(trfTableKey))
+            {
+                MessageBox.Show("Trf table key not found!\nPlease contact Jun.");
+                return;
+            }
+            DataTable dt_trf;
+
+            if (completedDate == DateTime.MaxValue)
+            {
+                dt_trf = dalTrfHist.SelectAll();
+            }
+            else
+            {
+                // Extract month and year as strings
+                string month = completedDate.Month.ToString();
+                string year = completedDate.Year.ToString();
+
+                dt_trf = dalTrfHist.TrfSearch(month, year);
+
+                if(dt_trf?.Rows.Count == 0)
+                {
+                    dt_trf = dalTrfHist.SelectAll();
+                }
+
+            }
+
+
+            DateTime updatedDate = DateTime.Now;
+            int updatedBy = MainDashboard.USER_ID;
+
+            foreach (DataRow row in dt_trf.Rows)
+            {
+               
+                string trfTableCode = row[dalTrfHist.TrfID].ToString();
+                string TrfTable_trfTableKey = row[dalTrfHist.TrfTableKey].ToString();
+
+                if (!string.IsNullOrEmpty(trfTableCode) && TrfTable_trfTableKey == trfTableKey)
+                {
+                    success =  tool.UndoTransferRecord(Convert.ToInt32(trfTableCode));
+                }
+
+            }
+
+            //message
+            if (success)
+            {
+                //need to check if all item fully stock updated
+
+                uInternalDO.tbl_code = int.TryParse(tableCode, out int i) ? i : -1;
+                uInternalDO.trf_table_key = "";
+                uInternalDO.updated_date = DateTime.Now;
+                uInternalDO.updated_by = MainDashboard.USER_ID;
+
+                dalInternalDO.DOInComplete(uInternalDO);
+
+                LoadInternalDOList();
+
+                MessageBox.Show("D/O: " + doCode + " is now Incomplete.\nAll related transfers record are undone.");
+            }
+            else
+            {
+                MessageBox.Show("Failed to undo transfer record!");
+            }
+
+            //record history
+            tool.historyRecord(text.DO_Incomplete, doCode+":"+ shipFrom + " -> " + shipTo, DateTime.Now, MainDashboard.USER_ID, dalInternalDO.InternalDOTableName, Convert.ToInt32(tableCode));
+
+        }
+
+        private void OldIncompleteDO(int rowIndex)
         {
             bool success = true;
             DataTable dt_Item = (DataTable)dgvDOItemList.DataSource;
@@ -2420,7 +2574,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                dt_POData  = dalSPP.POSelect(poNoString);
+                dt_POData = dalSPP.POSelect(poNoString);
 
             }
 
@@ -2467,7 +2621,7 @@ namespace FactoryManagementSoftware.UI
                     deliveredQty -= toDeliveryPcs;
                     uSpp.Table_Code = Convert.ToInt32(poTableCode);
                     uSpp.Delivered_qty = deliveredQty;
-              
+
 
                     success = dalSPP.PODeliveredDataUpdate(uSpp);
 
@@ -2492,7 +2646,7 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("D/O: " + Convert.ToInt32(doCode).ToString("D6") + " Incomplete Successful!");
                 dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
             }
-          
+
 
             //change row color
             ColorDONoByStatus();
@@ -2503,7 +2657,6 @@ namespace FactoryManagementSoftware.UI
 
             //LoadDOList();
         }
-
         private void DOUndoRemove(int rowIndex)
         {
             bool success = true;

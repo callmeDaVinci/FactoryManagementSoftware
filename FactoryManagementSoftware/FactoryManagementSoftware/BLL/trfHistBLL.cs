@@ -10,7 +10,7 @@ namespace FactoryManagementSoftware.BLL
     {
         public int trf_hist_id { get; set; }
         public string trf_hist_item_code { get; set; }
-        public string group_code { get; set; }
+        public string trf_table_key { get; set; }
         public string trf_hist_from { get; set; }
         public string trf_hist_to { get; set; }
         public float trf_hist_qty { get; set; }

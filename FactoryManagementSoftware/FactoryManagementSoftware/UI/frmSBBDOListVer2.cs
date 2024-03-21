@@ -2136,7 +2136,7 @@ namespace FactoryManagementSoftware.UI
             if(deliveredDate != DateTime.MaxValue)
             {
                 //search trf hist by delivered date
-                DataTable dt_TrfHist = dalTrfHist.rangeTrfSearch(deliveredDate.ToString("yyyy/MM/dd"), deliveredDate.ToString("yyyy/MM/dd"));
+                DataTable dt_TrfHist = dalTrfHist.rangeTrfSearchWithItemInfo(deliveredDate.ToString("yyyy/MM/dd"), deliveredDate.ToString("yyyy/MM/dd"));
 
                 bool itemList_InspectionPass = false;
 

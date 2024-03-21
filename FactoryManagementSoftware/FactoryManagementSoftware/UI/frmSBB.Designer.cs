@@ -450,7 +450,7 @@
             this.btnDeliveryPlanning.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnDeliveryPlanning.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageAboveText;
             this.btnDeliveryPlanning.UseVisualStyleBackColor = false;
-            this.btnDeliveryPlanning.Click += new System.EventHandler(this.OpenDeliveryPlanning);
+            this.btnDeliveryPlanning.Click += new System.EventHandler(this.OpenInternalDOManagement);
             // 
             // button7
             // 

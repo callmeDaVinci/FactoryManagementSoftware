@@ -667,12 +667,12 @@ namespace FactoryManagementSoftware.UI
 
             if (OLD_PRO_DATE == DateTime.MaxValue)
             {
-                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+                dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
 
             }
             else
             {
-                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
+                dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
 
             }
 
@@ -773,12 +773,12 @@ namespace FactoryManagementSoftware.UI
 
             if (OLD_PRO_DATE == DateTime.MaxValue)
             {
-                dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+                dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
 
             }
             else
             {
-                dt_Trf = dalTrf.rangeTrfSearch(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
+                dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(OLD_PRO_DATE.ToString("yyyy/MM/dd"), OLD_PRO_DATE.ToString("yyyy/MM/dd"));
 
             }
 

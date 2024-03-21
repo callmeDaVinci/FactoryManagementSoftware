@@ -54,11 +54,13 @@ namespace FactoryManagementSoftware.UI
         public frmDOEditing(DataRow DORow,DataTable dt)
         {
             InitializeComponent();
-            InitialSetting();
-
             DO_EDITING_MODE = true;
-            DT_ITEM_LIST = dt.Copy();
+            uInternalDO.do_no_string = DORow.Table.Columns.Contains(text.Header_DONo) ? DORow[text.Header_DONo].ToString() : null;
+
+            InitialSetting();
             InternalDOEditInitialInfo(DORow);
+
+            DT_ITEM_LIST = dt.Copy();
         }
 
         private void InternalDOEditInitialInfo(DataRow DORow)
@@ -741,6 +743,22 @@ namespace FactoryManagementSoftware.UI
                     if (!DO_TYPE_DATA_LOADED)
                     {
                         InitialDOTypeComboBox();
+                    }
+
+                    lblNextRunningNumber.Visible = !DO_EDITING_MODE;
+                    lblRunningNumberEdit.Visible = !DO_EDITING_MODE;
+                    txtNextRunningNumber.Visible = !DO_EDITING_MODE;
+                   
+
+                    if(DO_EDITING_MODE)
+                    {
+                        lblPreviewText.Text = "D/O Number";
+                        txtDONoSample.Text = uInternalDO.do_no_string;
+                    }
+                    else
+                    {
+                        lblPreviewText.Text = "If the order number is 123, the delivery order number would be";
+
                     }
 
                     this.Size = new Size(1366, 750);
@@ -2024,7 +2042,8 @@ namespace FactoryManagementSoftware.UI
 
                 errorProvider1.Clear();
 
-                LoadDONumberSample(123);
+                if(!DO_EDITING_MODE)
+                    LoadDONumberSample(123);
 
                 if(CheckIfInternalDOType())
                 {
@@ -2361,6 +2380,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                int runningNo = 0 ;
+                doFormatBLL doFormat = new doFormatBLL();
+
                 //status set to draft
                 if (isDraft)
                 {
@@ -2372,11 +2394,11 @@ namespace FactoryManagementSoftware.UI
                 {
                     uInternalDO.isProcessing = true;
 
-                    doFormatBLL doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
+                    doFormat = dalDoFormat.GetDOFormatByID(uInternalDO.do_format_tbl_code.ToString());
 
                     LoadInternalDO();
                     bool duplicatedFound = false;
-                    int runningNo = dalDoFormat.GenerateDONumber(doFormat);
+                    runningNo = dalDoFormat.GenerateDONumber(doFormat);
                     doCode = dalDoFormat.ApplyDOFormat(doFormat, runningNo);
 
                     do
@@ -2429,6 +2451,13 @@ namespace FactoryManagementSoftware.UI
                 if (success)
                 {
                     tblCode = dalInternalDO.SelectTblCodeByDOCode(doCode);
+
+                    doFormat.updated_date = DateTime.Now;
+                    doFormat.updated_by = MainDashboard.USER_ID;
+
+                    doFormat.last_number = runningNo;
+
+                    dalDoFormat.UpdateLastNumber(doFormat);
 
                     if (isDraft)
                     {
@@ -2656,6 +2685,8 @@ namespace FactoryManagementSoftware.UI
                 //dotype, from, to, address,remark, delivery method, item list, do number if have
                 setDOGeneralData();
             }
+
+           
         }
 
         private void changedCartonNameToPackaging(bool changetoPackaging)

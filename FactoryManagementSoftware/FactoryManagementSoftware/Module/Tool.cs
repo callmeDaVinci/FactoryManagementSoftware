@@ -2159,6 +2159,14 @@ namespace FactoryManagementSoftware.Module
 
         private  Random random = new Random();
 
+        public string GenerateRandomCode(string presetString)
+        {
+            string dateNow = DateTime.Now.ToString();
+            string randomString = GenerateRandomString(10); // Generate a 10-character random string
+
+            return presetString + dateNow + randomString;
+        }
+
         public string GenerateRandomCode()
         {
             string dateNow = DateTime.Now.ToString(); 

@@ -274,7 +274,7 @@ namespace FactoryManagementSoftware.UI
         private string unit = "!";
         private float qty = -1;
         private string note = "!";
-        private string groupCode = "";
+        private string trfTableKey = "";
         private string failedNote = "!";
         private int index = 0;
         private int selectedRow = -1;
@@ -339,7 +339,7 @@ namespace FactoryManagementSoftware.UI
             tool.AddTextBoxColumns(dgv, QtyColumnName, QtyColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, UnitColumnName, UnitColumnName, DisplayedCells);
             tool.AddTextBoxColumns(dgv, NoteColumnName, NoteColumnName, DisplayedCells);
-            tool.AddTextBoxColumns(dgv, text.Header_GroupCode, text.Header_GroupCode, DisplayedCells);
+            tool.AddTextBoxColumns(dgv, text.Header_TrfTableKey, text.Header_TrfTableKey, DisplayedCells);
 
             dgv.ColumnHeadersDefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -353,7 +353,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[ToCatColumnName].DefaultCellStyle.BackColor = Color.LightSteelBlue;
             dgv.Columns[ToColumnName].DefaultCellStyle.BackColor = Color.LightSteelBlue;
-            dgv.Columns[text.Header_GroupCode].Visible = false;
+            dgv.Columns[text.Header_TrfTableKey].Visible = false;
 
             UpdateFont();
         }
@@ -694,7 +694,10 @@ namespace FactoryManagementSoftware.UI
 
             txtTrfQty.Focus();
 
-            if(CALL_FROM_BASIC)
+            btnClearAll.Visible = !CALL_FROM_BASIC;
+
+
+            if (CALL_FROM_BASIC)
             {
                 addBasicToDGV();
             }
@@ -1029,7 +1032,7 @@ namespace FactoryManagementSoftware.UI
             string locationFrom = string.IsNullOrEmpty(from) ? fromCat : from;
             string locationTo = string.IsNullOrEmpty(to) ? toCat : to;
 
-            utrfHist.group_code = groupCode;
+            utrfHist.trf_table_key = trfTableKey;
             utrfHist.trf_hist_item_code = itemCode;
             utrfHist.trf_hist_from = locationFrom;
             utrfHist.trf_hist_to = locationTo;
@@ -1041,6 +1044,11 @@ namespace FactoryManagementSoftware.UI
             utrfHist.trf_hist_added_by = MainDashboard.USER_ID;
             utrfHist.trf_result = stockResult;
             utrfHist.trf_hist_from_order = 0;
+
+            if (CALL_FROM_BASIC || callFromDOlist || callFromProductionRecord)
+            {
+                utrfHist.trf_hist_from_order = 1;
+            }
 
             utrfHist.balance = GetTotalBalAfterTransfer(dalStock.Select(itemCode), dt_Fac, itemCode, qty, locationFrom, locationTo);
 
@@ -1810,7 +1818,7 @@ namespace FactoryManagementSoftware.UI
             string result = "Passed";
             int TrfID = -1;
 
-            daltrfHist.AddGroupCodeColumnIfMissing();
+            daltrfHist.AddTrfTableKeyColumnIfMissing();
 
             //part in out
             if (category.Equals("Part"))
@@ -3002,7 +3010,7 @@ namespace FactoryManagementSoftware.UI
                 n = dgv.Rows.Add();
                 index = n + 1;
 
-                string groupCode = row[text.Header_Random_Code].ToString();
+                string trfTableKey = row[text.Header_Random_Code].ToString();
                 string itemCode = row[text.Header_ItemCode].ToString();
                 string itemName = row[text.Header_ItemName].ToString();
                 string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo,itemCode);
@@ -3034,7 +3042,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Rows[n].Cells[UnitColumnName].Value = unit;
                 dgv.Rows[n].Cells[NoteColumnName].Value = remark;
-                dgv.Rows[n].Cells[text.Header_GroupCode].Value = groupCode;
+                dgv.Rows[n].Cells[text.Header_TrfTableKey].Value = trfTableKey;
 
                 if (cmbTrfFromCategory.Text.Equals("Factory"))
                 {
@@ -3487,6 +3495,16 @@ namespace FactoryManagementSoftware.UI
                     loadFromDGV();
                     dgvEdit = true;
                     changeButton();
+
+                    btnDelete.Visible = !CALL_FROM_BASIC;
+                    cmbTrfItemCat.Enabled = !CALL_FROM_BASIC;
+                    cmbTrfItemName.Enabled = !CALL_FROM_BASIC;
+                    cmbTrfItemCode.Enabled = !CALL_FROM_BASIC;
+                    cmbTrfFromCategory.Enabled = !CALL_FROM_BASIC;
+                    cmbTrfFrom.Enabled = !CALL_FROM_BASIC;
+                    cmbTrfToCategory.Enabled = !CALL_FROM_BASIC;
+                    txtTrfQty.Enabled = !CALL_FROM_BASIC;
+
                 }
              
 
@@ -3537,7 +3555,7 @@ namespace FactoryManagementSoftware.UI
             unit = dgv.Rows[n].Cells[UnitColumnName].Value.ToString();
             qty = Convert.ToSingle(dgv.Rows[n].Cells[QtyColumnName].Value);
             note = dgv.Rows[n].Cells[NoteColumnName].Value == null ?string.Empty : dgv.Rows[n].Cells[NoteColumnName].Value.ToString();
-            groupCode = dgv.Rows[n].Cells[text.Header_GroupCode].Value.ToString();
+            trfTableKey = dgv.Rows[n].Cells[text.Header_TrfTableKey].Value == null ? string.Empty : dgv.Rows[n].Cells[text.Header_TrfTableKey].Value.ToString();
 
             qty = unitCheck(qty, unit);
             unit = checkUnit(unit);

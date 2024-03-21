@@ -819,7 +819,7 @@ namespace FactoryManagementSoftware.UI
             //    dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
             //}
 
-            dt_TrfHist = dalTrfHist.rangeTrfSearch(startDate, endDate);
+            dt_TrfHist = dalTrfHist.rangeTrfSearchWithItemInfo(startDate, endDate);
 
             DataTable dt_Fac = dalFac.SelectDESC();
 

@@ -3843,7 +3843,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void OpenDeliveryPlanning(object sender, EventArgs e)
+        private void OpenInternalDOManagement(object sender, EventArgs e)
         {
 
             int count = Application.OpenForms.OfType<frmDOManagement>().Count();
@@ -3864,7 +3864,8 @@ namespace FactoryManagementSoftware.UI
                 };
 
 
-                frm.Show();
+                frm.ShowDialog();
+               // frm.Activate();
             }
 
         }

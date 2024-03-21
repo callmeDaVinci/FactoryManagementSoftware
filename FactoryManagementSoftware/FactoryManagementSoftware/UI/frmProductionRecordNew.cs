@@ -662,7 +662,7 @@ namespace FactoryManagementSoftware.UI
 
             DateTime proDate = dtpProDate.Value;
 
-            DataTable dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+            DataTable dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
 
             string shift = text.Shift_Morning;
 

@@ -994,7 +994,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt_Trf;
 
-            dt_Trf = dalTrf.rangeTrfSearch(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
+            dt_Trf = dalTrf.rangeTrfSearchWithItemInfo(proDate.ToString("yyyy/MM/dd"), proDate.ToString("yyyy/MM/dd"));
 
             string shift = dgvRecordHistory.Rows[dgvRecordHistory.CurrentCell.RowIndex].Cells[text.Header_Shift].Value.ToString();
 

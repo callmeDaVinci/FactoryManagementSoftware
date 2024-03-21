@@ -572,7 +572,7 @@ namespace FactoryManagementSoftware.UI
             {
                 //check type: all/part/material
                 //if all: show all trf hist during selected period
-                dt = dalTrfHist.rangeTrfSearch(start, end);
+                dt = dalTrfHist.rangeTrfSearchWithItemInfo(start, end);
             }
             else if (Type.Equals(CMBPartHeader))
             {

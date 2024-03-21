@@ -261,7 +261,7 @@ namespace FactoryManagementSoftware.DAL
                         uAddressBook.website = row[website].ToString();
                         uAddressBook.remark = row[remark].ToString();
                         // Assuming isRemoved is a boolean in your BLL and string "true"/"false" in DataTable.
-                        uAddressBook.isRemoved = bool.Parse(row[isRemoved].ToString());
+                        uAddressBook.isRemoved = bool.TryParse(row[isRemoved].ToString(), out bool i)? i : false;
                         // Assuming updated_by is an integer in your BLL.
                         // Handle parsing since DataTable might return a string representation.
                         if (int.TryParse(row[updatedBy].ToString(), out int updatedByValue))
