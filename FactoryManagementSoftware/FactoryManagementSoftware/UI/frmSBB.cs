@@ -1960,6 +1960,7 @@ namespace FactoryManagementSoftware.UI
             LayoutPanelDisplay(true);
 
             //NewItemUpdates();
+            WindowState = FormWindowState.Maximized;
 
             ResumeLayout();
         }

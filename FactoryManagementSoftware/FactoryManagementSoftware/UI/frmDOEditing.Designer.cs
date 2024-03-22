@@ -175,10 +175,10 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromCompany = new Guna.UI.WinForms.GunaComboBox();
             this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
             this.btnContinue = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnAddAsDraft = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.btnPreviousStep = new Guna.UI.WinForms.GunaGradientButton();
             this.btnJobPublish = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnAddAsDraft = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel59 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel62 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStep3 = new System.Windows.Forms.Label();
@@ -2933,75 +2933,6 @@ namespace FactoryManagementSoftware.UI
             this.btnContinue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnContinue.Click += new System.EventHandler(this.btnContinue_Click);
             // 
-            // btnAddAsDraft
-            // 
-            this.btnAddAsDraft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnAddAsDraft.AnimationHoverSpeed = 0.07F;
-            this.btnAddAsDraft.AnimationSpeed = 0.03F;
-            this.btnAddAsDraft.BackColor = System.Drawing.Color.Transparent;
-            this.btnAddAsDraft.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddAsDraft.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
-            this.btnAddAsDraft.BorderColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.BorderSize = 1;
-            this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnAddAsDraft.Enabled = false;
-            this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
-            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
-            this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnAddAsDraft.Location = new System.Drawing.Point(775, 10);
-            this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnAddAsDraft.Name = "btnAddAsDraft";
-            this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnAddAsDraft.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnAddAsDraft.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnAddAsDraft.OnHoverImage = null;
-            this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
-            this.btnAddAsDraft.Radius = 5;
-            this.btnAddAsDraft.Size = new System.Drawing.Size(130, 50);
-            this.btnAddAsDraft.TabIndex = 224;
-            this.btnAddAsDraft.Text = "Save as Draft";
-            this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnAddAsDraft.Visible = false;
-            this.btnAddAsDraft.Click += new System.EventHandler(this.btnAddAsDraft_Click);
-            // 
-            // btnCancel
-            // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.AnimationHoverSpeed = 0.07F;
-            this.btnCancel.AnimationSpeed = 0.03F;
-            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
-            this.btnCancel.BaseColor1 = System.Drawing.Color.White;
-            this.btnCancel.BaseColor2 = System.Drawing.Color.White;
-            this.btnCancel.BorderColor = System.Drawing.Color.Black;
-            this.btnCancel.BorderSize = 1;
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnCancel.FocusedColor = System.Drawing.Color.Empty;
-            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnCancel.ForeColor = System.Drawing.Color.Black;
-            this.btnCancel.Image = null;
-            this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(925, 10);
-            this.btnCancel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnCancel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnCancel.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnCancel.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnCancel.OnHoverImage = null;
-            this.btnCancel.OnPressedColor = System.Drawing.Color.Black;
-            this.btnCancel.Radius = 5;
-            this.btnCancel.Size = new System.Drawing.Size(180, 50);
-            this.btnCancel.TabIndex = 223;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
-            // 
             // btnPreviousStep
             // 
             this.btnPreviousStep.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -3067,6 +2998,75 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.Text = "Publish D/O";
             this.btnJobPublish.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnJobPublish.Click += new System.EventHandler(this.btnJobPublish_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCancel.AnimationHoverSpeed = 0.07F;
+            this.btnCancel.AnimationSpeed = 0.03F;
+            this.btnCancel.BackColor = System.Drawing.Color.Transparent;
+            this.btnCancel.BaseColor1 = System.Drawing.Color.White;
+            this.btnCancel.BaseColor2 = System.Drawing.Color.White;
+            this.btnCancel.BorderColor = System.Drawing.Color.Black;
+            this.btnCancel.BorderSize = 1;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnCancel.FocusedColor = System.Drawing.Color.Empty;
+            this.btnCancel.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnCancel.ForeColor = System.Drawing.Color.Black;
+            this.btnCancel.Image = null;
+            this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnCancel.Location = new System.Drawing.Point(925, 10);
+            this.btnCancel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnCancel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnCancel.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnCancel.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnCancel.OnHoverImage = null;
+            this.btnCancel.OnPressedColor = System.Drawing.Color.Black;
+            this.btnCancel.Radius = 5;
+            this.btnCancel.Size = new System.Drawing.Size(180, 50);
+            this.btnCancel.TabIndex = 223;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // btnAddAsDraft
+            // 
+            this.btnAddAsDraft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnAddAsDraft.AnimationHoverSpeed = 0.07F;
+            this.btnAddAsDraft.AnimationSpeed = 0.03F;
+            this.btnAddAsDraft.BackColor = System.Drawing.Color.Transparent;
+            this.btnAddAsDraft.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddAsDraft.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(251)))), ((int)(((byte)(255)))), ((int)(((byte)(147)))));
+            this.btnAddAsDraft.BorderColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.BorderSize = 1;
+            this.btnAddAsDraft.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnAddAsDraft.Enabled = false;
+            this.btnAddAsDraft.FocusedColor = System.Drawing.Color.Empty;
+            this.btnAddAsDraft.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnAddAsDraft.ForeColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.Image = ((System.Drawing.Image)(resources.GetObject("btnAddAsDraft.Image")));
+            this.btnAddAsDraft.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddAsDraft.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnAddAsDraft.Location = new System.Drawing.Point(775, 10);
+            this.btnAddAsDraft.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
+            this.btnAddAsDraft.Name = "btnAddAsDraft";
+            this.btnAddAsDraft.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnAddAsDraft.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnAddAsDraft.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnAddAsDraft.OnHoverImage = null;
+            this.btnAddAsDraft.OnPressedColor = System.Drawing.Color.Black;
+            this.btnAddAsDraft.Radius = 5;
+            this.btnAddAsDraft.Size = new System.Drawing.Size(130, 50);
+            this.btnAddAsDraft.TabIndex = 224;
+            this.btnAddAsDraft.Text = "Save as Draft";
+            this.btnAddAsDraft.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnAddAsDraft.Visible = false;
+            this.btnAddAsDraft.Click += new System.EventHandler(this.btnAddAsDraft_Click);
             // 
             // tableLayoutPanel59
             // 
@@ -3322,6 +3322,7 @@ namespace FactoryManagementSoftware.UI
             this.Text = "D/O Setting";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmDOEditing_FormClosing);
             this.Load += new System.EventHandler(this.frmDOEditing_Load);
+            this.Shown += new System.EventHandler(this.frmDOEditing_Shown);
             this.tableLayoutPanel28.ResumeLayout(false);
             this.tlpStepPanel.ResumeLayout(false);
             this.gunaGroupBox2.ResumeLayout(false);

@@ -2845,5 +2845,22 @@ namespace FactoryManagementSoftware.UI
         {
             UpdatePreviewDescription();
         }
+
+        private void frmDOEditing_Shown(object sender, EventArgs e)
+        {
+            string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+
+
+            if (myconnstrng == text.DB_Semenyih )
+            {
+                cmbDOType.SelectedIndex = 1;
+
+            }
+            else if (myconnstrng == text.DB_OUG)
+            {
+                cmbDOType.SelectedIndex = 0;
+            }
+
+        }
     }
 }

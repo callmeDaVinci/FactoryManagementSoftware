@@ -421,8 +421,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
-
-            ResetDBDOInfoList();
+            ShowFilter(false);
             LoadInternalDOList();
         }
 
@@ -845,16 +844,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void ResetDBDOInfoList()
-        {
-            //frmLoading.ShowLoadingScreen();
-            //DB_DO_INFO = dalSPP.DOWithInfoSelect();
-            //DBDOListFilter();
-            //DB_DO_INFO.DefaultView.Sort = dalSPP.DONo + " ASC," + dalSPP.TypeName + " ASC," + dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
-            //DB_DO_INFO = DB_DO_INFO.DefaultView.ToTable();
-            //frmLoading.CloseForm();
-
-        }
 
         private void NewShowDOItem(string doCode)
         {
@@ -1503,7 +1492,6 @@ namespace FactoryManagementSoftware.UI
             //4664
             frm.ShowDialog();
 
-            ResetDBDOInfoList();
             LoadInternalDOList();
         }
 
@@ -1554,7 +1542,6 @@ namespace FactoryManagementSoftware.UI
                 if (dialogResult == DialogResult.Yes)
                 {
                     //RemoveDO(tableCode);
-                    ResetDBDOInfoList();
                     LoadInternalDOList();
                 }
             }
@@ -2189,7 +2176,6 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show("Transfer success!");
 
                 ClearToDeliveryQtyAfterDelivered(dt);
-                ResetDBDOInfoList();
                 LoadInternalDOList();
                 tool.historyRecord(text.DO_Delivered, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
             }
@@ -2796,7 +2782,6 @@ namespace FactoryManagementSoftware.UI
                     {
                         MessageBox.Show("Failed to update new D/O's number!");
                     }
-                    ResetDBDOInfoList();
                     LoadInternalDOList();
 
                     //record history
@@ -5536,7 +5521,6 @@ namespace FactoryManagementSoftware.UI
 
         private void ReloadData()
         {
-            ResetDBDOInfoList();
 
             //do type filter: internal or customer do
 
@@ -5554,6 +5538,7 @@ namespace FactoryManagementSoftware.UI
         }
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            ShowFilter(false);
             ReloadData();
         }
 
@@ -5570,7 +5555,6 @@ namespace FactoryManagementSoftware.UI
 
             cmbCustomer.Text = "ALL";
 
-            ResetDBDOInfoList();
             LoadInternalDOList();
             FormLoaded = true;
 

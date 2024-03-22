@@ -140,7 +140,10 @@ namespace FactoryManagementSoftware.UI
             }
             finally
             {
-                //itemListLoaded = true;
+                //itemListLoaded = true
+                
+                WindowState = FormWindowState.Maximized;
+
                 ActiveControl = label1;
             }
         }

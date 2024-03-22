@@ -1272,28 +1272,24 @@ namespace FactoryManagementSoftware.UI
 
         private void oUGToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //if (!NewDailyJobSheetFormOpen)
-            //{
-            //    frmLoading.ShowLoadingScreen();
-
-            //    frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-            //    frm.MdiParent = this;
-            //    frm.StartPosition = FormStartPosition.CenterScreen;
-            //    frm.WindowState = FormWindowState.Maximized;
-            //    frm.Show();
-            //    NewDailyJobSheetFormOpen = true;
-
-            //    frmLoading.CloseForm();
-
-            //}
-            //else
-            //{
-            //    if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-            //    {
-            //        Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-            //    }
-
-            //}
+            if (!OUGFormOpen)
+            {
+                //frmLoading.ShowLoadingScreen();
+                frmOUG frm = new frmOUG();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                OUGFormOpen = true;
+                //frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmOUG>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmOUG>().First().BringToFront();
+                }
+            }
         }
 
         private void semenyihToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1474,31 +1470,7 @@ namespace FactoryManagementSoftware.UI
           
         }
 
-        private void oUGToolStripMenuItem_Click_1(object sender, EventArgs e)
-        {
-            if (!NewDailyJobSheetFormOpen)
-            {
-                frmLoading.ShowLoadingScreen();
-
-                frmProductionRecordNewV2 frm = new frmProductionRecordNewV2();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                NewDailyJobSheetFormOpen = true;
-
-                frmLoading.CloseForm();
-
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmProductionRecordNewV2>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmProductionRecordNewV2>().First().BringToFront();
-                }
-
-            }
-        }
+      
 
         private void MainDashboard_Shown(object sender, EventArgs e)
         {
@@ -1531,27 +1503,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void oUGToolStripMenuItem_Click_2(object sender, EventArgs e)
-        {
-            if (!OUGFormOpen)
-            {
-                //frmLoading.ShowLoadingScreen();
-                frmOUG frm = new frmOUG();
-                frm.MdiParent = this;
-                frm.StartPosition = FormStartPosition.CenterScreen;
-                frm.WindowState = FormWindowState.Maximized;
-                frm.Show();
-                SBBFormOpen = true;
-                //frmLoading.CloseForm();
-            }
-            else
-            {
-                if (Application.OpenForms.OfType<frmOUG>().Count() == 1)
-                {
-                    Application.OpenForms.OfType<frmOUG>().First().BringToFront();
-                }
-            }
-
-        }
+       
     }
 }

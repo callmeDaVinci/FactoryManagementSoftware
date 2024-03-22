@@ -4166,7 +4166,7 @@ namespace FactoryManagementSoftware.UI
                 };
 
 
-                frm.Show();
+                frm.ShowDialog();
             }
 
         }

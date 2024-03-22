@@ -66,6 +66,7 @@
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
+            this.oUGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
             this.SuspendLayout();
@@ -88,7 +89,8 @@
             this.reportToolStripMenuItem,
             this.pOToolStripMenuItem,
             this.usernameToolStripMenuItem,
-            this.fORECASTREPORTToolStripMenuItem1});
+            this.fORECASTREPORTToolStripMenuItem1,
+            this.oUGToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -394,6 +396,13 @@
             this.notifyIcon1.Text = "notifyIcon1";
             this.notifyIcon1.Visible = true;
             // 
+            // oUGToolStripMenuItem
+            // 
+            this.oUGToolStripMenuItem.Name = "oUGToolStripMenuItem";
+            this.oUGToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
+            this.oUGToolStripMenuItem.Text = "OUG";
+            this.oUGToolStripMenuItem.Click += new System.EventHandler(this.oUGToolStripMenuItem_Click);
+            // 
             // MainDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -460,6 +469,7 @@
         private System.Windows.Forms.ToolStripMenuItem usernameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fORECASTREPORTToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem supplierToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem oUGToolStripMenuItem;
     }
 }
 

@@ -323,6 +323,7 @@
             this.gunaGroupBox3.BorderSize = 1;
             this.gunaGroupBox3.Controls.Add(this.tableLayoutPanel9);
             this.gunaGroupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGroupBox3.Enabled = false;
             this.gunaGroupBox3.LineColor = System.Drawing.Color.Gainsboro;
             this.gunaGroupBox3.Location = new System.Drawing.Point(523, 3);
             this.gunaGroupBox3.Name = "gunaGroupBox3";
@@ -445,6 +446,7 @@
             this.gunaGroupBox5.BorderSize = 1;
             this.gunaGroupBox5.Controls.Add(this.tableLayoutPanel8);
             this.gunaGroupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGroupBox5.Enabled = false;
             this.gunaGroupBox5.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
             this.gunaGroupBox5.LineColor = System.Drawing.Color.Gainsboro;
             this.gunaGroupBox5.Location = new System.Drawing.Point(873, 3);
@@ -648,6 +650,7 @@
             this.gunaGroupBox2.BorderSize = 1;
             this.gunaGroupBox2.Controls.Add(this.tableLayoutPanel7);
             this.gunaGroupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGroupBox2.Enabled = false;
             this.gunaGroupBox2.LineColor = System.Drawing.Color.Gainsboro;
             this.gunaGroupBox2.Location = new System.Drawing.Point(223, 3);
             this.gunaGroupBox2.Name = "gunaGroupBox2";
