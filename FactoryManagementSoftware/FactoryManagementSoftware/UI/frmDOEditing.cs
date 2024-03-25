@@ -376,7 +376,7 @@ namespace FactoryManagementSoftware.UI
 
             lblLetterHeadContactInfo.Text = LETTER_HEAD_CONTACT_INFO;
 
-            lblDOTypePreview.Text = cmbDOType.Text.ToUpper();
+            lblDOTypePreview.Text = cmbDOType.Text.ToUpper().Replace("SMY","SEMENYIH");
             //txtDeliveryToFullName.Text = uShippingAddress.full_name;
             txtDeliverToAddress.Text = uShippingAddress.full_name + "\r\n" + SHIPPING_ADDRESS;
 
@@ -1539,9 +1539,9 @@ namespace FactoryManagementSoftware.UI
                 txtQtyPerBox.Text = "";
             }
 
-            txtTotalQtyUnit.Text = qtyUnit;
+            txtTotalQtyUnit.Text = String.IsNullOrEmpty(qtyUnit) ? "pcs" : qtyUnit;
             txtBoxUnit.Text = String.IsNullOrEmpty(boxUnit)? "ctn" : boxUnit;
-            lblQty.Text = "Qty(" + qtyUnit + ")";
+            lblQty.Text = "Qty(" + qtyUnit + ")"; 
         }
 
         private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
@@ -2155,7 +2155,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (!string.IsNullOrEmpty(postalCode) && !string.IsNullOrEmpty(State))
                 {
-                    address += "\r\n" + postalCode + " " + State +".";
+                    address += "\r\n" + postalCode + " " + State ;
                 }
             }
 

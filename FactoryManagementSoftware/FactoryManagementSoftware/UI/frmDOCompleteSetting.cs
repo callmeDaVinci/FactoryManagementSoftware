@@ -81,7 +81,7 @@ namespace FactoryManagementSoftware.UI
                 return false;
             }
 
-            if (string.IsNullOrEmpty(cmbTo.Text))
+            if (string.IsNullOrEmpty(cmbTo.Text) && !INTERNAL_SMY_TO_OUG)
             {
                 errorProvider3.SetError(groupBox1, "Delivered To Required");
                 return false;
@@ -207,7 +207,7 @@ namespace FactoryManagementSoftware.UI
             if(INTERNAL_SMY_TO_OUG)
             {
                 DEFAULT_FAC_OUT = "Semenyih";
-                DEFAULT_FAC_IN = "Store";
+                DEFAULT_FAC_IN = "OUG";
             }
             else if (INTERNAL_OUG_TO_SMY)
             {
@@ -229,7 +229,15 @@ namespace FactoryManagementSoftware.UI
             cmbToCat.DataSource = fromCatTable;
             cmbToCat.DisplayMember = "trf_cat_name";
 
-            InitialCombobox(cmbTo, dt, dalFac.FacName, dalFac.FacID, DEFAULT_FAC_IN);
+            if(INTERNAL_SMY_TO_OUG)
+            {
+                cmbToCat.Text = "OUG";
+            }
+            else
+            {
+                InitialCombobox(cmbTo, dt, dalFac.FacName, dalFac.FacID, DEFAULT_FAC_IN);
+            }
+          
             FAC_TO_CAT_DATA_LOADED = true;
 
 

@@ -618,7 +618,12 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPPDOList_Load(object sender, EventArgs e)
         {
-            //dalInternalDO.CreateTableOrUpdate();
+
+            dalInternalDO.CreateTableOrUpdate();
+            dalDoFormat.CreateTableOrUpdate();
+            new companyDAL().CreateTableOrUpdate();
+            new addressBookDAL().CreateTableOrUpdate();
+
             dalInternalDO.AddTrfTableKeyColumnIfMissing();
 
         }

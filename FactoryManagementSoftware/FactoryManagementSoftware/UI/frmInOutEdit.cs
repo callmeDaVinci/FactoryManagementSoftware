@@ -3501,7 +3501,7 @@ namespace FactoryManagementSoftware.UI
                     cmbTrfItemName.Enabled = !CALL_FROM_BASIC;
                     cmbTrfItemCode.Enabled = !CALL_FROM_BASIC;
                     cmbTrfFromCategory.Enabled = !CALL_FROM_BASIC;
-                    cmbTrfFrom.Enabled = !CALL_FROM_BASIC;
+                    //cmbTrfFrom.Enabled = !CALL_FROM_BASIC;
                     cmbTrfToCategory.Enabled = !CALL_FROM_BASIC;
                     txtTrfQty.Enabled = !CALL_FROM_BASIC;
 
