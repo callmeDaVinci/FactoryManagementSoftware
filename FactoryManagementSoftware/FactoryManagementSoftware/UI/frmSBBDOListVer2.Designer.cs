@@ -242,7 +242,7 @@
             this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnBack.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32__1_;
+            this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32;
             this.btnBack.Location = new System.Drawing.Point(4, 4);
             this.btnBack.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
             this.btnBack.Name = "btnBack";

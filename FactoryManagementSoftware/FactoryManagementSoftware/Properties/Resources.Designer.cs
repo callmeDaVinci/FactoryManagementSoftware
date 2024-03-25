@@ -124,16 +124,6 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_assembly_line_96__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-assembly-line-96 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icons8_available_updates_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-available-updates-96", resourceCulture);
@@ -157,16 +147,6 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_back_32 {
             get {
                 object obj = ResourceManager.GetObject("icons8-back-32", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_back_32__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-back-32 (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -304,16 +284,6 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap icons8_data_transfer_64__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-data-transfer-64 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         internal static System.Drawing.Bitmap icons8_data_transfer_641 {
             get {
                 object obj = ResourceManager.GetObject("icons8-data-transfer-641", resourceCulture);
@@ -367,26 +337,6 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_deliver_food_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-deliver-food-64", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_deliver_food_64__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-deliver-food-64 (1)", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_delivery_64__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-delivery-64 (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -677,16 +627,6 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_product_96 {
             get {
                 object obj = ResourceManager.GetObject("icons8-product-96", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap icons8_product_96__1_ {
-            get {
-                object obj = ResourceManager.GetObject("icons8-product-96 (1)", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

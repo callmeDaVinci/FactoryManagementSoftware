@@ -131,21 +131,21 @@
             // 
             // btnRefresh
             // 
-            this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
-            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
-            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(185, 4);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(36, 36);
-            this.btnRefresh.TabIndex = 173;
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            //this.btnRefresh.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            //this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
+            //this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
+            //this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            //this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
+            //this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            //this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //this.btnRefresh.ForeColor = System.Drawing.Color.White;
+            //this.btnRefresh.Location = new System.Drawing.Point(185, 4);
+            //this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
+            //this.btnRefresh.Name = "btnRefresh";
+            //this.btnRefresh.Size = new System.Drawing.Size(36, 36);
+            //this.btnRefresh.TabIndex = 173;
+            //this.btnRefresh.UseVisualStyleBackColor = false;
+            //this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnFilter
             // 
@@ -166,19 +166,19 @@
             // 
             // btnBack
             // 
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32__1_;
-            this.btnBack.Location = new System.Drawing.Point(4, 4);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(36, 36);
-            this.btnBack.TabIndex = 142;
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            //this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            //this.btnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            //this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            //this.btnBack.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //this.btnBack.ForeColor = System.Drawing.Color.White;
+            //this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32__1_;
+            //this.btnBack.Location = new System.Drawing.Point(4, 4);
+            //this.btnBack.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
+            //this.btnBack.Name = "btnBack";
+            //this.btnBack.Size = new System.Drawing.Size(36, 36);
+            //this.btnBack.TabIndex = 142;
+            //this.btnBack.UseVisualStyleBackColor = false;
+            //this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // tlpList
             // 

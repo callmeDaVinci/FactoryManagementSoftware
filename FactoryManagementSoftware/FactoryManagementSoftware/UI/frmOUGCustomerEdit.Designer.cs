@@ -155,19 +155,19 @@
             // 
             // btnBack
             // 
-            this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.btnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
-            this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnBack.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnBack.ForeColor = System.Drawing.Color.White;
-            this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32__1_;
-            this.btnBack.Location = new System.Drawing.Point(4, 4);
-            this.btnBack.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
-            this.btnBack.Name = "btnBack";
-            this.btnBack.Size = new System.Drawing.Size(36, 36);
-            this.btnBack.TabIndex = 142;
-            this.btnBack.UseVisualStyleBackColor = false;
-            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
+            //this.btnBack.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            //this.btnBack.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(52)))), ((int)(((byte)(139)))), ((int)(((byte)(209)))));
+            //this.btnBack.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            //this.btnBack.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            //this.btnBack.ForeColor = System.Drawing.Color.White;
+            //this.btnBack.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_back_32__1_;
+            //this.btnBack.Location = new System.Drawing.Point(4, 4);
+            //this.btnBack.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
+            //this.btnBack.Name = "btnBack";
+            //this.btnBack.Size = new System.Drawing.Size(36, 36);
+            //this.btnBack.TabIndex = 142;
+            //this.btnBack.UseVisualStyleBackColor = false;
+            //this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
             // btnExcel
             // 
