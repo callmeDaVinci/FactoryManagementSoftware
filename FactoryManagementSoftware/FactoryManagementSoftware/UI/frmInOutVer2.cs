@@ -1547,7 +1547,10 @@ namespace FactoryManagementSoftware.UI
                             }
 
                         }
-                        MessageBox.Show("This transfer record was added from other page and cannot be UNDO here.\nPlease revert changes on the original page (e.g.,Order Page, DO Page).\n\nFor assistance, contact the system support team.");
+                        else
+                        {
+                            MessageBox.Show("This transfer record was added from other page and cannot be UNDO here.\nPlease revert changes on the original page (e.g.,Order Page, DO Page).\n\nFor assistance, contact the system support team.");
+                        }
                     }
 
 

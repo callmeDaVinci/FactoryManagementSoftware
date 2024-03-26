@@ -251,6 +251,11 @@
     <Compile Include="DAL\Utilities.cs" />
     <Compile Include="Module\AlphanumericComparer.cs" />
     <Compile Include="Module\DecisionTreePrediction.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="UI\CircleLabel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1502,14 +1507,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <EmbeddedResource Include="UI\frmItemCust.resx">
       <DependentUpon>frmItemCust.cs</DependentUpon>
     </EmbeddedResource>
@@ -1805,7 +1805,7 @@
     <None Include="Resources\icons8-high-importance-64.png" />
     <None Include="Resources\icons8-data-transfer-64.png" />
     <None Include="Resources\icons8-box-96.png" />
-    <None Include="Resources\icons8-back-32.png" />
+    <None Include="Resources\icons8_back_32__1_.png" />
     <None Include="Resources\icons8-back-32 %281%29.png" />
     <None Include="Resources\icons8-settings-64.png" />
     <None Include="Resources\icons8-data-transfer-961.png" />
@@ -1862,7 +1862,6 @@
     <None Include="Resources\safetyblacklogo.png" />
     <None Include="Resources\WillCoverImage.png" />
     <Content Include="Picture1.ico" />
-    <Content Include="Picture2 %281%29.ico" />
     <Content Include="Picture2.ico" />
     <None Include="Resources\icons8-full-screen-64.png" />
     <None Include="Resources\icons8-exit-full-screen-64.png" />
