@@ -1465,7 +1465,8 @@ namespace FactoryManagementSoftware.UI
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                                              //MessageBox.Show(e.ClickedItem.Name.ToString());
                 int rowIndex = dgvTrf.CurrentCell.RowIndex;
-                bool fromOrder = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString()));
+
+                bool addFromOtherPage = daltrfHist.ifFromOrder(Convert.ToInt32(dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfID].Value.ToString()));
 
 
                 if (e.ClickedItem.Name.ToString().Equals(text.Jump))
@@ -1480,10 +1481,9 @@ namespace FactoryManagementSoftware.UI
                     txtSearch.ForeColor = SystemColors.GrayText;
 
                     cmbSearchCat.Text = text.Cmb_All;
+                    formLoaded = true;
 
                     refreshDataList();
-
-                    formLoaded = true;
 
                     JumpToSelectedTrfIDRow();
                 }
@@ -1494,7 +1494,7 @@ namespace FactoryManagementSoftware.UI
                         editingItemCode = dgvTrf.Rows[rowIndex].Cells[daltrfHist.TrfItemCode].Value.ToString();
                     }
 
-                    if (!fromOrder)
+                    if (!addFromOtherPage)
                     {
                         if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
                         {
@@ -1516,6 +1516,37 @@ namespace FactoryManagementSoftware.UI
                     }
                     else
                     {
+                        if(MainDashboard.USER_ID == 1)
+                        {
+                            //password
+                            frmVerification frm = new frmVerification(text.PW_Level_1)
+                            {
+                                StartPosition = FormStartPosition.CenterScreen
+                            };
+
+                            frm.ShowDialog();
+
+                            if (frmVerification.PASSWORD_MATCHED)
+                            {
+                                if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Undo"))
+                                {
+                                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                                    if (!undo(rowIndex))
+                                    {
+                                        MessageBox.Show("Failed to undo");
+                                    }
+                                }
+                                else if (rowIndex >= 0 && e.ClickedItem.Name.ToString().Equals("Redo"))
+                                {
+                                    //MessageBox.Show(dgvTrf.Rows[rowIndex].Cells["trf_hist_id"].Value.ToString());
+                                    if (!redo(rowIndex))
+                                    {
+                                        MessageBox.Show("Failed to redo");
+                                    }
+                                }
+                            }
+
+                        }
                         MessageBox.Show("This transfer record was added from other page and cannot be UNDO here.\nPlease revert changes on the original page (e.g.,Order Page, DO Page).\n\nFor assistance, contact the system support team.");
                     }
 

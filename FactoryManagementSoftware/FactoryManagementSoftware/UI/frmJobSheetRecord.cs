@@ -33,6 +33,8 @@ namespace FactoryManagementSoftware.UI
             dt_JoinInfo = dalJoin.SelectAll();
             dt_Mac = dalMac.Select();
 
+            JOB_EDIT_MODE = false;
+
             NewJobSheet();
         }
 
@@ -52,11 +54,14 @@ namespace FactoryManagementSoftware.UI
             dt_JoinInfo = dalJoin.SelectAll();
             dt_Mac = dalMac.Select();
 
+            JOB_EDIT_MODE = true;
+
             LoadJobSheet();
 
           
         }
-       
+        private bool JOB_EDIT_MODE;
+
         private int JOB_LIST_SELECTED_ROW_INDEX = -1;
         private int JOB_RECORD_SELECTED_ROW_INDEX = -1;
 
@@ -165,7 +170,7 @@ namespace FactoryManagementSoftware.UI
         private void NewJobSheet()
         {
             LoadJobData();
-
+            OLD_PRO_DATE = DateTime.MaxValue;
             txtSheetID.Text = string_NewSheet;
 
             string rawLotNo = "";
@@ -338,6 +343,7 @@ namespace FactoryManagementSoftware.UI
             txtStockInPcsQty.Text = balanceStockIn;
 
             dtpProDate.Value = ProductionDate.Date;
+            OLD_PRO_DATE = ProductionDate.Date;
 
             if (Shift == text.Shift_Morning)
             {
