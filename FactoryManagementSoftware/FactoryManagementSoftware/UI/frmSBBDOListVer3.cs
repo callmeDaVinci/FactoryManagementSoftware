@@ -17,6 +17,7 @@ using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Mapping;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -30,7 +31,8 @@ namespace FactoryManagementSoftware.UI
             tool.DoubleBuffered(dgvDOItemList, true);
 
             btnFilter.Text = text_HideFilter;
-           
+            cbInvoiceMode.Checked = false;
+
 
             LoadCustomerList();
         }
@@ -260,6 +262,33 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private DataTable NewInvoiceDetailTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_POTblCode, typeof(int));
+            dt.Columns.Add(header_DOTblCode, typeof(int));
+            dt.Columns.Add(header_TrfTableCode, typeof(int));
+            dt.Columns.Add(header_SizeString, typeof(string));
+            dt.Columns.Add(header_Type, typeof(string));
+            dt.Columns.Add(header_Size, typeof(string));
+            dt.Columns.Add(header_Unit, typeof(string));
+            dt.Columns.Add(header_ItemCode, typeof(string));
+            dt.Columns.Add(header_DeliveryBAG, typeof(int));
+            dt.Columns.Add(header_StdPacking, typeof(int));
+
+            dt.Columns.Add(header_Index, typeof(int));
+            dt.Columns.Add(header_PONo, typeof(string));
+            dt.Columns.Add(text.Header_Description, typeof(string));
+            dt.Columns.Add(header_DeliveryQTY, typeof(string));
+            dt.Columns.Add(text.Header_Unit, typeof(string));
+            dt.Columns.Add(text.Header_UnitPrice, typeof(decimal));
+            dt.Columns.Add(text.Header_DiscountRate, typeof(decimal));
+            dt.Columns.Add(text.Header_NetAmount, typeof(decimal));
+
+
+            return dt;
+        }
         private DataTable NewMasterTable()
         {
             DataTable dt = new DataTable();
@@ -306,8 +335,20 @@ namespace FactoryManagementSoftware.UI
             else if(dgv == dgvDOItemList)
             {
                 
-                dgv.Columns[header_DeliveryPCS].Visible = false;
+                if(!cbInvoiceMode.Checked)
+                {
+                    dgv.Columns[header_DeliveryPCS].Visible = false;
+                }
+                else
+                {
+                    dgv.Columns[header_ItemCode].Visible = false;
+                    dgv.Columns[header_SizeString].Visible = false;
+                    dgv.Columns[header_Type].Visible = false;
+
+                }
+
                 dgv.Columns[header_DeliveryBAG].Visible = false;
+
                 dgv.Columns[header_StdPacking].Visible = false;
                 dgv.Columns[header_POTblCode].Visible = false;
                 dgv.Columns[header_DOTblCode].Visible = false;
@@ -328,8 +369,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_SizeString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-                dgv.Columns[header_DeliveryPCS].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-                dgv.Columns[header_DeliveryBAG].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+               // dgv.Columns[header_DeliveryPCS].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                //dgv.Columns[header_DeliveryBAG].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
             }
@@ -344,7 +385,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnFilter.Text = text_HideFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 125f);
+                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 250f);
             }
             else
             {
@@ -377,9 +418,15 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
+            ITEM_LIST_LOADING = true;
+            GRAND_TOTAL_AMOUNT = 0;
+            lblGrandTotalAmount.Visible = false;
 
             ResetDBDOInfoList();
             LoadDOList();
+
+            ITEM_LIST_LOADING = false;
+
         }
 
         private void dgvDOList_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -388,23 +435,47 @@ namespace FactoryManagementSoftware.UI
             {
                 // DataTable dt = (DataTable)dgvPOList.DataSource;
                 int rowIndex = e.RowIndex;
-                DataGridView dgv = dgvDOList;
-                //dgvItemList.DataSource = null;
 
-                if (rowIndex >= 0)
+
+                LoadItemList(rowIndex);
+              
+            }
+          
+        }
+
+
+        private bool ITEM_LIST_LOADING = false;
+
+        private void LoadItemList(int rowIndex)
+        {
+            if(ITEM_LIST_LOADING)
+            {
+                return;
+            }
+
+            ITEM_LIST_LOADING = true;
+            DataGridView dgv = dgvDOList;
+
+            if (rowIndex >= 0)
+            {
+                string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
+
+                if (dataType == DataType_InProgress)
                 {
-                    string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
+                    btnCancel.Visible = true;
+                }
+                else
+                    btnCancel.Visible = false;
 
-                    if (dataType == DataType_InProgress)
+                string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+
+                if (ShowingDO == "" || ShowingDO != code)
+                {
+                    if (cbInvoiceMode.Checked)
                     {
-                        btnCancel.Visible = true;
+                        ShowInvoiceDetails(code);
                     }
                     else
-                        btnCancel.Visible = false;
-
-                    string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
-
-                    if(ShowingDO == "" || ShowingDO != code)
                     {
                         if (dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString() == Text_MultiPOCode)
                         {
@@ -418,54 +489,56 @@ namespace FactoryManagementSoftware.UI
 
                         }
                     }
-                   
+
+                }
 
 
-                    if (DOSelectingMode)
+
+                if (DOSelectingMode)
+                {
+                    bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
+
+                    if (!selected)
                     {
-                        bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
+                        dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
 
-                        if (!selected)
-                        {
-                            dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
-
-                            btnExcel.Text = text_Excel;
-                            btnExcel.Enabled = true;
-                        }
-                        else
-                        {
-                            dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
-
-                            if (!ifDOSelected())
-                            {
-                                btnExcel.Text = text_SelectDO;
-                                btnExcel.Enabled = false;
-                            }
-                            else
-                            {
-                                btnExcel.Text = text_Excel;
-                                btnExcel.Enabled = true;
-                            }
-                        }
+                        btnExcel.Text = text_Excel;
+                        btnExcel.Enabled = true;
                     }
                     else
                     {
-                        if (dataType == DataType_InProgress)
-                            btnEdit.Visible = true;
+                        dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
+
+                        if (!ifDOSelected())
+                        {
+                            btnExcel.Text = text_SelectDO;
+                            btnExcel.Enabled = false;
+                        }
                         else
-                            btnEdit.Visible = false;
+                        {
+                            btnExcel.Text = text_Excel;
+                            btnExcel.Enabled = true;
+                        }
                     }
                 }
                 else
                 {
-                    dgvDOItemList.DataSource = null;
-                    btnEdit.Visible = false;
-                    btnCancel.Visible = false;
+                    if (dataType == DataType_InProgress)
+                        btnEdit.Visible = true;
+                    else
+                        btnEdit.Visible = false;
                 }
             }
-          
-        }
+            else
+            {
+                dgvDOItemList.DataSource = null;
+                btnEdit.Visible = false;
+                btnCancel.Visible = false;
+            }
 
+            ITEM_LIST_LOADING = false;
+
+        }
         private void btnBack_Click(object sender, EventArgs e)
         {
             Close();
@@ -590,6 +663,9 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt = DB_DO_INFO.Clone();
 
+            DateTime dateStart = dtpRangeStart.Value;
+            DateTime dateEnd = dtpRangeEnd.Value;
+
             foreach (DataRow row in DB_DO_INFO.Rows)
             {
                 int doCode;
@@ -646,6 +722,52 @@ namespace FactoryManagementSoftware.UI
                     dataMatched = false;
                 }
 
+                #endregion
+
+                #region Date Range Filter
+
+                if (dataMatched)
+                {
+                    DateTime dateToInspect;
+
+                    if(cbDeliveredDate.Checked)
+                    {
+                        string trfID = row[dalSPP.TrfTableCode].ToString();
+
+                        if (isDelivered && !string.IsNullOrEmpty(trfID))
+                        {
+                            dateToInspect = tool.GetTransferDate(trfID);
+
+                            if(dateToInspect >= dateStart && dateToInspect <= dateEnd)
+                            {
+
+                            }
+                            else
+                            {
+                                dataMatched = false;
+                            }
+                        }
+                        else
+                        {
+                            dataMatched = false;
+
+                        }
+                    }
+                    else if (cbPODate.Checked)
+                    {
+                        dateToInspect = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        if (dateToInspect >= dateStart && dateToInspect <= dateEnd)
+                        {
+
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+                    }
+                }
+                    
                 #endregion
 
                 if (dataMatched)
@@ -741,6 +863,16 @@ namespace FactoryManagementSoftware.UI
                         {
                             dataMatched = false;
                         }
+
+                        #endregion
+
+                        #region Date Filter
+
+                        //if (!isDelivered && cbInProgress.Checked)
+                        //{
+                        //    dataMatched = dataMatched && true;
+                        //    dataType = DataType_InProgress;
+                        //}
 
                         #endregion
 
@@ -1545,68 +1677,227 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private decimal GRAND_TOTAL_AMOUNT = 0;
+
+        private void ShowInvoiceDetails(string doCode)
+        {
+            //frmLoading.ShowLoadingScreen();
+
+            Cursor = Cursors.WaitCursor;
+
+            DB_DO_INFO.DefaultView.Sort = dalSPP.TypeName + " ASC," + dalSPP.SizeNumerator + " ASC";
+            DB_DO_INFO = DB_DO_INFO.DefaultView.ToTable();
+            //749MS
+            DataTable dt_DOItemList = NewInvoiceDetailTable();
+
+            DataRow dt_Row;
+            int index = 1;
+            string preType = null;
+            int totalBag = 0;
+
+            decimal totalAmount = 0;
+
+            foreach (DataRow row in DB_DO_INFO.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (doCode == row[dalSPP.DONo].ToString() && row[dalSPP.DONo] != DBNull.Value && !isRemoved)
+                {
+                    int deliveryQty = row[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.ToDeliveryQty].ToString());
+
+                    string type = row[dalSPP.TypeName].ToString();
+
+                    if (!string.IsNullOrEmpty(type) && (deliveryQty > 0))
+                    {
+                        if (preType == null)
+                        {
+                            preType = type;
+                        }
+                        else if (preType != type)
+                        {
+                            preType = type;
+                        }
+
+                        dt_Row = dt_DOItemList.NewRow();
+
+                        int stdPacking = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
+
+                        int bag = deliveryQty / stdPacking;
+
+
+
+                        int DOTableCode = int.TryParse(row[dalSPP.TableCode].ToString(), out DOTableCode) ? DOTableCode : -1;
+                        int POTableCode = int.TryParse(row[dalSPP.POTableCode].ToString(), out POTableCode) ? POTableCode : -1;
+                        int TrfTableCode = int.TryParse(row[dalSPP.TrfTableCode].ToString(), out TrfTableCode) ? TrfTableCode : -1;
+
+                        dt_Row[header_POTblCode] = POTableCode;
+                        dt_Row[header_DOTblCode] = DOTableCode;
+
+                        if (TrfTableCode != -1)
+                        {
+                            dt_Row[header_TrfTableCode] = TrfTableCode;
+                        }
+
+
+                        if (deliveryQty > 0)
+                        {
+                            #region Get Size Data
+                            int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                            int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                            string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+
+                            int numerator_2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                            int denominator_2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                            string sizeUnit_2 = row[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+
+                            string sizeString = "";
+                            string sizeString_1 = "";
+                            string sizeString_2 = "";
+
+                            int size_1 = 1;
+                            int size_2 = 1;
+
+                            if (denominator == 1)
+                            {
+                                size_1 = numerator;
+                                sizeString_1 = numerator.ToString();
+
+                            }
+                            else
+                            {
+                                size_1 = numerator / denominator;
+                                sizeString_1 = numerator + "/" + denominator;
+                            }
+
+                            if (numerator_2 > 0)
+                            {
+                                if (denominator_2 == 1)
+                                {
+                                    sizeString_2 += numerator_2;
+                                    size_2 = numerator_2;
+
+                                }
+                                else
+                                {
+                                    size_2 = numerator_2 / denominator_2;
+
+                                    if (numerator_2 == 3 && denominator_2 == 2)
+                                    {
+                                        sizeString_2 += "1 1" + "/" + denominator_2;
+                                    }
+                                    else
+                                    {
+                                        sizeString_2 += numerator_2 + "/" + denominator_2;
+                                    }
+
+
+
+                                }
+                            }
+
+                            if (size_1 >= size_2)
+                            {
+                                if (sizeString_2 != "")
+                                    sizeString = sizeString_1 + " x " + sizeString_2;
+
+                                else
+                                {
+                                    sizeString = sizeString_1;
+                                }
+                            }
+                            else
+                            {
+
+                                if (sizeString_2 != "")
+                                    sizeString = sizeString_2 + " x " + sizeString_1;
+
+                                else
+                                {
+                                    sizeString = sizeString_2;
+                                }
+                            }
+                            #endregion
+
+                            totalBag += bag;
+                            dt_Row[header_Index] = index;
+                            dt_Row[header_PONo] = row[dalSPP.PONo];
+                            dt_Row[header_Size] = row[dalSPP.SizeNumerator];
+                            dt_Row[header_Unit] = text.Unit_Piece.ToUpper();
+                            dt_Row[header_SizeString] = sizeString;
+                            dt_Row[header_Type] = type;
+                            dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
+                            dt_Row[header_StdPacking] = stdPacking;
+                            //dt_Row[header_DeliveryPCS] = deliveryQty;
+                            //dt_Row[header_DeliveryBAG] = bag;
+
+                            dt_Row[text.Header_Description] = sizeString + " " + type;
+
+                            dt_Row[header_DeliveryQTY] = deliveryQty;
+                            dt_Row[text.Header_Unit] = text.Unit_Piece.ToUpper();
+
+                            decimal unitPrice = decimal.TryParse(row[dalSPP.UnitPrice].ToString(), out unitPrice)? unitPrice : 0;
+                            dt_Row[text.Header_UnitPrice] = unitPrice;
+
+                            decimal DiscRate = decimal.TryParse(row[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
+
+                            dt_Row[text.Header_DiscountRate] = DiscRate;
+
+                            decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+
+                            dt_Row[text.Header_NetAmount] = netAmount;
+
+                            totalAmount += netAmount;
+
+                            //dt.Columns.Add(text.Header_Description, typeof(string));
+
+
+                            //int balancePcs = deliveryQty % stdPacking;
+                            //string deliveryQtyString = deliveryQty + " (" + bag + "bags)";
+
+                            //if (balancePcs != 0)
+                            //{
+                            //    deliveryQtyString = deliveryQty + " (" + bag + "bags + " + balancePcs + " pcs )";
+                            //}
+
+
+                            dt_DOItemList.Rows.Add(dt_Row);
+                            index++;
+                        }
+
+                    }
+                }
+            }
+
+            decimal roundedTotalAmount = Math.Round(totalAmount, 2);
+
+            lblInvoiceTotalAmount.Text = "TOTAL(RM): " + roundedTotalAmount + " (" + totalAmount + ")";
+            lblInvoiceTotalAmount.Visible = true;
+
+            GRAND_TOTAL_AMOUNT += roundedTotalAmount;
+
+            lblGrandTotalAmount.Text = GRAND_TOTAL_AMOUNT.ToString();
+            lblGrandTotalAmount.Visible = true;
+            lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+            //dt_POItemList = AddSpaceToList(dt_POItemList);
+            dgvDOItemList.DataSource = dt_DOItemList;
+            DgvUIEdit(dgvDOItemList);
+            dgvDOItemList.ClearSelection();
+            Cursor = Cursors.Arrow;
+
+
+            //frmLoading.CloseForm();
+            Focus();
+
+        }
+
         private void dgvDOList_SelectionChanged(object sender, EventArgs e)
         {
-            //if(FormLoaded)
-            //{
-            //    DataGridView dgv = dgvDOList;
-            //    int rowIndex = -1;
-            //    dgvItemList.DataSource = null;
+            if (FormLoaded && dgvDOList.SelectedRows.Count > 0)
+            {
+                int rowIndex = dgvDOList.SelectedRows[0].Index;
+                LoadItemList(rowIndex);
+            }
 
-            //    if (dgv.SelectedRows.Count <= 0 || dgv.CurrentRow == null)
-            //    {
-            //        rowIndex = -1;
-            //    }
-            //    else
-            //    {
-            //        rowIndex = dgv.CurrentRow.Index;
-            //        string dataType = dgv.Rows[rowIndex].Cells[header_DataType].Value.ToString();
-
-            //        if (!DOSelectingMode)
-            //        {
-            //            if (dataType == DataType_InProgress)
-            //                btnEdit.Visible = true;
-            //            else
-            //                btnEdit.Visible = false;
-            //        }
-
-
-
-
-            //        if (dataType == DataType_InProgress)
-            //            btnRemove.Visible = true;
-            //        else
-            //            btnRemove.Visible = false;
-            //    }
-
-
-            //    DataTable dt = (DataTable)dgvDOList.DataSource;
-
-            //    if (rowIndex >= 0)
-            //    {
-            //        string code = dt.Rows[rowIndex][header_DONo].ToString();
-
-            //        if (dgv.Rows[rowIndex].Cells[header_PONo].Value.ToString() == Text_MultiPOCode)
-            //        {
-            //            ShowDOItemWithMultiPO(code);
-            //        }
-            //        else
-            //        {
-            //            ShowDOItem(code);
-            //        }
-
-            //    }
-            //    else
-            //    {
-            //        dgvItemList.DataSource = null;
-            //        btnEdit.Visible = false;
-
-            //        if (!DOSelectingMode)
-            //            btnRemove.Visible = false;
-            //    }
-            //}//922
-
-           
         }
 
         private void RemoveDO(int DONo, string customer)
@@ -4125,7 +4416,7 @@ namespace FactoryManagementSoftware.UI
             return type_ShortName;
         }
 
-        private void NewExcel()
+        private void ExportSBBDO()
         {
 
             #region Excel marking
@@ -5959,7 +6250,7 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                NewExcel();
+                ExportSBBDO();
 
                 //if (frmExportSetting.newFormat)
                 //{
@@ -6087,6 +6378,14 @@ namespace FactoryManagementSoftware.UI
 
             cmbCustomer.Text = "ALL";
 
+            DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+
+            dtpRangeStart.Value = firstDay;
+            dtpRangeEnd.Value = lastDay;
+
+            cbInvoiceMode.Checked = false;
+
             ResetDBDOInfoList();
             LoadDOList();
             FormLoaded = true;
@@ -6108,6 +6407,88 @@ namespace FactoryManagementSoftware.UI
         private void dgvDOItemList_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private bool DATE_RANGE_TYPE_CHANGING = false;
+
+        private void cbDeliveredDate_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!DATE_RANGE_TYPE_CHANGING)
+            {
+                DATE_RANGE_TYPE_CHANGING = true;
+                if (cbDeliveredDate.Checked)
+                {
+                    cbPODate.Checked = !cbDeliveredDate.Checked;
+                    cbDODate.Checked = !cbDeliveredDate.Checked;
+                }
+                else
+                {
+                    //MessageBox.Show("Please select ");
+                    cbDeliveredDate.Checked = true;
+                }
+
+                DATE_RANGE_TYPE_CHANGING = false;
+
+            }
+
+        }
+
+        private void cbDODate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!DATE_RANGE_TYPE_CHANGING)
+            {
+                DATE_RANGE_TYPE_CHANGING = true;
+
+                if (cbDODate.Checked)
+                {
+                    cbPODate.Checked = !cbDODate.Checked;
+                    cbDeliveredDate.Checked = !cbDODate.Checked;
+                }
+                else
+                {
+                    cbPODate.Checked = false;
+                    cbDeliveredDate.Checked = true;
+                }
+                DATE_RANGE_TYPE_CHANGING = false;
+
+            }
+        }
+
+        private void cbPODate_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!DATE_RANGE_TYPE_CHANGING)
+            {
+                DATE_RANGE_TYPE_CHANGING = true;
+
+                if (cbPODate.Checked)
+                {
+                    cbDODate.Checked = !cbPODate.Checked;
+                    cbDeliveredDate.Checked = !cbPODate.Checked;
+                }
+                else
+                {
+                    cbDODate.Checked = false;
+                    cbDeliveredDate.Checked = true;
+                }
+                DATE_RANGE_TYPE_CHANGING = false;
+
+            }
+        }
+
+        private void cbInvoiceMode_CheckedChanged(object sender, EventArgs e)
+        {
+            if(!cbInvoiceMode.Checked)
+            {
+                lblInvoiceTotalAmount.Text = "";
+
+                lblInvoiceTotalAmount.Visible = false;
+            }
+        }
+
+        private void lblGrandTotalAmount_Click(object sender, EventArgs e)
+        {
+            lblGrandTotalAmount.Text = 0.ToString();
+            GRAND_TOTAL_AMOUNT = 0;
         }
     }
 }

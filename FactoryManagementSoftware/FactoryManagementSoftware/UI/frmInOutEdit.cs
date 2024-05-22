@@ -2285,10 +2285,7 @@ namespace FactoryManagementSoftware.UI
                 tool.saveToTextAndMessageToUser(ex);
             } 
 
-            if(true)
-            {
-                //testing 123
-            }
+         
         }
 
         private void btnCancel_Click(object sender, EventArgs e)

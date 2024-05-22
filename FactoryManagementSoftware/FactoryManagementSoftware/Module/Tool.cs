@@ -5100,7 +5100,7 @@ namespace FactoryManagementSoftware.Module
             DataRow dtJoin_row;
             int index = 1;
 
-            if (itemCode.Length > 8 && itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+            if (itemCode.Length > 8 && itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
             {
                 foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
                 {

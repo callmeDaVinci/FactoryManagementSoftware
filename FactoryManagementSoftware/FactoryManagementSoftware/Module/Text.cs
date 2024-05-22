@@ -617,6 +617,9 @@ namespace FactoryManagementSoftware.Module
         public string Header_ChildQty { get; } = "CHILD QTY";
 
         public string Header_Description { get; } = "DESCRIPTION";
+        public string Header_UnitPrice { get; } = "U.PRICE (RM)";
+        public string Header_DiscountRate { get; } = "DISC. (%)";
+        public string Header_NetAmount { get; } = "NET AMOUNT (RM)";
 
         #endregion
 

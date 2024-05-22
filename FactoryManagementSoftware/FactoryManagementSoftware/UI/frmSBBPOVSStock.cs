@@ -4408,8 +4408,8 @@ namespace FactoryManagementSoftware.UI
                             bool isOring = false;
 
                             string equalItemCode = "";
-
-                            if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                            //f(itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9")
+                            if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
                             {
                                 foreach (DataRow row in dalJoin.SelectWithChildCat().Rows)
                                 {
@@ -4493,11 +4493,34 @@ namespace FactoryManagementSoftware.UI
                                 {
                                     if(StockLocation.Equals(text.Factory_Semenyih))
                                     {
-                                        SemenyihBodyStock = int.TryParse(row["stock_qty"].ToString(), out i) ? i : 0;
+
+                                        string stock = row["stock_qty"].ToString();
+                                        decimal decimalStock;
+                                        if (decimal.TryParse(stock, out decimalStock))
+                                        {
+                                            SemenyihBodyStock = (int)decimalStock;  // Convert decimal to integer
+                                        }
+                                        else
+                                        {
+                                            SemenyihBodyStock = 0;  // Handle parsing failure
+                                        }
+
                                     }
                                     else if(StockLocation.Equals(text.Factory_Bina))
                                     {
                                         BinaBodyStock = int.TryParse(row["stock_qty"].ToString(), out i) ? i : 0;
+
+                                        string stock = row["stock_qty"].ToString();
+                                        decimal decimalStock;
+                                        if (decimal.TryParse(stock, out decimalStock))
+                                        {
+                                            BinaBodyStock = (int)decimalStock;  // Convert decimal to integer
+                                        }
+                                        else
+                                        {
+                                            BinaBodyStock = 0;  // Handle parsing failure
+                                        }
+
                                     }
 
                                 }
