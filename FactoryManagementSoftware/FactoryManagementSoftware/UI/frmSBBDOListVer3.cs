@@ -326,6 +326,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_PODate].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                 dgv.Columns[header_PONo].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Italic);
 
+                if (dgv.Columns.Contains(header_Amount))
+                {
+                    dgv.Columns[header_Amount].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+
+
+                }
+
                 dgv.Columns[header_POCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_PONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -681,6 +688,8 @@ namespace FactoryManagementSoftware.UI
 
             DateTime dateStart = dtpRangeStart.Value;
             DateTime dateEnd = dtpRangeEnd.Value;
+            DateTime dateToInspect = DateTime.MaxValue ;
+
             foreach (DataRow row in DB_DO_INFO.Rows)
             {
                 int doCode;
@@ -698,11 +707,11 @@ namespace FactoryManagementSoftware.UI
 
                 if (!isDelivered && cbInProgress.Checked)
                 {
-                    dataMatched = dataMatched && true;
+                    //dataMatched = dataMatched && true;
                 }
                 else if (isDelivered && cbCompleted.Checked)
                 {
-                    dataMatched = dataMatched && true;
+                    //dataMatched = dataMatched && true;
                 }
                 else
                 {
@@ -711,7 +720,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (isRemoved && cbRemoved.Checked)
                 {
-                    dataMatched = true;
+                    //dataMatched = true;
                 }
                 else if (isRemoved)
                 {
@@ -726,11 +735,11 @@ namespace FactoryManagementSoftware.UI
 
                 if (string.IsNullOrEmpty(customer) || customer == "ALL")
                 {
-                    dataMatched = dataMatched && true;
+                    //dataMatched = dataMatched && true;
                 }
                 else if (row[dalSPP.FullName].ToString() == customer)
                 {
-                    dataMatched = dataMatched && true;
+                    //dataMatched = dataMatched && true;
                 }
                 else
                 {
@@ -741,9 +750,10 @@ namespace FactoryManagementSoftware.UI
 
                 #region Date Range Filter
 
+
+
                 if (dataMatched)
                 {
-                    DateTime dateToInspect;
 
                     if(cbDeliveredDate.Checked)
                     {
@@ -751,9 +761,24 @@ namespace FactoryManagementSoftware.UI
 
                         if (isDelivered && !string.IsNullOrEmpty(trfID))
                         {
-                            dateToInspect = tool.GetTransferDate(trfID,DB_TRANSFER_RECORD);
+                            if(DB_DO_INFO.Columns.Contains(dalTrfHist.TrfDate))
+                            {
+                                dateToInspect =  Convert.ToDateTime(row[dalTrfHist.TrfDate].ToString()).Date;
+                            }
+                            else
+                            {
+                                dateToInspect = tool.GetTransferDate(trfID, DB_TRANSFER_RECORD);
 
-                            if(dateToInspect >= dateStart && dateToInspect <= dateEnd)
+                            }
+
+                            int month = dateToInspect.Month;
+
+                            if (month == 4)
+                            {
+                                int checkpoint = 1;
+                            }
+
+                            if (dateToInspect >= dateStart && dateToInspect <= dateEnd)
                             {
 
                             }
@@ -781,15 +806,43 @@ namespace FactoryManagementSoftware.UI
                             dataMatched = false;
                         }
                     }
+                    else if (cbDODate.Checked)
+                    {
+                        dateToInspect = Convert.ToDateTime(row[dalSPP.DODate]).Date;
+
+                        if (dateToInspect >= dateStart && dateToInspect <= dateEnd)
+                        {
+
+                        }
+                        else
+                        {
+                            dataMatched = false;
+                        }
+                    }
                 }
                     
                 #endregion
 
                 if (dataMatched)
                 {
+                    int month = dateToInspect.Month;
+
+                    if(month == 4)
+                    {
+                        int checkpoint = 1;
+                    }
                     //to-do
                     //add row to dt
                     dt.Rows.Add(row.ItemArray);
+                }
+                else
+                {
+                    int month = dateToInspect.Month;
+
+                    if (month == 4)
+                    {
+                        int checkpoint = 1;
+                    }
                 }
 
             }
@@ -1158,7 +1211,16 @@ namespace FactoryManagementSoftware.UI
         {
             //DB_DO_INFO = dalSPP.DOWithInfoSelect();
 
-            DB_DO_INFO = dalSPP.DOWithInfoSelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+            if(cbInvoiceMode.Checked)
+            {
+            
+                DB_DO_INFO = dalSPP.CompletedDOWithInfoSelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+            }
+            else
+            {
+                DB_DO_INFO = dalSPP.DOWithInfoSelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+
+            }
             DB_TRANSFER_RECORD = dalTrfHist.SelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
             //DB_TRANSFER_RECORD = dalTrfHist.Select();
 
@@ -6613,6 +6675,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
+                cbDeliveredDate.Checked = true;
                 cbInProgress.Checked = false;
                 cbCompleted.Checked = true;
                 cbRemoved.Checked = false;
@@ -6635,7 +6698,7 @@ namespace FactoryManagementSoftware.UI
 
             int monthsDifference = ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month + 1;
 
-            DATABASE_MONTHS_AGO_NUMBER = Math.Max(1, monthsDifference);
+            DATABASE_MONTHS_AGO_NUMBER = Math.Max(6, monthsDifference);
 
             //if(DATABASE_MONTHS_AGO_NUMBER != orimonthsagodata)
             //{

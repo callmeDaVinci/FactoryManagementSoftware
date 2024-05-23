@@ -4937,8 +4937,14 @@ namespace FactoryManagementSoftware.Module
 
         public DateTime GetTransferDate(string trfID,DataTable dt)
         {
-            return Convert.ToDateTime(dt.Rows[0][dalTrfHist.TrfDate].ToString()).Date;
-
+            foreach(DataRow row in dt.Rows)
+            {
+                if(trfID == row[dalTrfHist.TrfID].ToString())
+                {
+                    return Convert.ToDateTime(row[dalTrfHist.TrfDate].ToString()).Date;
+                }
+            }
+            return DateTime.MinValue;
         }
 
         public float GetZeroCostPendingOrder(DataTable dt,string itemCode)
