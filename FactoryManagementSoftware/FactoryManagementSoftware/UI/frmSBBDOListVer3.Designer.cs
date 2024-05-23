@@ -29,44 +29,52 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
+            this.gunaGroupBox1 = new Guna.UI.WinForms.GunaGroupBox();
+            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbInvoiceMode = new System.Windows.Forms.CheckBox();
+            this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbDOType = new Guna.UI.WinForms.GunaComboBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbRemoved = new System.Windows.Forms.CheckBox();
+            this.cbInProgress = new System.Windows.Forms.CheckBox();
+            this.cbCompleted = new System.Windows.Forms.CheckBox();
             this.gunaGroupBox5 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.lblRangeEnd = new System.Windows.Forms.Label();
             this.dtpRangeEnd = new Guna.UI.WinForms.GunaDateTimePicker();
             this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbDODate = new System.Windows.Forms.CheckBox();
+            this.cbPODate = new System.Windows.Forms.CheckBox();
             this.cbDeliveredDate = new System.Windows.Forms.CheckBox();
+            this.cbDODate = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.dtpRangeStart = new Guna.UI.WinForms.GunaDateTimePicker();
             this.lblRangeStart = new System.Windows.Forms.Label();
             this.gunaGroupBox2 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
-            this.cbRemoved = new System.Windows.Forms.CheckBox();
-            this.cbInProgress = new System.Windows.Forms.CheckBox();
-            this.cbCompleted = new System.Windows.Forms.CheckBox();
             this.cmbCustomer = new System.Windows.Forms.ComboBox();
             this.lblCustomer = new System.Windows.Forms.Label();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblInvoiceMode = new System.Windows.Forms.Label();
             this.btnRefresh = new Guna.UI.WinForms.GunaGradientButton();
             this.btnFilter = new Guna.UI.WinForms.GunaGradientButton();
             this.tlpList = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblSelectAll = new System.Windows.Forms.Label();
             this.dgvDOList = new System.Windows.Forms.DataGridView();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblGrandTotalAmount = new System.Windows.Forms.Label();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnExcel = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnExport = new Guna.UI.WinForms.GunaGradientButton();
             this.lblMainList = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.dgvDOItemList = new System.Windows.Forms.DataGridView();
@@ -75,15 +83,11 @@
             this.lblSubList = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbPODate = new System.Windows.Forms.CheckBox();
-            this.gunaGroupBox1 = new Guna.UI.WinForms.GunaGroupBox();
-            this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbInvoiceMode = new System.Windows.Forms.CheckBox();
-            this.lblInvoiceTotalAmount = new System.Windows.Forms.Label();
-            this.lblGrandTotalAmount = new System.Windows.Forms.Label();
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
+            this.gunaGroupBox1.SuspendLayout();
+            this.tableLayoutPanel7.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
@@ -97,14 +101,13 @@
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpList.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDOList)).BeginInit();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDOItemList)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            this.gunaGroupBox1.SuspendLayout();
-            this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPOList
@@ -160,6 +163,87 @@
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel14.Size = new System.Drawing.Size(1296, 220);
             this.tableLayoutPanel14.TabIndex = 264;
+            // 
+            // gunaGroupBox1
+            // 
+            this.gunaGroupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGroupBox1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gunaGroupBox1.BorderColor = System.Drawing.Color.Gainsboro;
+            this.gunaGroupBox1.BorderSize = 1;
+            this.gunaGroupBox1.Controls.Add(this.tableLayoutPanel7);
+            this.gunaGroupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
+            this.gunaGroupBox1.LineColor = System.Drawing.Color.Gainsboro;
+            this.gunaGroupBox1.Location = new System.Drawing.Point(803, 3);
+            this.gunaGroupBox1.Name = "gunaGroupBox1";
+            this.gunaGroupBox1.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
+            this.gunaGroupBox1.Radius = 3;
+            this.gunaGroupBox1.Size = new System.Drawing.Size(144, 214);
+            this.gunaGroupBox1.TabIndex = 256;
+            this.gunaGroupBox1.Text = "Advance Settings";
+            this.gunaGroupBox1.TextLocation = new System.Drawing.Point(10, 8);
+            // 
+            // tableLayoutPanel7
+            // 
+            this.tableLayoutPanel7.ColumnCount = 1;
+            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Controls.Add(this.cbInvoiceMode, 0, 0);
+            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 33);
+            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
+            this.tableLayoutPanel7.RowCount = 3;
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(138, 178);
+            this.tableLayoutPanel7.TabIndex = 258;
+            // 
+            // cbInvoiceMode
+            // 
+            this.cbInvoiceMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbInvoiceMode.AutoSize = true;
+            this.cbInvoiceMode.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbInvoiceMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbInvoiceMode.Location = new System.Drawing.Point(10, 7);
+            this.cbInvoiceMode.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbInvoiceMode.Name = "cbInvoiceMode";
+            this.cbInvoiceMode.Size = new System.Drawing.Size(109, 21);
+            this.cbInvoiceMode.TabIndex = 239;
+            this.cbInvoiceMode.Text = "Invoice Mode";
+            this.cbInvoiceMode.UseVisualStyleBackColor = true;
+            this.cbInvoiceMode.CheckedChanged += new System.EventHandler(this.cbInvoiceMode_CheckedChanged);
+            // 
+            // btnFilterApply
+            // 
+            this.btnFilterApply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnFilterApply.AnimationHoverSpeed = 0.07F;
+            this.btnFilterApply.AnimationSpeed = 0.03F;
+            this.btnFilterApply.BackColor = System.Drawing.Color.Transparent;
+            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(107)))), ((int)(((byte)(236)))));
+            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
+            this.btnFilterApply.BorderColor = System.Drawing.Color.Black;
+            this.btnFilterApply.BorderSize = 1;
+            this.btnFilterApply.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnFilterApply.FocusedColor = System.Drawing.Color.Empty;
+            this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnFilterApply.ForeColor = System.Drawing.Color.White;
+            this.btnFilterApply.Image = null;
+            this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnFilterApply.Location = new System.Drawing.Point(962, 177);
+            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnFilterApply.Name = "btnFilterApply";
+            this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnFilterApply.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnFilterApply.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnFilterApply.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnFilterApply.OnHoverImage = null;
+            this.btnFilterApply.OnPressedColor = System.Drawing.Color.Black;
+            this.btnFilterApply.Radius = 2;
+            this.btnFilterApply.Size = new System.Drawing.Size(136, 40);
+            this.btnFilterApply.TabIndex = 227;
+            this.btnFilterApply.Text = "Apply";
+            this.btnFilterApply.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
             // 
             // gunaGroupBox4
             // 
@@ -242,6 +326,43 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.Size = new System.Drawing.Size(138, 132);
             this.tableLayoutPanel15.TabIndex = 263;
+            // 
+            // cbRemoved
+            // 
+            this.cbRemoved.AutoSize = true;
+            this.cbRemoved.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbRemoved.ForeColor = System.Drawing.Color.Red;
+            this.cbRemoved.Location = new System.Drawing.Point(3, 83);
+            this.cbRemoved.Name = "cbRemoved";
+            this.cbRemoved.Size = new System.Drawing.Size(89, 23);
+            this.cbRemoved.TabIndex = 159;
+            this.cbRemoved.Text = "Cancelled";
+            this.cbRemoved.UseVisualStyleBackColor = true;
+            // 
+            // cbInProgress
+            // 
+            this.cbInProgress.AutoSize = true;
+            this.cbInProgress.Checked = true;
+            this.cbInProgress.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbInProgress.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbInProgress.Location = new System.Drawing.Point(3, 3);
+            this.cbInProgress.Name = "cbInProgress";
+            this.cbInProgress.Size = new System.Drawing.Size(100, 23);
+            this.cbInProgress.TabIndex = 157;
+            this.cbInProgress.Text = "In progress";
+            this.cbInProgress.UseVisualStyleBackColor = true;
+            // 
+            // cbCompleted
+            // 
+            this.cbCompleted.AutoSize = true;
+            this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbCompleted.ForeColor = System.Drawing.Color.Green;
+            this.cbCompleted.Location = new System.Drawing.Point(3, 43);
+            this.cbCompleted.Name = "cbCompleted";
+            this.cbCompleted.Size = new System.Drawing.Size(98, 23);
+            this.cbCompleted.TabIndex = 158;
+            this.cbCompleted.Text = "Completed";
+            this.cbCompleted.UseVisualStyleBackColor = true;
             // 
             // gunaGroupBox5
             // 
@@ -336,6 +457,7 @@
             this.dtpRangeEnd.TabIndex = 240;
             this.dtpRangeEnd.Text = "6/12/2023";
             this.dtpRangeEnd.Value = new System.DateTime(2023, 12, 6, 10, 56, 27, 880);
+            this.dtpRangeEnd.ValueChanged += new System.EventHandler(this.dtpRangeEnd_ValueChanged);
             // 
             // tableLayoutPanel10
             // 
@@ -355,20 +477,19 @@
             this.tableLayoutPanel10.Size = new System.Drawing.Size(338, 36);
             this.tableLayoutPanel10.TabIndex = 0;
             // 
-            // cbDODate
+            // cbPODate
             // 
-            this.cbDODate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbDODate.AutoSize = true;
-            this.cbDODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbDODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbDODate.Location = new System.Drawing.Point(239, 7);
-            this.cbDODate.Name = "cbDODate";
-            this.cbDODate.Size = new System.Drawing.Size(85, 21);
-            this.cbDODate.TabIndex = 239;
-            this.cbDODate.Text = "D/O Date";
-            this.cbDODate.UseVisualStyleBackColor = true;
-            this.cbDODate.Visible = false;
-            this.cbDODate.CheckedChanged += new System.EventHandler(this.cbDODate_CheckedChanged);
+            this.cbPODate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbPODate.AutoSize = true;
+            this.cbPODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbPODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbPODate.Location = new System.Drawing.Point(138, 7);
+            this.cbPODate.Name = "cbPODate";
+            this.cbPODate.Size = new System.Drawing.Size(83, 21);
+            this.cbPODate.TabIndex = 240;
+            this.cbPODate.Text = "P/O Date";
+            this.cbPODate.UseVisualStyleBackColor = true;
+            this.cbPODate.CheckedChanged += new System.EventHandler(this.cbPODate_CheckedChanged);
             // 
             // cbDeliveredDate
             // 
@@ -386,6 +507,21 @@
             this.cbDeliveredDate.Text = "Delivered Date";
             this.cbDeliveredDate.UseVisualStyleBackColor = true;
             this.cbDeliveredDate.CheckedChanged += new System.EventHandler(this.cbDeliveredDate_CheckedChanged);
+            // 
+            // cbDODate
+            // 
+            this.cbDODate.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbDODate.AutoSize = true;
+            this.cbDODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbDODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbDODate.Location = new System.Drawing.Point(239, 7);
+            this.cbDODate.Name = "cbDODate";
+            this.cbDODate.Size = new System.Drawing.Size(85, 21);
+            this.cbDODate.TabIndex = 239;
+            this.cbDODate.Text = "D/O Date";
+            this.cbDODate.UseVisualStyleBackColor = true;
+            this.cbDODate.Visible = false;
+            this.cbDODate.CheckedChanged += new System.EventHandler(this.cbDODate_CheckedChanged);
             // 
             // tableLayoutPanel11
             // 
@@ -431,6 +567,7 @@
             this.dtpRangeStart.TabIndex = 240;
             this.dtpRangeStart.Text = "6/12/2023";
             this.dtpRangeStart.Value = new System.DateTime(2023, 12, 6, 10, 56, 27, 880);
+            this.dtpRangeStart.ValueChanged += new System.EventHandler(this.dtpRangeStart_ValueChanged);
             // 
             // lblRangeStart
             // 
@@ -482,93 +619,6 @@
             this.tableLayoutPanel17.Size = new System.Drawing.Size(288, 178);
             this.tableLayoutPanel17.TabIndex = 258;
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 3;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Controls.Add(this.btnRefresh, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnFilter, 0, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1308, 50);
-            this.tableLayoutPanel2.TabIndex = 160;
-            // 
-            // btnFilterApply
-            // 
-            this.btnFilterApply.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnFilterApply.AnimationHoverSpeed = 0.07F;
-            this.btnFilterApply.AnimationSpeed = 0.03F;
-            this.btnFilterApply.BackColor = System.Drawing.Color.Transparent;
-            this.btnFilterApply.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(107)))), ((int)(((byte)(236)))));
-            this.btnFilterApply.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(93)))), ((int)(((byte)(127)))), ((int)(((byte)(236)))));
-            this.btnFilterApply.BorderColor = System.Drawing.Color.Black;
-            this.btnFilterApply.BorderSize = 1;
-            this.btnFilterApply.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnFilterApply.FocusedColor = System.Drawing.Color.Empty;
-            this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Image = null;
-            this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilterApply.Location = new System.Drawing.Point(962, 177);
-            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.btnFilterApply.Name = "btnFilterApply";
-            this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnFilterApply.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnFilterApply.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnFilterApply.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.OnHoverImage = null;
-            this.btnFilterApply.OnPressedColor = System.Drawing.Color.Black;
-            this.btnFilterApply.Radius = 2;
-            this.btnFilterApply.Size = new System.Drawing.Size(136, 40);
-            this.btnFilterApply.TabIndex = 227;
-            this.btnFilterApply.Text = "Apply";
-            this.btnFilterApply.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnFilterApply.Click += new System.EventHandler(this.btnFilterApply_Click);
-            // 
-            // cbRemoved
-            // 
-            this.cbRemoved.AutoSize = true;
-            this.cbRemoved.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbRemoved.ForeColor = System.Drawing.Color.Red;
-            this.cbRemoved.Location = new System.Drawing.Point(3, 83);
-            this.cbRemoved.Name = "cbRemoved";
-            this.cbRemoved.Size = new System.Drawing.Size(89, 23);
-            this.cbRemoved.TabIndex = 159;
-            this.cbRemoved.Text = "Cancelled";
-            this.cbRemoved.UseVisualStyleBackColor = true;
-            // 
-            // cbInProgress
-            // 
-            this.cbInProgress.AutoSize = true;
-            this.cbInProgress.Checked = true;
-            this.cbInProgress.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbInProgress.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbInProgress.Location = new System.Drawing.Point(3, 3);
-            this.cbInProgress.Name = "cbInProgress";
-            this.cbInProgress.Size = new System.Drawing.Size(100, 23);
-            this.cbInProgress.TabIndex = 157;
-            this.cbInProgress.Text = "In progress";
-            this.cbInProgress.UseVisualStyleBackColor = true;
-            // 
-            // cbCompleted
-            // 
-            this.cbCompleted.AutoSize = true;
-            this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbCompleted.ForeColor = System.Drawing.Color.Green;
-            this.cbCompleted.Location = new System.Drawing.Point(3, 43);
-            this.cbCompleted.Name = "cbCompleted";
-            this.cbCompleted.Size = new System.Drawing.Size(98, 23);
-            this.cbCompleted.TabIndex = 158;
-            this.cbCompleted.Text = "Completed";
-            this.cbCompleted.UseVisualStyleBackColor = true;
-            // 
             // cmbCustomer
             // 
             this.cmbCustomer.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
@@ -594,6 +644,37 @@
             this.lblCustomer.Size = new System.Drawing.Size(64, 17);
             this.lblCustomer.TabIndex = 155;
             this.lblCustomer.Text = "Customer";
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 3;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Controls.Add(this.lblInvoiceMode, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnRefresh, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnFilter, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1308, 50);
+            this.tableLayoutPanel2.TabIndex = 160;
+            // 
+            // lblInvoiceMode
+            // 
+            this.lblInvoiceMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblInvoiceMode.AutoSize = true;
+            this.lblInvoiceMode.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblInvoiceMode.Location = new System.Drawing.Point(285, 13);
+            this.lblInvoiceMode.Margin = new System.Windows.Forms.Padding(5);
+            this.lblInvoiceMode.Name = "lblInvoiceMode";
+            this.lblInvoiceMode.Size = new System.Drawing.Size(130, 23);
+            this.lblInvoiceMode.TabIndex = 174;
+            this.lblInvoiceMode.Text = "INVOICE MODE";
+            this.lblInvoiceMode.Visible = false;
             // 
             // btnRefresh
             // 
@@ -679,17 +760,53 @@
             // 
             this.tableLayoutPanel1.ColumnCount = 1;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.dgvDOList, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel9, 0, 0);
+            this.tableLayoutPanel1.Controls.Add(this.dgvDOList, 0, 2);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowCount = 3;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.Size = new System.Drawing.Size(646, 357);
             this.tableLayoutPanel1.TabIndex = 156;
+            // 
+            // tableLayoutPanel9
+            // 
+            this.tableLayoutPanel9.ColumnCount = 4;
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 216F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel9.Controls.Add(this.lblSelectAll, 3, 0);
+            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
+            this.tableLayoutPanel9.RowCount = 1;
+            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(646, 20);
+            this.tableLayoutPanel9.TabIndex = 174;
+            // 
+            // lblSelectAll
+            // 
+            this.lblSelectAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblSelectAll.AutoSize = true;
+            this.lblSelectAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblSelectAll.Font = new System.Drawing.Font("Segoe UI Semibold", 6F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+                | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblSelectAll.ForeColor = System.Drawing.Color.Blue;
+            this.lblSelectAll.Location = new System.Drawing.Point(584, 8);
+            this.lblSelectAll.Margin = new System.Windows.Forms.Padding(0, 0, 5, 0);
+            this.lblSelectAll.Name = "lblSelectAll";
+            this.lblSelectAll.Size = new System.Drawing.Size(57, 12);
+            this.lblSelectAll.TabIndex = 174;
+            this.lblSelectAll.Text = "SELECT ALL";
+            this.lblSelectAll.Visible = false;
+            this.lblSelectAll.Click += new System.EventHandler(this.lblSelectAll_Click);
             // 
             // dgvDOList
             // 
@@ -702,17 +819,17 @@
             this.dgvDOList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvDOList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDOList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvDOList.Location = new System.Drawing.Point(5, 55);
+            this.dgvDOList.Location = new System.Drawing.Point(5, 75);
             this.dgvDOList.Margin = new System.Windows.Forms.Padding(5);
             this.dgvDOList.Name = "dgvDOList";
             this.dgvDOList.ReadOnly = true;
@@ -720,7 +837,7 @@
             this.dgvDOList.RowHeadersWidth = 51;
             this.dgvDOList.RowTemplate.Height = 50;
             this.dgvDOList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOList.Size = new System.Drawing.Size(636, 297);
+            this.dgvDOList.Size = new System.Drawing.Size(636, 277);
             this.dgvDOList.TabIndex = 156;
             this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
             this.dgvDOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellDoubleClick);
@@ -737,16 +854,31 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel4.Controls.Add(this.lblGrandTotalAmount, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.btnCancel, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnExcel, 3, 0);
+            this.tableLayoutPanel4.Controls.Add(this.btnExport, 3, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblMainList, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 20);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel4.Size = new System.Drawing.Size(646, 50);
             this.tableLayoutPanel4.TabIndex = 167;
+            // 
+            // lblGrandTotalAmount
+            // 
+            this.lblGrandTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblGrandTotalAmount.AutoSize = true;
+            this.lblGrandTotalAmount.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblGrandTotalAmount.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblGrandTotalAmount.Location = new System.Drawing.Point(221, 26);
+            this.lblGrandTotalAmount.Margin = new System.Windows.Forms.Padding(5);
+            this.lblGrandTotalAmount.Name = "lblGrandTotalAmount";
+            this.lblGrandTotalAmount.Size = new System.Drawing.Size(17, 19);
+            this.lblGrandTotalAmount.TabIndex = 175;
+            this.lblGrandTotalAmount.Text = "0";
+            this.lblGrandTotalAmount.Visible = false;
+            this.lblGrandTotalAmount.Click += new System.EventHandler(this.lblGrandTotalAmount_Click);
             // 
             // btnCancel
             // 
@@ -781,37 +913,37 @@
             this.btnCancel.Visible = false;
             this.btnCancel.Click += new System.EventHandler(this.btnRemove_Click);
             // 
-            // btnExcel
+            // btnExport
             // 
-            this.btnExcel.AnimationHoverSpeed = 0.07F;
-            this.btnExcel.AnimationSpeed = 0.03F;
-            this.btnExcel.BackColor = System.Drawing.Color.Transparent;
-            this.btnExcel.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(221)))), ((int)(((byte)(218)))));
-            this.btnExcel.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(241)))), ((int)(((byte)(218)))));
-            this.btnExcel.BorderColor = System.Drawing.Color.Black;
-            this.btnExcel.BorderSize = 1;
-            this.btnExcel.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnExcel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnExcel.FocusedColor = System.Drawing.Color.Empty;
-            this.btnExcel.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnExcel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
-            this.btnExcel.Image = null;
-            this.btnExcel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnExcel.Location = new System.Drawing.Point(511, 5);
-            this.btnExcel.Margin = new System.Windows.Forms.Padding(5);
-            this.btnExcel.Name = "btnExcel";
-            this.btnExcel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnExcel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnExcel.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnExcel.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnExcel.OnHoverImage = null;
-            this.btnExcel.OnPressedColor = System.Drawing.Color.Black;
-            this.btnExcel.Radius = 2;
-            this.btnExcel.Size = new System.Drawing.Size(130, 40);
-            this.btnExcel.TabIndex = 230;
-            this.btnExcel.Text = "Select";
-            this.btnExcel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnExcel.Click += new System.EventHandler(this.btnExcel_Click);
+            this.btnExport.AnimationHoverSpeed = 0.07F;
+            this.btnExport.AnimationSpeed = 0.03F;
+            this.btnExport.BackColor = System.Drawing.Color.Transparent;
+            this.btnExport.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(221)))), ((int)(((byte)(218)))));
+            this.btnExport.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(173)))), ((int)(((byte)(241)))), ((int)(((byte)(218)))));
+            this.btnExport.BorderColor = System.Drawing.Color.Black;
+            this.btnExport.BorderSize = 1;
+            this.btnExport.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnExport.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnExport.FocusedColor = System.Drawing.Color.Empty;
+            this.btnExport.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnExport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
+            this.btnExport.Image = null;
+            this.btnExport.ImageSize = new System.Drawing.Size(20, 20);
+            this.btnExport.Location = new System.Drawing.Point(511, 5);
+            this.btnExport.Margin = new System.Windows.Forms.Padding(5);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnExport.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnExport.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnExport.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnExport.OnHoverImage = null;
+            this.btnExport.OnPressedColor = System.Drawing.Color.Black;
+            this.btnExport.Radius = 2;
+            this.btnExport.Size = new System.Drawing.Size(130, 40);
+            this.btnExport.TabIndex = 230;
+            this.btnExport.Text = "Select";
+            this.btnExport.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnExport.Click += new System.EventHandler(this.btnExcel_Click);
             // 
             // lblMainList
             // 
@@ -829,13 +961,14 @@
             // 
             this.tableLayoutPanel3.ColumnCount = 1;
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Controls.Add(this.dgvDOItemList, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.dgvDOItemList, 0, 2);
+            this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(656, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
+            this.tableLayoutPanel3.RowCount = 3;
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Size = new System.Drawing.Size(646, 357);
@@ -850,48 +983,47 @@
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.dgvDOItemList.Location = new System.Drawing.Point(5, 55);
+            this.dgvDOItemList.Location = new System.Drawing.Point(5, 75);
             this.dgvDOItemList.Margin = new System.Windows.Forms.Padding(5);
             this.dgvDOItemList.Name = "dgvDOItemList";
             this.dgvDOItemList.RowHeadersVisible = false;
             this.dgvDOItemList.RowHeadersWidth = 51;
             this.dgvDOItemList.RowTemplate.Height = 50;
             this.dgvDOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOItemList.Size = new System.Drawing.Size(636, 297);
+            this.dgvDOItemList.Size = new System.Drawing.Size(636, 277);
             this.dgvDOItemList.TabIndex = 155;
             this.dgvDOItemList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOItemList_CellContentClick);
             // 
             // tableLayoutPanel5
             // 
             this.tableLayoutPanel5.ColumnCount = 3;
-            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 163F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 420F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel5.Controls.Add(this.lblInvoiceTotalAmount, 1, 0);
             this.tableLayoutPanel5.Controls.Add(this.btnEdit, 2, 0);
             this.tableLayoutPanel5.Controls.Add(this.lblSubList, 0, 0);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 20);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
@@ -962,98 +1094,6 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1348, 703);
             this.tableLayoutPanel6.TabIndex = 173;
             // 
-            // cbPODate
-            // 
-            this.cbPODate.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbPODate.AutoSize = true;
-            this.cbPODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbPODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbPODate.Location = new System.Drawing.Point(138, 7);
-            this.cbPODate.Name = "cbPODate";
-            this.cbPODate.Size = new System.Drawing.Size(83, 21);
-            this.cbPODate.TabIndex = 240;
-            this.cbPODate.Text = "P/O Date";
-            this.cbPODate.UseVisualStyleBackColor = true;
-            this.cbPODate.CheckedChanged += new System.EventHandler(this.cbPODate_CheckedChanged);
-            // 
-            // gunaGroupBox1
-            // 
-            this.gunaGroupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGroupBox1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGroupBox1.BorderColor = System.Drawing.Color.Gainsboro;
-            this.gunaGroupBox1.BorderSize = 1;
-            this.gunaGroupBox1.Controls.Add(this.tableLayoutPanel7);
-            this.gunaGroupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
-            this.gunaGroupBox1.LineColor = System.Drawing.Color.Gainsboro;
-            this.gunaGroupBox1.Location = new System.Drawing.Point(803, 3);
-            this.gunaGroupBox1.Name = "gunaGroupBox1";
-            this.gunaGroupBox1.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
-            this.gunaGroupBox1.Radius = 3;
-            this.gunaGroupBox1.Size = new System.Drawing.Size(144, 214);
-            this.gunaGroupBox1.TabIndex = 256;
-            this.gunaGroupBox1.Text = "Advance Settings";
-            this.gunaGroupBox1.TextLocation = new System.Drawing.Point(10, 8);
-            // 
-            // tableLayoutPanel7
-            // 
-            this.tableLayoutPanel7.ColumnCount = 1;
-            this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.cbInvoiceMode, 0, 0);
-            this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 33);
-            this.tableLayoutPanel7.Name = "tableLayoutPanel7";
-            this.tableLayoutPanel7.RowCount = 2;
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(138, 178);
-            this.tableLayoutPanel7.TabIndex = 258;
-            // 
-            // cbInvoiceMode
-            // 
-            this.cbInvoiceMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbInvoiceMode.AutoSize = true;
-            this.cbInvoiceMode.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbInvoiceMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbInvoiceMode.Location = new System.Drawing.Point(10, 7);
-            this.cbInvoiceMode.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbInvoiceMode.Name = "cbInvoiceMode";
-            this.cbInvoiceMode.Size = new System.Drawing.Size(109, 21);
-            this.cbInvoiceMode.TabIndex = 239;
-            this.cbInvoiceMode.Text = "Invoice Mode";
-            this.cbInvoiceMode.UseVisualStyleBackColor = true;
-            this.cbInvoiceMode.CheckedChanged += new System.EventHandler(this.cbInvoiceMode_CheckedChanged);
-            // 
-            // lblInvoiceTotalAmount
-            // 
-            this.lblInvoiceTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblInvoiceTotalAmount.AutoSize = true;
-            this.lblInvoiceTotalAmount.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblInvoiceTotalAmount.Location = new System.Drawing.Point(168, 26);
-            this.lblInvoiceTotalAmount.Margin = new System.Windows.Forms.Padding(5);
-            this.lblInvoiceTotalAmount.Name = "lblInvoiceTotalAmount";
-            this.lblInvoiceTotalAmount.Size = new System.Drawing.Size(91, 19);
-            this.lblInvoiceTotalAmount.TabIndex = 174;
-            this.lblInvoiceTotalAmount.Text = "TOTAL (RM) : ";
-            this.lblInvoiceTotalAmount.Visible = false;
-            // 
-            // lblGrandTotalAmount
-            // 
-            this.lblGrandTotalAmount.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblGrandTotalAmount.AutoSize = true;
-            this.lblGrandTotalAmount.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblGrandTotalAmount.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblGrandTotalAmount.Location = new System.Drawing.Point(221, 26);
-            this.lblGrandTotalAmount.Margin = new System.Windows.Forms.Padding(5);
-            this.lblGrandTotalAmount.Name = "lblGrandTotalAmount";
-            this.lblGrandTotalAmount.Size = new System.Drawing.Size(17, 19);
-            this.lblGrandTotalAmount.TabIndex = 175;
-            this.lblGrandTotalAmount.Text = "0";
-            this.lblGrandTotalAmount.Visible = false;
-            this.lblGrandTotalAmount.Click += new System.EventHandler(this.lblGrandTotalAmount_Click);
-            // 
             // frmSBBDOListVer3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1066,6 +1106,7 @@
             this.Name = "frmSBBDOListVer3";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Delivery Order Management";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSBBDOListVer2_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSPPDOList_FormClosed);
             this.Load += new System.EventHandler(this.frmSPPDOList_Load);
@@ -1073,6 +1114,9 @@
             this.tlpPOList.ResumeLayout(false);
             this.gbFilter.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
+            this.gunaGroupBox1.ResumeLayout(false);
+            this.tableLayoutPanel7.ResumeLayout(false);
+            this.tableLayoutPanel7.PerformLayout();
             this.gunaGroupBox4.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
@@ -1089,8 +1133,11 @@
             this.tableLayoutPanel17.ResumeLayout(false);
             this.tableLayoutPanel17.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.tlpList.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDOList)).EndInit();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
@@ -1099,9 +1146,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.gunaGroupBox1.ResumeLayout(false);
-            this.tableLayoutPanel7.ResumeLayout(false);
-            this.tableLayoutPanel7.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1130,7 +1174,7 @@
         private Guna.UI.WinForms.GunaGradientButton btnFilterApply;
         private Guna.UI.WinForms.GunaGradientButton btnCancel;
         private Guna.UI.WinForms.GunaGradientButton btnEdit;
-        private Guna.UI.WinForms.GunaGradientButton btnExcel;
+        private Guna.UI.WinForms.GunaGradientButton btnExport;
         private Guna.UI.WinForms.GunaGradientButton btnFilter;
         private Guna.UI.WinForms.GunaGradientButton btnRefresh;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
@@ -1155,7 +1199,9 @@
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.CheckBox cbInvoiceMode;
-        private System.Windows.Forms.Label lblInvoiceTotalAmount;
         private System.Windows.Forms.Label lblGrandTotalAmount;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
+        private System.Windows.Forms.Label lblSelectAll;
+        private System.Windows.Forms.Label lblInvoiceMode;
     }
 }

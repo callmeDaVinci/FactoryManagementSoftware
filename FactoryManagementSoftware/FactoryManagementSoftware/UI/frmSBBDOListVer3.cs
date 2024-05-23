@@ -16,8 +16,6 @@ using System.Reflection;
 using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
-using System.Data.Entity.Core.Mapping;
-using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -29,12 +27,12 @@ namespace FactoryManagementSoftware.UI
 
             tool.DoubleBuffered(dgvDOList, true);
             tool.DoubleBuffered(dgvDOItemList, true);
-
+            DATABASE_MONTHS_AGO_NUMBER = 1;
             btnFilter.Text = text_HideFilter;
             cbInvoiceMode.Checked = false;
 
-
             LoadCustomerList();
+
         }
 
         #region variable/object declare
@@ -64,7 +62,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_UndoRemove = "Undo Remove";
         readonly string text_ChangeDONumber = "Change D/O Number";
         readonly string text_SelectDO = "Select D/O";
-        readonly string text_Excel= "Excel";
+        readonly string text_Export= "Export";
         readonly string text_CancelSelectingMode = "Cancel";
         readonly string text_RemoveDO = "Remove D/O";
         readonly string text_Select = "Select";
@@ -77,6 +75,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_CustomerCode = "CUSTOMER CODE";
         readonly string header_DeliveredDate = "DELIVERED";
         readonly string header_Customer = "CUSTOMER";
+        readonly string header_ShipTo = "SHIP TO";
         readonly string header_Progress = "PROGRESS";
         readonly string header_Selected = "SELECTED";
         readonly string header_DataMode = "DATA MODE";
@@ -93,6 +92,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_TotalDeliveryBag = "NOTE";
         readonly string header_StockCheck = "STOCK CHECK";
         readonly string header_DONo = "D/O #";
+        readonly string header_Amount = "Amount (RM)";
         readonly string header_DONoString = "D/O NO";
         readonly string header_DataType = "DATA TYPE";
 
@@ -129,9 +129,11 @@ namespace FactoryManagementSoftware.UI
 
         readonly string Text_MultiPOCode = "MULTI";
         private DataTable DB_DO_INFO;
+        private DataTable DB_TRANSFER_RECORD;
         private DataTable dt_DOItemList_1;
 
         private string ShowingDO = "";
+        private int DATABASE_MONTHS_AGO_NUMBER = 6;
 
         //private bool addingDOMode = false;
         //private bool ableToNextStep = false;
@@ -199,6 +201,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_PONo, typeof(string));
 
             dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_ShipTo, typeof(string));
             dt.Columns.Add(header_CustomerCode, typeof(int));
             dt.Columns.Add(header_DeliveredDate, typeof(DateTime));
 
@@ -327,6 +330,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_PONo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_PODate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_Customer].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                dgv.Columns[header_ShipTo].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                 dgv.Columns[header_DONo].Visible = false;
                 dgv.Columns[header_DataType].Visible = false;
                 dgv.Columns[header_POCode].Visible = false;
@@ -356,7 +360,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_Unit].Visible = false;
                 dgv.Columns[header_TrfTableCode].Visible = false;
 
-                dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                //dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
 
                 if(dgv.Columns.Contains(header_PONo))
                 {
@@ -401,7 +405,7 @@ namespace FactoryManagementSoftware.UI
             {
                 btnFilter.Text = text_HideFilter;
 
-                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 125f);
+                tlpPOList.RowStyles[1] = new RowStyle(SizeType.Absolute, 250f);
             }
             else
             {
@@ -418,13 +422,16 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
+
             ITEM_LIST_LOADING = true;
             GRAND_TOTAL_AMOUNT = 0;
             lblGrandTotalAmount.Visible = false;
 
+            ShowOrHideFilter();
             ResetDBDOInfoList();
             LoadDOList();
 
+            
             ITEM_LIST_LOADING = false;
 
         }
@@ -433,12 +440,15 @@ namespace FactoryManagementSoftware.UI
         {
             if(FormLoaded)
             {
+                SELECTION_CHANGE_MODE = false;
                 // DataTable dt = (DataTable)dgvPOList.DataSource;
                 int rowIndex = e.RowIndex;
 
+                DATA_LOADED = false;
 
                 LoadItemList(rowIndex);
-              
+
+                DATA_LOADED = true;
             }
           
         }
@@ -464,7 +474,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     btnCancel.Visible = true;
                 }
-                else
+                else if(!DOSelectingMode)
                     btnCancel.Visible = false;
 
                 string code = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
@@ -496,30 +506,34 @@ namespace FactoryManagementSoftware.UI
 
                 if (DOSelectingMode)
                 {
-                    bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
-
-                    if (!selected)
+                    if(!SELECTION_CHANGE_MODE)
                     {
-                        dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
+                        bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
 
-                        btnExcel.Text = text_Excel;
-                        btnExcel.Enabled = true;
-                    }
-                    else
-                    {
-                        dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
-
-                        if (!ifDOSelected())
+                        if (!selected)
                         {
-                            btnExcel.Text = text_SelectDO;
-                            btnExcel.Enabled = false;
+                            dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
+
+                            btnExport.Text = text_Export;
+                            btnExport.Enabled = true;
                         }
                         else
                         {
-                            btnExcel.Text = text_Excel;
-                            btnExcel.Enabled = true;
+                            dgv.Rows[rowIndex].Cells[header_Selected].Value = false;
+
+                            if (!ifDOSelected())
+                            {
+                                btnExport.Text = text_SelectDO;
+                                btnExport.Enabled = false;
+                            }
+                            else
+                            {
+                                btnExport.Text = text_Export;
+                                btnExport.Enabled = true;
+                            }
                         }
                     }
+                   
                 }
                 else
                 {
@@ -574,7 +588,7 @@ namespace FactoryManagementSoftware.UI
             btnEdit.Visible = false;
             btnCancel.Text = text_CancelSelectingMode;
             btnCancel.Visible = true;
-
+            lblSelectAll.Visible = true;
             DataTable dt = (DataTable)dgvDOList.DataSource;
 
             //To-do:
@@ -594,6 +608,7 @@ namespace FactoryManagementSoftware.UI
                 dt.Columns.Add(dc);
 
                 int slectedrow = 0;
+
                 foreach (int rowIndex in selectedRowIndices)
                 {
                     if (rowIndex < dt.Rows.Count)
@@ -605,13 +620,13 @@ namespace FactoryManagementSoftware.UI
 
                 if(slectedrow > 0)
                 {
-                    btnExcel.Enabled = true;
-                    btnExcel.Text = text_Excel;
+                    btnExport.Enabled = true;
+                    btnExport.Text = text_Export;
                 }
                 else
                 {
-                    btnExcel.Enabled = false;
-                    btnExcel.Text = text_SelectDO;
+                    btnExport.Enabled = false;
+                    btnExport.Text = text_SelectDO;
                 }
                 
 
@@ -620,14 +635,15 @@ namespace FactoryManagementSoftware.UI
             }
             else if (ifDOSelected())
             {
-                btnExcel.Enabled = true;
-                btnExcel.Text = text_Excel;
+                btnExport.Enabled = true;
+                btnExport.Text = text_Export;
             }
             else
             {
-                btnExcel.Enabled = false;
-                btnExcel.Text = text_SelectDO;
+                btnExport.Enabled = false;
+                btnExport.Text = text_SelectDO;
             }
+
 
         }
         #endregion
@@ -665,7 +681,6 @@ namespace FactoryManagementSoftware.UI
 
             DateTime dateStart = dtpRangeStart.Value;
             DateTime dateEnd = dtpRangeEnd.Value;
-
             foreach (DataRow row in DB_DO_INFO.Rows)
             {
                 int doCode;
@@ -736,7 +751,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (isDelivered && !string.IsNullOrEmpty(trfID))
                         {
-                            dateToInspect = tool.GetTransferDate(trfID);
+                            dateToInspect = tool.GetTransferDate(trfID,DB_TRANSFER_RECORD);
 
                             if(dateToInspect >= dateStart && dateToInspect <= dateEnd)
                             {
@@ -784,10 +799,12 @@ namespace FactoryManagementSoftware.UI
             DB_DO_INFO = dt.Copy();
         }
 
+        private bool DATA_LOADED = false;
         private void LoadDOList()
         {
-          
+            lblInvoiceMode.Visible = cbInvoiceMode.Checked;
 
+            DATA_LOADED = false;
             btnEdit.Visible = false;
             btnCancel.Visible = false;
             dgvDOItemList.DataSource = null;
@@ -882,6 +899,14 @@ namespace FactoryManagementSoftware.UI
                             preDOCode = doCode;
                             dt_row = dt.NewRow();
 
+                            string shipTo = row[dalSPP.ShippingShortName].ToString();
+                            string transporter = row[dalSPP.ShippingTransporter].ToString();
+
+                            if(!string.IsNullOrEmpty(transporter))
+                            {
+                                shipTo = shipTo + " (" + transporter + ")";
+                            }
+
                             dt_row[header_DataType] = dataType;
                             dt_row[header_DONo] = doCode;
                             dt_row[header_DONoString] = doCode.ToString("D6");
@@ -889,6 +914,7 @@ namespace FactoryManagementSoftware.UI
                             dt_row[header_POCode] = row[dalSPP.POCode];
                             dt_row[header_PODate] = Convert.ToDateTime(row[dalSPP.PODate]).Date;
                             dt_row[header_Customer] = row[dalSPP.ShortName];
+                            dt_row[header_ShipTo] = shipTo;
                             dt_row[header_CustomerCode] = row[dalSPP.CustTblCode];
 
                             if (isDelivered && !string.IsNullOrEmpty(trfID))
@@ -917,12 +943,23 @@ namespace FactoryManagementSoftware.UI
             dt.DefaultView.Sort = header_DONo + " DESC";
             dt = dt.DefaultView.ToTable();
 
+            
             dgvDOList.DataSource = dt;
+
+            if(cbInvoiceMode.Checked)
+            {
+                ShowTotalInvoiceAmountInDOList();
+            }
+
             DgvUIEdit(dgvDOList);
             dgvDOList.ClearSelection();
-            lblSubList.Text = text_DOItemList;
-          
+            //lblSubList.Text = text_DOItemList;
+
+
             Focus();
+
+            DATA_LOADED = true;
+
 
         }
 
@@ -1099,7 +1136,11 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
                 //216
-                lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+                if(!cbInvoiceMode.Checked)
+                {
+                    lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+
+                }
                 //dt_POItemList = AddSpaceToList(dt_POItemList);
                 dgvDOItemList.DataSource = dt_DOItemList;
                 DgvUIEdit(dgvDOItemList);
@@ -1113,14 +1154,26 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void ReloadDatabase()
+        {
+            //DB_DO_INFO = dalSPP.DOWithInfoSelect();
+
+            DB_DO_INFO = dalSPP.DOWithInfoSelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+            DB_TRANSFER_RECORD = dalTrfHist.SelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+            //DB_TRANSFER_RECORD = dalTrfHist.Select();
+
+        }
 
         private void ResetDBDOInfoList()
         {
             frmLoading.ShowLoadingScreen();
-            DB_DO_INFO = dalSPP.DOWithInfoSelect();
+           
+            ReloadDatabase();
             DBDOListFilter();
+
             DB_DO_INFO.DefaultView.Sort = dalSPP.DONo + " ASC," + dalSPP.TypeName + " ASC," + dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
             DB_DO_INFO = DB_DO_INFO.DefaultView.ToTable();
+
             frmLoading.CloseForm();
 
         }
@@ -1297,7 +1350,11 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
                 //216
-                lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+                if(!cbInvoiceMode.Checked)
+                {
+                    lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+
+                }
                 //dt_POItemList = AddSpaceToList(dt_POItemList);
                 dgvDOItemList.DataSource = dt_DOItemList;
                 DgvUIEdit(dgvDOItemList);
@@ -1482,7 +1539,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+            if (!cbInvoiceMode.Checked)
+            {
+                lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+
+            }
             //dt_POItemList = AddSpaceToList(dt_POItemList);
             dgvDOItemList.DataSource = dt_DOItemList;
             DgvUIEdit(dgvDOItemList);
@@ -1664,7 +1725,11 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+            if (!cbInvoiceMode.Checked)
+            {
+                lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+
+            }
             //dt_POItemList = AddSpaceToList(dt_POItemList);
             dgvDOItemList.DataSource = dt_DOItemList;
             DgvUIEdit(dgvDOItemList);
@@ -1678,6 +1743,70 @@ namespace FactoryManagementSoftware.UI
         }
 
         private decimal GRAND_TOTAL_AMOUNT = 0;
+
+        private void ShowTotalInvoiceAmountInDOList()
+        {
+            if (cbInvoiceMode.Checked)
+            {
+                //frmLoading.ShowLoadingScreen();
+
+                Cursor = Cursors.WaitCursor;
+
+                GRAND_TOTAL_AMOUNT = 0;
+
+                //749MS
+                DataTable dt = (DataTable)dgvDOList.DataSource;
+
+                if(!dt.Columns.Contains(header_Amount))
+                {
+                    dt.Columns.Add(header_Amount, typeof(decimal));
+                }
+
+                foreach (DataRow doRow in dt.Rows)
+                {
+                    string doCode = doRow[header_DONo].ToString();
+
+                    decimal totalAmount = 0;
+
+                    foreach (DataRow row in DB_DO_INFO.Rows)
+                    {
+                        bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                        if (doCode == row[dalSPP.DONo].ToString() && row[dalSPP.DONo] != DBNull.Value && !isRemoved)
+                        {
+                            int deliveryQty = row[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row[dalSPP.ToDeliveryQty].ToString());
+
+                            string type = row[dalSPP.TypeName].ToString();
+
+                            if (!string.IsNullOrEmpty(type) && (deliveryQty > 0))
+                            {
+                                decimal unitPrice = decimal.TryParse(row[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
+
+                                decimal DiscRate = decimal.TryParse(row[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
+
+                                decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                totalAmount += netAmount;
+
+                            }
+                        }
+                    }
+
+                    doRow[header_Amount] = totalAmount;
+
+                    decimal roundedTotalAmount = Math.Round(totalAmount, 2);
+                    GRAND_TOTAL_AMOUNT += roundedTotalAmount;
+                }
+
+              
+
+                lblGrandTotalAmount.Text = GRAND_TOTAL_AMOUNT.ToString();
+                lblGrandTotalAmount.Visible = true;
+
+                Cursor = Cursors.Arrow;
+
+
+            }
+        }
 
         private void ShowInvoiceDetails(string doCode)
         {
@@ -1822,7 +1951,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[header_Index] = index;
                             dt_Row[header_PONo] = row[dalSPP.PONo];
                             dt_Row[header_Size] = row[dalSPP.SizeNumerator];
-                            dt_Row[header_Unit] = text.Unit_Piece.ToUpper();
+                            dt_Row[header_Unit] = "PCS";
                             dt_Row[header_SizeString] = sizeString;
                             dt_Row[header_Type] = type;
                             dt_Row[header_ItemCode] = row[dalSPP.ItemCode];
@@ -1833,7 +1962,7 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[text.Header_Description] = sizeString + " " + type;
 
                             dt_Row[header_DeliveryQTY] = deliveryQty;
-                            dt_Row[text.Header_Unit] = text.Unit_Piece.ToUpper();
+                            dt_Row[text.Header_Unit] = "PCS";
 
                             decimal unitPrice = decimal.TryParse(row[dalSPP.UnitPrice].ToString(), out unitPrice)? unitPrice : 0;
                             dt_Row[text.Header_UnitPrice] = unitPrice;
@@ -1870,14 +1999,15 @@ namespace FactoryManagementSoftware.UI
 
             decimal roundedTotalAmount = Math.Round(totalAmount, 2);
 
-            lblInvoiceTotalAmount.Text = "TOTAL(RM): " + roundedTotalAmount + " (" + totalAmount + ")";
-            lblInvoiceTotalAmount.Visible = true;
+            lblSubList.Text = "INVOICE TOTAL(RM): " + roundedTotalAmount;
+            lblSubList.Visible = true;
 
-            GRAND_TOTAL_AMOUNT += roundedTotalAmount;
 
-            lblGrandTotalAmount.Text = GRAND_TOTAL_AMOUNT.ToString();
-            lblGrandTotalAmount.Visible = true;
-            lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+            if(!cbInvoiceMode.Checked)
+            {
+                lblSubList.Text = text_DOItemList + " (Total Bags: " + totalBag + ")";
+
+            }
             //dt_POItemList = AddSpaceToList(dt_POItemList);
             dgvDOItemList.DataSource = dt_DOItemList;
             DgvUIEdit(dgvDOItemList);
@@ -1890,10 +2020,12 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private bool SELECTION_CHANGE_MODE = false;
         private void dgvDOList_SelectionChanged(object sender, EventArgs e)
         {
-            if (FormLoaded && dgvDOList.SelectedRows.Count > 0)
+            if (DATA_LOADED && FormLoaded && dgvDOList.SelectedRows.Count > 0)
             {
+                SELECTION_CHANGE_MODE = true;
                 int rowIndex = dgvDOList.SelectedRows[0].Index;
                 LoadItemList(rowIndex);
             }
@@ -1978,9 +2110,9 @@ namespace FactoryManagementSoftware.UI
                 btnEdit.Visible = false;
                 btnCancel.Text = text_RemoveDO;
                 btnCancel.Visible = false;
-                btnExcel.Enabled = true;
-                btnExcel.Text = text_Select;
-               
+                btnExport.Enabled = true;
+                btnExport.Text = text_Select;
+                lblSelectAll.Visible = false;
 
                 dgvDOList.ClearSelection();
 
@@ -3046,15 +3178,17 @@ namespace FactoryManagementSoftware.UI
 
         private void btnExcel_Click(object sender, EventArgs e)
         {
-            if(btnExcel.Text == text_Excel)
+            if(btnExport.Text == text_Export)
             {
-                ExportToExcel();
+                OpenExportSettings();
             }
             else
             {
+                DATA_LOADED = false;
+
                 DOSelectingUI();
             }
-           
+
         }
 
         private void NewExcelPageSetup(Worksheet xlWorkSheet)
@@ -6236,8 +6370,9 @@ namespace FactoryManagementSoftware.UI
         }
         #endregion
 
-        private void ExportToExcel()
+        private void OpenExportSettings()
         {
+            
             //show export setting
             frmExportSetting frm = new frmExportSetting()
             {
@@ -6252,20 +6387,13 @@ namespace FactoryManagementSoftware.UI
 
                 ExportSBBDO();
 
-                //if (frmExportSetting.newFormat)
-                //{
-                //    NewExcel();
-                //}
-                //else
-                //{
-                //    OldExcel();
-                //}
-
             }
 
             Cursor = Cursors.Arrow;
 
             DOListUI();
+
+            DATA_LOADED = false;
         }
 
         private void copyAlltoClipboard()
@@ -6361,6 +6489,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
+            ShowFilter(false);
             ResetDBDOInfoList();
             LoadDOList();
         }
@@ -6386,8 +6515,8 @@ namespace FactoryManagementSoftware.UI
 
             cbInvoiceMode.Checked = false;
 
-            ResetDBDOInfoList();
-            LoadDOList();
+            ResetDBDOInfoList();//3304ms
+            LoadDOList();//65ms
             FormLoaded = true;
 
             //int id =  dalTrfHist.GetLastInsertedID();
@@ -6479,16 +6608,72 @@ namespace FactoryManagementSoftware.UI
         {
             if(!cbInvoiceMode.Checked)
             {
-                lblInvoiceTotalAmount.Text = "";
-
-                lblInvoiceTotalAmount.Visible = false;
+                lblSubList.Text = text_DOItemList;
+              
+            }
+            else
+            {
+                cbInProgress.Checked = false;
+                cbCompleted.Checked = true;
+                cbRemoved.Checked = false;
             }
         }
 
         private void lblGrandTotalAmount_Click(object sender, EventArgs e)
         {
-            lblGrandTotalAmount.Text = 0.ToString();
-            GRAND_TOTAL_AMOUNT = 0;
+            //lblGrandTotalAmount.Text = 0.ToString();
+            //GRAND_TOTAL_AMOUNT = 0;
+        }
+
+     
+
+        private void UpdateDatabaseMonthsAgoNumber()
+        {
+            int orimonthsagodata = DATABASE_MONTHS_AGO_NUMBER;
+            DateTime startDate = dtpRangeStart.Value;
+            DateTime endDate = dtpRangeEnd.Value;
+
+            int monthsDifference = ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month + 1;
+
+            DATABASE_MONTHS_AGO_NUMBER = Math.Max(1, monthsDifference);
+
+            //if(DATABASE_MONTHS_AGO_NUMBER != orimonthsagodata)
+            //{
+            //    TO_RELOAD_DATA = true;
+            //}
+        }
+        private void dtpRangeStart_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateDatabaseMonthsAgoNumber();
+        }
+
+        private void lblSelectAll_Click(object sender, EventArgs e)
+        {
+            DataTable dt = (DataTable)dgvDOList.DataSource;
+
+            if(dt.Columns.Contains(header_Selected))
+            {
+                foreach(DataRow row in dt.Rows)
+                {
+                    row[header_Selected] = true;
+
+                }
+
+                if(ifDOSelected())
+                {
+                    btnExport.Text = text_Export;
+                    btnExport.Enabled = true;
+                }
+               
+            }
+           
+           
+        }
+
+        private void dtpRangeEnd_ValueChanged(object sender, EventArgs e)
+        {
+            UpdateDatabaseMonthsAgoNumber();
+
         }
     }
 }

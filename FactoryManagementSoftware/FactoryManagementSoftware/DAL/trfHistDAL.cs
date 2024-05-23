@@ -132,6 +132,66 @@ namespace FactoryManagementSoftware.DAL
             return sortedDt;
         }
 
+        public DataTable SelectByMonth(int monthsAgo)
+        {
+            // Static method to connect to the database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            // DataTable to hold the data from the database
+            DataTable dt = new DataTable();
+            try
+            {
+                // Calculate the start date (first day of the month, monthsAgo months ago)
+                DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-monthsAgo + 1);
+                // Calculate the end date (last day of the current month)
+                DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+
+                // SQL query to get data from the database within the specific date range
+                String sql = @"SELECT tbl_trf_hist.trf_hist_id,
+                                tbl_trf_hist.trf_hist_added_date,
+                                tbl_trf_hist.trf_hist_trf_date,
+                                tbl_trf_hist.trf_hist_item_code,
+                                tbl_item.item_name,
+                                tbl_trf_hist.trf_hist_from,
+                                tbl_trf_hist.trf_hist_to,
+                                tbl_trf_hist.trf_hist_qty,
+                                tbl_trf_hist.trf_hist_unit,
+                                tbl_trf_hist.trf_hist_note,
+                                tbl_trf_hist.trf_hist_added_by,
+                                tbl_trf_hist.trf_result
+                                FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code
+                                WHERE CONVERT(date, tbl_trf_hist.trf_hist_trf_date) BETWEEN @StartDate AND @EndDate";
+
+                // Command for executing the query
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+                // Adapter to handle the data from the database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                // Open database connection
+                conn.Open();
+                // Fill data into the DataTable
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Ensure the connection is closed
+                conn.Close();
+            }
+
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
+
+
         public DataTable SelectWithBalance()
         {
             //static methodd to connect database

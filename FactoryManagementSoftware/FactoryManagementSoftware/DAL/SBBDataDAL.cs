@@ -1717,6 +1717,61 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable DOWithInfoSelectByMonth(int monthsAgo)
+        {
+            // Static method to connect to the database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            // DataTable to hold the data from the database
+            DataTable dt = new DataTable();
+            try
+            {
+                // Calculate the start date (first day of the month, monthsAgo months ago)
+                DateTime startDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddMonths(-monthsAgo + 1);
+                // Calculate the end date (last day of the current month)
+                DateTime endDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+
+                // SQL query to get data from the database within the specific date range
+                String sql = @"SELECT * FROM tbl_spp_do 
+                        INNER JOIN tbl_spp_po ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                        INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                        INNER JOIN tbl_item ON tbl_spp_po.item_code = tbl_item.item_code
+                        LEFT JOIN tbl_spp_size size1 ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                        LEFT JOIN tbl_spp_size size2 ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                        INNER JOIN tbl_spp_type ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                        FULL JOIN tbl_spp_stdpacking ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                        WHERE CONVERT(date, tbl_spp_do.do_date) BETWEEN @StartDate AND @EndDate
+                        ORDER BY tbl_spp_do.do_no ASC";
+
+                // Command for executing the query
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+                // Adapter to handle the data from the database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                // Open database connection
+                conn.Open();
+                // Fill data into the DataTable
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors that occur
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Ensure the connection is closed
+                conn.Close();
+            }
+            return dt;
+        }
+
+
+
+
+
+
         public DataTable ActiveDOWithInfoSelect()
         {
             //static methodd to connect database

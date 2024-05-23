@@ -4935,6 +4935,12 @@ namespace FactoryManagementSoftware.Module
             return Convert.ToDateTime(dt.Rows[0][dalTrfHist.TrfDate].ToString()).Date;
         }
 
+        public DateTime GetTransferDate(string trfID,DataTable dt)
+        {
+            return Convert.ToDateTime(dt.Rows[0][dalTrfHist.TrfDate].ToString()).Date;
+
+        }
+
         public float GetZeroCostPendingOrder(DataTable dt,string itemCode)
         {
             string statusSearch = "PENDING";
