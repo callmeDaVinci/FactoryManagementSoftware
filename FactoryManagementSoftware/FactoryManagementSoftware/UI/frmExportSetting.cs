@@ -19,7 +19,36 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             PDF_TYPE = true;
             EXCEL_TYPE= false;
+
+            ShowDODate(true);
         }
+
+        public frmExportSetting(bool InvoiceMode)
+        {
+            InitializeComponent();
+            PDF_TYPE = !InvoiceMode;
+            EXCEL_TYPE = InvoiceMode;
+
+            cbPDF.Checked = !InvoiceMode;
+            cbExcel.Checked = InvoiceMode;
+
+            cbSaveInSingleFIle.Checked = !InvoiceMode;
+            cbSplitByDocumentNo.Checked = InvoiceMode;
+
+
+
+            //cbPDF.Enabled = !InvoiceMode;
+            //cbExcel.Enabled = !InvoiceMode;
+
+            //cbSplitByDocumentNo.Enabled = !InvoiceMode;
+            //cbSaveInSingleFIle.Enabled = !InvoiceMode;
+
+            SBB_INVOICE_MODE = InvoiceMode;
+            ShowDODate(!InvoiceMode);
+        }
+
+
+        private bool SBB_INVOICE_MODE = false;
 
         static public bool settingApplied = false;
         static public DateTime DODate;
@@ -34,6 +63,27 @@ namespace FactoryManagementSoftware.UI
         static public bool EXCEL_TYPE = false;
         static public bool PDF_TYPE = true;
         Text text = new Text();
+
+        private void ShowDODate(bool show)
+        {
+            dtpDODate.Visible = show;
+            lblDODate.Visible = show;
+
+            if (show)
+            {
+                tlpExportSettings.RowStyles[0] = new RowStyle(SizeType.Absolute, 30f);
+                tlpExportSettings.RowStyles[1] = new RowStyle(SizeType.Absolute, 50f);
+            }
+            else
+            {
+
+                tlpExportSettings.RowStyles[0] = new RowStyle(SizeType.Absolute, 0f);
+                tlpExportSettings.RowStyles[1] = new RowStyle(SizeType.Absolute, 0f);
+            }
+
+           
+        }
+
 
         private void frmExportSetting_Load(object sender, EventArgs e)
         {
@@ -52,7 +102,7 @@ namespace FactoryManagementSoftware.UI
 
             EXCEL_TYPE = cbExcel.Checked;
             PDF_TYPE = !cbExcel.Checked;
-            allInOne = cbSeparate.Checked;
+            allInOne = cbSplitByDocumentNo.Checked;
             openFileAfterExport = cbOpenFile.Checked;
             printFileAfterExport = cbPrintFile.Checked;
             printPreview = cbPrintPreview.Checked;
@@ -119,25 +169,25 @@ namespace FactoryManagementSoftware.UI
 
         private void cbSeparate_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbSeparate.Checked)
+            if(cbSplitByDocumentNo.Checked)
             {
-                cbAllInOne.Checked = false;
+                cbSaveInSingleFIle.Checked = false;
             }
             else
             {
-                cbAllInOne.Checked = true;
+                cbSaveInSingleFIle.Checked = true;
             }
         }
 
         private void cbAllInOne_CheckedChanged(object sender, EventArgs e)
         {
-            if (cbAllInOne.Checked)
+            if (cbSaveInSingleFIle.Checked)
             {
-                cbSeparate.Checked = false;
+                cbSplitByDocumentNo.Checked = false;
             }
             else
             {
-                cbSeparate.Checked = true;
+                cbSplitByDocumentNo.Checked = true;
             }
         }
 
@@ -180,33 +230,33 @@ namespace FactoryManagementSoftware.UI
 
                 if (cbExcel.Checked)
                 {
-                    //password
-                    frmVerification frm = new frmVerification(text.PW_Level_1)
-                    {
-                        StartPosition = FormStartPosition.CenterScreen
-                    };
+                    ////password
+                    //frmVerification frm = new frmVerification(text.PW_Level_1)
+                    //{
+                    //    StartPosition = FormStartPosition.CenterScreen
+                    //};
 
 
-                    frm.ShowDialog();
+                    //frm.ShowDialog();
 
-                    if (!frmVerification.PASSWORD_MATCHED)
-                    {
-                        cbExcel.Checked = false;
-                    }
+                    //if (!frmVerification.PASSWORD_MATCHED)
+                    //{
+                    //    cbExcel.Checked = false;
+                    //}
                 }
 
                 cbPDF.Checked = !cbExcel.Checked;
 
-                cbSeparate.Checked = cbExcel.Checked;
-                cbAllInOne.Checked = false;
+                cbSplitByDocumentNo.Checked = cbExcel.Checked;
+                cbSaveInSingleFIle.Checked = !cbExcel.Checked;
 
                 EXCEL_TYPE = cbExcel.Checked;
                 PDF_TYPE= !cbExcel.Checked;
 
                 FORMAT_TYPE_UPDATING = false;
 
-                cbSeparate.Visible= cbExcel.Checked;
-                cbAllInOne.Visible= cbExcel.Checked;
+                //cbSplitByDocumentNo.Visible= cbExcel.Checked;
+                //cbSaveInSingleFIle.Visible= cbExcel.Checked;
             }
         }
 
@@ -219,31 +269,31 @@ namespace FactoryManagementSoftware.UI
 
                 if (cbExcel.Checked)
                 {
-                    //password
-                    frmVerification frm = new frmVerification(text.PW_Level_1)
-                    {
-                        StartPosition = FormStartPosition.CenterScreen
-                    };
+                    ////password
+                    //frmVerification frm = new frmVerification(text.PW_Level_1)
+                    //{
+                    //    StartPosition = FormStartPosition.CenterScreen
+                    //};
 
 
-                    frm.ShowDialog();
+                    //frm.ShowDialog();
 
-                    if (!frmVerification.PASSWORD_MATCHED)
-                    {
-                        cbExcel.Checked = false;
-                        cbPDF.Checked = true;
-                    }
+                    //if (!frmVerification.PASSWORD_MATCHED)
+                    //{
+                    //    cbExcel.Checked = false;
+                    //    cbPDF.Checked = true;
+                    //}
                 }
 
 
                 EXCEL_TYPE = cbExcel.Checked;
                 PDF_TYPE = !cbExcel.Checked;
 
-                cbSeparate.Checked = cbExcel.Checked;
-                cbAllInOne.Checked = false;
+                cbSplitByDocumentNo.Checked = cbExcel.Checked;
+                cbSaveInSingleFIle.Checked = !cbExcel.Checked;
 
-                cbSeparate.Visible = cbExcel.Checked;
-                cbAllInOne.Visible = cbExcel.Checked;
+                //cbSplitByDocumentNo.Visible = cbExcel.Checked;
+                //cbSaveInSingleFIle.Visible = cbExcel.Checked;
 
                 FORMAT_TYPE_UPDATING = false;
             }

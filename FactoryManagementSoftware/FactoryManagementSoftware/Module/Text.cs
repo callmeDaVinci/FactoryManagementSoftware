@@ -76,6 +76,7 @@ namespace FactoryManagementSoftware.Module
 
         public string Company_Name_CN { get; } = "安全塑膠有限公司";
         public string Company_Name_EN { get; } = "SAFETY PLASTICS SDN. BHD.";
+        public string Company_SST_Reg_No { get; } = "SST Reg. No. : W10-1808-21023454";
         public string Company_RegistrationNo { get; } = "No. Syarikat: 198901011676 (188981-U)";
 
         public string Company_OUG_AddressAndContact { get; } =
@@ -87,6 +88,7 @@ namespace FactoryManagementSoftware.Module
 (Tel) 016 - 282 8195 (Email) sales@safetyplastics.com.my";
 
         public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
+        public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05A (A) (31/05/24)";
         public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
 
         #endregion
