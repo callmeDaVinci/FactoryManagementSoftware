@@ -26,22 +26,22 @@ namespace FactoryManagementSoftware.UI
         public frmExportSetting(bool InvoiceMode)
         {
             InitializeComponent();
-            PDF_TYPE = !InvoiceMode;
-            EXCEL_TYPE = InvoiceMode;
+            PDF_TYPE = InvoiceMode;
+            EXCEL_TYPE = !InvoiceMode;
 
-            cbPDF.Checked = !InvoiceMode;
-            cbExcel.Checked = InvoiceMode;
+            cbPDF.Checked = InvoiceMode;
+            cbExcel.Checked = !InvoiceMode;
 
-            cbSaveInSingleFIle.Checked = !InvoiceMode;
-            cbSplitByDocumentNo.Checked = InvoiceMode;
+            cbSaveInSingleFIle.Checked = InvoiceMode;
+            cbSplitByDocumentNo.Checked = !InvoiceMode;
 
 
 
-            //cbPDF.Enabled = !InvoiceMode;
-            //cbExcel.Enabled = !InvoiceMode;
+            cbPDF.Enabled = !InvoiceMode;
+            cbExcel.Enabled = !InvoiceMode;
 
-            //cbSplitByDocumentNo.Enabled = !InvoiceMode;
-            //cbSaveInSingleFIle.Enabled = !InvoiceMode;
+            cbSplitByDocumentNo.Enabled = !InvoiceMode;
+            cbSaveInSingleFIle.Enabled = !InvoiceMode;
 
             SBB_INVOICE_MODE = InvoiceMode;
             ShowDODate(!InvoiceMode);
@@ -53,7 +53,7 @@ namespace FactoryManagementSoftware.UI
         static public bool settingApplied = false;
         static public DateTime DODate;
 
-        static public bool allInOne = false;
+        static public bool SINGLE_FILE_ONLY = false;
 
         static public bool newFormat = true;
 
@@ -102,7 +102,7 @@ namespace FactoryManagementSoftware.UI
 
             EXCEL_TYPE = cbExcel.Checked;
             PDF_TYPE = !cbExcel.Checked;
-            allInOne = cbSplitByDocumentNo.Checked;
+            SINGLE_FILE_ONLY = !cbSplitByDocumentNo.Checked;
             openFileAfterExport = cbOpenFile.Checked;
             printFileAfterExport = cbPrintFile.Checked;
             printPreview = cbPrintPreview.Checked;
