@@ -16,6 +16,7 @@ using System.Reflection;
 using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
+using Spire.Pdf.Exporting.XPS.Schema.Mc;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -3656,7 +3657,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat = xlWorkSheet.get_Range(areaBillName).Cells;
             DOFormat.Merge();
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
-            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
             DOFormat.Font.Size = 9;
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
@@ -3665,7 +3666,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat = xlWorkSheet.get_Range(areaDeliveryName).Cells;
             DOFormat.Merge();
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
-            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
             DOFormat.Font.Size = 9;
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Bold = true;
@@ -3934,7 +3935,7 @@ namespace FactoryManagementSoftware.UI
                 area = DescriptionColStart + (itemRowOffset + i).ToString() + DescriptionColEnd + (itemRowOffset + i).ToString();
                 DOFormat = xlWorkSheet.get_Range(area).Cells;
                 DOFormat.Merge();
-                DOFormat.Font.Size = 8;
+                DOFormat.Font.Size = MultiPo? 8: 9;
                 //DOFormat.Value = "25 MM EQUAL ELBOW";
 
                 area = qtyColStart + (itemRowOffset + i).ToString() + qtyColEnd + (itemRowOffset + i).ToString();
@@ -3983,15 +3984,14 @@ namespace FactoryManagementSoftware.UI
                 }
 
 
-
             }
            
 
             DOFormat = xlWorkSheet.get_Range(rowItemListLastRow).Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
-            DOFormat.RowHeight = 26.40;
-            DOFormat.Font.Size = 9;
-            DOFormat.Font.Name = "Cambria";
+            //DOFormat.RowHeight = 26.40;
+            //DOFormat.Font.Size = 9;
+            //DOFormat.Font.Name = "Cambria";
 
             #endregion
 
@@ -4020,8 +4020,10 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            DOFormat.Font.Size = 9;
+            DOFormat.Font.Size = 8;
             DOFormat.Font.Name = "Cambria";
+            DOFormat.WrapText = true;
+
 
             DOFormat = xlWorkSheet.get_Range(areaTotalAmount).Cells;
             DOFormat.Merge();
@@ -4117,60 +4119,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = "Cambria";
             DOFormat.Font.Italic = true;
 
-            //DOFormat.Font.Bold = true;
-            //DOFormat = xlWorkSheet.get_Range(areaSafetyCompanyName).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "SAFETY PLASTICS SDN. BHD.";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            //DOFormat.Font.Size = 12;
-            //DOFormat.Font.Name = "Cambria";
-            //DOFormat.Font.Bold = true;
-
-            //DOFormat = xlWorkSheet.get_Range(areaIssuedBy).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "Issued By";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
-            //DOFormat.Font.Size = 10;
-            //DOFormat.Font.Name = "Cambria";
-            //DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
-
-            //DOFormat = xlWorkSheet.get_Range(areaPreparedBy).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "Prepared By";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
-            //DOFormat.Font.Size = 10;
-            //DOFormat.Font.Name = "Cambria";
-            //DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
-
-            //DOFormat = xlWorkSheet.get_Range(areaDriver).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "Driver";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
-            //DOFormat.Font.Size = 10;
-            //DOFormat.Font.Name = "Cambria";
-            //DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
-
-
-            //DOFormat = xlWorkSheet.get_Range(areaGoodsCheckedandReceivedBy).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "Goods checked and received by";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            //DOFormat.Font.Size = 12;
-            //DOFormat.Font.Name = "Cambria";
-
-            //DOFormat = xlWorkSheet.get_Range(areaCustomerChopandSign).Cells;
-            //DOFormat.Merge();
-            //DOFormat.Value = "Customer's Chop & Signature";
-            //DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
-            //DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
-            //DOFormat.Font.Size = 10;
-            //DOFormat.Font.Name = "Cambria";
-            //DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+         
 
             #endregion
 
@@ -6479,13 +6428,15 @@ namespace FactoryManagementSoftware.UI
 
                 Cursor = Cursors.Arrow; // change cursor to normal type
 
-                foreach (DataRow row in dt_DOList.Rows)
+                foreach (DataRow rowDOList in dt_DOList.Rows)
                 {
-                    bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+                    bool selected = bool.TryParse(rowDOList[header_Selected].ToString(), out selected) ? selected : false;
 
+                    //export selected DO only
                     if (selected)
                     {
-                        string deliveredDate = row[header_DeliveredDate].ToString();
+                        #region getting basic info
+                        string deliveredDate = rowDOList[header_DeliveredDate].ToString();
 
                         DODate = DateTime.TryParse(deliveredDate, out DateTime test) ? test : frmExportSetting.DODate;
                         DODate_String = DODate.ToString("dd/MM/yyyy");
@@ -6493,17 +6444,20 @@ namespace FactoryManagementSoftware.UI
                         SaveFileDialog sfd = new SaveFileDialog();
                         sfd.InitialDirectory = path;
 
-                        string customerName = row[header_Customer].ToString();
-                        string POTableCode = row[header_POCode].ToString();
-                        string PONo = row[header_PONo].ToString();
-                        string DONo = row[header_DONo].ToString();
-                        string DONoString = row[header_DONoString].ToString();
+                        string customerName = rowDOList[header_Customer].ToString();
+                        string POTableCode = rowDOList[header_POCode].ToString();
+                        string PONo = rowDOList[header_PONo].ToString();
+                        string DONo = rowDOList[header_DONo].ToString();
+                        string DONoString = rowDOList[header_DONoString].ToString();
 
                         sfd.Filter = "Excel Documents (*.xls)|*.xls";
                         sfd.FileName = "INV_"+ DONoString + ".xls";
+                        #endregion
 
                         if (sfd.ShowDialog() == DialogResult.OK)
                         {
+                            #region Excel Settings
+
                             frmLoading.ShowLoadingScreen();
                             tool.historyRecord(text.Excel, text.getExcelString(sfd.FileName), DateTime.Now, MainDashboard.USER_ID);
 
@@ -6576,8 +6530,9 @@ namespace FactoryManagementSoftware.UI
                             InsertToSheet(xlWorkSheet, "t12:w12", DONoString);
 
                             //to do: check if more than one PO
-                            InsertToSheet(xlWorkSheet, areaPONoData, PONo);
-                            InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
+                            InsertToSheet(xlWorkSheet, areaPONoData, PONo == Text_MultiPOCode ? "REFER BELOW" : PONo);
+                            //InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
+
                             InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
 
 
@@ -6610,179 +6565,76 @@ namespace FactoryManagementSoftware.UI
 
                             decimal totalAmount = 0;
 
-                            foreach (DataRow row2 in DB_DO_INFO.Rows)
+                            #endregion
+
+                            foreach (DataRow rowDBInfo in DB_DO_INFO.Rows)
                             {
-                                if (DONo == row2[dalSPP.DONo].ToString() && row2[dalSPP.DONo] != DBNull.Value)
+                                if (DONo == rowDBInfo[dalSPP.DONo].ToString() && rowDBInfo[dalSPP.DONo] != DBNull.Value)
                                 {
-                                    int deliveryQty = row2[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(row2[dalSPP.ToDeliveryQty].ToString());
-
-                                    //string shippingTransporter = 
-                                    if (!string.IsNullOrEmpty(row2[dalSPP.ShippingTransporter].ToString()))
-                                    {
-                                        transporterName = row2[dalSPP.ShippingTransporter].ToString();
-                                    }
-
-                                    string currentPONo = row2[dalSPP.PONo].ToString();
-
-                                    bool useBillingAddress = bool.TryParse(row2[dalSPP.DefaultShippingAddress].ToString(), out useBillingAddress) ? useBillingAddress : false;
-                                    bool useOwnDO = bool.TryParse(row2[dalSPP.CustOwnDO].ToString(), out useOwnDO) ? useOwnDO : false;
-
-                                    ///////////     ADD BILLING ADDRESS HERE   //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-                                    billingName = row2[dalSPP.FullName].ToString();
-                                    billingAddress_1 = row2[dalSPP.Address1 + "1"].ToString();
-                                    billingAddress_2 = row2[dalSPP.Address2 + "1"].ToString();
-                                    billingAddress_3 = row2[dalSPP.Address3 + "1"].ToString();
-
-                                    billingPostalCode = row2[dalSPP.AddressPostalCode + "1"].ToString();
-                                    billingCity = row2[dalSPP.AddressCity + "1"].ToString();
-                                    billingState = row2[dalSPP.AddressState + "1"].ToString();
-                                    billingContact = row2[dalSPP.Phone1 + "1"].ToString();
-
-
-                                    if (useBillingAddress)
-                                    {
-                                        shippingName = billingName;
-                                        shippingAddress_1 = billingAddress_1;
-                                        shippingAddress_2 = billingAddress_2;
-                                        shippingAddress_3 = billingAddress_3;
-
-                                        shippingPostalCode = billingPostalCode;
-                                        shippingCity = billingCity;
-                                        shippingState = billingState;
-                                        shippingContact = billingContact;
-                                    }
-                                    else
-                                    {
-                                        shippingName = row2[dalSPP.ShippingFullName].ToString();
-                                        shippingAddress_1 = row2[dalSPP.Address1].ToString();
-                                        shippingAddress_2 = row2[dalSPP.Address2].ToString();
-                                        shippingAddress_3 = row2[dalSPP.Address3].ToString();
-
-                                        shippingPostalCode = row2[dalSPP.AddressPostalCode].ToString();
-                                        shippingCity = row2[dalSPP.AddressCity].ToString();
-                                        shippingState = row2[dalSPP.AddressState].ToString();
-                                        shippingContact = row2[dalSPP.Phone1].ToString();
-                                    }
-
-
+                                    int deliveryQty = rowDBInfo[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(rowDBInfo[dalSPP.ToDeliveryQty].ToString());
+                                  
                                     if (deliveryQty > 0)
                                     {
-                                        string type = row2[dalSPP.TypeName].ToString();
-                                        int stdPacking = int.TryParse(row2[dalSPP.QtyPerBag].ToString(), out stdPacking) ? stdPacking : 0;
-                                        int bag = deliveryQty / stdPacking;
-                                        string withS = "S";
+                                        #region Billing/Shipping Address
 
-                                        if (bag <= 1)
+                                        bool useBillingAddress = bool.TryParse(rowDBInfo[dalSPP.DefaultShippingAddress].ToString(), out useBillingAddress) ? useBillingAddress : false;
+
+                                        billingName = rowDBInfo[dalSPP.FullName].ToString();
+                                        billingAddress_1 = rowDBInfo[dalSPP.Address1 + "1"].ToString();
+                                        billingAddress_2 = rowDBInfo[dalSPP.Address2 + "1"].ToString();
+                                        billingAddress_3 = rowDBInfo[dalSPP.Address3 + "1"].ToString();
+
+                                        billingPostalCode = rowDBInfo[dalSPP.AddressPostalCode + "1"].ToString();
+                                        billingCity = rowDBInfo[dalSPP.AddressCity + "1"].ToString();
+                                        billingState = rowDBInfo[dalSPP.AddressState + "1"].ToString();
+                                        billingContact = rowDBInfo[dalSPP.Phone1 + "1"].ToString();
+
+
+                                        if (useBillingAddress)
                                         {
-                                            withS = "";
-                                        }
+                                            shippingName = billingName;
+                                            shippingAddress_1 = billingAddress_1;
+                                            shippingAddress_2 = billingAddress_2;
+                                            shippingAddress_3 = billingAddress_3;
 
-                                        //if(type == text.Type_PolyORing)
-                                        //{
-                                        //    bag = 0;
-                                        //}
-
-                                        string size = row2[dalSPP.SizeNumerator].ToString();
-                                        string unit = row2[dalSPP.SizeUnit].ToString().ToUpper();
-                                        string itemCode = row2[dalSPP.ItemCode].ToString();
-
-                                        string remark = "";
-
-                                        if (itemCode.Contains("CFPOR"))
-                                        {
-                                            totalOringBag += bag;
-
-                                            remark = bag + " PACKET" + withS;
-
+                                            shippingPostalCode = billingPostalCode;
+                                            shippingCity = billingCity;
+                                            shippingState = billingState;
+                                            shippingContact = billingContact;
                                         }
                                         else
                                         {
-                                            remark = bag + " BAG" + withS;
+                                            shippingName = rowDBInfo[dalSPP.ShippingFullName].ToString();
+                                            shippingAddress_1 = rowDBInfo[dalSPP.Address1].ToString();
+                                            shippingAddress_2 = rowDBInfo[dalSPP.Address2].ToString();
+                                            shippingAddress_3 = rowDBInfo[dalSPP.Address3].ToString();
 
+                                            shippingPostalCode = rowDBInfo[dalSPP.AddressPostalCode].ToString();
+                                            shippingCity = rowDBInfo[dalSPP.AddressCity].ToString();
+                                            shippingState = rowDBInfo[dalSPP.AddressState].ToString();
+                                            shippingContact = rowDBInfo[dalSPP.Phone1].ToString();
                                         }
-                                        int balancePcs = deliveryQty % stdPacking;
+                                        #endregion
 
-                                        if (balancePcs > 0)
-                                        {
-                                            totalBalPcs += balancePcs;
-                                            remark += " + " + balancePcs + " PCS";
-                                        }
+                                        #region Getting item Info/Size
 
-                                        if (itemCode.Contains("SP323"))
-                                        {
-                                            totalBalPcs -= balancePcs;
+                                        string type = rowDBInfo[dalSPP.TypeName].ToString();
 
-                                            if (bag > 1)
-                                            {
-                                                remark = bag + " BOXES";
-                                            }
-                                            else if (bag == 1)
-                                            {
-                                                remark = bag + " BOX";
-                                            }
+                                        string size = rowDBInfo[dalSPP.SizeNumerator].ToString();
+                                        string itemCode = rowDBInfo[dalSPP.ItemCode].ToString();
 
-                                            totalBag -= bag;
-                                            totalBox += bag;
-
-                                            if (balancePcs > 0)
-                                            {
-                                                int pktQty = balancePcs / 40;
-
-                                                totalSprinklerPkt += pktQty;
-
-                                                string pktUnit = " PKT";
-
-                                                if (pktQty > 1)
-                                                {
-                                                    pktUnit += "S";
-                                                }
-
-                                                if (remark != "")
-                                                {
-                                                    remark += " + " + pktQty + pktUnit;
-
-                                                }
-                                                else
-                                                {
-                                                    remark += pktQty + pktUnit;
-
-                                                }
-
-                                                if (balancePcs % 40 > 0)
-                                                {
-                                                    if (remark != "")
-                                                    {
-                                                        remark += " + " + balancePcs % 40 + " PCS";
-
-                                                    }
-                                                    else
-                                                    {
-                                                        remark += balancePcs % 40 + " PCS";
-
-                                                    }
-
-                                                    totalBalPcs += balancePcs % 40;
-
-                                                }
-                                            }
-
-                                        }
-
-
-                                        #region Getting item Size
-
-                                        int numerator = int.TryParse(row2[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                                        int denominator = int.TryParse(row2[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                                        string sizeUnit = row2[dalSPP.SizeUnit].ToString().ToUpper();
+                                        int numerator = int.TryParse(rowDBInfo[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                                        int denominator = int.TryParse(rowDBInfo[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                                        string sizeUnit = rowDBInfo[dalSPP.SizeUnit].ToString().ToUpper();
 
                                         if (sizeUnit.ToUpper() == "IN")
                                         {
                                             sizeUnit = "\"";
                                         }
 
-                                        int numerator_2 = int.TryParse(row2[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
-                                        int denominator_2 = int.TryParse(row2[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
-                                        string sizeUnit_2 = row2[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+                                        int numerator_2 = int.TryParse(rowDBInfo[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                                        int denominator_2 = int.TryParse(rowDBInfo[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                                        string sizeUnit_2 = rowDBInfo[dalSPP.SizeUnit + "1"].ToString().ToUpper();
 
                                         if (sizeUnit_2.ToUpper() == "IN")
                                         {
@@ -6869,27 +6721,42 @@ namespace FactoryManagementSoftware.UI
 
                                         #endregion
 
-                                        totalBag += bag;
+                                        #region Checking PO No
 
-                                        if (previousPO == "")
+                                        string currentPONo = rowDBInfo[dalSPP.PONo].ToString();
+                                       
+                                        if (previousPO != currentPONo)
                                         {
+                                            if (previousPO != "")
+                                            {
+                                                //rowNo++;
+                                            }
+
                                             previousPO = currentPONo;
                                         }
-                                        else if (previousPO != currentPONo)
-                                        {
-                                            previousPO = currentPONo;
 
-                                            rowNo++;
-                                            //if (rowNo + 1 < maxRow)
-                                            //{
+                                        #endregion
 
-                                            //}
-                                        }
-
-                                        //check current row vs max row
+                                        //check if item list full 
                                         if (rowNo + 1 > maxRow)
                                         {
+                                            #region clear previous page total amount and notes
+
+                                            Range DOFormat = xlWorkSheet.get_Range("a38:w45").Cells;
+                                            ExcelMergeandAlign(xlWorkSheet, "a38:w45", alignLeft, XlVAlign.xlVAlignTop);
+                                            DOFormat.Merge();
+                                            DOFormat.Value = "\nNext Page";
+                                            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                                            DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
+                                            DOFormat.Font.Size = 10;
+                                            DOFormat.Font.Name = "Cambria";
+                                            DOFormat.Font.Bold = false;
+                                            DOFormat.Font.Italic = true;
+
+                                            #endregion
+
                                             rowNo = 1;
+
                                             pageNo++;
                                             //create new sheet
                                             xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
@@ -6904,27 +6771,7 @@ namespace FactoryManagementSoftware.UI
                                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
                                             InsertToSheet(xlWorkSheet, "t12:w12", DONoString);
 
-                                            if (PONo != Text_MultiPOCode)
-                                            {
-                                                if (useOwnDO)
-                                                {
-                                                    InsertToSheet(xlWorkSheet, areaPONoData, "*" + PONo);
-                                                    //InsertToSheet(xlWorkSheet, areaOwnDORemark, text.DO_CustOwnDO);
-
-                                                    //RemarkInDO = RemarkInDO + (string.IsNullOrEmpty(RemarkInDO) ? "" : "; ") + text.DO_CustOwnDO;
-                                                }
-                                                else
-                                                {
-                                                    InsertToSheet(xlWorkSheet, areaPONoData, PONo);
-
-                                                }
-
-                                            }
-                                            else
-                                            {
-                                                InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
-                                            }
-
+                                            InsertToSheet(xlWorkSheet, areaPONoData, PONo == Text_MultiPOCode ? "REFER BELOW" : PONo);
                                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
 
                                             InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
@@ -7022,72 +6869,65 @@ namespace FactoryManagementSoftware.UI
                                         {
                                             rowNo++;
                                         }
-                                        //insert data
 
+                                        #region Data Insert
+
+                                        //index
                                         string RowToInsert = itemListColStart + (itemRowOffset + rowNo).ToString() + itemListColEnd + (itemRowOffset + rowNo).ToString();
-
-                                        //RowBorder(xlWorkSheet, RowToInsert);
-
                                         RowToInsert = indexColStart + (itemRowOffset + rowNo).ToString() + indexColEnd + (itemRowOffset + rowNo).ToString();
                                         InsertToSheet(xlWorkSheet, RowToInsert, indexNo);
                                         indexNo++;
 
-
-                                        string type_ShortName = GetTypeShortName(type);
-                                        string newItemCode = text.SBB_BrandName + type_ShortName + " " + sizeString_1 + sizeString_2;
-                                        string ProductDescription = newItemCode + "-" + sizeString_WithUnit + " " + type;
-                                        RowToInsert = DescriptionColStart + (itemRowOffset + rowNo).ToString() + DescriptionColEnd + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, ProductDescription);
-
-
-                                        RowToInsert = qtyColStart + (itemRowOffset + rowNo).ToString() + qtyColEnd + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, deliveryQty);
-
-                                        RowToInsert = uomColStart + (itemRowOffset + rowNo).ToString() + uomColEnd + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, "PCS");
-
-
-                                        decimal unitPrice = decimal.TryParse(row2[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
-                                        decimal DiscRate = decimal.TryParse(row2[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
-                                        decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
-
-                                        RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N2"));
-
-                                        RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString());
-
-                                        RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
-
-                                        totalAmount += Math.Round(netAmount, 2);
-                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertToWords(totalAmount));
-                                        InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
-
+                                        //po data
                                         if (PONo == Text_MultiPOCode)
                                         {
                                             RowToInsert = poColStart + (itemRowOffset + rowNo).ToString() + poColEnd + (itemRowOffset + rowNo).ToString();
-
-                                            if (useOwnDO)
-                                            {
-                                                InsertToSheet(xlWorkSheet, RowToInsert, "*" + currentPONo);
-                                                //InsertToSheet(xlWorkSheet, areaRemarkInDO, text.DO_CustOwnDO);
-                                               
-                                            }
-                                            else
-                                            {
-                                                InsertToSheet(xlWorkSheet, RowToInsert, currentPONo);
-
-                                            }
-
+                                            InsertToSheet(xlWorkSheet, RowToInsert, currentPONo);
                                         }
 
+
+                                        //product decription
+                                        string type_ShortName = GetTypeShortName(type);
+                                        string newItemCode = text.SBB_BrandName + type_ShortName + " " + sizeString_1 + sizeString_2;
+                                        string ProductDescription = "("+newItemCode + ") " + sizeString_WithUnit + " " + type;
+                                        RowToInsert = DescriptionColStart + (itemRowOffset + rowNo).ToString() + DescriptionColEnd + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, ProductDescription);
+
+                                        //delivery qty
+                                        RowToInsert = qtyColStart + (itemRowOffset + rowNo).ToString() + qtyColEnd + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, deliveryQty);
+
+                                        //unit
+                                        RowToInsert = uomColStart + (itemRowOffset + rowNo).ToString() + uomColEnd + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, "PCS");
+
+                                        //unit price
+                                        decimal unitPrice = decimal.TryParse(rowDBInfo[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
+                                        RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N3"));
+
+                                        //discount rate
+                                        decimal DiscRate = decimal.TryParse(rowDBInfo[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
+                                        RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
+
+                                        //net amount
+                                        decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
+                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
+
+                                        //total amount
+                                        totalAmount += Math.Round(netAmount, 2);
+                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(totalAmount));
+                                        InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
+
+                                        #endregion
                                     }
 
                                 }
                             }
 
-                        
+                            #region insert Billing/Shipping Address
                             if (string.IsNullOrEmpty(billingAddress_3))
                             {
                                 InsertToSheet(xlWorkSheet, areaBillLine3, billingPostalCode + " " + billingCity);
@@ -7124,7 +6964,7 @@ namespace FactoryManagementSoftware.UI
                             InsertToSheet(xlWorkSheet, areaDeliveryLine2, shippingAddress_2);
 
                             InsertToSheet(xlWorkSheet, areaDeliveryTel, shippingContact);
-
+                            #endregion
 
                             tool.historyRecord(text.DO_Exported, text.GetDOExportDetail(openFile, printFile, printPreview), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(DONo));
 
@@ -7198,7 +7038,7 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private string ConvertToWords(decimal amount)
+        private string ConvertAmountToWords(decimal amount)
         {
             string[] unitsMap = { "ZERO", "ONE", "TWO", "THREE", "FOUR", "FIVE", "SIX", "SEVEN", "EIGHT", "NINE", "TEN", "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN", "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN", "NINETEEN" };
             string[] tensMap = { "ZERO", "TEN", "TWENTY", "THIRTY", "FORTY", "FIFTY", "SIXTY", "SEVENTY", "EIGHTY", "NINETY" };
@@ -7208,27 +7048,35 @@ namespace FactoryManagementSoftware.UI
                 if (number == 0)
                     return "";
                 if (number < 20)
-                    return unitsMap[number] + " ";
+                    return unitsMap[number];
                 if (number < 100)
-                    return tensMap[number / 10] + " " + NumberToWords(number % 10);
+                    return tensMap[number / 10] + (number % 10 > 0 ? " " + NumberToWords(number % 10) : "");
                 if (number < 1000)
-                    return unitsMap[number / 100] + " HUNDRED " + NumberToWords(number % 100);
+                    return unitsMap[number / 100] + " HUNDRED" + (number % 100 > 0 ? " " + NumberToWords(number % 100) : "");
                 if (number < 1000000)
-                    return NumberToWords(number / 1000) + "THOUSAND " + NumberToWords(number % 1000);
+                    return NumberToWords(number / 1000) + " THOUSAND " + (number % 1000 > 0 ? " " + NumberToWords(number % 1000) : "");
                 if (number < 1000000000)
-                    return NumberToWords(number / 1000000) + "MILLION " + NumberToWords(number % 1000000);
-                return NumberToWords(number / 1000000000) + "BILLION " + NumberToWords(number % 1000000000);
+                    return NumberToWords(number / 1000000) + " MILLION " + (number % 1000000 > 0 ? " " + NumberToWords(number % 1000000) : "");
+                return NumberToWords(number / 1000000000) + " BILLION " + (number % 1000000000 > 0 ? " " + NumberToWords(number % 1000000000) : "");
             }
 
             if (amount == 0)
-                return "MALAYSIAN RINGGIT ZERO ONLY";
+                return "RINGGIT MALAYSIA: ZERO ONLY";
 
             int ringgit = (int)amount;
-            int sen = (int)((amount - ringgit) * 100);
+            int cents = (int)((amount - ringgit) * 100);
 
-            string words = "MALAYSIAN RINGGIT " + NumberToWords(ringgit).Trim() + " ONLY";
-            return words;
+            string ringgitWords = NumberToWords(ringgit).Trim();
+            string centsWords = cents > 0 ? " AND CENTS " + NumberToWords(cents).Trim() : "";
+
+            return "RINGGIT MALAYSIA: " + ringgitWords + centsWords + " ONLY";
         }
+
+
+
+
+
+
 
 
 

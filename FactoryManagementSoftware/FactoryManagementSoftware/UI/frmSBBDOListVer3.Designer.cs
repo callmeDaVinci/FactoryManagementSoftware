@@ -741,9 +741,9 @@
             // tlpList
             // 
             this.tlpList.ColumnCount = 3;
-            this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 55F));
             this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tlpList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.tlpList.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tlpList.Controls.Add(this.tableLayoutPanel3, 2, 0);
             this.tlpList.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -769,7 +769,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(646, 357);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(710, 357);
             this.tableLayoutPanel1.TabIndex = 156;
             // 
             // tableLayoutPanel9
@@ -786,7 +786,7 @@
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(646, 20);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(710, 20);
             this.tableLayoutPanel9.TabIndex = 174;
             // 
             // lblSelectAll
@@ -797,7 +797,7 @@
             this.lblSelectAll.Font = new System.Drawing.Font("Segoe UI Semibold", 6F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSelectAll.ForeColor = System.Drawing.Color.Blue;
-            this.lblSelectAll.Location = new System.Drawing.Point(584, 8);
+            this.lblSelectAll.Location = new System.Drawing.Point(648, 8);
             this.lblSelectAll.Margin = new System.Windows.Forms.Padding(0, 0, 5, 0);
             this.lblSelectAll.Name = "lblSelectAll";
             this.lblSelectAll.Size = new System.Drawing.Size(57, 12);
@@ -835,7 +835,7 @@
             this.dgvDOList.RowHeadersWidth = 51;
             this.dgvDOList.RowTemplate.Height = 50;
             this.dgvDOList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOList.Size = new System.Drawing.Size(636, 277);
+            this.dgvDOList.Size = new System.Drawing.Size(700, 277);
             this.dgvDOList.TabIndex = 156;
             this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
             this.dgvDOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellDoubleClick);
@@ -859,7 +859,7 @@
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(646, 50);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(710, 50);
             this.tableLayoutPanel4.TabIndex = 167;
             // 
             // btnCancel
@@ -878,7 +878,7 @@
             this.btnCancel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(371, 5);
+            this.btnCancel.Location = new System.Drawing.Point(435, 5);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(5);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -911,7 +911,7 @@
             this.btnExport.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnExport.Image = null;
             this.btnExport.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnExport.Location = new System.Drawing.Point(511, 5);
+            this.btnExport.Location = new System.Drawing.Point(575, 5);
             this.btnExport.Margin = new System.Windows.Forms.Padding(5);
             this.btnExport.Name = "btnExport";
             this.btnExport.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -946,14 +946,14 @@
             this.tableLayoutPanel3.Controls.Add(this.dgvDOItemList, 0, 2);
             this.tableLayoutPanel3.Controls.Add(this.tableLayoutPanel5, 0, 1);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(656, 0);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(720, 0);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 3;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(646, 357);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(582, 357);
             this.tableLayoutPanel3.TabIndex = 157;
             // 
             // dgvDOItemList
@@ -992,7 +992,7 @@
             this.dgvDOItemList.RowHeadersWidth = 51;
             this.dgvDOItemList.RowTemplate.Height = 50;
             this.dgvDOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOItemList.Size = new System.Drawing.Size(636, 277);
+            this.dgvDOItemList.Size = new System.Drawing.Size(572, 277);
             this.dgvDOItemList.TabIndex = 155;
             this.dgvDOItemList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOItemList_CellContentClick);
             // 
@@ -1010,7 +1010,7 @@
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 1;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(646, 50);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(582, 50);
             this.tableLayoutPanel5.TabIndex = 156;
             // 
             // btnEdit
@@ -1029,7 +1029,7 @@
             this.btnEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.btnEdit.Image = null;
             this.btnEdit.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnEdit.Location = new System.Drawing.Point(511, 5);
+            this.btnEdit.Location = new System.Drawing.Point(447, 5);
             this.btnEdit.Margin = new System.Windows.Forms.Padding(5);
             this.btnEdit.Name = "btnEdit";
             this.btnEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
