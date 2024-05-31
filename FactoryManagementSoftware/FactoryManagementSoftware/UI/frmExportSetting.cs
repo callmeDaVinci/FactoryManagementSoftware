@@ -37,11 +37,11 @@ namespace FactoryManagementSoftware.UI
 
 
 
-            cbPDF.Enabled = !InvoiceMode;
-            cbExcel.Enabled = !InvoiceMode;
+            cbPDF.Enabled = false;
+            cbExcel.Enabled = false;
 
-            cbSplitByDocumentNo.Enabled = !InvoiceMode;
-            cbSaveInSingleFIle.Enabled = !InvoiceMode;
+            cbSplitByDocumentNo.Enabled = false;
+            cbSaveInSingleFIle.Enabled = false;
 
             SBB_INVOICE_MODE = InvoiceMode;
             ShowDODate(!InvoiceMode);

@@ -29,13 +29,13 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
-            this.gunaGroupBox1 = new Guna.UI.WinForms.GunaGroupBox();
+            this.tlpFilter = new System.Windows.Forms.TableLayoutPanel();
+            this.gbAdvanceSettings = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.cbInvoiceMode = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
@@ -48,6 +48,9 @@
             this.cbCompleted = new System.Windows.Forms.CheckBox();
             this.gunaGroupBox5 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblNextMonth = new System.Windows.Forms.Label();
+            this.lblPrevMonth = new System.Windows.Forms.Label();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
             this.lblRangeEnd = new System.Windows.Forms.Label();
             this.dtpRangeEnd = new Guna.UI.WinForms.GunaDateTimePicker();
@@ -82,19 +85,17 @@
             this.lblSubList = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblPrevMonth = new System.Windows.Forms.Label();
-            this.lblNextMonth = new System.Windows.Forms.Label();
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
-            this.tableLayoutPanel14.SuspendLayout();
-            this.gunaGroupBox1.SuspendLayout();
+            this.tlpFilter.SuspendLayout();
+            this.gbAdvanceSettings.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
             this.gunaGroupBox5.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel16.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
@@ -110,7 +111,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvDOItemList)).BeginInit();
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
-            this.tableLayoutPanel16.SuspendLayout();
             this.SuspendLayout();
             // 
             // tlpPOList
@@ -133,7 +133,7 @@
             // 
             // gbFilter
             // 
-            this.gbFilter.Controls.Add(this.tableLayoutPanel14);
+            this.gbFilter.Controls.Add(this.tlpFilter);
             this.gbFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFilter.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gbFilter.Location = new System.Drawing.Point(3, 53);
@@ -143,47 +143,48 @@
             this.gbFilter.TabStop = false;
             this.gbFilter.Text = "FILTER";
             // 
-            // tableLayoutPanel14
+            // tlpFilter
             // 
-            this.tableLayoutPanel14.ColumnCount = 7;
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel14.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Controls.Add(this.gunaGroupBox1, 3, 0);
-            this.tableLayoutPanel14.Controls.Add(this.btnFilterApply, 5, 0);
-            this.tableLayoutPanel14.Controls.Add(this.gunaGroupBox4, 0, 0);
-            this.tableLayoutPanel14.Controls.Add(this.gunaGroupBox5, 2, 0);
-            this.tableLayoutPanel14.Controls.Add(this.gunaGroupBox2, 1, 0);
-            this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 21);
-            this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel14.Name = "tableLayoutPanel14";
-            this.tableLayoutPanel14.RowCount = 1;
-            this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(1296, 220);
-            this.tableLayoutPanel14.TabIndex = 264;
+            this.tlpFilter.ColumnCount = 7;
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFilter.Controls.Add(this.gbAdvanceSettings, 3, 0);
+            this.tlpFilter.Controls.Add(this.btnFilterApply, 5, 0);
+            this.tlpFilter.Controls.Add(this.gunaGroupBox4, 0, 0);
+            this.tlpFilter.Controls.Add(this.gunaGroupBox5, 2, 0);
+            this.tlpFilter.Controls.Add(this.gunaGroupBox2, 1, 0);
+            this.tlpFilter.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tlpFilter.Location = new System.Drawing.Point(3, 21);
+            this.tlpFilter.Margin = new System.Windows.Forms.Padding(5);
+            this.tlpFilter.Name = "tlpFilter";
+            this.tlpFilter.RowCount = 1;
+            this.tlpFilter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpFilter.Size = new System.Drawing.Size(1296, 220);
+            this.tlpFilter.TabIndex = 264;
             // 
-            // gunaGroupBox1
+            // gbAdvanceSettings
             // 
-            this.gunaGroupBox1.BackColor = System.Drawing.Color.Transparent;
-            this.gunaGroupBox1.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
-            this.gunaGroupBox1.BorderColor = System.Drawing.Color.Gainsboro;
-            this.gunaGroupBox1.BorderSize = 1;
-            this.gunaGroupBox1.Controls.Add(this.tableLayoutPanel7);
-            this.gunaGroupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
-            this.gunaGroupBox1.LineColor = System.Drawing.Color.Gainsboro;
-            this.gunaGroupBox1.Location = new System.Drawing.Point(803, 3);
-            this.gunaGroupBox1.Name = "gunaGroupBox1";
-            this.gunaGroupBox1.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
-            this.gunaGroupBox1.Radius = 3;
-            this.gunaGroupBox1.Size = new System.Drawing.Size(144, 214);
-            this.gunaGroupBox1.TabIndex = 256;
-            this.gunaGroupBox1.Text = "Advance Settings";
-            this.gunaGroupBox1.TextLocation = new System.Drawing.Point(10, 8);
+            this.gbAdvanceSettings.BackColor = System.Drawing.Color.Transparent;
+            this.gbAdvanceSettings.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
+            this.gbAdvanceSettings.BorderColor = System.Drawing.Color.Gainsboro;
+            this.gbAdvanceSettings.BorderSize = 1;
+            this.gbAdvanceSettings.Controls.Add(this.tableLayoutPanel7);
+            this.gbAdvanceSettings.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gbAdvanceSettings.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
+            this.gbAdvanceSettings.LineColor = System.Drawing.Color.Gainsboro;
+            this.gbAdvanceSettings.Location = new System.Drawing.Point(803, 3);
+            this.gbAdvanceSettings.Name = "gbAdvanceSettings";
+            this.gbAdvanceSettings.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
+            this.gbAdvanceSettings.Radius = 3;
+            this.gbAdvanceSettings.Size = new System.Drawing.Size(144, 214);
+            this.gbAdvanceSettings.TabIndex = 256;
+            this.gbAdvanceSettings.Text = "Advance Settings";
+            this.gbAdvanceSettings.TextLocation = new System.Drawing.Point(10, 8);
             // 
             // tableLayoutPanel7
             // 
@@ -404,6 +405,53 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel8.Size = new System.Drawing.Size(338, 178);
             this.tableLayoutPanel8.TabIndex = 258;
+            // 
+            // tableLayoutPanel16
+            // 
+            this.tableLayoutPanel16.ColumnCount = 3;
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
+            this.tableLayoutPanel16.Controls.Add(this.lblNextMonth, 2, 0);
+            this.tableLayoutPanel16.Controls.Add(this.lblPrevMonth, 1, 0);
+            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel16.Location = new System.Drawing.Point(5, 147);
+            this.tableLayoutPanel16.Margin = new System.Windows.Forms.Padding(5);
+            this.tableLayoutPanel16.MaximumSize = new System.Drawing.Size(0, 43);
+            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
+            this.tableLayoutPanel16.RowCount = 1;
+            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(328, 26);
+            this.tableLayoutPanel16.TabIndex = 263;
+            // 
+            // lblNextMonth
+            // 
+            this.lblNextMonth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblNextMonth.AutoSize = true;
+            this.lblNextMonth.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblNextMonth.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
+            this.lblNextMonth.ForeColor = System.Drawing.Color.Magenta;
+            this.lblNextMonth.Location = new System.Drawing.Point(255, 5);
+            this.lblNextMonth.Margin = new System.Windows.Forms.Padding(5);
+            this.lblNextMonth.Name = "lblNextMonth";
+            this.lblNextMonth.Size = new System.Drawing.Size(68, 15);
+            this.lblNextMonth.TabIndex = 244;
+            this.lblNextMonth.Text = "Next Month";
+            this.lblNextMonth.Click += new System.EventHandler(this.lblNextMonth_Click);
+            // 
+            // lblPrevMonth
+            // 
+            this.lblPrevMonth.AutoSize = true;
+            this.lblPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblPrevMonth.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
+            this.lblPrevMonth.ForeColor = System.Drawing.Color.Blue;
+            this.lblPrevMonth.Location = new System.Drawing.Point(103, 5);
+            this.lblPrevMonth.Margin = new System.Windows.Forms.Padding(5);
+            this.lblPrevMonth.Name = "lblPrevMonth";
+            this.lblPrevMonth.Size = new System.Drawing.Size(67, 15);
+            this.lblPrevMonth.TabIndex = 243;
+            this.lblPrevMonth.Text = "Prev Month";
+            this.lblPrevMonth.Click += new System.EventHandler(this.lblPrevMonth_Click);
             // 
             // tableLayoutPanel12
             // 
@@ -823,14 +871,14 @@
             this.dgvDOList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvDOList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvDOList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOList.Location = new System.Drawing.Point(5, 75);
@@ -971,24 +1019,24 @@
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle11.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle11.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle11.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle11.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle12.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle12.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle12.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle12.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvDOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOItemList.Location = new System.Drawing.Point(5, 75);
@@ -1082,53 +1130,6 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1348, 703);
             this.tableLayoutPanel6.TabIndex = 173;
             // 
-            // tableLayoutPanel16
-            // 
-            this.tableLayoutPanel16.ColumnCount = 3;
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 30F));
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel16.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 35F));
-            this.tableLayoutPanel16.Controls.Add(this.lblNextMonth, 2, 0);
-            this.tableLayoutPanel16.Controls.Add(this.lblPrevMonth, 1, 0);
-            this.tableLayoutPanel16.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel16.Location = new System.Drawing.Point(5, 147);
-            this.tableLayoutPanel16.Margin = new System.Windows.Forms.Padding(5);
-            this.tableLayoutPanel16.MaximumSize = new System.Drawing.Size(0, 43);
-            this.tableLayoutPanel16.Name = "tableLayoutPanel16";
-            this.tableLayoutPanel16.RowCount = 1;
-            this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(328, 26);
-            this.tableLayoutPanel16.TabIndex = 263;
-            // 
-            // lblPrevMonth
-            // 
-            this.lblPrevMonth.AutoSize = true;
-            this.lblPrevMonth.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblPrevMonth.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
-            this.lblPrevMonth.ForeColor = System.Drawing.Color.Blue;
-            this.lblPrevMonth.Location = new System.Drawing.Point(103, 5);
-            this.lblPrevMonth.Margin = new System.Windows.Forms.Padding(5);
-            this.lblPrevMonth.Name = "lblPrevMonth";
-            this.lblPrevMonth.Size = new System.Drawing.Size(67, 15);
-            this.lblPrevMonth.TabIndex = 243;
-            this.lblPrevMonth.Text = "Prev Month";
-            this.lblPrevMonth.Click += new System.EventHandler(this.lblPrevMonth_Click);
-            // 
-            // lblNextMonth
-            // 
-            this.lblNextMonth.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblNextMonth.AutoSize = true;
-            this.lblNextMonth.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblNextMonth.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
-            this.lblNextMonth.ForeColor = System.Drawing.Color.Magenta;
-            this.lblNextMonth.Location = new System.Drawing.Point(255, 5);
-            this.lblNextMonth.Margin = new System.Windows.Forms.Padding(5);
-            this.lblNextMonth.Name = "lblNextMonth";
-            this.lblNextMonth.Size = new System.Drawing.Size(68, 15);
-            this.lblNextMonth.TabIndex = 244;
-            this.lblNextMonth.Text = "Next Month";
-            this.lblNextMonth.Click += new System.EventHandler(this.lblNextMonth_Click);
-            // 
             // frmSBBDOListVer3
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1148,8 +1149,8 @@
             this.Shown += new System.EventHandler(this.frmSBBDOListVer2_Shown);
             this.tlpPOList.ResumeLayout(false);
             this.gbFilter.ResumeLayout(false);
-            this.tableLayoutPanel14.ResumeLayout(false);
-            this.gunaGroupBox1.ResumeLayout(false);
+            this.tlpFilter.ResumeLayout(false);
+            this.gbAdvanceSettings.ResumeLayout(false);
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.gunaGroupBox4.ResumeLayout(false);
@@ -1158,6 +1159,8 @@
             this.tableLayoutPanel15.PerformLayout();
             this.gunaGroupBox5.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel16.ResumeLayout(false);
+            this.tableLayoutPanel16.PerformLayout();
             this.tableLayoutPanel12.ResumeLayout(false);
             this.tableLayoutPanel12.PerformLayout();
             this.tableLayoutPanel10.ResumeLayout(false);
@@ -1181,8 +1184,6 @@
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
-            this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel16.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1213,7 +1214,7 @@
         private Guna.UI.WinForms.GunaGradientButton btnExport;
         private Guna.UI.WinForms.GunaGradientButton btnFilter;
         private Guna.UI.WinForms.GunaGradientButton btnRefresh;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
+        private System.Windows.Forms.TableLayoutPanel tlpFilter;
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox4;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel13;
         private Guna.UI.WinForms.GunaComboBox cmbDOType;
@@ -1232,7 +1233,7 @@
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel17;
         private System.Windows.Forms.CheckBox cbPODate;
-        private Guna.UI.WinForms.GunaGroupBox gunaGroupBox1;
+        private Guna.UI.WinForms.GunaGroupBox gbAdvanceSettings;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel7;
         private System.Windows.Forms.CheckBox cbInvoiceMode;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;

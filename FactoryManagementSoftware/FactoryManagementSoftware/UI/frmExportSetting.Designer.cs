@@ -142,6 +142,8 @@
             // cbSplitByDocumentNo
             // 
             this.cbSplitByDocumentNo.AutoSize = true;
+            this.cbSplitByDocumentNo.Checked = true;
+            this.cbSplitByDocumentNo.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbSplitByDocumentNo.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbSplitByDocumentNo.Location = new System.Drawing.Point(13, 107);
             this.cbSplitByDocumentNo.Name = "cbSplitByDocumentNo";
@@ -235,8 +237,6 @@
             // cbPDF
             // 
             this.cbPDF.AutoSize = true;
-            this.cbPDF.Checked = true;
-            this.cbPDF.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbPDF.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbPDF.Location = new System.Drawing.Point(13, 58);
             this.cbPDF.Name = "cbPDF";
@@ -249,6 +249,8 @@
             // cbExcel
             // 
             this.cbExcel.AutoSize = true;
+            this.cbExcel.Checked = true;
+            this.cbExcel.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbExcel.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbExcel.Location = new System.Drawing.Point(13, 29);
             this.cbExcel.Name = "cbExcel";
