@@ -16,9 +16,6 @@ using System.Reflection;
 using FactoryManagementSoftware.Properties;
 using System.Configuration;
 using System.Collections.Generic;
-using Spire.Pdf.Exporting.XPS.Schema.Mc;
-using MathNet.Numerics.LinearAlgebra.Factorization;
-using Syncfusion.XlsIO;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -43,7 +40,7 @@ namespace FactoryManagementSoftware.UI
                 userID = 1;
             }
 
-            int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+            userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
             
             if (userPermission < 4)
@@ -57,6 +54,7 @@ namespace FactoryManagementSoftware.UI
 
         #region variable/object declare
 
+        private int userPermission = 0;
 
         itemDAL dalItem = new itemDAL();
         itemCustDAL dalItemCust = new itemCustDAL();
@@ -129,6 +127,11 @@ namespace FactoryManagementSoftware.UI
         readonly string header_StdPacking = "StdPacking";
         readonly string header_BalanceString = "BAL.";
         readonly string header_TrfTableCode = "TRANSFER ID";
+
+        readonly string header_UnitPrice = "UNIT PRICE";
+        readonly string header_DISCOUNT = "DISCOUNT";
+        readonly string header_TotalAmount = "TOTAL AMOUNT";
+
         readonly string headerIndex = "#";
         readonly string headerPlanID = "PLAN ID";
         readonly string headerType = "TYPE";
@@ -253,6 +256,74 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_StdPacking, typeof(int));
             dt.Columns.Add(header_PONo, typeof(string));
+
+            return dt;
+        }
+
+        private DataTable NewSalesReportTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_DataType, typeof(string));
+            dt.Columns.Add(header_DONo, typeof(int));
+            dt.Columns.Add(header_DONoString, typeof(string));
+            dt.Columns.Add(header_PODate, typeof(DateTime));
+            dt.Columns.Add(header_POCode, typeof(int));
+            dt.Columns.Add(header_PONo, typeof(string));
+
+            dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_ShipTo, typeof(string));
+            dt.Columns.Add(header_CustomerCode, typeof(int));
+            dt.Columns.Add(header_DeliveredDate, typeof(DateTime));
+
+            dt.Columns.Add(header_POTblCode, typeof(int));
+            dt.Columns.Add(header_DOTblCode, typeof(int));
+            dt.Columns.Add(header_TrfTableCode, typeof(int));
+            dt.Columns.Add(header_SizeString, typeof(string));
+            dt.Columns.Add(header_Type, typeof(string));
+            dt.Columns.Add(header_Size, typeof(string));
+            dt.Columns.Add(header_Unit, typeof(string));
+
+            dt.Columns.Add(header_ItemCode, typeof(string));
+
+            dt.Columns.Add(header_DeliveryPCS, typeof(int));
+            dt.Columns.Add(header_DeliveryBAG, typeof(int));
+            dt.Columns.Add(header_DeliveryQTY, typeof(string));
+
+            dt.Columns.Add(text.Header_Description, typeof(string));
+            dt.Columns.Add(text.Header_UnitPrice, typeof(decimal));
+            dt.Columns.Add(text.Header_DiscountRate, typeof(decimal));
+            dt.Columns.Add(text.Header_NetAmount, typeof(decimal));
+
+            dt.Columns.Add(header_StdPacking, typeof(int));
+            
+            return dt;
+        }
+
+        private DataTable NewCustomerSalesReportTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_CustomerCode, typeof(string));
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(header_Customer, typeof(string));
+            dt.Columns.Add(header_ShipTo, typeof(string));
+            dt.Columns.Add(text.Header_NetAmount, typeof(decimal));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
+
+            return dt;
+        }
+
+        private DataTable NewProductSalesReportTable()
+        {
+            DataTable dt = new DataTable();
+
+            dt.Columns.Add(header_ItemCode, typeof(string));
+            dt.Columns.Add(text.Header_Index, typeof(int));
+            dt.Columns.Add(text.Header_Description, typeof(string));
+            dt.Columns.Add(header_DeliveryPCS, typeof(int));
+            dt.Columns.Add(text.Header_NetAmount, typeof(decimal));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
 
             return dt;
         }
@@ -674,7 +745,7 @@ namespace FactoryManagementSoftware.UI
         }
         #endregion
 
-        #region Load Data
+  
 
         private void LoadCustomerList()
         {
@@ -2604,6 +2675,394 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private DataTable DT_SALES_REPORT;
+        private DataTable DT_CUSTOMER_SALES_REPORT;
+        private DataTable DT_PRODUCT_SALES_REPORT;
+
+        private void GenerateSalesMasterList()
+        {
+            #region export
+
+            DataGridView dgv = dgvDOList;
+
+            DataTable dt_DOList = (DataTable)dgv.DataSource;
+
+            if (dgv.DataSource == null)
+            {
+                MessageBox.Show("No data found!");
+            }
+            else if (dt_DOList.Columns.Contains(header_Selected))
+            {
+                DT_SALES_REPORT = NewSalesReportTable();
+                DT_CUSTOMER_SALES_REPORT = NewCustomerSalesReportTable();
+
+                DataRow salesRow;
+                DataRow customerSalesRow;
+                DataRow productSalesRow;
+
+                dt_DOList.DefaultView.Sort = header_DONo + " ASC";
+                dt_DOList = dt_DOList.DefaultView.ToTable();
+
+                dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+
+                //DataTable dt_DOInfo = DB_DO_INFO.Copy();
+                //dt_DOInfo.DefaultView.Sort = dalSPP.PONo + " ASC";
+                //dt_DOInfo = dt_DOInfo.DefaultView.ToTable();
+
+                foreach (DataRow rowDOList in dt_DOList.Rows)
+                {
+                    bool selected = bool.TryParse(rowDOList[header_Selected].ToString(), out selected) ? selected : false;
+
+                    if (selected)
+                    {
+                        #region getting basic info
+
+                        string deliveredDate = rowDOList[header_DeliveredDate].ToString();
+
+                        DateTime DODate = DateTime.TryParse(deliveredDate, out DateTime test) ? test : frmExportSetting.DODate;
+                        string DODate_String = DODate.ToString("dd/MM/yyyy");
+
+                        string customerName = rowDOList[header_Customer].ToString();
+                        string customerCode = rowDOList[header_CustomerCode].ToString();
+
+                        string POTableCode = rowDOList[header_POCode].ToString();
+                        string PONo = rowDOList[header_PONo].ToString();
+                        string DONo = rowDOList[header_DONo].ToString();
+                        string DONoString = rowDOList[header_DONoString].ToString();
+
+                        #endregion
+
+                        #region Excel Settings
+
+                        string billingName = null;
+                        string billingAddress_1 = null;
+                        string billingAddress_2 = null;
+                        string billingAddress_3 = null;
+                        string billingPostalCode = null;
+                        string billingCity = null;
+                        string billingState = null;
+                        string billingContact = null;
+
+                        string shippingName = null;
+                        string shippingAddress_1 = null;
+                        string shippingAddress_2 = null;
+                        string shippingAddress_3 = null;
+                        string shippingPostalCode = null;
+                        string shippingCity = null;
+                        string shippingState = null;
+                        string shippingContact = null;
+
+                        int indexNo = 1;
+                        string previousPO = "";
+
+                        decimal totalAmount = 0;
+
+                        #endregion
+                        //^^2585ms->540ms->242ms
+                        foreach (DataRow rowDBInfo in DB_DO_INFO.Rows)
+                        {
+                            if (DONo == rowDBInfo[dalSPP.DONo].ToString() && rowDBInfo[dalSPP.DONo] != DBNull.Value)
+                            {
+                                int deliveryQty = rowDBInfo[dalSPP.ToDeliveryQty] == DBNull.Value ? 0 : Convert.ToInt32(rowDBInfo[dalSPP.ToDeliveryQty].ToString());
+
+                                if (deliveryQty > 0)
+                                {
+                                    #region Billing/Shipping Address
+
+                                    bool useBillingAddress = bool.TryParse(rowDBInfo[dalSPP.DefaultShippingAddress].ToString(), out useBillingAddress) ? useBillingAddress : false;
+
+                                    billingName = rowDBInfo[dalSPP.FullName].ToString();
+                                    billingAddress_1 = rowDBInfo[dalSPP.Address1 + "1"].ToString();
+                                    billingAddress_2 = rowDBInfo[dalSPP.Address2 + "1"].ToString();
+                                    billingAddress_3 = rowDBInfo[dalSPP.Address3 + "1"].ToString();
+
+                                    billingPostalCode = rowDBInfo[dalSPP.AddressPostalCode + "1"].ToString();
+                                    billingCity = rowDBInfo[dalSPP.AddressCity + "1"].ToString();
+                                    billingState = rowDBInfo[dalSPP.AddressState + "1"].ToString();
+                                    billingContact = rowDBInfo[dalSPP.Phone1 + "1"].ToString();
+
+
+                                    if (useBillingAddress)
+                                    {
+                                        
+
+                                        shippingName = billingName;
+                                        shippingAddress_1 = billingAddress_1;
+                                        shippingAddress_2 = billingAddress_2;
+                                        shippingAddress_3 = billingAddress_3;
+
+                                        shippingPostalCode = billingPostalCode;
+                                        shippingCity = billingCity;
+                                        shippingState = billingState;
+                                        shippingContact = billingContact;
+                                    }
+                                    else
+                                    {
+                                        shippingName = rowDBInfo[dalSPP.ShippingFullName].ToString();
+
+
+                                        shippingAddress_1 = rowDBInfo[dalSPP.Address1].ToString();
+                                        shippingAddress_2 = rowDBInfo[dalSPP.Address2].ToString();
+                                        shippingAddress_3 = rowDBInfo[dalSPP.Address3].ToString();
+
+                                        shippingPostalCode = rowDBInfo[dalSPP.AddressPostalCode].ToString();
+                                        shippingCity = rowDBInfo[dalSPP.AddressCity].ToString();
+                                        shippingState = rowDBInfo[dalSPP.AddressState].ToString();
+                                        shippingContact = rowDBInfo[dalSPP.Phone1].ToString();
+                                    }
+                                    #endregion
+
+                                    #region Getting item Info/Size
+
+                                    string type = rowDBInfo[dalSPP.TypeName].ToString();
+
+                                    string size = rowDBInfo[dalSPP.SizeNumerator].ToString();
+                                    string itemCode = rowDBInfo[dalSPP.ItemCode].ToString();
+
+                                    int numerator = int.TryParse(rowDBInfo[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                                    int denominator = int.TryParse(rowDBInfo[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                                    string sizeUnit = rowDBInfo[dalSPP.SizeUnit].ToString().ToUpper();
+
+                                    if (sizeUnit.ToUpper() == "IN")
+                                    {
+                                        sizeUnit = "\"";
+                                    }
+
+                                    int numerator_2 = int.TryParse(rowDBInfo[dalSPP.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
+                                    int denominator_2 = int.TryParse(rowDBInfo[dalSPP.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
+                                    string sizeUnit_2 = rowDBInfo[dalSPP.SizeUnit + "1"].ToString().ToUpper();
+
+                                    if (sizeUnit_2.ToUpper() == "IN")
+                                    {
+                                        sizeUnit_2 = "\"";
+                                    }
+
+                                    string sizeString_WithUnit = "";
+                                    string sizeString_1_WithUnit = "";
+                                    string sizeString_2_WithUnit = "";
+
+                                    string sizeString_1 = "";
+                                    string sizeString_2 = "";
+
+                                    int size_1 = 1;
+                                    int size_2 = 1;
+
+                                    if (denominator == 1)
+                                    {
+                                        size_1 = numerator;
+                                        sizeString_1_WithUnit = numerator + " " + sizeUnit.ToUpper();
+                                        sizeString_1 = numerator.ToString();
+
+                                    }
+                                    else
+                                    {
+                                        size_1 = numerator / denominator;
+                                        sizeString_1_WithUnit = numerator + "/" + denominator + " " + sizeUnit.ToUpper();
+                                        sizeString_1 = numerator + "/" + denominator;
+                                    }
+
+                                    if (numerator_2 > 0)
+                                    {
+                                        if (denominator_2 == 1)
+                                        {
+                                            sizeString_2_WithUnit += numerator_2 + " " + sizeUnit_2.ToUpper();
+                                            sizeString_2 += " " + numerator_2.ToString();
+                                            size_2 = numerator_2;
+
+                                        }
+                                        else
+                                        {
+                                            size_2 = numerator_2 / denominator_2;
+
+                                            if (numerator_2 == 3 && denominator_2 == 2)
+                                            {
+                                                sizeString_2_WithUnit += "1 1" + "/" + denominator_2 + " " + sizeUnit_2.ToUpper();
+                                                sizeString_2 += " " + "1 1" + "/" + denominator_2;
+                                            }
+                                            else
+                                            {
+                                                sizeString_2_WithUnit += numerator_2 + "/" + denominator_2 + " " + sizeUnit_2.ToUpper();
+                                                sizeString_2 += " " + numerator_2 + "/" + denominator_2;
+                                            }
+
+
+
+                                        }
+                                    }
+
+                                    if (size_1 >= size_2)
+                                    {
+                                        if (sizeString_2_WithUnit != "")
+                                        {
+                                            sizeString_WithUnit = sizeString_1_WithUnit + " x " + sizeString_2_WithUnit;
+                                        }
+
+
+                                        else
+                                        {
+                                            sizeString_WithUnit = sizeString_1_WithUnit;
+                                        }
+                                    }
+                                    else
+                                    {
+
+                                        if (sizeString_2_WithUnit != "")
+                                            sizeString_WithUnit = sizeString_2_WithUnit + " x " + sizeString_1_WithUnit;
+
+                                        else
+                                        {
+                                            sizeString_WithUnit = sizeString_2_WithUnit;
+                                        }
+                                    }
+
+                                    #endregion
+
+                                    #region Checking PO No
+
+                                    string currentPONo = rowDBInfo[dalSPP.PONo].ToString();
+
+
+                                    if (previousPO != currentPONo)
+                                    {
+                                        if (previousPO != "")
+                                        {
+                                            //rowNo++;
+                                        }
+
+                                        previousPO = currentPONo;
+                                    }
+
+                                    #endregion
+
+                                    #region Data Insert
+
+                                    //product decription
+                                    string type_ShortName = GetTypeShortName(type);
+                                    string newItemCode = text.SBB_BrandName + type_ShortName + " " + sizeString_1 + sizeString_2;
+                                    string ProductDescription = "(" + newItemCode + ") " + sizeString_WithUnit + " " + type;
+                                    //RowToInsert = DescriptionColStart + (itemRowOffset + rowNo).ToString() + DescriptionColEnd + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, ProductDescription);
+
+                                    ////delivery qty
+                                    //RowToInsert = qtyColStart + (itemRowOffset + rowNo).ToString() + qtyColEnd + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, deliveryQty);
+
+                                    ////unit
+                                    //RowToInsert = uomColStart + (itemRowOffset + rowNo).ToString() + uomColEnd + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, "PCS");
+
+                                    //unit price
+                                    decimal unitPrice = decimal.TryParse(rowDBInfo[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
+                                   // RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N3"));
+
+                                    //discount rate
+                                    decimal DiscRate = decimal.TryParse(rowDBInfo[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
+                                    //RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
+
+                                    //net amount
+                                    decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                    //RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
+                                    //InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
+
+                                    //total amount
+                                    totalAmount += netAmount;
+                                    //InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(totalAmount));
+                                    //InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
+
+                                    //salesRow = DT_SALES_REPORT.NewRow();
+                                    //salesRow[header_PONo] = currentPONo;
+                                    //salesRow[header_ShipTo] = shippingName;
+                                    //salesRow[header_DeliveredDate] = deliveredDate;
+                                    //salesRow[header_Customer] = customerName;
+                                    //salesRow[header_DONoString] = DONoString;
+                                    //salesRow[header_ItemCode] = itemCode;
+                                    //salesRow[header_Type] = type_ShortName;
+                                    //salesRow[header_DeliveryPCS] = deliveryQty;
+                                    //salesRow[header_DeliveryQTY] = deliveryQty;
+                                    //salesRow[text.Header_Description] = ProductDescription;
+                                    //salesRow[text.Header_UnitPrice] = unitPrice;
+                                    //salesRow[text.Header_DiscountRate] = DiscRate;
+                                    //salesRow[text.Header_NetAmount] = netAmount;
+
+                                    //CustomerSalesReportUpdate(salesRow);
+
+                                    #endregion
+                                }
+                            }
+                        }
+
+                        ////total amount
+                        //totalAmount += netAmount;
+                        //InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(totalAmount));
+                        //InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
+                        totalAmount = Math.Round(totalAmount, 2);
+
+                        customerSalesRow = DT_CUSTOMER_SALES_REPORT.NewRow();
+
+                        customerSalesRow[header_CustomerCode] = customerCode;
+                        customerSalesRow[header_Customer] = customerName;
+                        //customerSalesRow[header_ShipTo] = shippingName;
+                        customerSalesRow[text.Header_NetAmount] = totalAmount;
+                        customerSalesRow[text.Header_Remark] = "INV"+DONoString;
+                        
+                        CustomerSalesReportUpdate(customerSalesRow);
+                    }
+                }
+            }
+        }
+            
+        private void CustomerSalesReportUpdate(DataRow newRow)
+        {
+            if(DT_CUSTOMER_SALES_REPORT == null)
+            {
+                DT_CUSTOMER_SALES_REPORT = NewCustomerSalesReportTable();
+            }
+
+            foreach(DataRow row in DT_CUSTOMER_SALES_REPORT.Rows)
+            {
+                string oldCustomerCode = row[header_CustomerCode].ToString();
+                string newCustomerCode = newRow[header_CustomerCode].ToString();
+
+                if (oldCustomerCode == newCustomerCode)
+                {
+                    decimal amount = decimal.TryParse(row[text.Header_NetAmount].ToString(), out amount) ? amount : 0;
+                    decimal newAmountToAdd = decimal.TryParse(newRow[text.Header_NetAmount].ToString(), out newAmountToAdd) ? newAmountToAdd : 0;
+
+                    string oldRemark = row[text.Header_Remark].ToString();
+                    string newRemark = newRow[text.Header_Remark].ToString();
+
+                    if(!string.IsNullOrEmpty(oldRemark))
+                    {
+                        newRemark = newRemark + ";" + oldRemark;
+                    }
+                    row[text.Header_NetAmount] = amount + newAmountToAdd;
+                    row[text.Header_Remark] = amount + newRemark;
+
+                    return;
+                }
+            }
+
+            DT_CUSTOMER_SALES_REPORT.Rows.Add(newRow);
+           
+        }
+
+        private void CustomerSalesReportRanking()
+        {
+            if (DT_CUSTOMER_SALES_REPORT != null)
+            {
+                DT_CUSTOMER_SALES_REPORT.DefaultView.Sort = text.Header_NetAmount + " DESC";
+                DT_CUSTOMER_SALES_REPORT = DT_CUSTOMER_SALES_REPORT.DefaultView.ToTable();
+
+                int index = 1;
+                foreach(DataRow row in DT_CUSTOMER_SALES_REPORT.Rows)
+                {
+                    row[text.Header_Index] = index++;
+                }
+            }
+        }
+                
         private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -7432,8 +7891,16 @@ namespace FactoryManagementSoftware.UI
                     Month = MonthFrom + "-" + MonthTo;
                 }
 
-                sfd.Filter = "Pdf Documents (*.pdf)|*.pdf";
-                sfd.FileName = "SBB " + Month + " " + finalFileName + ".pdf";
+                if(PDF_TYPE)
+                {
+                    sfd.Filter = "Pdf Documents (*.pdf)|*.pdf";
+                    sfd.FileName = "SBB " + Month + " " + finalFileName + ".pdf";
+                }
+                else
+                {
+                    sfd.Filter = "Pdf Documents (*.xls)|*.xls";
+                    sfd.FileName = "SBB " + Month + " " + finalFileName + ".xls";
+                }
 
                 #endregion
                 //^^786ms
@@ -8459,6 +8926,22 @@ namespace FactoryManagementSoftware.UI
         private void lblNextMonth_Click(object sender, EventArgs e)
         {
             SetDateTimePickersToNextMonth();
+        }
+
+        private void lblMainList_Click(object sender, EventArgs e)
+        {
+            if(userPermission >= 4)
+            {
+                GenerateSalesMasterList();
+                CustomerSalesReportRanking();
+
+                frmMasterList frm = new frmMasterList(DT_CUSTOMER_SALES_REPORT)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+                frm.ShowDialog();
+            }
         }
     }
 }
