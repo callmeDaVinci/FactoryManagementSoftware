@@ -3912,6 +3912,7 @@ namespace FactoryManagementSoftware.UI
         string areaDateData = "t9:w9";
         string areaPONoData = "t10:w10";
         string areaPageData = "t11:w11";
+        string areaTermData = "t14:w14";
 
         string areaTransportCompany1Title = "q13:s13";
         string areaTransportCompany2Title = "q14:s14";
@@ -4255,10 +4256,10 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Size = 9;
             DOFormat.Font.Name = "Cambria";
 
-            DOFormat = xlWorkSheet.get_Range("t14:w14").Cells;
+            DOFormat = xlWorkSheet.get_Range(areaTermData).Cells;
             DOFormat.Merge();
             DOFormat.NumberFormat = "@";
-            DOFormat.Value = "C.O.D.";
+            DOFormat.Value = "";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
             DOFormat.Font.Size = 9;
@@ -7624,6 +7625,47 @@ namespace FactoryManagementSoftware.UI
             #endregion
         }
 
+        public static string GetTerms(string customerCode)
+        {
+            var termsTable = new Dictionary<string, string>
+            {
+                { "47", "90 Days" }, // AIK MENG
+                { "51", "C.O.D." }, // ALIKE
+                { "37", "C.O.D." }, // BANDWELL
+                { "17", "90 Days" }, // BENTON
+                { "21", "120 Days" }, // BLUE
+                { "23", "90 Days" }, // CHIN XIANG
+                { "2", "120 Days" }, // CL
+                { "3", "120 Days" }, // DELTA
+                { "4", "120 Days" }, // DYSON
+                { "22", "120 Days" }, // ENG
+                { "36", "" }, // HOCK LEE
+                { "14", "60 Days" }, // INN
+                { "32", "" }, // KC KWONG
+                { "13", "120 Days" }, // LIANHONG
+                { "44", "90 Days" }, // NAN YA
+                { "18", "120 Days" }, // OEL
+                { "53", "C.O.D." }, // PERDASA
+                { "31", "60 Days" }, // PIPELINE
+                { "5", "120 Days" }, // ROWY
+                { "46", "C.O.D." }, // SIGMA
+                { "38", "90 Days" }, // SIN SENG
+                { "52", "" }, // SINAR CERAH
+                { "27", "90 Days" }, // SUNWAY
+                { "20", "120 Days" }, // WEI HUA
+                { "25", "120 Days" } // WS
+            };
+
+            if (termsTable.TryGetValue(customerCode, out string terms))
+            {
+                return terms;
+            }
+            else
+            {
+                return "";
+            }
+        }
+
         private void ExportSBBInvoice_SingleFile()
         {
             #region Excel marking
@@ -7932,6 +7974,7 @@ namespace FactoryManagementSoftware.UI
                             string DONo = rowDOList[header_DONo].ToString();
                             string DONoString = rowDOList[header_DONoString].ToString();
 
+                            string customerCode = rowDOList[header_CustomerCode].ToString();
 
                             #endregion
 
@@ -7986,6 +8029,8 @@ namespace FactoryManagementSoftware.UI
                             //InsertToSheet(xlWorkSheet, areaPONoData, "REFER BELOW");
 
                             InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
+
+                            InsertToSheet(xlWorkSheet, areaTermData, GetTerms(customerCode));
 
 
                             string billingName = null;
@@ -8233,6 +8278,7 @@ namespace FactoryManagementSoftware.UI
                                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
 
                                             InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
+                                            InsertToSheet(xlWorkSheet, areaTermData, GetTerms(customerCode));
 
                                             Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets["INV_" + DONoString];
 
