@@ -4010,6 +4010,7 @@ namespace FactoryManagementSoftware.UI
             xlWorkSheet.PageSetup.PrintArea = wholeSheetArea;
 
             ExcelColumnWidth(xlWorkSheet, sheetWidth, 3.2);
+            ExcelColumnWidth(xlWorkSheet, "r1:r1", 4.1);
 
             #endregion
 
@@ -4424,7 +4425,7 @@ namespace FactoryManagementSoftware.UI
                 area = qtyColStart + (itemRowOffset + i).ToString() + qtyColEnd + (itemRowOffset + i).ToString();
                 DOFormat = xlWorkSheet.get_Range(area).Cells;
                 DOFormat.Merge();
-                DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+                DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
                 DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
                 //DOFormat.Value = "1200";
                 DOFormat.Font.Size = 10;
@@ -7627,33 +7628,39 @@ namespace FactoryManagementSoftware.UI
 
         public static string GetTerms(string customerCode)
         {
+            string terms_60Days = "60 Days";
+            string terms_90Days = "90 Days";
+            string terms_120Days = "120 Days";
+            string terms_CashOnDelivery = "C.O.D.";
+            string terms_CashBeforeDelivery = "C.B.D.";
             var termsTable = new Dictionary<string, string>
             {
-                { "47", "90 Days" }, // AIK MENG
-                { "51", "C.O.D." }, // ALIKE
-                { "37", "C.O.D." }, // BANDWELL
-                { "17", "90 Days" }, // BENTON
-                { "21", "120 Days" }, // BLUE
-                { "23", "90 Days" }, // CHIN XIANG
-                { "2", "120 Days" }, // CL
-                { "3", "120 Days" }, // DELTA
-                { "4", "120 Days" }, // DYSON
-                { "22", "120 Days" }, // ENG
-                { "36", "" }, // HOCK LEE
-                { "14", "60 Days" }, // INN
-                { "32", "" }, // KC KWONG
-                { "13", "120 Days" }, // LIANHONG
-                { "44", "90 Days" }, // NAN YA
-                { "18", "120 Days" }, // OEL
-                { "53", "C.O.D." }, // PERDASA
-                { "31", "60 Days" }, // PIPELINE
-                { "5", "120 Days" }, // ROWY
-                { "46", "C.O.D." }, // SIGMA
-                { "38", "90 Days" }, // SIN SENG
-                { "52", "" }, // SINAR CERAH
-                { "27", "90 Days" }, // SUNWAY
-                { "20", "120 Days" }, // WEI HUA
-                { "25", "120 Days" } // WS
+                { "47", terms_90Days }, // AIK MENG
+                { "51", terms_CashOnDelivery }, // ALIKE
+                { "37", terms_CashOnDelivery }, // BANDWELL
+                { "17", terms_90Days }, // BENTON
+                { "21", terms_120Days }, // BLUE
+                { "23", terms_90Days }, // CHIN XIANG
+                { "2", terms_120Days }, // CL
+                { "3", terms_120Days }, // DELTA
+                { "4", terms_120Days }, // DYSON
+                { "22", terms_120Days }, // ENG
+                { "36", terms_120Days }, // HOCK LEE
+                { "41", terms_CashBeforeDelivery }, // HF HENG FATT
+                { "14", terms_60Days }, // INN
+                { "32", terms_120Days }, // KC KWONG
+                { "13", terms_120Days }, // LIANHONG
+                { "44", terms_90Days }, // NAN YA
+                { "18", terms_120Days }, // OEL
+                { "53", terms_CashOnDelivery }, // PERDASA
+                { "31", terms_60Days }, // PIPELINE
+                { "5", terms_120Days }, // ROWY
+                { "46", terms_CashOnDelivery }, // SIGMA
+                { "38", terms_90Days }, // SIN SENG
+                { "52", terms_CashOnDelivery }, // SINAR CERAH
+                { "27", terms_90Days }, // SUNWAY
+                { "20", terms_120Days }, // WEI HUA
+                { "25", terms_120Days } // WS
             };
 
             if (termsTable.TryGetValue(customerCode, out string terms))
@@ -8423,7 +8430,8 @@ namespace FactoryManagementSoftware.UI
 
                                         //total amount
                                         totalAmount += netAmount;
-                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(totalAmount));
+
+                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
                                         InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
 
                                         #endregion
