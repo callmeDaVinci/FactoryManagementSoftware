@@ -362,8 +362,10 @@ namespace FactoryManagementSoftware.Module
 
         public string Header_EfficiencyRate { get; } = "Efficiency %"; 
         public string Header_TotalStockIn { get; } = "Stock In Qty";
+        public string Header_TotalSales { get; } = "TOTAL SALES";
         public string Header_TargetQty { get; } = "Target Qty";
         public string Header_Qty { get; } = "QUANTITY";
+        public string Header_DOQty { get; } = "NUMBER OF D/O";
 
         public string Header_TotalQty { get; } = "Total Qty";
         public string Header_TotalQtyUnit { get; } = "Total Qty Unit";
@@ -389,6 +391,7 @@ namespace FactoryManagementSoftware.Module
         public string Header_GroupCode { get; } = "Group Code";
         public string Header_TrfTableKey { get; } = "TrfTableKey";
         public string Header_ID { get; } = "ID";
+        public string Header_CustomerCode { get; } = "CUSTOMER CODE";
         public string Header_Customer { get; } = "CUSTOMER";
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";

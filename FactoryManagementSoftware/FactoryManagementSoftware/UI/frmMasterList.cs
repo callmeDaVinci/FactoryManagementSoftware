@@ -21,9 +21,19 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
 
-            dgvList.DataSource = dt;
+            if(dt != null )
+            {
+                dgvList.DataSource = dt;
 
-            DgvUIEdit(dgvList);
+                DgvUIEdit(dgvList);
+            }
+            else
+            {
+                MessageBox.Show("No data found!");
+                Close();
+
+            }
+           
         }
 
         private void DgvUIEdit(DataGridView dgv)
