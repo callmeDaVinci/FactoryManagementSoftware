@@ -7660,7 +7660,6 @@ namespace FactoryManagementSoftware.UI
             string terms_90Days = "90 Days";
             string terms_120Days = "120 Days";
             string terms_CashOnDelivery = "C.O.D.";
-            string terms_CashBeforeDelivery = "C.B.D.";
             var termsTable = new Dictionary<string, string>
             {
                 { "47", terms_90Days }, // AIK MENG
@@ -7674,7 +7673,7 @@ namespace FactoryManagementSoftware.UI
                 { "4", terms_120Days }, // DYSON
                 { "22", terms_120Days }, // ENG
                 { "36", terms_120Days }, // HOCK LEE
-                { "41", terms_CashBeforeDelivery }, // HF HENG FATT
+                { "41", terms_CashOnDelivery }, // HF HENG FATT
                 { "14", terms_60Days }, // INN
                 { "32", terms_120Days }, // KC KWONG
                 { "13", terms_120Days }, // LIANHONG
@@ -7688,6 +7687,7 @@ namespace FactoryManagementSoftware.UI
                 { "52", terms_CashOnDelivery }, // SINAR CERAH
                 { "27", terms_90Days }, // SUNWAY
                 { "20", terms_120Days }, // WEI HUA
+                { "54", terms_CashOnDelivery }, // Sanifix
                 { "25", terms_120Days } // WS
             };
 

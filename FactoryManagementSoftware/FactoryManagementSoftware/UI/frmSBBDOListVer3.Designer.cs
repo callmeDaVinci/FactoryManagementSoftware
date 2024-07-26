@@ -29,15 +29,18 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tlpFilter = new System.Windows.Forms.TableLayoutPanel();
             this.gbAdvanceSettings = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbProductSummary = new System.Windows.Forms.CheckBox();
+            this.cbInvoiceSortByCustomer = new System.Windows.Forms.CheckBox();
             this.cbInvoiceMode = new System.Windows.Forms.CheckBox();
+            this.cbCustomerSummaryList = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -85,9 +88,6 @@
             this.lblSubList = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbInvoiceSortByCustomer = new System.Windows.Forms.CheckBox();
-            this.cbCustomerSummaryList = new System.Windows.Forms.CheckBox();
-            this.cbProductSummary = new System.Windows.Forms.CheckBox();
             this.tlpPOList.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tlpFilter.SuspendLayout();
@@ -162,12 +162,12 @@
             this.tlpFilter.Controls.Add(this.gunaGroupBox5, 2, 0);
             this.tlpFilter.Controls.Add(this.gunaGroupBox2, 1, 0);
             this.tlpFilter.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpFilter.Location = new System.Drawing.Point(3, 17);
+            this.tlpFilter.Location = new System.Drawing.Point(3, 21);
             this.tlpFilter.Margin = new System.Windows.Forms.Padding(5);
             this.tlpFilter.Name = "tlpFilter";
             this.tlpFilter.RowCount = 1;
             this.tlpFilter.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpFilter.Size = new System.Drawing.Size(1296, 224);
+            this.tlpFilter.Size = new System.Drawing.Size(1296, 220);
             this.tlpFilter.TabIndex = 264;
             // 
             // gbAdvanceSettings
@@ -184,7 +184,7 @@
             this.gbAdvanceSettings.Name = "gbAdvanceSettings";
             this.gbAdvanceSettings.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gbAdvanceSettings.Radius = 3;
-            this.gbAdvanceSettings.Size = new System.Drawing.Size(194, 218);
+            this.gbAdvanceSettings.Size = new System.Drawing.Size(194, 214);
             this.gbAdvanceSettings.TabIndex = 256;
             this.gbAdvanceSettings.Text = "Advance Settings";
             this.gbAdvanceSettings.TextLocation = new System.Drawing.Point(10, 8);
@@ -206,8 +206,38 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(188, 182);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(188, 178);
             this.tableLayoutPanel7.TabIndex = 258;
+            // 
+            // cbProductSummary
+            // 
+            this.cbProductSummary.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbProductSummary.AutoSize = true;
+            this.cbProductSummary.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbProductSummary.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbProductSummary.Location = new System.Drawing.Point(10, 115);
+            this.cbProductSummary.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbProductSummary.Name = "cbProductSummary";
+            this.cbProductSummary.Size = new System.Drawing.Size(149, 21);
+            this.cbProductSummary.TabIndex = 242;
+            this.cbProductSummary.Text = "Product Report Only";
+            this.cbProductSummary.UseVisualStyleBackColor = true;
+            this.cbProductSummary.Visible = false;
+            // 
+            // cbInvoiceSortByCustomer
+            // 
+            this.cbInvoiceSortByCustomer.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbInvoiceSortByCustomer.AutoSize = true;
+            this.cbInvoiceSortByCustomer.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbInvoiceSortByCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbInvoiceSortByCustomer.Location = new System.Drawing.Point(10, 43);
+            this.cbInvoiceSortByCustomer.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbInvoiceSortByCustomer.Name = "cbInvoiceSortByCustomer";
+            this.cbInvoiceSortByCustomer.Size = new System.Drawing.Size(131, 21);
+            this.cbInvoiceSortByCustomer.TabIndex = 240;
+            this.cbInvoiceSortByCustomer.Text = "Sort By Customer";
+            this.cbInvoiceSortByCustomer.UseVisualStyleBackColor = true;
+            this.cbInvoiceSortByCustomer.Visible = false;
             // 
             // cbInvoiceMode
             // 
@@ -215,14 +245,29 @@
             this.cbInvoiceMode.AutoSize = true;
             this.cbInvoiceMode.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbInvoiceMode.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbInvoiceMode.Location = new System.Drawing.Point(10, 9);
+            this.cbInvoiceMode.Location = new System.Drawing.Point(10, 7);
             this.cbInvoiceMode.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.cbInvoiceMode.Name = "cbInvoiceMode";
-            this.cbInvoiceMode.Size = new System.Drawing.Size(95, 17);
+            this.cbInvoiceMode.Size = new System.Drawing.Size(109, 21);
             this.cbInvoiceMode.TabIndex = 239;
             this.cbInvoiceMode.Text = "Invoice Mode";
             this.cbInvoiceMode.UseVisualStyleBackColor = true;
             this.cbInvoiceMode.CheckedChanged += new System.EventHandler(this.cbInvoiceMode_CheckedChanged);
+            // 
+            // cbCustomerSummaryList
+            // 
+            this.cbCustomerSummaryList.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbCustomerSummaryList.AutoSize = true;
+            this.cbCustomerSummaryList.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbCustomerSummaryList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbCustomerSummaryList.Location = new System.Drawing.Point(10, 79);
+            this.cbCustomerSummaryList.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbCustomerSummaryList.Name = "cbCustomerSummaryList";
+            this.cbCustomerSummaryList.Size = new System.Drawing.Size(160, 21);
+            this.cbCustomerSummaryList.TabIndex = 241;
+            this.cbCustomerSummaryList.Text = "Customer Report Only";
+            this.cbCustomerSummaryList.UseVisualStyleBackColor = true;
+            this.cbCustomerSummaryList.Visible = false;
             // 
             // btnFilterApply
             // 
@@ -241,7 +286,7 @@
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
             this.btnFilterApply.Image = null;
             this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilterApply.Location = new System.Drawing.Point(1012, 181);
+            this.btnFilterApply.Location = new System.Drawing.Point(1012, 177);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -271,7 +316,7 @@
             this.gunaGroupBox4.Name = "gunaGroupBox4";
             this.gunaGroupBox4.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox4.Radius = 3;
-            this.gunaGroupBox4.Size = new System.Drawing.Size(144, 218);
+            this.gunaGroupBox4.Size = new System.Drawing.Size(144, 214);
             this.gunaGroupBox4.TabIndex = 262;
             this.gunaGroupBox4.Text = "D/O Type & Status";
             this.gunaGroupBox4.TextLocation = new System.Drawing.Point(10, 8);
@@ -291,7 +336,7 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(138, 182);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(138, 178);
             this.tableLayoutPanel13.TabIndex = 258;
             // 
             // cmbDOType
@@ -315,7 +360,7 @@
             this.cmbDOType.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbDOType.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbDOType.Radius = 3;
-            this.cmbDOType.Size = new System.Drawing.Size(128, 23);
+            this.cmbDOType.Size = new System.Drawing.Size(128, 26);
             this.cmbDOType.StartIndex = 0;
             this.cmbDOType.TabIndex = 253;
             // 
@@ -336,7 +381,7 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(138, 136);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(138, 132);
             this.tableLayoutPanel15.TabIndex = 263;
             // 
             // cbRemoved
@@ -346,7 +391,7 @@
             this.cbRemoved.ForeColor = System.Drawing.Color.Red;
             this.cbRemoved.Location = new System.Drawing.Point(3, 83);
             this.cbRemoved.Name = "cbRemoved";
-            this.cbRemoved.Size = new System.Drawing.Size(76, 17);
+            this.cbRemoved.Size = new System.Drawing.Size(89, 23);
             this.cbRemoved.TabIndex = 159;
             this.cbRemoved.Text = "Cancelled";
             this.cbRemoved.UseVisualStyleBackColor = true;
@@ -359,7 +404,7 @@
             this.cbInProgress.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.cbInProgress.Location = new System.Drawing.Point(3, 3);
             this.cbInProgress.Name = "cbInProgress";
-            this.cbInProgress.Size = new System.Drawing.Size(84, 17);
+            this.cbInProgress.Size = new System.Drawing.Size(100, 23);
             this.cbInProgress.TabIndex = 157;
             this.cbInProgress.Text = "In progress";
             this.cbInProgress.UseVisualStyleBackColor = true;
@@ -371,7 +416,7 @@
             this.cbCompleted.ForeColor = System.Drawing.Color.Green;
             this.cbCompleted.Location = new System.Drawing.Point(3, 43);
             this.cbCompleted.Name = "cbCompleted";
-            this.cbCompleted.Size = new System.Drawing.Size(82, 17);
+            this.cbCompleted.Size = new System.Drawing.Size(98, 23);
             this.cbCompleted.TabIndex = 158;
             this.cbCompleted.Text = "Completed";
             this.cbCompleted.UseVisualStyleBackColor = true;
@@ -390,7 +435,7 @@
             this.gunaGroupBox5.Name = "gunaGroupBox5";
             this.gunaGroupBox5.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox5.Radius = 3;
-            this.gunaGroupBox5.Size = new System.Drawing.Size(344, 218);
+            this.gunaGroupBox5.Size = new System.Drawing.Size(344, 214);
             this.gunaGroupBox5.TabIndex = 261;
             this.gunaGroupBox5.Text = "Date Range";
             this.gunaGroupBox5.TextLocation = new System.Drawing.Point(10, 8);
@@ -411,7 +456,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(338, 182);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(338, 178);
             this.tableLayoutPanel8.TabIndex = 258;
             // 
             // tableLayoutPanel16
@@ -429,7 +474,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(328, 30);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(328, 26);
             this.tableLayoutPanel16.TabIndex = 263;
             // 
             // lblNextMonth
@@ -439,10 +484,10 @@
             this.lblNextMonth.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblNextMonth.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Italic);
             this.lblNextMonth.ForeColor = System.Drawing.Color.Magenta;
-            this.lblNextMonth.Location = new System.Drawing.Point(266, 5);
+            this.lblNextMonth.Location = new System.Drawing.Point(255, 5);
             this.lblNextMonth.Margin = new System.Windows.Forms.Padding(5);
             this.lblNextMonth.Name = "lblNextMonth";
-            this.lblNextMonth.Size = new System.Drawing.Size(57, 12);
+            this.lblNextMonth.Size = new System.Drawing.Size(68, 15);
             this.lblNextMonth.TabIndex = 244;
             this.lblNextMonth.Text = "Next Month";
             this.lblNextMonth.Click += new System.EventHandler(this.lblNextMonth_Click);
@@ -456,7 +501,7 @@
             this.lblPrevMonth.Location = new System.Drawing.Point(103, 5);
             this.lblPrevMonth.Margin = new System.Windows.Forms.Padding(5);
             this.lblPrevMonth.Name = "lblPrevMonth";
-            this.lblPrevMonth.Size = new System.Drawing.Size(56, 12);
+            this.lblPrevMonth.Size = new System.Drawing.Size(67, 15);
             this.lblPrevMonth.TabIndex = 243;
             this.lblPrevMonth.Text = "Prev Month";
             this.lblPrevMonth.Click += new System.EventHandler(this.lblPrevMonth_Click);
@@ -484,10 +529,10 @@
             this.lblRangeEnd.AutoSize = true;
             this.lblRangeEnd.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRangeEnd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRangeEnd.Location = new System.Drawing.Point(66, 15);
+            this.lblRangeEnd.Location = new System.Drawing.Point(63, 13);
             this.lblRangeEnd.Margin = new System.Windows.Forms.Padding(5);
             this.lblRangeEnd.Name = "lblRangeEnd";
-            this.lblRangeEnd.Size = new System.Drawing.Size(27, 13);
+            this.lblRangeEnd.Size = new System.Drawing.Size(30, 17);
             this.lblRangeEnd.TabIndex = 243;
             this.lblRangeEnd.Text = "End";
             // 
@@ -544,9 +589,9 @@
             this.cbPODate.AutoSize = true;
             this.cbPODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbPODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbPODate.Location = new System.Drawing.Point(138, 9);
+            this.cbPODate.Location = new System.Drawing.Point(138, 7);
             this.cbPODate.Name = "cbPODate";
-            this.cbPODate.Size = new System.Drawing.Size(72, 17);
+            this.cbPODate.Size = new System.Drawing.Size(83, 21);
             this.cbPODate.TabIndex = 240;
             this.cbPODate.Text = "P/O Date";
             this.cbPODate.UseVisualStyleBackColor = true;
@@ -558,10 +603,10 @@
             this.cbDeliveredDate.AutoSize = true;
             this.cbDeliveredDate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbDeliveredDate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbDeliveredDate.Location = new System.Drawing.Point(10, 9);
+            this.cbDeliveredDate.Location = new System.Drawing.Point(10, 7);
             this.cbDeliveredDate.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.cbDeliveredDate.Name = "cbDeliveredDate";
-            this.cbDeliveredDate.Size = new System.Drawing.Size(101, 17);
+            this.cbDeliveredDate.Size = new System.Drawing.Size(116, 21);
             this.cbDeliveredDate.TabIndex = 238;
             this.cbDeliveredDate.Text = "Delivered Date";
             this.cbDeliveredDate.UseVisualStyleBackColor = true;
@@ -575,9 +620,9 @@
             this.cbDODate.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbDODate.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbDODate.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbDODate.Location = new System.Drawing.Point(239, 9);
+            this.cbDODate.Location = new System.Drawing.Point(239, 7);
             this.cbDODate.Name = "cbDODate";
-            this.cbDODate.Size = new System.Drawing.Size(74, 17);
+            this.cbDODate.Size = new System.Drawing.Size(85, 21);
             this.cbDODate.TabIndex = 239;
             this.cbDODate.Text = "D/O Date";
             this.cbDODate.UseVisualStyleBackColor = true;
@@ -635,10 +680,10 @@
             this.lblRangeStart.AutoSize = true;
             this.lblRangeStart.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRangeStart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRangeStart.Location = new System.Drawing.Point(62, 15);
+            this.lblRangeStart.Location = new System.Drawing.Point(58, 13);
             this.lblRangeStart.Margin = new System.Windows.Forms.Padding(5);
             this.lblRangeStart.Name = "lblRangeStart";
-            this.lblRangeStart.Size = new System.Drawing.Size(31, 13);
+            this.lblRangeStart.Size = new System.Drawing.Size(35, 17);
             this.lblRangeStart.TabIndex = 242;
             this.lblRangeStart.Text = "Start";
             // 
@@ -656,7 +701,7 @@
             this.gunaGroupBox2.Name = "gunaGroupBox2";
             this.gunaGroupBox2.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox2.Radius = 3;
-            this.gunaGroupBox2.Size = new System.Drawing.Size(294, 218);
+            this.gunaGroupBox2.Size = new System.Drawing.Size(294, 214);
             this.gunaGroupBox2.TabIndex = 255;
             this.gunaGroupBox2.Text = "Customer";
             this.gunaGroupBox2.TextLocation = new System.Drawing.Point(10, 8);
@@ -676,7 +721,7 @@
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(288, 182);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(288, 178);
             this.tableLayoutPanel17.TabIndex = 258;
             // 
             // cmbCustomer
@@ -690,7 +735,7 @@
             this.cmbCustomer.Location = new System.Drawing.Point(4, 40);
             this.cmbCustomer.Margin = new System.Windows.Forms.Padding(4);
             this.cmbCustomer.Name = "cmbCustomer";
-            this.cmbCustomer.Size = new System.Drawing.Size(280, 21);
+            this.cmbCustomer.Size = new System.Drawing.Size(280, 25);
             this.cmbCustomer.TabIndex = 156;
             // 
             // lblCustomer
@@ -698,10 +743,10 @@
             this.lblCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCustomer.AutoSize = true;
             this.lblCustomer.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCustomer.Location = new System.Drawing.Point(4, 23);
+            this.lblCustomer.Location = new System.Drawing.Point(4, 19);
             this.lblCustomer.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(56, 13);
+            this.lblCustomer.Size = new System.Drawing.Size(64, 17);
             this.lblCustomer.TabIndex = 155;
             this.lblCustomer.Text = "Customer";
             // 
@@ -728,10 +773,10 @@
             this.lblInvoiceMode.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblInvoiceMode.AutoSize = true;
             this.lblInvoiceMode.Font = new System.Drawing.Font("Segoe UI Semibold", 10.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblInvoiceMode.Location = new System.Drawing.Point(285, 15);
+            this.lblInvoiceMode.Location = new System.Drawing.Point(285, 13);
             this.lblInvoiceMode.Margin = new System.Windows.Forms.Padding(5);
             this.lblInvoiceMode.Name = "lblInvoiceMode";
-            this.lblInvoiceMode.Size = new System.Drawing.Size(108, 19);
+            this.lblInvoiceMode.Size = new System.Drawing.Size(130, 23);
             this.lblInvoiceMode.TabIndex = 174;
             this.lblInvoiceMode.Text = "INVOICE MODE";
             this.lblInvoiceMode.Visible = false;
@@ -859,10 +904,10 @@
             this.lblSelectAll.Font = new System.Drawing.Font("Segoe UI Semibold", 6F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblSelectAll.ForeColor = System.Drawing.Color.Blue;
-            this.lblSelectAll.Location = new System.Drawing.Point(660, 9);
+            this.lblSelectAll.Location = new System.Drawing.Point(648, 8);
             this.lblSelectAll.Margin = new System.Windows.Forms.Padding(0, 0, 5, 0);
             this.lblSelectAll.Name = "lblSelectAll";
-            this.lblSelectAll.Size = new System.Drawing.Size(45, 11);
+            this.lblSelectAll.Size = new System.Drawing.Size(57, 12);
             this.lblSelectAll.TabIndex = 174;
             this.lblSelectAll.Text = "SELECT ALL";
             this.lblSelectAll.Visible = false;
@@ -879,14 +924,14 @@
             this.dgvDOList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvDOList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOList.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvDOList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOList.Location = new System.Drawing.Point(5, 75);
@@ -994,10 +1039,10 @@
             this.lblMainList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblMainList.AutoSize = true;
             this.lblMainList.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblMainList.Location = new System.Drawing.Point(5, 26);
+            this.lblMainList.Location = new System.Drawing.Point(5, 22);
             this.lblMainList.Margin = new System.Windows.Forms.Padding(5);
             this.lblMainList.Name = "lblMainList";
-            this.lblMainList.Size = new System.Drawing.Size(60, 19);
+            this.lblMainList.Size = new System.Drawing.Size(72, 23);
             this.lblMainList.TabIndex = 166;
             this.lblMainList.Text = "D/O List";
             this.lblMainList.Click += new System.EventHandler(this.lblMainList_Click);
@@ -1028,24 +1073,24 @@
             this.dgvDOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvDOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.None;
             this.dgvDOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvDOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
             this.dgvDOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvDOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvDOItemList.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvDOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvDOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvDOItemList.Location = new System.Drawing.Point(5, 75);
@@ -1113,10 +1158,10 @@
             this.lblSubList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblSubList.AutoSize = true;
             this.lblSubList.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblSubList.Location = new System.Drawing.Point(5, 26);
+            this.lblSubList.Location = new System.Drawing.Point(5, 22);
             this.lblSubList.Margin = new System.Windows.Forms.Padding(5);
             this.lblSubList.Name = "lblSubList";
-            this.lblSubList.Size = new System.Drawing.Size(92, 19);
+            this.lblSubList.Size = new System.Drawing.Size(112, 23);
             this.lblSubList.TabIndex = 157;
             this.lblSubList.Text = "D/O Item List";
             // 
@@ -1139,54 +1184,9 @@
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1348, 703);
             this.tableLayoutPanel6.TabIndex = 173;
             // 
-            // cbInvoiceSortByCustomer
-            // 
-            this.cbInvoiceSortByCustomer.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbInvoiceSortByCustomer.AutoSize = true;
-            this.cbInvoiceSortByCustomer.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbInvoiceSortByCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbInvoiceSortByCustomer.Location = new System.Drawing.Point(10, 45);
-            this.cbInvoiceSortByCustomer.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbInvoiceSortByCustomer.Name = "cbInvoiceSortByCustomer";
-            this.cbInvoiceSortByCustomer.Size = new System.Drawing.Size(113, 17);
-            this.cbInvoiceSortByCustomer.TabIndex = 240;
-            this.cbInvoiceSortByCustomer.Text = "Sort By Customer";
-            this.cbInvoiceSortByCustomer.UseVisualStyleBackColor = true;
-            this.cbInvoiceSortByCustomer.Visible = false;
-            // 
-            // cbCustomerSummaryList
-            // 
-            this.cbCustomerSummaryList.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbCustomerSummaryList.AutoSize = true;
-            this.cbCustomerSummaryList.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbCustomerSummaryList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbCustomerSummaryList.Location = new System.Drawing.Point(10, 81);
-            this.cbCustomerSummaryList.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbCustomerSummaryList.Name = "cbCustomerSummaryList";
-            this.cbCustomerSummaryList.Size = new System.Drawing.Size(140, 17);
-            this.cbCustomerSummaryList.TabIndex = 241;
-            this.cbCustomerSummaryList.Text = "Customer Report Only";
-            this.cbCustomerSummaryList.UseVisualStyleBackColor = true;
-            this.cbCustomerSummaryList.Visible = false;
-            // 
-            // cbProductSummary
-            // 
-            this.cbProductSummary.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbProductSummary.AutoSize = true;
-            this.cbProductSummary.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbProductSummary.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbProductSummary.Location = new System.Drawing.Point(10, 117);
-            this.cbProductSummary.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbProductSummary.Name = "cbProductSummary";
-            this.cbProductSummary.Size = new System.Drawing.Size(131, 17);
-            this.cbProductSummary.TabIndex = 242;
-            this.cbProductSummary.Text = "Product Report Only";
-            this.cbProductSummary.UseVisualStyleBackColor = true;
-            this.cbProductSummary.Visible = false;
-            // 
             // frmSBBDOListVer3
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1348, 703);

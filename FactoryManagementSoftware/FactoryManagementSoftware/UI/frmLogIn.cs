@@ -17,9 +17,6 @@ namespace FactoryManagementSoftware.UI
         public frmLogIn()
         {
             InitializeComponent();
-
-           
-
         }
 
 

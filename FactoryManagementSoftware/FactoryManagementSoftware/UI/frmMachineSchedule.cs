@@ -149,7 +149,8 @@ namespace FactoryManagementSoftware.UI
         readonly string headerEndDate = "ESTIMATE END";
         //readonly string headerProductionDay = "PRODUCTION DAY";
         readonly string headerFactory = "FAC.";
-        readonly string headerMachine = "MAC.";
+        readonly string headerMachine = "MAC.ID";
+        readonly string headerMachineName = "MAC.";
         readonly string headerPartName = "NAME";
         readonly string headerPartCode = "CODE";
         readonly string headerPartCycleTime = "CYCLE TIME";
@@ -227,6 +228,7 @@ namespace FactoryManagementSoftware.UI
             
             dt.Columns.Add(headerFactory, typeof(string));
             dt.Columns.Add(headerMachine, typeof(int));
+            dt.Columns.Add(headerMachineName, typeof(string));
             dt.Columns.Add(headerStartDate, typeof(DateTime));
             dt.Columns.Add(headerEndDate, typeof(DateTime));
             //dt.Columns.Add(headerProductionDay, typeof(string));
@@ -320,6 +322,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerEndDate].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerFactory].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerMachine].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[headerMachineName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerTargetQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerAbleProduceQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[headerProducedQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -352,7 +355,8 @@ namespace FactoryManagementSoftware.UI
             //192, 0, 0
             Color importantColor = Color.OrangeRed;
             //importantColor = Color.FromArgb(192, 0, 0);
-            dgv.Columns[headerMachine].DefaultCellStyle.ForeColor = importantColor;
+            //dgv.Columns[headerMachine].DefaultCellStyle.ForeColor = importantColor;
+            dgv.Columns[headerMachineName].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[headerPartName].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[headerPartCode].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[headerPartCycleTime].DefaultCellStyle.ForeColor = normalColor;
@@ -716,6 +720,7 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule[headerFactory] = row[dalMac.MacLocationName];
                     row_Schedule[headerMachine] = row[dalMac.MacID];
+                    row_Schedule[headerMachineName] = row[dalMac.MacName];
 
                     row_Schedule[headerPartName] = row[dalItem.ItemName];
                     row_Schedule[headerPartCode] = row[dalItem.ItemCode];

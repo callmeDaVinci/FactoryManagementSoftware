@@ -88,7 +88,7 @@ namespace FactoryManagementSoftware.Module
 (Tel) 016 - 282 8195 (Email) sales@safetyplastics.com.my";
 
         public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
-        public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05A (A) (31/05/24)";
+        public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05A (A) (10/07/24)";
         public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
 
         #endregion

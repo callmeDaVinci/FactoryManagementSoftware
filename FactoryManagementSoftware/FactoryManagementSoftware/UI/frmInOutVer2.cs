@@ -855,7 +855,18 @@ namespace FactoryManagementSoftware.UI
 
                     if(dt.Columns.Contains(daltrfHist.Balance))
                     {
-                        float balance = Convert.ToSingle(row[daltrfHist.Balance].ToString());
+                        string balanceString = row[daltrfHist.Balance].ToString();
+                        float balance;
+
+                        if (float.TryParse(balanceString, out balance))
+                        {
+                            // Successfully parsed balance
+                        }
+                        else
+                        {
+                            // Handle the error, set balance to a default value
+                            balance = 0.0f;
+                        }
 
                         balance = (float)Math.Truncate(balance * 1000) / 1000;
 
