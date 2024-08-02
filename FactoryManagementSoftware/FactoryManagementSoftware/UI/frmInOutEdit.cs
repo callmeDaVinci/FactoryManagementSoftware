@@ -901,7 +901,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //<add name="connstrng" connectionString="Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True"/>
                     //myconnstrng == "SERVER=192.168.1.102;DATABASE=Factory;USER ID=stock;PASSWORD=stock"
-                    if (myconnstrng == text.DB_Semenyih)
+                    if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
                     {
                         //Semenyih
                         cmb.DataSource = null;
@@ -909,6 +909,7 @@ namespace FactoryManagementSoftware.UI
                         //cmb.DisplayMember = columnName;
 
                         cmb.Items.Add(text.Factory_Semenyih);
+                        cmb.Items.Add(text.Factory_SMY_AssemblyLine);
                         cmb.Items.Add(text.Factory_OUG);
 
                         cmb.Items.Add(text.Factory_Bina);
@@ -929,6 +930,9 @@ namespace FactoryManagementSoftware.UI
                         lacationTable.DefaultView.Sort = columnName + " ASC";
                         cmb.DataSource = lacationTable;
                         cmb.DisplayMember = columnName;
+
+                        //cmb.Items.Add(text.Factory_SMY_AssemblyLine);
+
                         cmb.Text = text.Factory_2;
 
                     }
@@ -938,6 +942,8 @@ namespace FactoryManagementSoftware.UI
                     lacationTable.DefaultView.Sort = columnName + " ASC";
                     cmb.DataSource = lacationTable;
                     cmb.DisplayMember = columnName;
+
+
                 }
 
             }

@@ -250,6 +250,7 @@ namespace FactoryManagementSoftware.Module
         
         public string Factory_Store { get; } = "STORE";
         public string Factory_Semenyih { get; } = "Semenyih";
+        public string Factory_SMY_AssemblyLine { get; } = "AssemblyLine";
         public string Factory_OUG { get; } = "OUG";
         public string Factory_Bina { get; } = "BINA";
 

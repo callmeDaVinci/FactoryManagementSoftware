@@ -3806,9 +3806,9 @@ namespace FactoryManagementSoftware.UI
             xlWorkSheet.PageSetup.Orientation = XlPageOrientation.xlPortrait;
             xlWorkSheet.PageSetup.Zoom = false;
             xlWorkSheet.PageSetup.CenterHorizontally = true;
-            //xlWorkSheet.PageSetup.FitToPagesWide = 1;
-            xlWorkSheet.PageSetup.FitToPagesTall = false;
-            xlWorkSheet.PageSetup.FitToPagesWide = false;
+            xlWorkSheet.PageSetup.FitToPagesWide = 1;
+            xlWorkSheet.PageSetup.FitToPagesTall = 1;
+            //xlWorkSheet.PageSetup.FitToPagesWide = false;
 
             double pointToCMRate = 0.035;
             xlWorkSheet.PageSetup.TopMargin = 0.5 / pointToCMRate;
@@ -5048,6 +5048,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Italic = true;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.WrapText = true;
 
             DOFormat = xlWorkSheet.get_Range(rowItemListLastRow).Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
@@ -5971,9 +5972,10 @@ namespace FactoryManagementSoftware.UI
 
                 if (myconnstrng == text.DB_Semenyih)
                 {
-                    string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
+                    string folderName = DODate.Year.ToString() + DODate.Month.ToString("00");
+                    string year = DODate.Year.ToString();
 
-                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(1.DO)\" + folderName;
+                    path = @"\\ADMIN001\Admin Server\( OFFICE )\(1.DO)\" + year + @"\" + folderName;
                 }
 
                 Directory.CreateDirectory(path);
@@ -6620,7 +6622,7 @@ namespace FactoryManagementSoftware.UI
                                     //withS = "S";
                                 }
 
-                                totalRemark = "TOT. " + totalOringBag + " ORing PKT" + (totalOringBag > 1 ? "S" : "");
+                                totalRemark = "TOT. " + totalOringBag + " + O'Ring PKT" + (totalOringBag > 1 ? "S" : "");
                             }
                             else if (totalBalPcs > 0)
                             {
@@ -6629,7 +6631,7 @@ namespace FactoryManagementSoftware.UI
                    
 
                                     totalBag -= totalOringBag;
-                                    totalRemark = "TOT. " + totalBag + " BAG"+ (totalBag > 1 ? "S" : "") + " + " + totalBalPcs + " PCS " + totalOringBag + "ORing PKT" + (totalOringBag>1? "S" : "");
+                                    totalRemark = "TOT. " + totalBag + " BAG"+ (totalBag > 1 ? "S" : "") + " + " + totalBalPcs + " PCS + " + totalOringBag + " O'Ring PKT" + (totalOringBag>1? "S" : "");
                                 }
                                 else
                                 {
@@ -6642,7 +6644,7 @@ namespace FactoryManagementSoftware.UI
                                 if (totalOringBag > 0)
                                 {
                                     totalBag -= totalOringBag;
-                                    totalRemark = "TOT. " + totalBag + " BAG" + (totalBag > 1 ? "S" : "") + totalOringBag + " ORing PKT" + (totalOringBag > 1 ? "S" : "");
+                                    totalRemark = "TOT. " + totalBag + " BAG" + (totalBag > 1 ? "S" : "") +" + "+ totalOringBag + " O'Ring PKT" + (totalOringBag > 1 ? "S" : "");
                                 }
                                 else
                                 {
@@ -6960,7 +6962,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(5.INVOICE)\";
+                    path = @"\\ADMIN001\Admin Server\( ACCOUNT & FINANCE )\(SBB INVOICE)\";
                 }
 
                 Directory.CreateDirectory(path);
@@ -7855,7 +7857,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(5.INVOICE)\";
+                    path = @"\\ADMIN001\Admin Server\( ACCOUNT & FINANCE )\(SBB INVOICE)\";
                 }
 
                 Directory.CreateDirectory(path);
@@ -8052,6 +8054,7 @@ namespace FactoryManagementSoftware.UI
                             NewExcelPageSetup(xlWorkSheet);//346ms
                             xlexcel.PrintCommunication = true;
                             xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
+                          
 
                             //if(PONo == Text_MultiPOCode)
                             //{
@@ -8753,7 +8756,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //string folderName = DateTime.Now.Year.ToString() + DateTime.Now.Month.ToString("00");
 
-                    path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(5.INVOICE)\";
+                    path = @"\\ADMIN001\Admin Server\( ACCOUNT & FINANCE )\(SBB INVOICE)\";
                 }
 
                 Directory.CreateDirectory(path);
@@ -9717,9 +9720,11 @@ namespace FactoryManagementSoftware.UI
 
             cmbCustomer.Text = "ALL";
 
-            DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-15);
             DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
 
+
+            
             dtpRangeStart.Value = firstDay;
             dtpRangeEnd.Value = lastDay;
 
@@ -9848,6 +9853,12 @@ namespace FactoryManagementSoftware.UI
                 cbInProgress.Enabled = false;
                 cbRemoved.Enabled = false;
                 cbCompleted.Enabled = false;
+
+                DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+                dtpRangeStart.Value = firstDay;
+                dtpRangeEnd.Value = lastDay;
+
             }
         }
 
