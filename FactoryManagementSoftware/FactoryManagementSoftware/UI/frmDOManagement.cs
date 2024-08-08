@@ -4487,7 +4487,7 @@ namespace FactoryManagementSoftware.UI
                         if (myconnstrng == text.DB_Semenyih)
                         {
 
-                            path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(Internal Transfer_NEW)\" + folderName;
+                            path = @"\\ADMIN001\Admin Server\( OFFICE )\(Internal Transfer_NEW)\" + folderName;
                         }
 
                         Directory.CreateDirectory(path);
@@ -5046,7 +5046,7 @@ namespace FactoryManagementSoftware.UI
                         if (myconnstrng == text.DB_Semenyih)
                         {
 
-                            path = @"\\ADMIN001\Admin Server\(1.OFFICE)\(INTERNAL TRANSFER)\" + folderName;
+                            path = @"\\ADMIN001\Admin Server\( OFFICE )\(INTERNAL TRANSFER)\" + folderName;
                         }
 
                         Directory.CreateDirectory(path);

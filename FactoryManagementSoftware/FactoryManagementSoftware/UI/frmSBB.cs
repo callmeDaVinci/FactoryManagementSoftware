@@ -2977,13 +2977,13 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private void ShowData(DataTable dt)
+        private void ShowTopCustomerRanking(DataTable dt_DeliveredData)
         {
-            dt.DefaultView.Sort = header_CustID + " ASC";
-            dt = dt.DefaultView.ToTable();
-            dt.AcceptChanges();
+            dt_DeliveredData.DefaultView.Sort = header_CustID + " ASC";
+            dt_DeliveredData = dt_DeliveredData.DefaultView.ToTable();
+            dt_DeliveredData.AcceptChanges();
 
-            DataTable dt_Merge = dt.Copy();
+            DataTable dt_Merge = dt_DeliveredData.Copy();
 
 
             string header_Removed = "REMOVED";
@@ -3080,6 +3080,28 @@ namespace FactoryManagementSoftware.UI
 
             //ResetTopCustomerData();
 
+            for (int i = 0; i < dt_Merge.Rows.Count; i++)
+            {
+                string deliveredBag = dt_Merge.Rows[i][header_TotalBag].ToString();
+                string custID = dt_Merge.Rows[i][header_CustID].ToString();
+                int oringDeliveredBag = 0;
+                //get oring deliverd for customer
+                foreach (DataRow row in dt_OringDelivered.Rows)
+                {
+                    if (custID.Equals(row[header_CustID].ToString()))
+                    {
+                        oringDeliveredBag += int.TryParse(row[header_TotalBag].ToString(), out oringDeliveredBag) ? oringDeliveredBag : 0;
+                    }
+                }
+
+                int temp = int.TryParse(deliveredBag, out temp) ? temp : 0;
+
+                dt_Merge.Rows[i][header_TotalBag] = (temp - oringDeliveredBag).ToString() ;
+            }
+            dt_Merge.DefaultView.Sort = header_TotalBag + " DESC";
+            dt_Merge = dt_Merge.DefaultView.ToTable();
+            dt_Merge.AcceptChanges();
+
             int otherBagDelivered = 0;
             int otherBalPacketDelivered = 0;
             int otherBalPcsDelivered = 0;
@@ -3118,7 +3140,7 @@ namespace FactoryManagementSoftware.UI
                             excludeORingDeliveredBagQty = 0;
                         }
 
-                        deliveredBag = excludeORingDeliveredBagQty.ToString();
+                       // deliveredBag = excludeORingDeliveredBagQty.ToString();
 
                         if (i >= 9)
                         {
@@ -3273,8 +3295,11 @@ namespace FactoryManagementSoftware.UI
 
             balDelivered += " (TOTAL " + totalPcsDelivered + " PCS)";
 
-            lblDeliveredBalance.Text = balDelivered;
+            lblDeliveredBalance.Text = balDelivered;//1948ms
         }
+
+
+       
 
         private void LoadDeliveredData()
         {
@@ -3336,7 +3361,7 @@ namespace FactoryManagementSoftware.UI
             }
             //2
             if(dt_DeliveredReport != null && dt_DeliveredReport.Rows.Count > 0)
-            ShowData(dt_DeliveredReport);
+            ShowTopCustomerRanking(dt_DeliveredReport);
             //105
         }
 

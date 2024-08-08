@@ -27,6 +27,8 @@ using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
 using System.Runtime.CompilerServices;
 using System.Threading;
+using System.Configuration;
+using iTextSharp.text.pdf;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -35,6 +37,8 @@ namespace FactoryManagementSoftware.UI
         public frmForecastReport_NEW()
         {
             InitializeComponent();
+
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
             //tool.GetCustItemWithForecast(1, 1, 2020, 3);
             tool.DoubleBuffered(dgvForecastReport, true);
@@ -50,11 +54,18 @@ namespace FactoryManagementSoftware.UI
 
             }
 
+            if (myconnstrng == text.DB_Semenyih)
+            {
+                cmbCustomer.Text = "SP OUG";
+            }
+
             cmbCustomer.SelectedIndex = 0;
             InitializeFilterData();
         }
 
         #region variable declare
+
+        static public string myconnstrng;
 
         enum ColorSet
         {
@@ -2428,7 +2439,15 @@ namespace FactoryManagementSoftware.UI
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
+
+
                         uData.ready_stock = uData.ready_stock - (float) SemenyihStock;
+
+
+                        if (myconnstrng == text.DB_Semenyih)
+                        {
+                            uData.ready_stock = (float)SemenyihStock;
+                        }
 
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
@@ -2578,6 +2597,11 @@ namespace FactoryManagementSoftware.UI
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
                         uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
+
+                        if (myconnstrng == text.DB_Semenyih)
+                        {
+                            uData.ready_stock = (float)SemenyihStock;
+                        }
 
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
@@ -2997,6 +3021,11 @@ namespace FactoryManagementSoftware.UI
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
                         uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
 
+                        if (myconnstrng == text.DB_Semenyih)
+                        {
+                            uData.ready_stock = (float)SemenyihStock;
+                        }
+
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
@@ -3159,6 +3188,11 @@ namespace FactoryManagementSoftware.UI
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
                         uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
+
+                        if (myconnstrng == text.DB_Semenyih)
+                        {
+                            uData.ready_stock = (float)SemenyihStock;
+                        }
 
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
@@ -4763,9 +4797,12 @@ namespace FactoryManagementSoftware.UI
                         string DB_Customer = row[dalTrfHist.TrfTo].ToString();
 
                         string item = row[dalTrfHist.TrfItemCode].ToString();
+
+                        DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
                         if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                         {
-                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+                            
                             //string cust = row[dalTrfHist.TrfTo].ToString();
 
 
@@ -4774,6 +4811,18 @@ namespace FactoryManagementSoftware.UI
                                 MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
                             }
                         }
+                        else if (myconnstrng == text.DB_Semenyih && row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        {
+                            if(DB_Customer.Equals("OUG") || DB_Customer.Equals("SP OUG") || DB_Customer.Equals("DAIKIN") || DB_Customer.Equals("PYROCELL") || DB_Customer.Equals("PMMA"))
+                            {
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                        }
+
+
                     }
                 }
                 else
@@ -4813,17 +4862,29 @@ namespace FactoryManagementSoftware.UI
                         foreach (DataRow row in dt_TrfHist.Rows)
                         {
                             string DB_Customer = row[dalTrfHist.TrfTo].ToString();
-
+                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
                             string item = row[dalTrfHist.TrfItemCode].ToString();
                             if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                             {
-                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+                                
 
                                 if (trfDate >= start && trfDate <= end)
                                 {
                                     tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
                                 }
+
                             }
+                            else if (myconnstrng == text.DB_Semenyih && row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
+                                if (DB_Customer.Equals("OUG") || DB_Customer.Equals("SP OUG") || DB_Customer.Equals("DAIKIN") || DB_Customer.Equals("PYROCELL") || DB_Customer.Equals("PMMA"))
+                                {
+                                    if (trfDate >= start && trfDate <= end)
+                                    {
+                                        tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                    }
+                                }
+                            }
+
                         }
 
                         //get maxout
@@ -4847,13 +4908,23 @@ namespace FactoryManagementSoftware.UI
                     {
                         string item = row[dalTrfHist.TrfItemCode].ToString();
                         string DB_Customer = row[dalTrfHist.TrfTo].ToString();
+                        DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
                         if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode) && DB_Customer.Equals(customer))
                         {
-                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
 
                             if (trfDate >= start && trfDate <= end)
                             {
                                 MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                            }
+                        }
+                        else if (myconnstrng == text.DB_Semenyih && row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                        {
+                            if (DB_Customer.Equals("OUG") || DB_Customer.Equals("SP OUG") || DB_Customer.Equals("DAIKIN") || DB_Customer.Equals("PYROCELL") || DB_Customer.Equals("PMMA"))
+                            {
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    MaxOut += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
                             }
                         }
                     }
@@ -4883,10 +4954,18 @@ namespace FactoryManagementSoftware.UI
                         foreach (DataRow row in dt_TrfHist.Rows)
                         {
                             string item = row[dalTrfHist.TrfItemCode].ToString();
+                            DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
+
                             if (row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
                             {
-                                DateTime trfDate = Convert.ToDateTime(row[dalTrfHist.TrfDate]);
 
+                                if (trfDate >= start && trfDate <= end)
+                                {
+                                    tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
+                                }
+                            }
+                            else if (myconnstrng == text.DB_Semenyih && row[dalTrfHist.TrfResult].ToString().Equals("Passed") && item.Equals(itemCode))
+                            {
                                 if (trfDate >= start && trfDate <= end)
                                 {
                                     tmp += Convert.ToSingle(row[dalTrfHist.TrfQty]);
@@ -7846,6 +7925,10 @@ namespace FactoryManagementSoftware.UI
         private void frmForecastReport_NEW_Shown(object sender, EventArgs e)
         {
             OK_TO_CHECK_DATE_HABIT = true;
+            if (myconnstrng == text.DB_Semenyih)
+            {
+                cmbCustomer.Text = "SP OUG";
+            }
         }
 
         private void label13_Click(object sender, EventArgs e)

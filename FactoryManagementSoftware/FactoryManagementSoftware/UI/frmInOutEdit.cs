@@ -8,6 +8,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Drawing;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -1587,6 +1588,7 @@ namespace FactoryManagementSoftware.UI
             string childItemCode;
             string test = parentItemCode[5].ToString();
             string test2 = parentItemCode[7].ToString();
+            string oriFactoryName = factoryName;
 
             if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
             {
@@ -1664,7 +1666,9 @@ namespace FactoryManagementSoftware.UI
 
                         if(cbFromBina.Checked && factoryName.Equals(text.Factory_Semenyih))
                         {
-                            if(itemCat.Equals(text.Cat_Packaging))
+                            factoryName = oriFactoryName;
+
+                            if (itemCat.Equals(text.Cat_Packaging))
                             {
                                 dgv.Rows[n].Cells[FromColumnName].Value = text.Factory_Semenyih;
 
@@ -1676,8 +1680,16 @@ namespace FactoryManagementSoftware.UI
                             }
 
                         }
+                        else if (cbChildPartOutFromAssemblyLine.Checked && oriFactoryName.Equals(text.Factory_Semenyih))
+                        {
+                            factoryName = text.Factory_SMY_AssemblyLine;
+                            dgv.Rows[n].Cells[FromColumnName].Value = text.Factory_SMY_AssemblyLine;
+
+                        }
                         else
                         {
+                            factoryName = oriFactoryName;
+
                             dgv.Rows[n].Cells[FromColumnName].Value = factoryName;
 
                         }
@@ -2357,6 +2369,8 @@ namespace FactoryManagementSoftware.UI
         private void cmbTrfFromCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider4.Clear();
+            cmbTrfFrom.DataSource = null;
+            cmbTrfFrom.Items.Clear();
 
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length >3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
@@ -2400,11 +2414,30 @@ namespace FactoryManagementSoftware.UI
             {
                 cmbTrfFrom.DataSource = null;
             }
+
+            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains(text.Factory_SMY_AssemblyLine)))
+            {
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = true;
+                cbChildPartOutFromAssemblyLine.Checked = true;
+                cbChildPartOutFromAssemblyLine.Visible = true;
+            }
+            else
+            {
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = false;
+                cbChildPartOutFromAssemblyLine.Checked = false;
+                cbChildPartOutFromAssemblyLine.Visible = false;
+            }
+
         }
 
         private void cmbTrfToCategory_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider5.Clear();
+            cmbTrfTo.DataSource = null;
+            cmbTrfTo.Items.Clear();
+
             if (cmbTrfToCategory.Text.Equals("Factory"))
             {
                 DataTable dt = dalFac.NewSelectDESC();
@@ -3990,15 +4023,28 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbTrfTo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih))
+            //if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih))
+            //{
+            //    //cbFromBina.Checked = false;
+            //    //cbFromBina.Visible = true;
+            //    cbChildPartOutFromAssemblyLine.Checked = true;
+            //    cbChildPartOutFromAssemblyLine.Visible = true;
+
+            //}
+
+            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains("AssemblyLine")))
             {
-                cbFromBina.Checked = false;
-                cbFromBina.Visible = true;
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = true;
+                cbChildPartOutFromAssemblyLine.Checked = true;
+                cbChildPartOutFromAssemblyLine.Visible = true;
             }
             else
             {
-                cbFromBina.Checked = false;
-                cbFromBina.Visible = false;
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = false;
+                cbChildPartOutFromAssemblyLine.Checked = false;
+                cbChildPartOutFromAssemblyLine.Visible = false;
             }
         }
 

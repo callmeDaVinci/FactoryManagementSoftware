@@ -7665,7 +7665,7 @@ namespace FactoryManagementSoftware.UI
             var termsTable = new Dictionary<string, string>
             {
                 { "47", terms_90Days }, // AIK MENG
-                { "51", terms_CashOnDelivery }, // ALIKE
+                { "51", terms_60Days }, // ALIKE
                 { "37", terms_CashOnDelivery }, // BANDWELL
                 { "17", terms_90Days }, // BENTON
                 { "21", terms_120Days }, // BLUE

@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
             this.lblUnit = new System.Windows.Forms.Label();
             this.lblCategory = new System.Windows.Forms.Label();
             this.cmbTrfFromCategory = new System.Windows.Forms.ComboBox();
@@ -92,6 +92,7 @@
             this.tlpMainPanel = new System.Windows.Forms.TableLayoutPanel();
             this.tlpEditPanel = new System.Windows.Forms.TableLayoutPanel();
             this.btnShowHideEditPanel = new Guna.UI.WinForms.GunaGradientButton();
+            this.cbChildPartOutFromAssemblyLine = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -395,14 +396,14 @@
             this.dgvTransfer.AllowUserToResizeRows = false;
             this.dgvTransfer.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvTransfer.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTransfer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Consolas", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTransfer.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvTransfer.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTransfer.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvTransfer.GridColor = System.Drawing.SystemColors.Control;
@@ -664,7 +665,7 @@
             this.cbFromBina.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cbFromBina.AutoSize = true;
             this.cbFromBina.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbFromBina.Location = new System.Drawing.Point(298, 3);
+            this.cbFromBina.Location = new System.Drawing.Point(54, 66);
             this.cbFromBina.Name = "cbFromBina";
             this.cbFromBina.Size = new System.Drawing.Size(93, 23);
             this.cbFromBina.TabIndex = 124;
@@ -714,6 +715,7 @@
             this.tableLayoutPanel12.Controls.Add(this.cbItemGroupAutoOut, 3, 0);
             this.tableLayoutPanel12.Controls.Add(this.btnEdit, 3, 1);
             this.tableLayoutPanel12.Controls.Add(this.btnDelete, 1, 1);
+            this.tableLayoutPanel12.Controls.Add(this.cbFromBina, 0, 1);
             this.tableLayoutPanel12.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel12.Location = new System.Drawing.Point(0, 560);
             this.tableLayoutPanel12.Margin = new System.Windows.Forms.Padding(0);
@@ -841,9 +843,9 @@
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.cbChildPartOutFromAssemblyLine, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.cmbTrfTo, 2, 1);
             this.tableLayoutPanel4.Controls.Add(this.cmbTrfToCategory, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.cbFromBina, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.lblTo, 0, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 338);
@@ -1134,6 +1136,19 @@
             this.btnShowHideEditPanel.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnShowHideEditPanel.Click += new System.EventHandler(this.btnShowHideEditPanel_Click);
             // 
+            // cbChildPartOutFromAssemblyLine
+            // 
+            this.cbChildPartOutFromAssemblyLine.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.cbChildPartOutFromAssemblyLine.AutoSize = true;
+            this.cbChildPartOutFromAssemblyLine.Font = new System.Drawing.Font("Segoe UI", 6F);
+            this.cbChildPartOutFromAssemblyLine.Location = new System.Drawing.Point(214, 6);
+            this.cbChildPartOutFromAssemblyLine.Name = "cbChildPartOutFromAssemblyLine";
+            this.cbChildPartOutFromAssemblyLine.Size = new System.Drawing.Size(177, 17);
+            this.cbChildPartOutFromAssemblyLine.TabIndex = 231;
+            this.cbChildPartOutFromAssemblyLine.Text = "Child Part Out From AssemblyLine";
+            this.cbChildPartOutFromAssemblyLine.UseVisualStyleBackColor = true;
+            this.cbChildPartOutFromAssemblyLine.Visible = false;
+            // 
             // frmInOutEdit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -1256,5 +1271,6 @@
         private System.Windows.Forms.TableLayoutPanel tlpEditPanel;
         private Guna.UI.WinForms.GunaGradientButton btnShowHideEditPanel;
         private System.Windows.Forms.CheckBox cbItemGroupAutoOut;
+        private System.Windows.Forms.CheckBox cbChildPartOutFromAssemblyLine;
     }
 }
