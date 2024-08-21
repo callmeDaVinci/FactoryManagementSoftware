@@ -320,7 +320,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add("LOCATION");
 
             dt.Rows.Add(text.Factory_Semenyih);
-            dt.Rows.Add(text.Factory_Bina);
+            dt.Rows.Add(text.Factory_SMY_AssemblyLine);
             dt.Rows.Add("ALL");
 
             cmb.DataSource = dt;

@@ -9721,10 +9721,10 @@ namespace FactoryManagementSoftware.UI
             cmbCustomer.Text = "ALL";
 
             DateTime firstDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1).AddDays(-15);
-            DateTime lastDay = firstDay.AddMonths(1).AddDays(-1);
+
+            DateTime lastDay = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
 
 
-            
             dtpRangeStart.Value = firstDay;
             dtpRangeEnd.Value = lastDay;
 

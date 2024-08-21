@@ -515,26 +515,26 @@ namespace FactoryManagementSoftware.UI
                 return false;
         }
 
-        private float checkQty(float qtyInOut)
-        {
-            if(qtyInOut < 0)
-            {
-                qtyInOut = 0;
-            }
+        //private float checkQty(float qtyInOut)
+        //{
+        //    if(qtyInOut < 0)
+        //    {
+        //        qtyInOut = 0;
+        //    }
 
-            string unit = cmbTrfQtyUnit.Text;
+        //    string unit = cmbTrfQtyUnit.Text;
 
-            if (unit.Equals("g"))
-            {
-                qtyInOut = qtyInOut / 1000;
-            }
-            else if (string.IsNullOrEmpty(unit))
-            {
-                qtyInOut = 0;
-            }
+        //    if (unit.Equals("g"))
+        //    {
+        //        qtyInOut = qtyInOut / 1000;
+        //    }
+        //    else if (string.IsNullOrEmpty(unit))
+        //    {
+        //        qtyInOut = 0;
+        //    }
 
-            return qtyInOut;
-        }
+        //    return qtyInOut;
+        //}
 
         private string checkUnit(string keyword)
         {
@@ -2198,6 +2198,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnTransfer_Click(object sender, EventArgs e)
         {
+
             try
             {
                 if (NegativeBalCheck())
@@ -3480,8 +3481,39 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfTo.Text = dgv.Rows[selectedRow].Cells[ToColumnName].Value.ToString();
 
                 txtTrfQty.Text = dgv.Rows[selectedRow].Cells[QtyColumnName].Value.ToString();
-                cmbTrfQtyUnit.Text = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
-                txtTrfNote.Text = dgv.Rows[selectedRow].Cells[NoteColumnName].Value == null ? string.Empty : dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+
+                string UNIT = dgv.Rows[selectedRow].Cells[UnitColumnName].Value.ToString();
+
+                if(UNIT.ToUpper() == "PCS")
+                {
+                    UNIT = "piece";
+                }
+                cmbTrfQtyUnit.Text = UNIT;
+
+                string note = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+
+                //if note found " (AFTER BAL: )", then remove 
+                int startIndex = note.IndexOf("(AFTER BAL:");
+                if (startIndex != -1)
+                {
+                    int endIndex = note.IndexOf(")", startIndex);
+                    if (endIndex != -1)
+                    {
+                        // Remove the text from start to end index (inclusive)
+                        note = note.Remove(startIndex, (endIndex - startIndex) + 1);
+
+                        // Trim any extra spaces that might have been left
+                        note = note.Trim();
+
+                        // Ensure there's no extra space left before or after removing
+                        note = note.Replace("  ", " "); // Replace any double spaces with a single space
+
+                        // Update the cell value
+                        dgv.Rows[selectedRow].Cells[NoteColumnName].Value = note;
+                    }
+                }
+
+                txtTrfNote.Text = note;
 
             }
 
@@ -4166,6 +4198,8 @@ namespace FactoryManagementSoftware.UI
 
                     cmbTrfFrom.SelectedIndex = -1;
                     cmbTrfTo.SelectedIndex = -1;
+
+                   
                 }
             }
             else
@@ -4173,6 +4207,15 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfFromCategory.SelectedIndex = -1;
                 cmbTrfToCategory.SelectedIndex = -1;
             }
+
+            if (MainDashboard.myconnstrng == text.DB_Semenyih)
+            {
+                cmbTrfFrom.Text = text.Factory_Semenyih;
+                cmbTrfTo.Text = text.Factory_SMY_AssemblyLine;
+            }
+
+            string from = cmbTrfFrom.Text;
+
         }
 
         private void tableLayoutPanel9_Paint(object sender, PaintEventArgs e)
@@ -4296,6 +4339,11 @@ namespace FactoryManagementSoftware.UI
         {
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
                 GetLastTransferLocation(0);
+        }
+
+        private void dgvTransfer_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+
         }
     }
 }

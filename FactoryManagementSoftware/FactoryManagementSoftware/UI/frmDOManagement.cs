@@ -2241,7 +2241,7 @@ namespace FactoryManagementSoftware.UI
 
                 bool toRemove = bool.TryParse(row[text.Header_ToRemove].ToString(), out toRemove) ? toRemove : false;
 
-                if (!string.IsNullOrEmpty(itemCode) && !toRemove)
+                if (!string.IsNullOrEmpty(itemName) && !toRemove)
                 {
                     dt_Row = dt_Transfer_Item.NewRow();
 
