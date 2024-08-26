@@ -396,7 +396,7 @@ namespace FactoryManagementSoftware.UI
 
             if(cmbCat.Text.Equals("Part"))
             {
-                dt = dalItem.Search(productCode);
+                dt = dalItem.IsDuplicateItemCode(productCode);
             }
             else
             {
@@ -405,9 +405,21 @@ namespace FactoryManagementSoftware.UI
             
 
             if (dt.Rows.Count > 0)
+            {
+                //foreach(DataRow row in dt.Rows)
+                //{
+                //    string itemCode = null;
+
+                //    if(dt.Columns.Contains("item_code"))
+                //    {
+                //        itemCode = 
+                //    }
+                //}
                 return true;
-            else
-                return false;
+
+            }
+
+            return false;
         }
         #endregion
 

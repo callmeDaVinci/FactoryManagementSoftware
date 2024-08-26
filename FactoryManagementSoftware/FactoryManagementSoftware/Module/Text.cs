@@ -289,6 +289,7 @@ namespace FactoryManagementSoftware.Module
         public string Unit_g { get; } = "g";
         public string Unit_Set { get; } = "set";
         public string Unit_Piece { get; } = "piece";
+        public string Unit_Container { get; } = "container";
         public string Unit_Packet { get; } = "packet";
         //public string Unit_PCS { get; } = "pcs";
         public string Unit_Meter { get; } = "meter";

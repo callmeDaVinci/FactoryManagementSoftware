@@ -695,7 +695,7 @@ namespace FactoryManagementSoftware.UI
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmStockCountListItemSetting";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Stock Count Item Setting";
+            this.Text = "Stock Count Item Settings";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmStockCountListEditing_FormClosing);
             this.tableLayoutPanel28.ResumeLayout(false);
             this.tlpStepPanel.ResumeLayout(false);

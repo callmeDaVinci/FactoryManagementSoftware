@@ -292,6 +292,12 @@
     <Compile Include="UI\frmDataTableDisplay.Designer.cs">
       <DependentUpon>frmDataTableDisplay.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmSbbStdPackingSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmSbbStdPackingSettings.Designer.cs">
+      <DependentUpon>frmSbbStdPackingSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockCountListItemSetting.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1225,6 +1231,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDataTableDisplay.resx">
       <DependentUpon>frmDataTableDisplay.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmSbbStdPackingSettings.resx">
+      <DependentUpon>frmSbbStdPackingSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockCountListItemSetting.resx">
       <DependentUpon>frmStockCountListItemSetting.cs</DependentUpon>

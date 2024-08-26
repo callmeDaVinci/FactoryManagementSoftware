@@ -34,6 +34,8 @@
             this.tlpDataSetting = new System.Windows.Forms.TableLayoutPanel();
             this.tlpDataEdit = new System.Windows.Forms.TableLayoutPanel();
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.txtQtyPerContainer = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
             this.txtMaxLevel = new System.Windows.Forms.TextBox();
             this.lblMaxLvl = new System.Windows.Forms.Label();
             this.cmbCode = new System.Windows.Forms.ComboBox();
@@ -162,6 +164,8 @@
             this.groupBox5.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox5.Controls.Add(this.txtQtyPerContainer);
+            this.groupBox5.Controls.Add(this.label3);
             this.groupBox5.Controls.Add(this.txtMaxLevel);
             this.groupBox5.Controls.Add(this.lblMaxLvl);
             this.groupBox5.Controls.Add(this.cmbCode);
@@ -179,6 +183,27 @@
             this.groupBox5.TabIndex = 180;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "STANDARD PACKING";
+            // 
+            // txtQtyPerContainer
+            // 
+            this.txtQtyPerContainer.BackColor = System.Drawing.SystemColors.Info;
+            this.txtQtyPerContainer.Location = new System.Drawing.Point(351, 108);
+            this.txtQtyPerContainer.Name = "txtQtyPerContainer";
+            this.txtQtyPerContainer.Size = new System.Drawing.Size(82, 25);
+            this.txtQtyPerContainer.TabIndex = 191;
+            this.txtQtyPerContainer.Text = "0";
+            this.txtQtyPerContainer.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(347, 88);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(59, 17);
+            this.label3.TabIndex = 190;
+            this.label3.Text = "QTY/CTR";
             // 
             // txtMaxLevel
             // 
@@ -236,6 +261,7 @@
             this.txtQtyPerBag.Name = "txtQtyPerBag";
             this.txtQtyPerBag.Size = new System.Drawing.Size(82, 25);
             this.txtQtyPerBag.TabIndex = 187;
+            this.txtQtyPerBag.Text = "0";
             this.txtQtyPerBag.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQtyPerBag.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
             this.txtQtyPerBag.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox2_KeyPress_1);
@@ -259,6 +285,7 @@
             this.txtQtyPerPacket.Name = "txtQtyPerPacket";
             this.txtQtyPerPacket.Size = new System.Drawing.Size(82, 25);
             this.txtQtyPerPacket.TabIndex = 179;
+            this.txtQtyPerPacket.Text = "0";
             this.txtQtyPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtQtyPerPacket.TextChanged += new System.EventHandler(this.txtQtyPerPacket_TextChanged);
             this.txtQtyPerPacket.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.textBox1_KeyPress_1);
@@ -979,5 +1006,7 @@
         private System.Windows.Forms.ComboBox cmbCode;
         private System.Windows.Forms.TextBox txtMaxLevel;
         private System.Windows.Forms.Label lblMaxLvl;
+        private System.Windows.Forms.TextBox txtQtyPerContainer;
+        private System.Windows.Forms.Label label3;
     }
 }

@@ -24,6 +24,24 @@ namespace FactoryManagementSoftware.UI
             InitializeData();
         }
 
+        private string ITEM_CODE;
+        private string ITEM_NAME;
+
+        private string EDITING_MODE = "";
+
+        public frmSBBDataSetting(string Mode, string itemCode, string itemName)
+        {
+            InitializeComponent();
+            InitializeData(Mode);
+
+            EDITING_MODE = Mode;
+            ITEM_CODE = itemCode; 
+            ITEM_NAME = itemName;
+            STD_PACKING_EDIT_MODE = true;
+
+            CALL_FROM_OTHER_PAGE = true;
+
+        }
         public frmSBBDataSetting(string Mode)
         {
             InitializeComponent();
@@ -48,11 +66,13 @@ namespace FactoryManagementSoftware.UI
         private readonly string text_Route = "ROUTE";
 
         private readonly string text_ItemDataList = "SPP ITEM";
-        private readonly string text_StdPackingList = "STANDARD PACKING LIST";
+        static public readonly string text_StdPackingList = "STANDARD PACKING LIST";
         static public readonly string text_SizeDataList = "SIZE";
         private readonly string text_TypeDataList = "TYPE";
         private readonly string text_CategoryDataList = "CATEGORY";
         private readonly string text_RouteDataList = "ROUTE";
+
+        private bool STD_PACKING_EDIT_MODE = false;
 
         private bool loaded = false;
         private bool DataEdit = false;
@@ -103,6 +123,15 @@ namespace FactoryManagementSoftware.UI
             cmbDataList.DataSource = dt_DataList;
             cmbDataList.DisplayMember = "DATA LIST";
             cmbDataList.Text = Mode;
+
+            if(Mode == text_StdPackingList)
+            {
+                cmbName.Text = ITEM_NAME;
+                cmbCode.Text = ITEM_CODE;
+
+                cmbName.Enabled = false;
+                cmbCode.Enabled = false;
+            }
 
             DataTable dt_Unit = new DataTable();
             dt_Unit.Columns.Add("UNIT");
@@ -471,6 +500,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Max_Lvl = int.TryParse(txtMaxLevel.Text, out int data) ? data : 0;
                         uData.Qty_Per_Packet = int.TryParse(txtQtyPerPacket.Text, out data) ? data : 0;
                         uData.Qty_Per_Bag = int.TryParse(txtQtyPerBag.Text, out data) ? data : 0;
+                        uData.Qty_Per_Container = int.TryParse(txtQtyPerContainer.Text, out data) ? data : 0;
                         uData.Item_code = cmbCode.Text;
 
   
@@ -596,6 +626,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Max_Lvl = Convert.ToInt16(txtMaxLevel.Text);
                         uData.Qty_Per_Packet = Convert.ToInt16(txtQtyPerPacket.Text);
                         uData.Qty_Per_Bag = Convert.ToInt16(txtQtyPerBag.Text);
+                        uData.Qty_Per_Container = Convert.ToInt16(txtQtyPerContainer.Text);
                         uData.Item_code = cmbCode.Text;
 
                         if (!dalData.StdPackingUpdate(uData))
@@ -640,6 +671,7 @@ namespace FactoryManagementSoftware.UI
             cmbCode.SelectedIndex = -1;
             txtQtyPerPacket.Clear();
             txtQtyPerBag.Clear();
+            txtQtyPerContainer.Clear();
             txtMaxLevel.Clear();
 
         }

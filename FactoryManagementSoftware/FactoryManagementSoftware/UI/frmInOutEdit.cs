@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Infrastructure.Pluralization;
 using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -265,6 +266,8 @@ namespace FactoryManagementSoftware.UI
 
         readonly string string_QtyPerBag = "/bag";
         readonly string string_QtyPerPacket = "/packet";
+        readonly string string_QtyPerContainer = "/container";
+
         private string date = "!";
         private string category = "!";
         private string itemCode = "!";
@@ -280,6 +283,7 @@ namespace FactoryManagementSoftware.UI
         private int index = 0;
         private int selectedRow = -1;
         private int qtyPerBag = 0;
+        private int qtyPerContainer = 0;
 
         private bool dgvEdit = false;
         private bool callFromMatChecklist = false;
@@ -677,9 +681,11 @@ namespace FactoryManagementSoftware.UI
 
             loadItemCategoryData();
 
+
             TrfSuccess = false;
             if (!string.IsNullOrEmpty(frmInOutVer2.editingItemCode))
             {
+                FORM_LOADED = true;
                 cmbTrfItemCat.Text = frmInOutVer2.editingItemCat;
                 cmbTrfItemName.Text = frmInOutVer2.editingItemName;
                 cmbTrfItemCode.Text = frmInOutVer2.editingItemCode;
@@ -954,60 +960,71 @@ namespace FactoryManagementSoftware.UI
 
         private void unitDataSource()
         {
-            lblStdPacking.Visible = false;
-            string itemCat = cmbTrfItemCat.Text;
-            DataTable dt = new DataTable();
-            dt.Columns.Add("item_unit");
-
-            if (itemCat.Equals(text.Cat_RawMat) || itemCat.Equals(text.Cat_MB) || itemCat.Equals(text.Cat_Pigment))
+            if(FORM_LOADED)
             {
-                dt.Clear();
-                dt.Rows.Add(text.Unit_KG);
-                dt.Rows.Add(text.Unit_g);
+                lblStdPacking.Visible = false;
+                string itemCat = cmbTrfItemCat.Text;
+                DataTable dt = new DataTable();
+                dt.Columns.Add("item_unit");
 
-            }
-            else if (itemCat.Equals(text.Cat_Part) || itemCat.Equals(text.Cat_Carton))
-            {
-                dt.Clear();
-                dt.Rows.Add(text.Unit_Set);
-                dt.Rows.Add(text.Unit_Piece);
-                dt.Rows.Add(text.Unit_Meter);
-
-                if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass )
+                if (itemCat.Equals(text.Cat_RawMat) || itemCat.Equals(text.Cat_MB) || itemCat.Equals(text.Cat_Pigment))
                 {
-                    dt.Rows.Add(text.Unit_Bag);
-                    lblStdPacking.Visible = true;
+                    dt.Clear();
+                    dt.Rows.Add(text.Unit_KG);
+                    dt.Rows.Add(text.Unit_g);
+
                 }
-                // cmbTrfQtyUnit.DataSource = dt;
-            }
-            else if (itemCat.Equals(text.Cat_PolyBag))
-            {
-                dt.Clear();
-                dt.Rows.Add(text.Unit_KG);
-            }
-            else if (!string.IsNullOrEmpty(itemCat))
-            {
-                dt.Clear();
-                dt.Rows.Add(text.Unit_Set);
-                dt.Rows.Add(text.Unit_Piece);
-                dt.Rows.Add(text.Unit_KG);
-                dt.Rows.Add(text.Unit_g);
-                dt.Rows.Add(text.Unit_Meter);
-            }
-            else
-            {
-                dt = null;
-            }
+                else if (itemCat.Equals(text.Cat_Part) || itemCat.Equals(text.Cat_Carton))
+                {
+                    dt.Clear();
+                    dt.Rows.Add(text.Unit_Set);
+                    dt.Rows.Add(text.Unit_Piece);
+                    dt.Rows.Add(text.Unit_Meter);
 
-            cmbTrfQtyUnit.DataSource = dt;
-            cmbTrfQtyUnit.DisplayMember = "item_unit";
-            cmbTrfQtyUnit.SelectedIndex = -1;
+                    if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                    {
+                        dt.Rows.Add(text.Unit_Bag);
+                        lblStdPacking.Visible = true;
+                    }
+                    else if (itemCat.Equals(text.Cat_Part))
+                    {
+                        dt.Clear();
+                        dt.Rows.Add(text.Unit_Piece);
+                        dt.Rows.Add(text.Unit_Container);
+                        lblStdPacking.Visible = true;
 
-            if ( !string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
-            {
-                cmbTrfQtyUnit.Text = text.Unit_Bag;
+                    }
+                    // cmbTrfQtyUnit.DataSource = dt;
+                }
+                else if (itemCat.Equals(text.Cat_PolyBag))
+                {
+                    dt.Clear();
+                    dt.Rows.Add(text.Unit_KG);
+                }
+                else if (!string.IsNullOrEmpty(itemCat))
+                {
+                    dt.Clear();
+                    dt.Rows.Add(text.Unit_Set);
+                    dt.Rows.Add(text.Unit_Piece);
+                    dt.Rows.Add(text.Unit_KG);
+                    dt.Rows.Add(text.Unit_g);
+                    dt.Rows.Add(text.Unit_Meter);
+                }
+                else
+                {
+                    dt = null;
+                }
+
+                cmbTrfQtyUnit.DataSource = dt;
+                cmbTrfQtyUnit.DisplayMember = "item_unit";
+                cmbTrfQtyUnit.SelectedIndex = -1;
+
+                if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
+                {
+                    cmbTrfQtyUnit.Text = text.Unit_Bag;
+                }
             }
-
+          
         }
 
         #endregion
@@ -2323,11 +2340,14 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region Index/Text Changed
+        private bool FORM_LOADED = false;
 
         private void cmbTrfItemCat_SelectedIndexChanged(object sender, EventArgs e)
         {
             errorProvider1.Clear();
             loadItemNameData();
+
+            
             unitDataSource();
         }
 
@@ -2341,14 +2361,18 @@ namespace FactoryManagementSoftware.UI
         {
             errorProvider3.Clear();
             qtyPerBag = 0;
+            qtyPerContainer = 0;
+
             loadLocationCategoryData();
             lblStdPacking.Visible = false;
 
             if(!cbFreeze.Checked)
             {
+                unitDataSource();
+                GetStdPacking();
+
                 if (!string.IsNullOrEmpty(cmbTrfItemCode.Text) && cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
                 {
-                    unitDataSource();
                     cmbTrfQtyUnit.Text = text.Unit_Bag;
                 }
                 else
@@ -2485,16 +2509,35 @@ namespace FactoryManagementSoftware.UI
 
         private void GetStdPacking()
         {
-            lblStdPacking.Visible = true;
-            DataTable dt = dalItem.SPPReadyGoodsSelect();
-            string itemCode = cmbTrfItemCode.Text;
-            //int qtyPerBag = tool.GetQtyPerBag(dt, itemCode);
-            var stdPacking = tool.GetQtyPerBagAndPacket(dt, itemCode);
+            if(FORM_LOADED)
+            {
+                lblStdPacking.Visible = true;
+            
+                DataTable dt = dalData.StdPackingSelect();
 
-            qtyPerBag = stdPacking.Item1;
-            int qtyPerPacket = stdPacking.Item2;
+                //DataTable dt = dalItem.SPPReadyGoodsSelect();
+                string itemCode = cmbTrfItemCode.Text;
+                //int qtyPerBag = tool.GetQtyPerBag(dt, itemCode);
+                var stdPacking = tool.GetItemStdPacking(dt, itemCode);
 
-            lblStdPacking.Text = qtyPerPacket +string_QtyPerPacket +" , "+ +qtyPerBag + string_QtyPerBag;
+                qtyPerBag = stdPacking.Item1;
+                int qtyPerPacket = stdPacking.Item2;
+                qtyPerContainer = stdPacking.Item3;
+
+                string stdPackingInfo = "";
+
+                if (itemCode.Contains("(OK)"))//SBB FINISHED GOODS
+                {
+                    stdPackingInfo = qtyPerPacket + string_QtyPerPacket + " , " + +qtyPerBag + string_QtyPerBag;
+                }
+                else
+                {
+                    stdPackingInfo = qtyPerContainer + string_QtyPerContainer;
+                }
+
+                lblStdPacking.Text = stdPackingInfo;
+            }
+          
         }
 
 
@@ -2540,6 +2583,14 @@ namespace FactoryManagementSoftware.UI
                     note += "[ " + totalBags + " Bag(s) ]";
                 }
 
+            }
+            else if (unit == text.Unit_Container)
+            {
+                int totalContainers = int.TryParse(txtTrfQty.Text, out totalContainers) ? totalContainers : 0;
+
+                trfQty = (totalContainers * qtyPerContainer).ToString();
+                unit = text.Unit_Piece;
+                note += "[ " + totalContainers + " ctr(s)]";
             }
 
             dgv.Rows[n].Cells[DateColumnName].Value = dtpTrfDate.Text;
@@ -4339,11 +4390,24 @@ namespace FactoryManagementSoftware.UI
         {
             if (!string.IsNullOrEmpty(cmbTrfItemCode.Text))
                 GetLastTransferLocation(0);
+
+            FORM_LOADED = true;
+
         }
 
         private void dgvTransfer_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void lblStdPacking_Click(object sender, EventArgs e)
+        {
+            frmSBBDataSetting frm = new frmSBBDataSetting(frmSBBDataSetting.text_StdPackingList);
+
+            frm.ShowDialog();
+
+            //refresh
+            GetStdPacking();
         }
     }
 }
