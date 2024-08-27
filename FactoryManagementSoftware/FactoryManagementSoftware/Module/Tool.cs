@@ -2281,11 +2281,12 @@ namespace FactoryManagementSoftware.Module
             return qtyPerBag;
         }
 
-        public Tuple<int,int,int> GetItemStdPacking(DataTable dt, string itemCode)
+        public Tuple<int, int, int,int> GetItemStdPacking(DataTable dt, string itemCode)
         {
             int qtyPerBag = 0;
             int qtyPerPacket = 0;
             int qtyPerContainer = 0;
+            int tableCode = 0;
 
             SBBDataDAL dalSBB = new SBBDataDAL();
 
@@ -2296,11 +2297,14 @@ namespace FactoryManagementSoftware.Module
                     qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
                     qtyPerPacket = int.TryParse(row[dalSBB.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
                     qtyPerContainer = int.TryParse(row[dalSBB.QtyPerContainer].ToString(), out qtyPerContainer) ? qtyPerContainer : 0;
+                    tableCode = int.TryParse(row[dalSBB.TableCode].ToString(), out tableCode) ? tableCode : 0;
+
+                    break;
                 }
 
             }
 
-            return Tuple.Create(qtyPerBag, qtyPerPacket, qtyPerContainer);
+            return Tuple.Create(qtyPerBag, qtyPerPacket, qtyPerContainer,tableCode);
         }
 
         public DateTime GetPMMAStartDate(int month, int year)

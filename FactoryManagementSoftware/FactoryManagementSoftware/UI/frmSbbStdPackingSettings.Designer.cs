@@ -42,13 +42,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.txtPcsPerContainer = new Guna.UI.WinForms.GunaTextBox();
             this.txtPcsPerBag = new Guna.UI.WinForms.GunaTextBox();
-            this.txtPcsPerPacket = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblSystemUnit = new System.Windows.Forms.Label();
             this.lblCountUnit = new System.Windows.Forms.Label();
             this.lblUnitConversionRate = new System.Windows.Forms.Label();
             this.tlpButton = new System.Windows.Forms.TableLayoutPanel();
-            this.btnInsert = new Guna.UI.WinForms.GunaGradientButton();
+            this.btnUpdate = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.errorProvider1 = new System.Windows.Forms.ErrorProvider(this.components);
@@ -58,6 +57,7 @@ namespace FactoryManagementSoftware.UI
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
+            this.txtPcsPerPacket = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
@@ -253,7 +253,7 @@ namespace FactoryManagementSoftware.UI
             // 
             this.txtPcsPerContainer.BackColor = System.Drawing.Color.Transparent;
             this.txtPcsPerContainer.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtPcsPerContainer.BaseColor = System.Drawing.Color.White;
+            this.txtPcsPerContainer.BaseColor = System.Drawing.SystemColors.Info;
             this.txtPcsPerContainer.BorderColor = System.Drawing.Color.Silver;
             this.txtPcsPerContainer.BorderSize = 1;
             this.txtPcsPerContainer.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -280,7 +280,7 @@ namespace FactoryManagementSoftware.UI
             // 
             this.txtPcsPerBag.BackColor = System.Drawing.Color.Transparent;
             this.txtPcsPerBag.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtPcsPerBag.BaseColor = System.Drawing.Color.White;
+            this.txtPcsPerBag.BaseColor = System.Drawing.SystemColors.Info;
             this.txtPcsPerBag.BorderColor = System.Drawing.Color.Silver;
             this.txtPcsPerBag.BorderSize = 1;
             this.txtPcsPerBag.Cursor = System.Windows.Forms.Cursors.IBeam;
@@ -302,33 +302,6 @@ namespace FactoryManagementSoftware.UI
             this.txtPcsPerBag.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.txtPcsPerBag.TextChanged += new System.EventHandler(this.txtUnitConversionRate_TextChanged);
             this.txtPcsPerBag.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
-            // 
-            // txtPcsPerPacket
-            // 
-            this.txtPcsPerPacket.BackColor = System.Drawing.Color.Transparent;
-            this.txtPcsPerPacket.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtPcsPerPacket.BaseColor = System.Drawing.Color.White;
-            this.txtPcsPerPacket.BorderColor = System.Drawing.Color.Silver;
-            this.txtPcsPerPacket.BorderSize = 1;
-            this.txtPcsPerPacket.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtPcsPerPacket.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPcsPerPacket.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtPcsPerPacket.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.txtPcsPerPacket.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtPcsPerPacket.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPcsPerPacket.ForeColor = System.Drawing.Color.Black;
-            this.txtPcsPerPacket.Location = new System.Drawing.Point(3, 3);
-            this.txtPcsPerPacket.MaximumSize = new System.Drawing.Size(0, 33);
-            this.txtPcsPerPacket.Name = "txtPcsPerPacket";
-            this.txtPcsPerPacket.PasswordChar = '\0';
-            this.txtPcsPerPacket.Radius = 3;
-            this.txtPcsPerPacket.SelectedText = "";
-            this.txtPcsPerPacket.Size = new System.Drawing.Size(110, 33);
-            this.txtPcsPerPacket.TabIndex = 2020;
-            this.txtPcsPerPacket.Text = "0";
-            this.txtPcsPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPcsPerPacket.TextChanged += new System.EventHandler(this.txtCountUnit_TextChanged);
-            this.txtPcsPerPacket.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
             // 
             // tableLayoutPanel3
             // 
@@ -398,7 +371,7 @@ namespace FactoryManagementSoftware.UI
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 33F));
-            this.tlpButton.Controls.Add(this.btnInsert, 3, 1);
+            this.tlpButton.Controls.Add(this.btnUpdate, 3, 1);
             this.tlpButton.Controls.Add(this.btnCancel, 2, 1);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpButton.Location = new System.Drawing.Point(0, 328);
@@ -411,38 +384,38 @@ namespace FactoryManagementSoftware.UI
             this.tlpButton.Size = new System.Drawing.Size(493, 70);
             this.tlpButton.TabIndex = 221;
             // 
-            // btnInsert
+            // btnUpdate
             // 
-            this.btnInsert.AnimationHoverSpeed = 0.07F;
-            this.btnInsert.AnimationSpeed = 0.03F;
-            this.btnInsert.BackColor = System.Drawing.Color.Transparent;
-            this.btnInsert.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnInsert.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
-            this.btnInsert.BorderColor = System.Drawing.Color.Black;
-            this.btnInsert.BorderSize = 1;
-            this.btnInsert.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnInsert.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnInsert.FocusedColor = System.Drawing.Color.Empty;
-            this.btnInsert.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnInsert.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnInsert.Image = null;
-            this.btnInsert.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnInsert.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnInsert.Location = new System.Drawing.Point(315, 15);
-            this.btnInsert.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
-            this.btnInsert.Name = "btnInsert";
-            this.btnInsert.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnInsert.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnInsert.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnInsert.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnInsert.OnHoverImage = null;
-            this.btnInsert.OnPressedColor = System.Drawing.Color.Black;
-            this.btnInsert.Radius = 2;
-            this.btnInsert.Size = new System.Drawing.Size(140, 40);
-            this.btnInsert.TabIndex = 222;
-            this.btnInsert.Text = "Update";
-            this.btnInsert.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnInsert.Click += new System.EventHandler(this.btnInsert_Click);
+            this.btnUpdate.AnimationHoverSpeed = 0.07F;
+            this.btnUpdate.AnimationSpeed = 0.03F;
+            this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
+            this.btnUpdate.BaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnUpdate.BaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
+            this.btnUpdate.BorderColor = System.Drawing.Color.Black;
+            this.btnUpdate.BorderSize = 1;
+            this.btnUpdate.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.btnUpdate.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.btnUpdate.FocusedColor = System.Drawing.Color.Empty;
+            this.btnUpdate.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.btnUpdate.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnUpdate.Image = null;
+            this.btnUpdate.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnUpdate.ImageSize = new System.Drawing.Size(25, 25);
+            this.btnUpdate.Location = new System.Drawing.Point(315, 15);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.btnUpdate.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.btnUpdate.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.btnUpdate.OnHoverForeColor = System.Drawing.Color.White;
+            this.btnUpdate.OnHoverImage = null;
+            this.btnUpdate.OnPressedColor = System.Drawing.Color.Black;
+            this.btnUpdate.Radius = 2;
+            this.btnUpdate.Size = new System.Drawing.Size(140, 40);
+            this.btnUpdate.TabIndex = 222;
+            this.btnUpdate.Text = "Update";
+            this.btnUpdate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.btnUpdate.Click += new System.EventHandler(this.btnInsert_Click);
             // 
             // btnCancel
             // 
@@ -512,6 +485,33 @@ namespace FactoryManagementSoftware.UI
             // 
             this.errorProvider6.ContainerControl = this;
             // 
+            // txtPcsPerPacket
+            // 
+            this.txtPcsPerPacket.BackColor = System.Drawing.Color.Transparent;
+            this.txtPcsPerPacket.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtPcsPerPacket.BaseColor = System.Drawing.SystemColors.Info;
+            this.txtPcsPerPacket.BorderColor = System.Drawing.Color.Silver;
+            this.txtPcsPerPacket.BorderSize = 1;
+            this.txtPcsPerPacket.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPcsPerPacket.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPcsPerPacket.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtPcsPerPacket.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtPcsPerPacket.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtPcsPerPacket.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPcsPerPacket.ForeColor = System.Drawing.Color.Black;
+            this.txtPcsPerPacket.Location = new System.Drawing.Point(3, 3);
+            this.txtPcsPerPacket.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtPcsPerPacket.Name = "txtPcsPerPacket";
+            this.txtPcsPerPacket.PasswordChar = '\0';
+            this.txtPcsPerPacket.Radius = 3;
+            this.txtPcsPerPacket.SelectedText = "";
+            this.txtPcsPerPacket.Size = new System.Drawing.Size(110, 33);
+            this.txtPcsPerPacket.TabIndex = 2020;
+            this.txtPcsPerPacket.Text = "0";
+            this.txtPcsPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPcsPerPacket.TextChanged += new System.EventHandler(this.txtCountUnit_TextChanged);
+            this.txtPcsPerPacket.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
+            // 
             // frmSbbStdPackingSettings
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -550,7 +550,7 @@ namespace FactoryManagementSoftware.UI
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel28;
         private System.Windows.Forms.TableLayoutPanel tlpButton;
         private Guna.UI.WinForms.GunaGradientButton btnCancel;
-        private Guna.UI.WinForms.GunaGradientButton btnInsert;
+        private Guna.UI.WinForms.GunaGradientButton btnUpdate;
         private System.Windows.Forms.TableLayoutPanel tlpStepPanel;
         //private CircleLabel circleLabelStep1;
         private System.Windows.Forms.ErrorProvider errorProvider1;
@@ -564,7 +564,6 @@ namespace FactoryManagementSoftware.UI
         private ErrorProvider errorProvider6;
         private TableLayoutPanel tableLayoutPanel4;
         private Guna.UI.WinForms.GunaTextBox txtPcsPerBag;
-        private Guna.UI.WinForms.GunaTextBox txtPcsPerPacket;
         private TableLayoutPanel tableLayoutPanel3;
         private Label lblCountUnit;
         private Label lblUnitConversionRate;
@@ -574,5 +573,6 @@ namespace FactoryManagementSoftware.UI
         private Guna.UI.WinForms.GunaTextBox txtItemCode;
         private Label label1;
         private Guna.UI.WinForms.GunaTextBox txtItemName;
+        private Guna.UI.WinForms.GunaTextBox txtPcsPerPacket;
     }
 }

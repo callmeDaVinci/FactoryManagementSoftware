@@ -708,6 +708,7 @@
             this.lblStdPacking.Text = "xxx/bag";
             this.lblStdPacking.Visible = false;
             this.lblStdPacking.Click += new System.EventHandler(this.lblStdPacking_Click);
+            this.lblStdPacking.DoubleClick += new System.EventHandler(this.lblStdPacking_DoubleClick);
             // 
             // tableLayoutPanel12
             // 
