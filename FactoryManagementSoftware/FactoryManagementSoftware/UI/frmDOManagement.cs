@@ -3135,6 +3135,15 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Font.Name = text.Font_Type_TimesNewRoman;
             DOFormat.Font.Bold = true;
 
+
+            Range DOFormatVersion = xlWorkSheet.get_Range(rowDocumentVersionControl).Cells;
+            DOFormatVersion.Merge();
+            DOFormatVersion.Value = text.SBB_InternalTransferNote_FrmSMY_Version_Control;
+            DOFormatVersion.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormatVersion.VerticalAlignment = XlVAlign.xlVAlignBottom;
+            DOFormatVersion.Font.Size = 8;
+            DOFormatVersion.Font.Name = text.Font_Type_TimesNewRoman;
+
             /////////////////////////////////////////////////////////////////////////////////////////
             ///
 
@@ -3587,7 +3596,7 @@ namespace FactoryManagementSoftware.UI
            
             DOFormat = xlWorkSheet.get_Range(rowDocumentVersionControl).Cells;
             DOFormat.Merge();
-            DOFormat.Value = text.SBB_DO_Version_Control;
+            DOFormat.Value = text.SBB_InternalTransferNote_FrmSMY_Version_Control;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignBottom;
             DOFormat.Font.Size = 8;
@@ -4497,7 +4506,7 @@ namespace FactoryManagementSoftware.UI
                         AddressBookBLL uShippingInfo = new AddressBookBLL();
                         uShippingInfo = dalAddressBook.GetAddressInfo(DT_ADDRESS_BOOK, shipToTblCode);
 
-                        string customerName = uShippingInfo.full_name;
+                        string customerName = uShippingInfo.short_name;
 
                         if (customerName.ToUpper().Contains("SEMENYIH"))
                         {
@@ -4557,7 +4566,7 @@ namespace FactoryManagementSoftware.UI
 
                             sheetNo++;
 
-                            xlWorkSheet.Name = uShippingInfo.short_name + DONoString;
+                            xlWorkSheet.Name = uShippingInfo.short_name + "_" + DONoString + "_" + pageNo;
 
                             #region Printer Settings
 
@@ -4640,7 +4649,7 @@ namespace FactoryManagementSoftware.UI
 
                                         InsertToSheet(xlWorkSheet, areaDateData, DODate.ToOADate());
 
-                                        Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString];
+                                        Worksheet previousSheet = (Worksheet)xlWorkBook.Worksheets[customerName + "_" + DONoString + "_" + (pageNo-1).ToString()];
 
                                         InsertToSheet(previousSheet, areaPageData, 1 + " of " + pageNo);
 

@@ -98,18 +98,20 @@ namespace FactoryManagementSoftware.UI
       
         private void btnCancel_Click(object sender, EventArgs e)
         {
-            //if (!DATA_SAVED)
-            //{
-            //    DialogResult dialogResult = MessageBox.Show("Unsaved data. Leave without saving? ", "Message",
-            //                                               MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (!DATA_SAVED)
+            {
+                DialogResult dialogResult = MessageBox.Show("Unsaved data. Leave without saving? ", "Message",
+                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            //    if (dialogResult == DialogResult.Yes)
-            //    {
-            //        Close();
-            //    }
-                
+                if (dialogResult == DialogResult.Yes)
+                {
+                    DATA_SAVED = true;
+                    DATA_UPDATED = false;
+                    Close();
+                }
 
-            //}
+
+            }
         }
 
         private bool StdPackingInsert()

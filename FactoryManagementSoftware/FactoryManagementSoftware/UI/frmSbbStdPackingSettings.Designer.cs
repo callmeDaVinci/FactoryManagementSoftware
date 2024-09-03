@@ -42,6 +42,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.txtPcsPerContainer = new Guna.UI.WinForms.GunaTextBox();
             this.txtPcsPerBag = new Guna.UI.WinForms.GunaTextBox();
+            this.txtPcsPerPacket = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.lblSystemUnit = new System.Windows.Forms.Label();
             this.lblCountUnit = new System.Windows.Forms.Label();
@@ -57,7 +58,6 @@ namespace FactoryManagementSoftware.UI
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.txtPcsPerPacket = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
@@ -303,6 +303,33 @@ namespace FactoryManagementSoftware.UI
             this.txtPcsPerBag.TextChanged += new System.EventHandler(this.txtUnitConversionRate_TextChanged);
             this.txtPcsPerBag.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
             // 
+            // txtPcsPerPacket
+            // 
+            this.txtPcsPerPacket.BackColor = System.Drawing.Color.Transparent;
+            this.txtPcsPerPacket.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtPcsPerPacket.BaseColor = System.Drawing.SystemColors.Info;
+            this.txtPcsPerPacket.BorderColor = System.Drawing.Color.Silver;
+            this.txtPcsPerPacket.BorderSize = 1;
+            this.txtPcsPerPacket.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPcsPerPacket.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPcsPerPacket.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtPcsPerPacket.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtPcsPerPacket.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtPcsPerPacket.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPcsPerPacket.ForeColor = System.Drawing.Color.Black;
+            this.txtPcsPerPacket.Location = new System.Drawing.Point(3, 3);
+            this.txtPcsPerPacket.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtPcsPerPacket.Name = "txtPcsPerPacket";
+            this.txtPcsPerPacket.PasswordChar = '\0';
+            this.txtPcsPerPacket.Radius = 3;
+            this.txtPcsPerPacket.SelectedText = "";
+            this.txtPcsPerPacket.Size = new System.Drawing.Size(110, 33);
+            this.txtPcsPerPacket.TabIndex = 2020;
+            this.txtPcsPerPacket.Text = "0";
+            this.txtPcsPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPcsPerPacket.TextChanged += new System.EventHandler(this.txtCountUnit_TextChanged);
+            this.txtPcsPerPacket.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
+            // 
             // tableLayoutPanel3
             // 
             this.tableLayoutPanel3.ColumnCount = 5;
@@ -484,33 +511,6 @@ namespace FactoryManagementSoftware.UI
             // errorProvider6
             // 
             this.errorProvider6.ContainerControl = this;
-            // 
-            // txtPcsPerPacket
-            // 
-            this.txtPcsPerPacket.BackColor = System.Drawing.Color.Transparent;
-            this.txtPcsPerPacket.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtPcsPerPacket.BaseColor = System.Drawing.SystemColors.Info;
-            this.txtPcsPerPacket.BorderColor = System.Drawing.Color.Silver;
-            this.txtPcsPerPacket.BorderSize = 1;
-            this.txtPcsPerPacket.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtPcsPerPacket.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtPcsPerPacket.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtPcsPerPacket.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.txtPcsPerPacket.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtPcsPerPacket.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtPcsPerPacket.ForeColor = System.Drawing.Color.Black;
-            this.txtPcsPerPacket.Location = new System.Drawing.Point(3, 3);
-            this.txtPcsPerPacket.MaximumSize = new System.Drawing.Size(0, 33);
-            this.txtPcsPerPacket.Name = "txtPcsPerPacket";
-            this.txtPcsPerPacket.PasswordChar = '\0';
-            this.txtPcsPerPacket.Radius = 3;
-            this.txtPcsPerPacket.SelectedText = "";
-            this.txtPcsPerPacket.Size = new System.Drawing.Size(110, 33);
-            this.txtPcsPerPacket.TabIndex = 2020;
-            this.txtPcsPerPacket.Text = "0";
-            this.txtPcsPerPacket.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtPcsPerPacket.TextChanged += new System.EventHandler(this.txtCountUnit_TextChanged);
-            this.txtPcsPerPacket.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtUnitConversionRate_KeyPress);
             // 
             // frmSbbStdPackingSettings
             // 

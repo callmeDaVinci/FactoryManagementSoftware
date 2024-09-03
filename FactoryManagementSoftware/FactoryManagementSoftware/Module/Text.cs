@@ -89,6 +89,7 @@ namespace FactoryManagementSoftware.Module
 
         public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
         public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05A (A) (10/07/24)";
+        public string SBB_InternalTransferNote_FrmSMY_Version_Control { get; } = "SBB P10-F04A (A) (16/8/24)";
         public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
 
         #endregion

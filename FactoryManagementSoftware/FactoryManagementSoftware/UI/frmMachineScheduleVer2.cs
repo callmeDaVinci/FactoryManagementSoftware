@@ -294,7 +294,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_Ori_Status].Visible = false;
             dgv.Columns[text.Header_Ori_Machine_Name].Visible = false;
 
-            dgv.Columns[text.Header_ColorRate].Visible = false;
+           // dgv.Columns[text.Header_ColorRate].Visible = false;
             dgv.Columns[text.Header_FamilyWithJobNo].Visible = false;
 
 
