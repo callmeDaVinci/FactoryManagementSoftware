@@ -816,7 +816,7 @@ namespace FactoryManagementSoftware.UI
             {
                 bool semenyihSystem = false;
 
-                if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
+                if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
                 {
                     semenyihSystem = true;
                 }
@@ -908,7 +908,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     //<add name="connstrng" connectionString="Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True"/>
                     //myconnstrng == "SERVER=192.168.1.102;DATABASE=Factory;USER ID=stock;PASSWORD=stock"
-                    if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
+                    if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
                     {
                         //Semenyih
                         cmb.DataSource = null;
@@ -2440,20 +2440,24 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfFrom.DataSource = null;
             }
 
-            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains(text.Factory_SMY_AssemblyLine)))
+            if(MainDashboard.myconnstrng.Equals(text.DB_Semenyih))
             {
-                //cbFromBina.Checked = false;
-                //cbFromBina.Visible = true;
-                cbChildPartOutFromAssemblyLine.Checked = true;
-                cbChildPartOutFromAssemblyLine.Visible = true;
+                if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains(text.Factory_SMY_AssemblyLine)))
+                {
+                    //cbFromBina.Checked = false;
+                    //cbFromBina.Visible = true;
+                    cbChildPartOutFromAssemblyLine.Checked = true;
+                    cbChildPartOutFromAssemblyLine.Visible = true;
+                }
+                else
+                {
+                    //cbFromBina.Checked = false;
+                    //cbFromBina.Visible = false;
+                    cbChildPartOutFromAssemblyLine.Checked = false;
+                    cbChildPartOutFromAssemblyLine.Visible = false;
+                }
             }
-            else
-            {
-                //cbFromBina.Checked = false;
-                //cbFromBina.Visible = false;
-                cbChildPartOutFromAssemblyLine.Checked = false;
-                cbChildPartOutFromAssemblyLine.Visible = false;
-            }
+           
 
         }
 
@@ -4125,20 +4129,24 @@ namespace FactoryManagementSoftware.UI
 
             //}
 
-            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains("AssemblyLine")))
+            if(MainDashboard.myconnstrng == text.DB_Semenyih)
             {
-                //cbFromBina.Checked = false;
-                //cbFromBina.Visible = true;
-                cbChildPartOutFromAssemblyLine.Checked = true;
-                cbChildPartOutFromAssemblyLine.Visible = true;
+                if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains("AssemblyLine")))
+                {
+                    //cbFromBina.Checked = false;
+                    //cbFromBina.Visible = true;
+                    cbChildPartOutFromAssemblyLine.Checked = true;
+                    cbChildPartOutFromAssemblyLine.Visible = true;
+                }
+                else
+                {
+                    //cbFromBina.Checked = false;
+                    //cbFromBina.Visible = false;
+                    cbChildPartOutFromAssemblyLine.Checked = false;
+                    cbChildPartOutFromAssemblyLine.Visible = false;
+                }
             }
-            else
-            {
-                //cbFromBina.Checked = false;
-                //cbFromBina.Visible = false;
-                cbChildPartOutFromAssemblyLine.Checked = false;
-                cbChildPartOutFromAssemblyLine.Visible = false;
-            }
+            
         }
 
         private void dgvTransfer_CellContentClick(object sender, DataGridViewCellEventArgs e)

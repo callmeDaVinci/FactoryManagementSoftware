@@ -44,6 +44,16 @@ namespace FactoryManagementSoftware.UI
             //cbSaveInSingleFIle.Enabled = false;
 
             SBB_INVOICE_MODE = InvoiceMode;
+
+            if(InvoiceMode)
+            {
+                this.Text = "Invoice Export Settings";
+            }
+            else
+            {
+                this.Text = "SBB D/O Export Settings";
+            }
+
             ShowDODate(!InvoiceMode);
         }
 

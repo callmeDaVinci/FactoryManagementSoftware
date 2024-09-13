@@ -77,6 +77,7 @@ namespace FactoryManagementSoftware.UI
         readonly string text_CompleteDO = "Complete D/O";
         readonly string text_InCompleteDO = "D/O Incomplete";
         readonly string text_ChangeDeliveredDate = "Change Delivered Date";
+        readonly string text_IssueEInvoice = "Issue E-Invoice";
         readonly string text_UndoRemove = "Undo Remove";
         readonly string text_ChangeDONumber = "Change D/O Number";
         readonly string text_SelectDO = "Select D/O";
@@ -2463,6 +2464,12 @@ namespace FactoryManagementSoftware.UI
 
                         my_menu.Items.Add(text_MasterList).Name = text_MasterList;
 
+                        if(MainDashboard.USER_ACCESS_LEVEL >= 4)
+                        {
+                            my_menu.Items.Add(text_IssueEInvoice).Name = text_IssueEInvoice;
+                        }
+
+
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
                         my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOList_ItemClicked);
@@ -3129,6 +3136,10 @@ namespace FactoryManagementSoftware.UI
                 else if (ClickedItem.Equals(text_MasterList))
                 {
                     GetMasterList();
+                }
+                else if (ClickedItem.Equals(text_IssueEInvoice))
+                {
+                    GenerateInvoice();
                 }
             }
 
@@ -9555,11 +9566,40 @@ namespace FactoryManagementSoftware.UI
             dtpRangeEnd.Value = lastDayOfNextMonth;
         }
 
+        private bool ISSUE_E_INVOICE_MODE = false;
+
+        private void GenerateInvoice()
+        {
+            //password
+            frmVerification frmPW = new frmVerification(text.PW_Level_1)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
+
+            frmPW.ShowDialog();
+
+            if (frmVerification.PASSWORD_MATCHED)
+            {
+                ISSUE_E_INVOICE_MODE = true;
+               
+                if(btnExport.Text != text_Export)
+                {
+                    DATA_LOADED = false;
+
+                    DOSelectingUI();
+                }
+            }
+
+           
+        }
+
         private void OpenExportSettings()
         {
-            
-            if(cbInvoiceMode.Checked)
+
+            if (cbInvoiceMode.Checked || ISSUE_E_INVOICE_MODE)
             {
+                ISSUE_E_INVOICE_MODE = false;
+
                 //show export setting
                 frmExportSetting frm = new frmExportSetting(true)
                 {
@@ -9581,6 +9621,7 @@ namespace FactoryManagementSoftware.UI
                 DOListUI();
 
                 DATA_LOADED = false;
+
             }
             else
             {

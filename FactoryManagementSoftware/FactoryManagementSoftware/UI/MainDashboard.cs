@@ -53,6 +53,8 @@ namespace FactoryManagementSoftware.UI
         static public readonly int ACTION_LVL_FOUR = 4;
         static public readonly int ACTION_LVL_FIVE = 5;
         static public string myconnstrng;
+        static public int USER_ACCESS_LEVEL = 0;
+
         userDAL dalUser = new userDAL();
         Text text = new Text();
         Tool tool = new Tool();
@@ -67,6 +69,9 @@ namespace FactoryManagementSoftware.UI
             USER_ID = userID;
             MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = false;
             int userPermission = dalUser.getPermissionLevel(USER_ID);
+
+            USER_ACCESS_LEVEL = userPermission;
+
             string userName = dalUser.getUsername(USER_ID);
 
             usernameToolStripMenuItem.Text = userName;
