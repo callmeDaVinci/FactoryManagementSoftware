@@ -3555,7 +3555,17 @@ namespace FactoryManagementSoftware.UI
                 }
                 cmbTrfQtyUnit.Text = UNIT;
 
-                string note = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+                string note;
+
+                if (dgv.Rows[selectedRow].Cells[NoteColumnName].Value != null)
+                {
+                    note = dgv.Rows[selectedRow].Cells[NoteColumnName].Value.ToString();
+                }
+                else
+                {
+                    note = string.Empty; // Or handle it as needed, e.g., with a default value
+                }
+
 
                 //if note found " (AFTER BAL: )", then remove 
                 int startIndex = note.IndexOf("(AFTER BAL:");
