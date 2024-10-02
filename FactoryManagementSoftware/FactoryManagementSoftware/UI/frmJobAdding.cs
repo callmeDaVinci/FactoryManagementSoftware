@@ -1112,12 +1112,12 @@ namespace FactoryManagementSoftware.UI
             string colorName = DT_JOBEDITING_ROW[text.Header_Color].ToString();
             decimal colorRate = decimal.TryParse(DT_JOBEDITING_ROW[text.Header_ColorRate].ToString(), out colorRate) ? colorRate : 0;
 
-            if (colorRate < 1)
-            {
-                colorRate *= 100;
-            }
+            //if (colorRate < 1)
+            //{
+            //    colorRate *= 100;
+            //}
 
-            colorRate = decimal.Round(colorRate, 0);
+            //colorRate = decimal.Round(colorRate, 0);
 
             lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
             COLOR_MAT_CODE = colorMaterial;
@@ -1272,7 +1272,8 @@ namespace FactoryManagementSoftware.UI
 
             colorRatio_percentage = double.TryParse(txtColorMatUsage.Text, out colorRatio_percentage) ? colorRatio_percentage : 0;
 
-            colorRatio_percentage = colorRatio_percentage < 1 ? colorRatio_percentage : colorRatio_percentage / 100;
+            colorRatio_percentage = colorRatio_percentage / 100;
+           // colorRatio_percentage = colorRatio_percentage < 1 ? colorRatio_percentage : colorRatio_percentage / 100;
 
             // rawMat + rawMat * ColorRatio = minMaterialNeeded
             // rawMat (1+ColorRatio) = minMaterialNeeded
@@ -5437,7 +5438,8 @@ namespace FactoryManagementSoftware.UI
 
             double color_usage = double.TryParse(txtColorMatUsage.Text, out color_usage) ? color_usage : 0;
 
-            color_usage = color_usage >= 1 ? color_usage / 100 : color_usage;
+            //color_usage = color_usage >= 1 ? color_usage / 100 : color_usage;
+            color_usage =  color_usage / 100 ;
 
             lblColorMat.Text = (totalRawMat_KG * color_usage).ToString(); 
 
@@ -6914,7 +6916,8 @@ namespace FactoryManagementSoftware.UI
                                 string color = txtItemColor.Text;
                                 float colorUsage = float.TryParse(txtColorMatUsage.Text, out colorUsage) ? colorUsage : 0;
 
-                                colorUsage = colorUsage >= 1 ? colorUsage / 100 : colorUsage;
+                               // colorUsage = colorUsage >= 1 ? colorUsage / 100 : colorUsage;
+                                colorUsage = colorUsage / 100;
 
                                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
                                 uItem.item_code = itemCode;

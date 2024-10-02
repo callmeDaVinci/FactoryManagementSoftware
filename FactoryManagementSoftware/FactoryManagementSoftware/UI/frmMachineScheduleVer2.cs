@@ -199,7 +199,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_RawMat_Qty, typeof(string));
             dt.Columns.Add(text.Header_Color, typeof(string));
             dt.Columns.Add(text.Header_ColorMat, typeof(string));
-            dt.Columns.Add(text.Header_ColorRate, typeof(int));
+            dt.Columns.Add(text.Header_ColorRate, typeof(double));
             dt.Columns.Add(text.Header_ColorMat_KG, typeof(double));
             dt.Columns.Add(text.Header_Remark, typeof(string));
             dt.Columns.Add(text.Header_Job_Purpose, typeof(string));
@@ -1425,8 +1425,8 @@ namespace FactoryManagementSoftware.UI
 
                     string rawMix = "";
 
-                    rawMat_1_ratio = rawMat_1_ratio < 1 ? rawMat_1_ratio * 100 : rawMat_1_ratio;
-                    rawMat_2_ratio = rawMat_2_ratio < 1 ? rawMat_2_ratio * 100 : rawMat_2_ratio;
+                    //rawMat_1_ratio = rawMat_1_ratio < 1 ? rawMat_1_ratio * 100 : rawMat_1_ratio;
+                    //rawMat_2_ratio = rawMat_2_ratio < 1 ? rawMat_2_ratio * 100 : rawMat_2_ratio;
 
                     if(rawMat_1_ratio == 0)
                     {

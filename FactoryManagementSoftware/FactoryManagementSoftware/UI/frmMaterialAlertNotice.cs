@@ -45,7 +45,7 @@ namespace FactoryManagementSoftware.UI
 
             getStartandEndDate();
             NEGATIVE_BAL_FOUND = false;
-            GetSummaryForecastMatUsedData();
+            //GetSummaryForecastMatUsedData();
         }
 
         #region variable declare
