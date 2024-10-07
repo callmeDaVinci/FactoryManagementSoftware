@@ -384,7 +384,7 @@ namespace FactoryManagementSoftware.Module
 
 
         public string Header_DefectRemark { get; } = "Defect Remark";
-        public string Header_QtyReject { get; } = "Qty Rejected";
+        public string Header_QtyReject { get; } = "Reject Qty";
 
 
         public string Header_ParentOrProduct { get; } = "Parent/Product";

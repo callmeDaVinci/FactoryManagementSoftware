@@ -162,7 +162,7 @@ namespace FactoryManagementSoftware.UI
 
                 string itemDescription = tool.getItemNameAndCodeString(ITEM_CODE, ITEM_NAME);
 
-                lblITitle.Text = "(Job No.: " +JOB_NO + ")_" + itemDescription;
+                lblITitle.Text = "(Job " +JOB_NO + ") " + itemDescription;
             }
         }
 
@@ -293,6 +293,7 @@ namespace FactoryManagementSoftware.UI
             string balanceStockIn = "0";
             string timeStart = "";
             string timeEnd = "";
+            string actualRejectQty = "";
 
             DateTime ProductionDate = DateTime.MinValue;
 
@@ -317,6 +318,7 @@ namespace FactoryManagementSoftware.UI
 
                 timeStart = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_TimeStart].ToString();
                 timeEnd = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_TimeEnd].ToString();
+                actualRejectQty = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_QtyReject].ToString();
             }
 
             if (DT_JOB_LIST?.Rows.Count > 0 && JOB_LIST_SELECTED_ROW_INDEX > -1 && JOB_LIST_SELECTED_ROW_INDEX <= DT_JOB_LIST.Rows.Count - 1)
@@ -341,6 +343,7 @@ namespace FactoryManagementSoftware.UI
             txtNote.Text = Remark;
 
             txtStockInPcsQty.Text = balanceStockIn;
+            lblActualRejectQty.Text = actualRejectQty;
 
             dtpProDate.Value = ProductionDate.Date;
             OLD_PRO_DATE = ProductionDate.Date;
@@ -1177,6 +1180,7 @@ namespace FactoryManagementSoftware.UI
                 int fullBox = int.TryParse(txtFullBoxQty.Text, out fullBox) ? fullBox : 0;
                 int TotalStockIn = int.TryParse(txtTotalStockInQty.Text, out TotalStockIn) ? TotalStockIn : 0;
                 int maxOutputQty = int.TryParse(lblMaxQty.Text, out maxOutputQty) ? maxOutputQty : 0;
+                int actualRejectQty = int.TryParse(lblActualRejectQty.Text, out actualRejectQty) ? actualRejectQty : 0;
 
 
                 string note = txtNote.Text;
@@ -1205,6 +1209,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.full_box = fullBox;
                 uProRecord.total_stocked_in = TotalStockIn;
                 uProRecord.max_output_qty = maxOutputQty;
+                uProRecord.total_actual_reject = actualRejectQty;
                 uProRecord.updated_date = updateTime;
                 uProRecord.updated_by = userID;
 
@@ -2057,6 +2062,24 @@ namespace FactoryManagementSoftware.UI
         {
             DATA_EDITED = true;
 
+        }
+
+        private void lblActualRejectQty_TextChanged(object sender, EventArgs e)
+        {
+            int maxQty = int.TryParse(lblMaxQty.Text, out maxQty) ? maxQty : 0;
+            int rejectQty = int.TryParse(lblActualRejectQty.Text, out rejectQty) ? rejectQty : 0;
+
+            if(maxQty >0 && rejectQty >0)
+            {
+                lblActualRejectPercentage.Text = ((decimal)rejectQty / maxQty * 100).ToString("0.##") + " %";
+
+            }
+            else
+            {
+                lblActualRejectPercentage.Text = "0 %";
+            }
+
+            totalStockUpdate();
         }
     }
 }
