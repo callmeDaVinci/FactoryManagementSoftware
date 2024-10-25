@@ -87,8 +87,8 @@ namespace FactoryManagementSoftware.Module
  @"No.17, PT 2507, Jalan Hi-Tech 2, Kawasan Perindustrian Hi-Tech, Jalan Sungai Lalang, 43500 Semenyih, Selangor.
 (Tel) 016 - 282 8195 (Email) sales@safetyplastics.com.my";
 
-        public string SBB_DO_Version_Control { get; } = "SBB P08-F01A (A) (4/12/23)";
-        public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05A (A) (10/07/24)";
+        public string SBB_DO_Version_Control { get; } = "SBB P08-F01B (B) (25/10/24)";
+        public string SBB_Invoice_Version_Control { get; } = "SBB P07-F05B (B) (25/10/24)";
         public string SBB_InternalTransferNote_FrmSMY_Version_Control { get; } = "SBB P10-F04A (A) (16/8/24)";
         public string SBB_DO_Version_Control_Old { get; } = "F 8.5.4-01 (A) (23/08/02)";
 

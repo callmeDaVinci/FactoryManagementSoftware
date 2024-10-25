@@ -2682,9 +2682,17 @@ namespace FactoryManagementSoftware.UI
 
             if (int.TryParse(lblTopCustomer_Bag_10.Text, out deliverd))
             {
-                Percentage = (double)deliverd / totalBagDelivered * 100;
+                if(deliverd > 0)
+                {
+                    Percentage = (double)deliverd / totalBagDelivered * 100;
 
-                lblTopCustomer_Bag_10.Text += " (" + Percentage.ToString("0.#") + "%)";
+                    lblTopCustomer_Bag_10.Text += " (" + Percentage.ToString("0.#") + "%)";
+                }
+                else
+                {
+                    lblTopCustomer_Bag_10.Text = "";
+                }
+               
             }
         }
 
@@ -2733,6 +2741,15 @@ namespace FactoryManagementSoftware.UI
                     {
                         QtyPerBag = 1;
                     }
+
+                  
+
+                    if (pendingDeliver < 0)
+                    {
+                        pendingDeliver = 0;
+
+                    }
+
                     pendingBags += pendingDeliver / QtyPerBag;
 
                     if (QtyPerPkt != 0)
@@ -3253,8 +3270,8 @@ namespace FactoryManagementSoftware.UI
                     otherbal += otherBalPcsDelivered + " PCS";
                 }
             }
-
-            lblTopCust_10.Text = "OTHER";
+            if(otherBalPacketDelivered > 0 || otherBalPcsDelivered > 0)
+                lblTopCust_10.Text = "OTHER";
 
             if(otherBagDelivered - otherORingDelivered < 0)
             {
@@ -3267,15 +3284,15 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            if (!string.IsNullOrEmpty(otherbal))
-            {
-                lblTopCustomer_Bal_10.Text = otherbal;
-            }
-            else
-            {
-                lblTopCustomer_Bal_10.Text = "";
-            }
-
+            //if (!string.IsNullOrEmpty(otherbal))
+            //{
+            //    lblTopCustomer_Bal_10.Text = otherbal;
+            //}
+            //else
+            //{
+            //    lblTopCustomer_Bal_10.Text = "";
+            //}
+            lblTopCustomer_Bal_10.Text = "";
             lblMonthlyDelivered.Text = (totalBagDelivered - ORingDeliveredQty).ToString();
 
             ShowDeliverdPercentage(totalBagDelivered);

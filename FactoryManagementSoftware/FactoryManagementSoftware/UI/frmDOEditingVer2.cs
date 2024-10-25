@@ -15,7 +15,7 @@ using Syncfusion.XlsIO;
 
 namespace FactoryManagementSoftware.UI
 {
-    public partial class frmDOEditing : Form
+    public partial class frmDOEditingVer2 : Form
     {
         #region Default Settings
 
@@ -43,7 +43,7 @@ namespace FactoryManagementSoftware.UI
         private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
 
         private bool DATA_SAVED = false;
-        public frmDOEditing()
+        public frmDOEditingVer2()
         {
             InitializeComponent();
             InitialSetting();
@@ -51,7 +51,7 @@ namespace FactoryManagementSoftware.UI
             DO_EDITING_MODE = false;
         }
 
-        public frmDOEditing(DataRow DORow,DataTable dt)
+        public frmDOEditingVer2(DataRow DORow,DataTable dt)
         {
             InitializeComponent();
             DO_EDITING_MODE = true;
@@ -1184,7 +1184,7 @@ namespace FactoryManagementSoftware.UI
 
                 SEARCH_ICON_UPDATING = false;
 
-                searchTypeUpdate();
+                //searchTypeUpdate();
                 InitialNameTextBox();
 
             }
@@ -1204,7 +1204,7 @@ namespace FactoryManagementSoftware.UI
 
                 SEARCH_ICON_UPDATING = false;
 
-                searchTypeUpdate();
+                //searchTypeUpdate();
                 InitialNameTextBox();
 
             }
@@ -1213,19 +1213,19 @@ namespace FactoryManagementSoftware.UI
 
         private void searchTypeUpdate()
         {
-            if (cbItemCustom.Checked)
-            {
-                btnSearch.Image = Properties.Resources.icons8_pencil_100;
-            }
-            else
-            {
-                btnSearch.Image = Properties.Resources.icons8_search_500;
-            }
+            //if (cbItemCustom.Checked)
+            //{
+            //    btnSearch.Image = Properties.Resources.icons8_pencil_100;
+            //}
+            //else
+            //{
+            //    btnSearch.Image = Properties.Resources.icons8_search_500;
+            //}
 
-            if (txtItemDescription.Text.Length <= 0 || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
-            {
-                ItemDescriptionTextSetDefault();
-            }
+            //if (txtItemDescription.Text.Length <= 0 || txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT || txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
+            //{
+            //    ItemDescriptionTextSetDefault();
+            //}
         }
 
         private void txtItemDescription_Enter(object sender, EventArgs e)
@@ -2164,22 +2164,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool CheckIfInternalDOType()
         {
-            if (cmbDOType.SelectedIndex == -1)
-            {
-                // No item is selected
-                return false;
-            }
-
-            //// Get the DataRowView for the selected item
-            //DataRowView selectedRow = (DataRowView)cmbDOType.SelectedItem;
-
-            //// Extract the table code from the selected row
-            //bool isInternal = bool.TryParse(selectedRow[dalDoFormat.isInternal].ToString(), out isInternal) ? isInternal : false;
-
-
-            //return isInternal;
-            return cbInternalDOType.Checked;
-
+            return false;
         }
 
         private void LoadCompanyData()
@@ -2746,25 +2731,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool DO_TYPE_UPDATING = false;
 
-        private void cbInternalDOType_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!DO_TYPE_UPDATING)
-            {
-                DO_TYPE_UPDATING = true;
-                cbSBBDOType.Checked = !cbInternalDOType.Checked;
-                DO_TYPE_UPDATING = false;
-            }
-        }
-
-        private void cbSBBDOType_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!DO_TYPE_UPDATING)
-            {
-                DO_TYPE_UPDATING = true;
-                cbInternalDOType.Checked = !cbSBBDOType.Checked;
-                DO_TYPE_UPDATING = false;
-            }
-        }
+     
 
         private void txtNextRunningNumber_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -2864,6 +2831,11 @@ namespace FactoryManagementSoftware.UI
         }
 
         private void gunaGradientButton1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void gunaGradientButton3_Click(object sender, EventArgs e)
         {
 
         }

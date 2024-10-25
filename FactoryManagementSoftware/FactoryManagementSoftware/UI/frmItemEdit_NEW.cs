@@ -394,28 +394,32 @@ namespace FactoryManagementSoftware.UI
         {
             DataTable dt;
 
-            if(cmbCat.Text.Equals("Part"))
-            {
-                dt = dalItem.IsDuplicateItemCode(productCode);
-            }
-            else
-            {
-                dt = dalMaterial.codeSearch(productCode);
-            }
+            dt = dalItem.IsDuplicateItemCode(productCode);
+            //if (cmbCat.Text.Equals("Part"))
+            //{
+                
+            //}
+            //else
+            //{
+            //    dt = dalMaterial.codeSearch(productCode);
+            //}
             
 
             if (dt.Rows.Count > 0)
             {
-                //foreach(DataRow row in dt.Rows)
+                //foreach (DataRow row in dt.Rows)
                 //{
                 //    string itemCode = null;
 
-                //    if(dt.Columns.Contains("item_code"))
+                //    if (dt.Columns.Contains("item_code"))
                 //    {
-                //        itemCode = 
+                //        itemCode = row[dalItem.ItemCode].ToString();
                 //    }
+
+
                 //}
                 return true;
+
 
             }
 
@@ -1129,27 +1133,29 @@ namespace FactoryManagementSoftware.UI
                     {
                         if (ExistingItem)
                         {
-                            if (cmbCat.Text.Equals(text.Cat_Part))
-                            {
-                                updateItem();
-                            }
-                            else
-                            {
-                                updateMaterial();
-                            }
+                            updateItem();
+
+                            //if (cmbCat.Text.Equals(text.Cat_Part))
+                            //{
+                            //    updateItem();
+                            //}
+                            //else
+                            //{
+                            //    updateMaterial();
+                            //}
                         }
                         else
                         {
                             //tool.historyRecord(text.LogIn, text.Failed, DateTime.Now, userID);
-
-                            if (cmbCat.Text.Equals(text.Cat_Part))
-                            {
-                                insertItem();
-                            }
-                            else
-                            {
-                                insertMaterial();
-                            }
+                            insertItem();
+                            //if (cmbCat.Text.Equals(text.Cat_Part))
+                            //{
+                            //    insertItem();
+                            //}
+                            //else
+                            //{
+                            //    insertMaterial();
+                            //}
                         }
                     }
 

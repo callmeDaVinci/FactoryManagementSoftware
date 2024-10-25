@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>638</ApplicationRevision>
+    <ApplicationRevision>640</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -274,6 +274,30 @@
     <Compile Include="UI\frmDOCompleteSetting.Designer.cs">
       <DependentUpon>frmDOCompleteSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmDOFormat.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOFormat.Designer.cs">
+      <DependentUpon>frmDOFormat.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDOEditingVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOEditingVer2.Designer.cs">
+      <DependentUpon>frmDOEditingVer2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmDOManagementVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmDOManagementVer2.Designer.cs">
+      <DependentUpon>frmDOManagementVer2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPOManagement.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPOManagement.Designer.cs">
+      <DependentUpon>frmPOManagement.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmDONumberChange_v2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -315,12 +339,6 @@
     </Compile>
     <Compile Include="UI\frmStockCountListSetting.Designer.cs">
       <DependentUpon>frmStockCountListSetting.cs</DependentUpon>
-    </Compile>
-    <Compile Include="UI\frmDoFormat.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\frmDoFormat.Designer.cs">
-      <DependentUpon>frmDoFormat.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmDOManagement.cs">
       <SubType>Form</SubType>
@@ -1223,6 +1241,18 @@
       <DependentUpon>frmDOCompleteSetting.cs</DependentUpon>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOFormat.resx">
+      <DependentUpon>frmDOFormat.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOEditingVer2.resx">
+      <DependentUpon>frmDOEditingVer2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmDOManagementVer2.resx">
+      <DependentUpon>frmDOManagementVer2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPOManagement.resx">
+      <DependentUpon>frmPOManagement.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDONumberChange_v2.resx">
       <DependentUpon>frmDONumberChange_v2.cs</DependentUpon>
     </EmbeddedResource>
@@ -1243,9 +1273,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockCountListSetting.resx">
       <DependentUpon>frmStockCountListSetting.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\frmDoFormat.resx">
-      <DependentUpon>frmDoFormat.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmDOManagement.resx">
       <DependentUpon>frmDOManagement.cs</DependentUpon>
@@ -1792,7 +1819,9 @@
     <None Include="Resources\SBB DELIVERY ORDER LOGO.png" />
     <None Include="Resources\icons8-search-500.png" />
     <None Include="Resources\icons8-pencil-100.png" />
+    <None Include="Resources\iso-logo-black.bmp" />
     <Content Include="Resources\sbbdeliveryorderwithrectacgle.png" />
+    <None Include="Resources\SP ISO LOGO %28BLACK%29.png" />
     <Content Include="SBB logo.ico" />
     <Content Include="sp logo 2023.ico" />
     <Content Include="website tiny logo.ico" />

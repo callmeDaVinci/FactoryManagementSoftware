@@ -1,6 +1,6 @@
 ﻿namespace FactoryManagementSoftware.UI
 {
-    partial class frmDOManagement
+    partial class frmPOManagement
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmDOManagement));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPOManagement));
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
@@ -40,7 +40,6 @@
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbDOType = new Guna.UI.WinForms.GunaComboBox();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbDraftDO = new System.Windows.Forms.CheckBox();
             this.cbCompleted = new System.Windows.Forms.CheckBox();
             this.cbInProgress = new System.Windows.Forms.CheckBox();
             this.cbCancelled = new System.Windows.Forms.CheckBox();
@@ -192,8 +191,9 @@
             this.gunaGroupBox4.Radius = 3;
             this.gunaGroupBox4.Size = new System.Drawing.Size(214, 224);
             this.gunaGroupBox4.TabIndex = 262;
-            this.gunaGroupBox4.Text = "D/O Type & Status";
+            this.gunaGroupBox4.Text = "P/O Type & Status";
             this.gunaGroupBox4.TextLocation = new System.Drawing.Point(10, 8);
+            this.gunaGroupBox4.Click += new System.EventHandler(this.gunaGroupBox4_Click);
             // 
             // tableLayoutPanel13
             // 
@@ -242,7 +242,6 @@
             this.tableLayoutPanel15.ColumnCount = 2;
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 56.25F));
             this.tableLayoutPanel15.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 43.75F));
-            this.tableLayoutPanel15.Controls.Add(this.cbDraftDO, 1, 0);
             this.tableLayoutPanel15.Controls.Add(this.cbCompleted, 0, 1);
             this.tableLayoutPanel15.Controls.Add(this.cbInProgress, 0, 0);
             this.tableLayoutPanel15.Controls.Add(this.cbCancelled, 0, 2);
@@ -257,22 +256,6 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel15.Size = new System.Drawing.Size(208, 142);
             this.tableLayoutPanel15.TabIndex = 263;
-            // 
-            // cbDraftDO
-            // 
-            this.cbDraftDO.AutoSize = true;
-            this.cbDraftDO.Checked = true;
-            this.cbDraftDO.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.cbDraftDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbDraftDO.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbDraftDO.Location = new System.Drawing.Point(127, 5);
-            this.cbDraftDO.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
-            this.cbDraftDO.Name = "cbDraftDO";
-            this.cbDraftDO.Size = new System.Drawing.Size(59, 21);
-            this.cbDraftDO.TabIndex = 247;
-            this.cbDraftDO.Text = "Draft";
-            this.cbDraftDO.UseVisualStyleBackColor = true;
-            this.cbDraftDO.CheckedChanged += new System.EventHandler(this.cbDraftDO_CheckedChanged);
             // 
             // cbCompleted
             // 
@@ -404,7 +387,7 @@
             this.txtSearch.SelectedText = "";
             this.txtSearch.Size = new System.Drawing.Size(266, 28);
             this.txtSearch.TabIndex = 245;
-            this.txtSearch.Text = "Search (DO Number Or Item Name/Code)";
+            this.txtSearch.Text = "Search (PO Number Or Item Name/Code)";
             this.txtSearch.Enter += new System.EventHandler(this.gunaTextBox1_Enter);
             this.txtSearch.Leave += new System.EventHandler(this.txtSearch_Leave);
             // 
@@ -895,7 +878,7 @@
             this.btnNewJob.Radius = 2;
             this.btnNewJob.Size = new System.Drawing.Size(130, 40);
             this.btnNewJob.TabIndex = 224;
-            this.btnNewJob.Text = "Add Order";
+            this.btnNewJob.Text = "Add P/O";
             this.btnNewJob.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnNewJob.Click += new System.EventHandler(this.btnNewJob_Click);
             // 
@@ -1097,9 +1080,9 @@
             this.lblMainList.Location = new System.Drawing.Point(5, 22);
             this.lblMainList.Margin = new System.Windows.Forms.Padding(5);
             this.lblMainList.Name = "lblMainList";
-            this.lblMainList.Size = new System.Drawing.Size(72, 23);
+            this.lblMainList.Size = new System.Drawing.Size(70, 23);
             this.lblMainList.TabIndex = 166;
-            this.lblMainList.Text = "D/O List";
+            this.lblMainList.Text = "P/O List";
             // 
             // btnExcel
             // 
@@ -1247,9 +1230,9 @@
             this.lblSubList.Location = new System.Drawing.Point(5, 22);
             this.lblSubList.Margin = new System.Windows.Forms.Padding(5);
             this.lblSubList.Name = "lblSubList";
-            this.lblSubList.Size = new System.Drawing.Size(112, 23);
+            this.lblSubList.Size = new System.Drawing.Size(110, 23);
             this.lblSubList.TabIndex = 157;
-            this.lblSubList.Text = "D/O Item List";
+            this.lblSubList.Text = "P/O Item List";
             // 
             // panel1
             // 
@@ -1280,7 +1263,7 @@
             this.tableLayoutPanel6.TabIndex = 173;
             this.tableLayoutPanel6.Click += new System.EventHandler(this.EmptySpace_Click);
             // 
-            // frmDOManagement
+            // frmPOManagement
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -1289,9 +1272,9 @@
             this.Controls.Add(this.tableLayoutPanel6);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
-            this.Name = "frmDOManagement";
+            this.Name = "frmPOManagement";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = " ";
+            this.Text = "Customer\'s Puchase Order Management";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSBBDOListVer2_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmSPPDOList_FormClosed);
             this.Load += new System.EventHandler(this.frmSPPDOList_Load);
@@ -1385,7 +1368,6 @@
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel16;
         private Guna.UI.WinForms.GunaGradientButton btnNewJob;
-        private System.Windows.Forms.CheckBox cbDraftDO;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;

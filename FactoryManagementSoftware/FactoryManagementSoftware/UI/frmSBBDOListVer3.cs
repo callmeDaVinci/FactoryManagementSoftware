@@ -4026,7 +4026,7 @@ namespace FactoryManagementSoftware.UI
 
         #endregion
 
-        private void NewInitialInvoiceFormat(Worksheet xlWorkSheet, bool MultiPo)
+        private void InitialInvoiceFormat(Worksheet xlWorkSheet, bool MultiPo)
         {
             if (MultiPo)
             {
@@ -4066,6 +4066,12 @@ namespace FactoryManagementSoftware.UI
             //Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
             //filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
             //xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
+
+
+            tempPath = Path.GetTempFileName();
+            Resources.iso_logo_black.Save(tempPath + "iso-logo-black.png");
+            filePath = tempPath + "iso-logo-black.png";
+            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 460, 4, 68f, 55f);
 
             #endregion
 
@@ -4667,7 +4673,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void NewInitialDOFormat(Worksheet xlWorkSheet, bool MultiPo)
+        private void InitialSPSMYDOFormat(Worksheet xlWorkSheet, bool MultiPo)
         {
             if (MultiPo)
             {
@@ -4716,6 +4722,12 @@ namespace FactoryManagementSoftware.UI
             Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
             filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
             xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
+
+
+            tempPath = Path.GetTempFileName();
+            Resources.iso_logo_black.Save(tempPath + "iso-logo-black.png");
+            filePath = tempPath + "iso-logo-black.png";
+            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 460, 4, 68f, 55f);
 
             #endregion
 
@@ -6081,7 +6093,7 @@ namespace FactoryManagementSoftware.UI
 
                             xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
 
-                            NewInitialDOFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                            InitialSPSMYDOFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
                             InsertToSheet(xlWorkSheet, areaDONoData, DONoString);
@@ -6434,7 +6446,7 @@ namespace FactoryManagementSoftware.UI
 
                                             NewExcelPageSetup(xlWorkSheet);
 
-                                            NewInitialDOFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                                            InitialSPSMYDOFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                                             InsertToSheet(xlWorkSheet, areaDONoData, DONoString);
 
@@ -6633,7 +6645,7 @@ namespace FactoryManagementSoftware.UI
                                     //withS = "S";
                                 }
 
-                                totalRemark = "TOT. " + totalOringBag + " + O'Ring PKT" + (totalOringBag > 1 ? "S" : "");
+                                totalRemark = "TOT. " + totalOringBag + " O'Ring PKT" + (totalOringBag > 1 ? "S" : "");
                             }
                             else if (totalBalPcs > 0)
                             {
@@ -7074,7 +7086,7 @@ namespace FactoryManagementSoftware.UI
 
                             xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
 
-                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
                             //InsertToSheet(xlWorkSheet, areaDONoData, DONoString);
@@ -7319,7 +7331,7 @@ namespace FactoryManagementSoftware.UI
 
                                             NewExcelPageSetup(xlWorkSheet);
 
-                                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
                                             InsertToSheet(xlWorkSheet, "t12:w12", DONoString);
@@ -8078,7 +8090,7 @@ namespace FactoryManagementSoftware.UI
 
                             //InitialInvoiceFormat_LOGO(xlWorkSheet);
 
-                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);//2194ms
+                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);//2194ms
 
                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
@@ -8329,7 +8341,7 @@ namespace FactoryManagementSoftware.UI
 
                                             //InitialInvoiceFormat_LOGO(xlWorkSheet);
 
-                                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
                                             InsertToSheet(xlWorkSheet, "t12:w12", DONoString);
@@ -8968,7 +8980,7 @@ namespace FactoryManagementSoftware.UI
 
                             //InitialInvoiceFormat_LOGO(xlWorkSheet);
 
-                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);//2194ms
+                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);//2194ms
 
                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
@@ -9219,7 +9231,7 @@ namespace FactoryManagementSoftware.UI
 
                                             //InitialInvoiceFormat_LOGO(xlWorkSheet);
 
-                                            NewInitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
+                                            InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);
 
                                             InsertToSheet(xlWorkSheet, areaDONoData, "INV" + DONoString);
                                             InsertToSheet(xlWorkSheet, "t12:w12", DONoString);

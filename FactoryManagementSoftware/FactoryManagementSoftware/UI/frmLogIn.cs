@@ -86,6 +86,52 @@ namespace FactoryManagementSoftware.UI
 
             return result;
         }
+
+        // Declare a global variable to hold the current connection string
+        private string currentConnectionString;
+
+        private void changingServerTest()
+        {
+            // Example servers to test the dynamic update
+            string junServer = @"Data Source=.\SQLEXPRESS01;Initial Catalog=Factory;Integrated Security=True";
+            string smyServer = @"SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock";
+
+            currentConnectionString = smyServer;
+
+            //// Simulate server selection (this could be based on user input)
+            //// In this example, let's switch between the two servers dynamically
+            //if (comboBoxServers.SelectedItem.ToString() == "Server 1")
+            //{
+
+            //}
+            //else
+            //{
+            //    currentConnectionString = smyServer;
+            //}
+
+            // Test the connection with the updated connection string
+            TestDatabaseConnection();
+        }
+
+        // Test database connection using the dynamically stored connection string
+        public void TestDatabaseConnection()
+        {
+            // Use the dynamic connection string (from memory) to open the connection
+            using (SqlConnection connection = new SqlConnection(currentConnectionString))
+            {
+                try
+                {
+                    connection.Open();
+                    MessageBox.Show("Connected to the database successfully using: " + currentConnectionString);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Failed to connect: " + ex.Message);
+                }
+            }
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             string username = gtxtUsername.Text;
@@ -96,6 +142,7 @@ namespace FactoryManagementSoftware.UI
 
             if (validation())
             {
+                //changingServerTest();
 
                 int userID = dalUser.userLogin(username, password);
 

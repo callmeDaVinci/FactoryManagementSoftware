@@ -3147,12 +3147,12 @@ namespace FactoryManagementSoftware.UI
             {
                 if(totalBalPcs > 0)
                 {
-                    lblTotalBag.Text = totalBag + str_Bag +" + " + totalPkts + str_Pkt + " + " + totalBalPcs + str_BalPcs + "or " + totalPcs + str_Pcs ;
+                    lblTotalBag.Text = totalBag + str_Bag +" + " + totalPkts + str_Pkt + " + " + totalBalPcs + str_BalPcs + " or " + totalPcs + str_Pcs ;
 
                 }
                 else
                 {
-                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalPkts + str_Pkt + "or " + totalPcs + str_Pcs;
+                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalPkts + str_Pkt + " or " + totalPcs + str_Pcs;
 
                 }
 
@@ -3161,7 +3161,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (totalBalPcs > 0)
                 {
-                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalBalPcs + str_BalPcs + "or " + totalPcs + str_Pcs;
+                    lblTotalBag.Text = totalBag + str_Bag + " + " + totalBalPcs + str_BalPcs + " or " + totalPcs + str_Pcs;
 
                 }
                 else
