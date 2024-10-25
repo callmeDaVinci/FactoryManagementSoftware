@@ -27,6 +27,7 @@ namespace FactoryManagementSoftware.DAL
         public string resetRunningNumber { get; } = "reset_running_number";
         public string isInternal { get; } = "isInternal";
         public string remark { get; } = "remark";
+        public string versionControl { get; } = "version_control";
         public string isRemoved { get; } = "isRemoved";
         public string updatedDate { get; } = "updated_date";
         public string updatedBy { get; } = "updated_by";
@@ -83,7 +84,7 @@ namespace FactoryManagementSoftware.DAL
                             date_format = "[yy]/",
                             suffix = "",
                             running_number_length = 3,
-                            last_number = 0,
+                            next_number = 0,
                             reset_running_number = "False",
                             isInternal = true,
                             remark = "",
@@ -106,7 +107,7 @@ namespace FactoryManagementSoftware.DAL
                             date_format = "[yy]/S",
                             suffix = "",
                             running_number_length = 3,
-                            last_number = 0,
+                            next_number = 0,
                             reset_running_number = "False",
                             isInternal = true,
                             remark = "",
@@ -176,7 +177,7 @@ namespace FactoryManagementSoftware.DAL
                     doFormat.date_format = row[dateFormat] != DBNull.Value ? row[dateFormat].ToString() : "";
                     doFormat.suffix = row[suffix] != DBNull.Value ? row[suffix].ToString() : "";
                     doFormat.running_number_length = row[runningNumberLength] != DBNull.Value ? Convert.ToInt32(row[runningNumberLength]) : -1;
-                    doFormat.last_number = row[lastNumber] != DBNull.Value ? Convert.ToInt32(row[lastNumber]) : -1;
+                    doFormat.next_number = row[lastNumber] != DBNull.Value ? Convert.ToInt32(row[lastNumber]) : -1;
                     doFormat.reset_running_number = row[resetRunningNumber] != DBNull.Value ? row[resetRunningNumber].ToString() : "";
                     doFormat.isInternal = row[isInternal] != DBNull.Value ? Convert.ToBoolean(row[isInternal]) : false;
                     doFormat.remark = row[remark] != DBNull.Value ? row[remark].ToString() : "";
@@ -231,6 +232,7 @@ namespace FactoryManagementSoftware.DAL
                             + lastResetDate + ","
                             + isInternal + ","
                             + remark + ","
+                            + versionControl + ","
                             + isRemoved + ","
                             + updatedDate + ","
                             + updatedBy + ") VALUES" +
@@ -249,6 +251,7 @@ namespace FactoryManagementSoftware.DAL
                             "@last_reset_date," +
                             "@isInternal," +
                             "@remark," +
+                            "@versionControl," +
                             "@isRemoved," +
                             "@updated_date," +
                             "@updated_by)";
@@ -263,13 +266,14 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@date_format", u.date_format);
                 cmd.Parameters.AddWithValue("@suffix", u.suffix);
                 cmd.Parameters.AddWithValue("@running_number_length", u.running_number_length);
-                cmd.Parameters.AddWithValue("@last_number", u.last_number);
+                cmd.Parameters.AddWithValue("@last_number", u.next_number);
                 cmd.Parameters.AddWithValue("@reset_running_number", u.reset_running_number);
                 cmd.Parameters.AddWithValue("@isMonthlyReset", u.isMonthlyReset);
                 cmd.Parameters.AddWithValue("@isYearlyReset", u.isYearlyReset);
                 cmd.Parameters.AddWithValue("@last_reset_date", u.last_reset_date);
                 cmd.Parameters.AddWithValue("@isInternal", u.isInternal);
                 cmd.Parameters.AddWithValue("@remark", u.remark);
+                cmd.Parameters.AddWithValue("@versionControl", u.version_control);
                 cmd.Parameters.AddWithValue("@isRemoved", u.isRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
@@ -330,6 +334,7 @@ namespace FactoryManagementSoftware.DAL
                            + isYearlyReset + "=@isYearlyReset,"
                            + isInternal + "=@isInternal,"
                            + remark + "=@remark,"
+                           + versionControl + "=@versionControl,"
                            + isRemoved + "=@isRemoved,"
                            + updatedDate + "=@updated_date,"
                            + updatedBy + "=@updated_by" +
@@ -351,6 +356,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@isYearlyReset", u.isYearlyReset);
                 cmd.Parameters.AddWithValue("@isInternal", u.isInternal);
                 cmd.Parameters.AddWithValue("@remark", u.remark);
+                cmd.Parameters.AddWithValue("@versionControl", u.version_control);
                 cmd.Parameters.AddWithValue("@isRemoved", u.isRemoved);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
@@ -398,7 +404,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
-                cmd.Parameters.AddWithValue("@last_number", u.last_number);
+                cmd.Parameters.AddWithValue("@last_number", u.next_number);
                 cmd.Parameters.AddWithValue("@last_reset_date", u.last_reset_date);
 
                 conn.Open();
@@ -437,7 +443,7 @@ namespace FactoryManagementSoftware.DAL
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@tbl_code", u.tbl_code);
-                cmd.Parameters.AddWithValue("@last_number", u.last_number);
+                cmd.Parameters.AddWithValue("@last_number", u.next_number);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
 
@@ -562,7 +568,7 @@ namespace FactoryManagementSoftware.DAL
             string dateFormat = format.date_format;
             string suffix = format.suffix;
             int runningNumberLength = format.running_number_length;
-            int lastNumber = format.last_number;
+            int lastNumber = format.next_number;
             DateTime lastResetDate = format.last_reset_date;
             bool isMonthlyReset = format.isMonthlyReset;
             bool isYearlyReset = format.isYearlyReset;
@@ -597,7 +603,7 @@ namespace FactoryManagementSoftware.DAL
             //string newDONumber = $"{prefix}{formattedDate}{formattedRunningNumber}{suffix}";
 
             // Update the table with the new last number and reset date
-            format.last_number = lastNumber;
+            format.next_number = lastNumber;
             format.last_reset_date = lastResetDate;
 
             UpdateLastNumberAndResetDate(format);

@@ -1810,7 +1810,7 @@ namespace FactoryManagementSoftware.UI
                 date_format = "[yy]/",
                 suffix = "",
                 running_number_length = 3,
-                last_number = 0,
+                next_number = 0,
                 reset_running_number = "",
                 isMonthlyReset = false,
                 isYearlyReset = true,
@@ -2440,7 +2440,7 @@ namespace FactoryManagementSoftware.UI
                     doFormat.updated_date = DateTime.Now;
                     doFormat.updated_by = MainDashboard.USER_ID;
 
-                    doFormat.last_number = runningNo;
+                    doFormat.next_number = runningNo;
 
                     dalDoFormat.UpdateLastNumber(doFormat);
 
@@ -2780,7 +2780,7 @@ namespace FactoryManagementSoftware.UI
                         {
                             lastNumber = 0;
                         }
-                        uDoFormat.last_number = lastNumber;
+                        uDoFormat.next_number = lastNumber;
 
                         bool success = dalDoFormat.UpdateLastNumber(uDoFormat);
 

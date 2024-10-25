@@ -17,7 +17,7 @@ namespace FactoryManagementSoftware.BLL
         public string date_format { get; set; }
         public string suffix { get; set; }
         public int running_number_length { get; set; }
-        public int last_number { get; set; }
+        public int next_number { get; set; }
         public string reset_running_number { get; set; }
         public bool isInternal { get; set; }
         public string remark { get; set; }
@@ -29,5 +29,8 @@ namespace FactoryManagementSoftware.BLL
         public bool isYearlyReset { get; set; }
 
         public DateTime last_reset_date { get; set; }
+
+        public string version_control { get; set; }
+
     }
 }

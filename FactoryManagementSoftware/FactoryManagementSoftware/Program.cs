@@ -33,9 +33,9 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmPlanningVer2dot1("R 120 141 375 96-OLD",1));
 
-            //Application.Run(new frmReadSemenyihData());
+            Application.Run(new frmDOFormat());
 
-            Application.Run(new MainDashboard(1));
+            //Application.Run(new MainDashboard(1));
 
             //Application.Run(new frmLogIn());
 

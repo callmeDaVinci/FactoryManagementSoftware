@@ -36,28 +36,30 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox3 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtRunningNumberPreview = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.txtNextNumber = new Guna.UI.WinForms.GunaTextBox();
+            this.txtNumberLength = new Guna.UI.WinForms.GunaTextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.cmbResetPeriod = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.gunaTextBox5 = new Guna.UI.WinForms.GunaTextBox();
-            this.gunaTextBox4 = new Guna.UI.WinForms.GunaTextBox();
-            this.gunaTextBox3 = new Guna.UI.WinForms.GunaTextBox();
-            this.gunaTextBox2 = new Guna.UI.WinForms.GunaTextBox();
+            this.txtNumber = new Guna.UI.WinForms.GunaTextBox();
+            this.txtSuffix = new Guna.UI.WinForms.GunaTextBox();
+            this.txtPrefix = new Guna.UI.WinForms.GunaTextBox();
+            this.txtDateFormat = new Guna.UI.WinForms.GunaTextBox();
             this.gunaTextBox1 = new Guna.UI.WinForms.GunaTextBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblSuffix = new System.Windows.Forms.Label();
+            this.lblNumber = new System.Windows.Forms.Label();
+            this.lblDateFormat = new System.Windows.Forms.Label();
+            this.lblPrefix = new System.Windows.Forms.Label();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel35 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnSaveRunningNumber = new Guna.UI.WinForms.GunaGradientButton();
-            this.txtNextRunningNumber = new Guna.UI.WinForms.GunaTextBox();
-            this.txtDONoSample = new Guna.UI.WinForms.GunaTextBox();
-            this.lblPreviewText = new Guna.UI.WinForms.GunaTextBox();
-            this.tableLayoutPanel36 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblRunningNumberEdit = new System.Windows.Forms.Label();
-            this.lblNextRunningNumber = new System.Windows.Forms.Label();
             this.txtDOVersionControl = new Guna.UI.WinForms.GunaTextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.lblDOType = new System.Windows.Forms.Label();
@@ -73,19 +75,20 @@ namespace FactoryManagementSoftware.UI
             this.errorProvider4 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider5 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider6 = new System.Windows.Forms.ErrorProvider(this.components);
-            this.gunaTextBox6 = new Guna.UI.WinForms.GunaTextBox();
+            this.helpProvider1 = new System.Windows.Forms.HelpProvider();
+            this.helpProvider2 = new System.Windows.Forms.HelpProvider();
             this.tableLayoutPanel28.SuspendLayout();
             this.tlpStepPanel.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.gunaGroupBox3.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
+            this.tableLayoutPanel8.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.tableLayoutPanel35.SuspendLayout();
-            this.tableLayoutPanel36.SuspendLayout();
             this.tlpButton.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
@@ -112,9 +115,8 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
-            this.tableLayoutPanel28.Size = new System.Drawing.Size(1014, 703);
+            this.tableLayoutPanel28.Size = new System.Drawing.Size(924, 525);
             this.tableLayoutPanel28.TabIndex = 113;
-            this.tableLayoutPanel28.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel28_Paint);
             // 
             // tlpStepPanel
             // 
@@ -130,7 +132,7 @@ namespace FactoryManagementSoftware.UI
             this.tlpStepPanel.Name = "tlpStepPanel";
             this.tlpStepPanel.RowCount = 1;
             this.tlpStepPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpStepPanel.Size = new System.Drawing.Size(954, 593);
+            this.tlpStepPanel.Size = new System.Drawing.Size(864, 415);
             this.tlpStepPanel.TabIndex = 228;
             // 
             // tableLayoutPanel2
@@ -145,7 +147,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(948, 587);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(858, 409);
             this.tableLayoutPanel2.TabIndex = 265;
             // 
             // gunaGroupBox3
@@ -163,7 +165,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox3.Name = "gunaGroupBox3";
             this.gunaGroupBox3.Padding = new System.Windows.Forms.Padding(8, 43, 8, 15);
             this.gunaGroupBox3.Radius = 3;
-            this.gunaGroupBox3.Size = new System.Drawing.Size(588, 577);
+            this.gunaGroupBox3.Size = new System.Drawing.Size(498, 399);
             this.gunaGroupBox3.TabIndex = 260;
             this.gunaGroupBox3.Text = "RUNNING NUMBER FORMAT";
             this.gunaGroupBox3.TextLocation = new System.Drawing.Point(10, 8);
@@ -172,24 +174,216 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tableLayoutPanel6.ColumnCount = 1;
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel6.Controls.Add(this.gunaTextBox6, 0, 3);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel5, 0, 5);
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel4, 0, 3);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel3, 0, 1);
-            this.tableLayoutPanel6.Controls.Add(this.gunaTextBox1, 0, 7);
+            this.tableLayoutPanel6.Controls.Add(this.gunaTextBox1, 0, 6);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel1, 0, 0);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel6.Location = new System.Drawing.Point(8, 43);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
-            this.tableLayoutPanel6.RowCount = 8;
+            this.tableLayoutPanel6.RowCount = 7;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(572, 519);
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(482, 341);
             this.tableLayoutPanel6.TabIndex = 260;
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 2;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 67F));
+            this.tableLayoutPanel5.Controls.Add(this.tableLayoutPanel8, 1, 0);
+            this.tableLayoutPanel5.Controls.Add(this.label12, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 200);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 1;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(482, 100);
+            this.tableLayoutPanel5.TabIndex = 257;
+            // 
+            // tableLayoutPanel8
+            // 
+            this.tableLayoutPanel8.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.tableLayoutPanel8.ColumnCount = 1;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.Controls.Add(this.txtRunningNumberPreview, 0, 0);
+            this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel8.Location = new System.Drawing.Point(162, 3);
+            this.tableLayoutPanel8.Name = "tableLayoutPanel8";
+            this.tableLayoutPanel8.RowCount = 1;
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(317, 94);
+            this.tableLayoutPanel8.TabIndex = 336;
+            // 
+            // txtRunningNumberPreview
+            // 
+            this.txtRunningNumberPreview.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtRunningNumberPreview.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtRunningNumberPreview.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtRunningNumberPreview.Font = new System.Drawing.Font("Segoe UI", 30F, System.Drawing.FontStyle.Bold);
+            this.txtRunningNumberPreview.Location = new System.Drawing.Point(3, 13);
+            this.txtRunningNumberPreview.Name = "txtRunningNumberPreview";
+            this.txtRunningNumberPreview.ReadOnly = true;
+            this.txtRunningNumberPreview.Size = new System.Drawing.Size(311, 67);
+            this.txtRunningNumberPreview.TabIndex = 12;
+            this.txtRunningNumberPreview.Text = "0";
+            this.txtRunningNumberPreview.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.label12.AutoSize = true;
+            this.label12.Font = new System.Drawing.Font("Segoe UI", 20F);
+            this.label12.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label12.Location = new System.Drawing.Point(5, 27);
+            this.label12.Margin = new System.Windows.Forms.Padding(5);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(136, 46);
+            this.label12.TabIndex = 160;
+            this.label12.Text = "Preview";
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 34F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.txtNextNumber, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.txtNumberLength, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.label8, 2, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label9, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.label10, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cmbResetPeriod, 2, 1);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 100);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(482, 80);
+            this.tableLayoutPanel4.TabIndex = 256;
+            // 
+            // txtNextNumber
+            // 
+            this.txtNextNumber.BackColor = System.Drawing.Color.Transparent;
+            this.txtNextNumber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtNextNumber.BaseColor = System.Drawing.Color.White;
+            this.txtNextNumber.BorderColor = System.Drawing.Color.Silver;
+            this.txtNextNumber.BorderSize = 1;
+            this.txtNextNumber.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtNextNumber.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtNextNumber.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtNextNumber.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtNextNumber.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtNextNumber.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNextNumber.ForeColor = System.Drawing.Color.Black;
+            this.txtNextNumber.Location = new System.Drawing.Point(164, 35);
+            this.txtNextNumber.Margin = new System.Windows.Forms.Padding(5);
+            this.txtNextNumber.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtNextNumber.Name = "txtNextNumber";
+            this.txtNextNumber.PasswordChar = '\0';
+            this.txtNextNumber.Radius = 3;
+            this.txtNextNumber.SelectedText = "";
+            this.txtNextNumber.Size = new System.Drawing.Size(149, 33);
+            this.txtNextNumber.TabIndex = 258;
+            this.txtNextNumber.Text = "1";
+            this.txtNextNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtNextNumber.TextChanged += new System.EventHandler(this.UpdatePreview);
+            this.txtNextNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
+            // 
+            // txtNumberLength
+            // 
+            this.txtNumberLength.BackColor = System.Drawing.Color.Transparent;
+            this.txtNumberLength.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtNumberLength.BaseColor = System.Drawing.Color.White;
+            this.txtNumberLength.BorderColor = System.Drawing.Color.Silver;
+            this.txtNumberLength.BorderSize = 1;
+            this.txtNumberLength.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtNumberLength.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtNumberLength.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtNumberLength.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtNumberLength.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtNumberLength.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNumberLength.ForeColor = System.Drawing.Color.Black;
+            this.txtNumberLength.Location = new System.Drawing.Point(5, 35);
+            this.txtNumberLength.Margin = new System.Windows.Forms.Padding(5);
+            this.txtNumberLength.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtNumberLength.Name = "txtNumberLength";
+            this.txtNumberLength.PasswordChar = '\0';
+            this.txtNumberLength.Radius = 3;
+            this.txtNumberLength.SelectedText = "";
+            this.txtNumberLength.Size = new System.Drawing.Size(149, 33);
+            this.txtNumberLength.TabIndex = 257;
+            this.txtNumberLength.Text = "3";
+            this.txtNumberLength.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtNumberLength.TextChanged += new System.EventHandler(this.UpdatePreview);
+            this.txtNumberLength.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label8.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label8.Location = new System.Drawing.Point(323, 6);
+            this.label8.Margin = new System.Windows.Forms.Padding(5);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(42, 19);
+            this.label8.TabIndex = 162;
+            this.label8.Text = "Reset";
+            // 
+            // label9
+            // 
+            this.label9.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label9.Location = new System.Drawing.Point(164, 6);
+            this.label9.Margin = new System.Windows.Forms.Padding(5);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(91, 19);
+            this.label9.TabIndex = 161;
+            this.label9.Text = "Next Number";
+            // 
+            // label10
+            // 
+            this.label10.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label10.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.label10.Location = new System.Drawing.Point(5, 6);
+            this.label10.Margin = new System.Windows.Forms.Padding(5);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(106, 19);
+            this.label10.TabIndex = 160;
+            this.label10.Text = "Number Length";
+            // 
+            // cmbResetPeriod
+            // 
+            this.cmbResetPeriod.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cmbResetPeriod.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbResetPeriod.Font = new System.Drawing.Font("Segoe UI", 10.2F);
+            this.cmbResetPeriod.FormattingEnabled = true;
+            this.cmbResetPeriod.Items.AddRange(new object[] {
+            "Never",
+            "Monthly",
+            "Yearly"});
+            this.cmbResetPeriod.Location = new System.Drawing.Point(323, 35);
+            this.cmbResetPeriod.Margin = new System.Windows.Forms.Padding(5);
+            this.cmbResetPeriod.Name = "cmbResetPeriod";
+            this.cmbResetPeriod.Size = new System.Drawing.Size(154, 31);
+            this.cmbResetPeriod.TabIndex = 259;
             // 
             // tableLayoutPanel3
             // 
@@ -198,123 +392,123 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel3.Controls.Add(this.gunaTextBox5, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.gunaTextBox4, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.gunaTextBox3, 0, 0);
-            this.tableLayoutPanel3.Controls.Add(this.gunaTextBox2, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.txtNumber, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.txtSuffix, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.txtPrefix, 0, 0);
+            this.tableLayoutPanel3.Controls.Add(this.txtDateFormat, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel3.Location = new System.Drawing.Point(0, 30);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(572, 50);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(482, 50);
             this.tableLayoutPanel3.TabIndex = 256;
             // 
-            // gunaTextBox5
+            // txtNumber
             // 
-            this.gunaTextBox5.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox5.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox5.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.gunaTextBox5.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox5.BorderSize = 1;
-            this.gunaTextBox5.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox5.Enabled = false;
-            this.gunaTextBox5.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox5.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox5.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gunaTextBox5.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox5.Location = new System.Drawing.Point(291, 5);
-            this.gunaTextBox5.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaTextBox5.MaximumSize = new System.Drawing.Size(0, 33);
-            this.gunaTextBox5.Name = "gunaTextBox5";
-            this.gunaTextBox5.PasswordChar = '\0';
-            this.gunaTextBox5.Radius = 3;
-            this.gunaTextBox5.SelectedText = "";
-            this.gunaTextBox5.Size = new System.Drawing.Size(133, 33);
-            this.gunaTextBox5.TabIndex = 256;
-            this.gunaTextBox5.Text = "[number]";
-            this.gunaTextBox5.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtNumber.BackColor = System.Drawing.Color.Transparent;
+            this.txtNumber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtNumber.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.txtNumber.BorderColor = System.Drawing.Color.Silver;
+            this.txtNumber.BorderSize = 1;
+            this.txtNumber.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtNumber.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtNumber.Enabled = false;
+            this.txtNumber.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtNumber.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtNumber.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtNumber.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtNumber.ForeColor = System.Drawing.Color.Black;
+            this.txtNumber.Location = new System.Drawing.Point(245, 5);
+            this.txtNumber.Margin = new System.Windows.Forms.Padding(5);
+            this.txtNumber.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtNumber.Name = "txtNumber";
+            this.txtNumber.PasswordChar = '\0';
+            this.txtNumber.Radius = 3;
+            this.txtNumber.SelectedText = "";
+            this.txtNumber.Size = new System.Drawing.Size(110, 33);
+            this.txtNumber.TabIndex = 256;
+            this.txtNumber.Text = "[number]";
+            this.txtNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // gunaTextBox4
+            // txtSuffix
             // 
-            this.gunaTextBox4.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox4.BaseColor = System.Drawing.Color.White;
-            this.gunaTextBox4.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox4.BorderSize = 1;
-            this.gunaTextBox4.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox4.Enabled = false;
-            this.gunaTextBox4.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox4.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox4.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gunaTextBox4.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox4.Location = new System.Drawing.Point(434, 5);
-            this.gunaTextBox4.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaTextBox4.MaximumSize = new System.Drawing.Size(0, 33);
-            this.gunaTextBox4.Name = "gunaTextBox4";
-            this.gunaTextBox4.PasswordChar = '\0';
-            this.gunaTextBox4.Radius = 3;
-            this.gunaTextBox4.SelectedText = "";
-            this.gunaTextBox4.Size = new System.Drawing.Size(133, 33);
-            this.gunaTextBox4.TabIndex = 255;
-            this.gunaTextBox4.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSuffix.BackColor = System.Drawing.Color.Transparent;
+            this.txtSuffix.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtSuffix.BaseColor = System.Drawing.Color.White;
+            this.txtSuffix.BorderColor = System.Drawing.Color.Silver;
+            this.txtSuffix.BorderSize = 1;
+            this.txtSuffix.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtSuffix.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtSuffix.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtSuffix.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtSuffix.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtSuffix.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSuffix.ForeColor = System.Drawing.Color.Black;
+            this.txtSuffix.Location = new System.Drawing.Point(365, 5);
+            this.txtSuffix.Margin = new System.Windows.Forms.Padding(5);
+            this.txtSuffix.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtSuffix.Name = "txtSuffix";
+            this.txtSuffix.PasswordChar = '\0';
+            this.txtSuffix.Radius = 3;
+            this.txtSuffix.SelectedText = "";
+            this.txtSuffix.Size = new System.Drawing.Size(112, 33);
+            this.txtSuffix.TabIndex = 255;
+            this.txtSuffix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtSuffix.TextChanged += new System.EventHandler(this.UpdatePreview);
             // 
-            // gunaTextBox3
+            // txtPrefix
             // 
-            this.gunaTextBox3.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox3.BaseColor = System.Drawing.Color.White;
-            this.gunaTextBox3.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox3.BorderSize = 1;
-            this.gunaTextBox3.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox3.Enabled = false;
-            this.gunaTextBox3.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox3.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox3.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gunaTextBox3.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox3.Location = new System.Drawing.Point(5, 5);
-            this.gunaTextBox3.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaTextBox3.MaximumSize = new System.Drawing.Size(0, 33);
-            this.gunaTextBox3.Name = "gunaTextBox3";
-            this.gunaTextBox3.PasswordChar = '\0';
-            this.gunaTextBox3.Radius = 3;
-            this.gunaTextBox3.SelectedText = "";
-            this.gunaTextBox3.Size = new System.Drawing.Size(133, 33);
-            this.gunaTextBox3.TabIndex = 254;
-            this.gunaTextBox3.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPrefix.BackColor = System.Drawing.Color.Transparent;
+            this.txtPrefix.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtPrefix.BaseColor = System.Drawing.Color.White;
+            this.txtPrefix.BorderColor = System.Drawing.Color.Silver;
+            this.txtPrefix.BorderSize = 1;
+            this.txtPrefix.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtPrefix.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtPrefix.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtPrefix.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtPrefix.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtPrefix.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtPrefix.ForeColor = System.Drawing.Color.Black;
+            this.txtPrefix.Location = new System.Drawing.Point(5, 5);
+            this.txtPrefix.Margin = new System.Windows.Forms.Padding(5);
+            this.txtPrefix.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtPrefix.Name = "txtPrefix";
+            this.txtPrefix.PasswordChar = '\0';
+            this.txtPrefix.Radius = 3;
+            this.txtPrefix.SelectedText = "";
+            this.txtPrefix.Size = new System.Drawing.Size(110, 33);
+            this.txtPrefix.TabIndex = 254;
+            this.txtPrefix.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtPrefix.TextChanged += new System.EventHandler(this.UpdatePreview);
             // 
-            // gunaTextBox2
+            // txtDateFormat
             // 
-            this.gunaTextBox2.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox2.BaseColor = System.Drawing.Color.White;
-            this.gunaTextBox2.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox2.BorderSize = 1;
-            this.gunaTextBox2.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaTextBox2.Enabled = false;
-            this.gunaTextBox2.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox2.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox2.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gunaTextBox2.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox2.Location = new System.Drawing.Point(148, 5);
-            this.gunaTextBox2.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaTextBox2.MaximumSize = new System.Drawing.Size(0, 33);
-            this.gunaTextBox2.Name = "gunaTextBox2";
-            this.gunaTextBox2.PasswordChar = '\0';
-            this.gunaTextBox2.Radius = 3;
-            this.gunaTextBox2.SelectedText = "";
-            this.gunaTextBox2.Size = new System.Drawing.Size(133, 33);
-            this.gunaTextBox2.TabIndex = 253;
-            this.gunaTextBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDateFormat.BackColor = System.Drawing.Color.Transparent;
+            this.txtDateFormat.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.txtDateFormat.BaseColor = System.Drawing.Color.White;
+            this.txtDateFormat.BorderColor = System.Drawing.Color.Silver;
+            this.txtDateFormat.BorderSize = 1;
+            this.txtDateFormat.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this.txtDateFormat.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtDateFormat.FocusedBaseColor = System.Drawing.Color.White;
+            this.txtDateFormat.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.txtDateFormat.FocusedForeColor = System.Drawing.SystemColors.ControlText;
+            this.txtDateFormat.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtDateFormat.ForeColor = System.Drawing.Color.Black;
+            this.txtDateFormat.Location = new System.Drawing.Point(125, 5);
+            this.txtDateFormat.Margin = new System.Windows.Forms.Padding(5);
+            this.txtDateFormat.MaximumSize = new System.Drawing.Size(0, 33);
+            this.txtDateFormat.Name = "txtDateFormat";
+            this.txtDateFormat.PasswordChar = '\0';
+            this.txtDateFormat.Radius = 3;
+            this.txtDateFormat.SelectedText = "";
+            this.txtDateFormat.Size = new System.Drawing.Size(110, 33);
+            this.txtDateFormat.TabIndex = 253;
+            this.txtDateFormat.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.txtDateFormat.TextChanged += new System.EventHandler(this.UpdatePreview);
             // 
             // gunaTextBox1
             // 
@@ -330,7 +524,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaTextBox1.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.gunaTextBox1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunaTextBox1.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox1.Location = new System.Drawing.Point(3, 273);
+            this.gunaTextBox1.Location = new System.Drawing.Point(3, 303);
             this.gunaTextBox1.MaximumSize = new System.Drawing.Size(0, 33);
             this.gunaTextBox1.Name = "gunaTextBox1";
             this.gunaTextBox1.PasswordChar = '\0';
@@ -347,70 +541,71 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 25F));
-            this.tableLayoutPanel1.Controls.Add(this.label5, 3, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label4, 2, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label2, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label1, 0, 0);
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel1.Controls.Add(this.lblSuffix, 3, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblNumber, 2, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblDateFormat, 1, 0);
+            this.tableLayoutPanel1.Controls.Add(this.lblPrefix, 0, 0);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(572, 30);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(482, 30);
             this.tableLayoutPanel1.TabIndex = 255;
             // 
-            // label5
+            // lblSuffix
             // 
-            this.label5.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label5.Location = new System.Drawing.Point(434, 6);
-            this.label5.Margin = new System.Windows.Forms.Padding(5);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(41, 19);
-            this.label5.TabIndex = 163;
-            this.label5.Text = "Suffix";
+            this.lblSuffix.AutoSize = true;
+            this.lblSuffix.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblSuffix.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblSuffix.Location = new System.Drawing.Point(365, 5);
+            this.lblSuffix.Margin = new System.Windows.Forms.Padding(5);
+            this.lblSuffix.Name = "lblSuffix";
+            this.lblSuffix.Size = new System.Drawing.Size(41, 19);
+            this.lblSuffix.TabIndex = 163;
+            this.lblSuffix.Text = "Suffix";
             // 
-            // label4
+            // lblNumber
             // 
-            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label4.Location = new System.Drawing.Point(291, 6);
-            this.label4.Margin = new System.Windows.Forms.Padding(5);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 19);
-            this.label4.TabIndex = 162;
-            this.label4.Text = "Number";
+            this.lblNumber.AutoSize = true;
+            this.lblNumber.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblNumber.Location = new System.Drawing.Point(245, 5);
+            this.lblNumber.Margin = new System.Windows.Forms.Padding(5);
+            this.lblNumber.Name = "lblNumber";
+            this.lblNumber.Size = new System.Drawing.Size(59, 19);
+            this.lblNumber.TabIndex = 162;
+            this.lblNumber.Text = "Number";
             // 
-            // label2
+            // lblDateFormat
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.Location = new System.Drawing.Point(148, 6);
-            this.label2.Margin = new System.Windows.Forms.Padding(5);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(86, 19);
-            this.label2.TabIndex = 161;
-            this.label2.Text = "Date Format";
+            this.lblDateFormat.AutoSize = true;
+            this.lblDateFormat.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblDateFormat.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblDateFormat.Location = new System.Drawing.Point(125, 5);
+            this.lblDateFormat.Margin = new System.Windows.Forms.Padding(5);
+            this.lblDateFormat.Name = "lblDateFormat";
+            this.lblDateFormat.Size = new System.Drawing.Size(86, 19);
+            this.lblDateFormat.TabIndex = 161;
+            this.lblDateFormat.Text = "Date Format";
             // 
-            // label1
+            // lblPrefix
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label1.Location = new System.Drawing.Point(5, 6);
-            this.label1.Margin = new System.Windows.Forms.Padding(5);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 19);
-            this.label1.TabIndex = 160;
-            this.label1.Text = "Prefix";
+            this.lblPrefix.AutoSize = true;
+            this.lblPrefix.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.lblPrefix.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblPrefix.Location = new System.Drawing.Point(5, 5);
+            this.lblPrefix.Margin = new System.Windows.Forms.Padding(5);
+            this.lblPrefix.Name = "lblPrefix";
+            this.helpProvider1.SetShowHelp(this.lblPrefix, true);
+            this.lblPrefix.Size = new System.Drawing.Size(42, 19);
+            this.lblPrefix.TabIndex = 160;
+            this.lblPrefix.Text = "Prefix";
             // 
             // gunaGroupBox4
             // 
@@ -427,7 +622,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox4.Name = "gunaGroupBox4";
             this.gunaGroupBox4.Padding = new System.Windows.Forms.Padding(8, 43, 8, 5);
             this.gunaGroupBox4.Radius = 3;
-            this.gunaGroupBox4.Size = new System.Drawing.Size(340, 577);
+            this.gunaGroupBox4.Size = new System.Drawing.Size(340, 399);
             this.gunaGroupBox4.TabIndex = 262;
             this.gunaGroupBox4.Text = "GENERAL";
             this.gunaGroupBox4.TextLocation = new System.Drawing.Point(10, 8);
@@ -436,7 +631,6 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Controls.Add(this.groupBox1, 0, 4);
             this.tableLayoutPanel13.Controls.Add(this.txtDOVersionControl, 0, 3);
             this.tableLayoutPanel13.Controls.Add(this.label3, 0, 2);
             this.tableLayoutPanel13.Controls.Add(this.lblDOType, 0, 0);
@@ -450,203 +644,8 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(324, 529);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(324, 351);
             this.tableLayoutPanel13.TabIndex = 258;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.groupBox1.Controls.Add(this.tableLayoutPanel35);
-            this.groupBox1.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold);
-            this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.groupBox1.Location = new System.Drawing.Point(3, 170);
-            this.groupBox1.Margin = new System.Windows.Forms.Padding(3, 10, 3, 3);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(318, 268);
-            this.groupBox1.TabIndex = 254;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "PREVIEW";
-            // 
-            // tableLayoutPanel35
-            // 
-            this.tableLayoutPanel35.ColumnCount = 1;
-            this.tableLayoutPanel35.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel35.Controls.Add(this.btnSaveRunningNumber, 0, 4);
-            this.tableLayoutPanel35.Controls.Add(this.txtNextRunningNumber, 0, 3);
-            this.tableLayoutPanel35.Controls.Add(this.txtDONoSample, 0, 1);
-            this.tableLayoutPanel35.Controls.Add(this.lblPreviewText, 0, 0);
-            this.tableLayoutPanel35.Controls.Add(this.tableLayoutPanel36, 0, 2);
-            this.tableLayoutPanel35.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel35.Location = new System.Drawing.Point(3, 17);
-            this.tableLayoutPanel35.Name = "tableLayoutPanel35";
-            this.tableLayoutPanel35.RowCount = 6;
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel35.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel35.Size = new System.Drawing.Size(312, 248);
-            this.tableLayoutPanel35.TabIndex = 252;
-            // 
-            // btnSaveRunningNumber
-            // 
-            this.btnSaveRunningNumber.AnimationHoverSpeed = 0.07F;
-            this.btnSaveRunningNumber.AnimationSpeed = 0.03F;
-            this.btnSaveRunningNumber.BackColor = System.Drawing.Color.Transparent;
-            this.btnSaveRunningNumber.BaseColor1 = System.Drawing.Color.White;
-            this.btnSaveRunningNumber.BaseColor2 = System.Drawing.Color.White;
-            this.btnSaveRunningNumber.BorderColor = System.Drawing.Color.Black;
-            this.btnSaveRunningNumber.BorderSize = 1;
-            this.btnSaveRunningNumber.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.btnSaveRunningNumber.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.btnSaveRunningNumber.FocusedColor = System.Drawing.Color.Empty;
-            this.btnSaveRunningNumber.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.btnSaveRunningNumber.ForeColor = System.Drawing.Color.Black;
-            this.btnSaveRunningNumber.Image = null;
-            this.btnSaveRunningNumber.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnSaveRunningNumber.Location = new System.Drawing.Point(10, 190);
-            this.btnSaveRunningNumber.Margin = new System.Windows.Forms.Padding(10, 10, 10, 0);
-            this.btnSaveRunningNumber.Name = "btnSaveRunningNumber";
-            this.btnSaveRunningNumber.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.btnSaveRunningNumber.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.btnSaveRunningNumber.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.btnSaveRunningNumber.OnHoverForeColor = System.Drawing.Color.White;
-            this.btnSaveRunningNumber.OnHoverImage = null;
-            this.btnSaveRunningNumber.OnPressedColor = System.Drawing.Color.Black;
-            this.btnSaveRunningNumber.Radius = 5;
-            this.btnSaveRunningNumber.Size = new System.Drawing.Size(292, 40);
-            this.btnSaveRunningNumber.TabIndex = 224;
-            this.btnSaveRunningNumber.Text = "Save";
-            this.btnSaveRunningNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnSaveRunningNumber.Visible = false;
-            this.btnSaveRunningNumber.Click += new System.EventHandler(this.btnSaveRunningNumber_Click);
-            // 
-            // txtNextRunningNumber
-            // 
-            this.txtNextRunningNumber.BackColor = System.Drawing.Color.Transparent;
-            this.txtNextRunningNumber.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtNextRunningNumber.BaseColor = System.Drawing.Color.Gainsboro;
-            this.txtNextRunningNumber.BorderColor = System.Drawing.Color.Silver;
-            this.txtNextRunningNumber.BorderSize = 1;
-            this.txtNextRunningNumber.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtNextRunningNumber.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtNextRunningNumber.Enabled = false;
-            this.txtNextRunningNumber.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtNextRunningNumber.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.txtNextRunningNumber.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtNextRunningNumber.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNextRunningNumber.ForeColor = System.Drawing.Color.Black;
-            this.txtNextRunningNumber.Location = new System.Drawing.Point(10, 143);
-            this.txtNextRunningNumber.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.txtNextRunningNumber.MaximumSize = new System.Drawing.Size(0, 33);
-            this.txtNextRunningNumber.Name = "txtNextRunningNumber";
-            this.txtNextRunningNumber.PasswordChar = '\0';
-            this.txtNextRunningNumber.Radius = 3;
-            this.txtNextRunningNumber.ReadOnly = true;
-            this.txtNextRunningNumber.SelectedText = "";
-            this.txtNextRunningNumber.Size = new System.Drawing.Size(292, 33);
-            this.txtNextRunningNumber.TabIndex = 251;
-            this.txtNextRunningNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.txtNextRunningNumber.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtNextRunningNumber_KeyPress);
-            // 
-            // txtDONoSample
-            // 
-            this.txtDONoSample.BackColor = System.Drawing.Color.Transparent;
-            this.txtDONoSample.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.txtDONoSample.BaseColor = System.Drawing.Color.White;
-            this.txtDONoSample.BorderColor = System.Drawing.Color.Silver;
-            this.txtDONoSample.BorderSize = 1;
-            this.txtDONoSample.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.txtDONoSample.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDONoSample.Enabled = false;
-            this.txtDONoSample.FocusedBaseColor = System.Drawing.Color.White;
-            this.txtDONoSample.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.txtDONoSample.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.txtDONoSample.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtDONoSample.ForeColor = System.Drawing.Color.Black;
-            this.txtDONoSample.Location = new System.Drawing.Point(10, 53);
-            this.txtDONoSample.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.txtDONoSample.MaximumSize = new System.Drawing.Size(0, 33);
-            this.txtDONoSample.Name = "txtDONoSample";
-            this.txtDONoSample.PasswordChar = '\0';
-            this.txtDONoSample.Radius = 3;
-            this.txtDONoSample.SelectedText = "";
-            this.txtDONoSample.Size = new System.Drawing.Size(292, 33);
-            this.txtDONoSample.TabIndex = 250;
-            this.txtDONoSample.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // lblPreviewText
-            // 
-            this.lblPreviewText.BackColor = System.Drawing.Color.Transparent;
-            this.lblPreviewText.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.lblPreviewText.BaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.lblPreviewText.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
-            this.lblPreviewText.BorderSize = 1;
-            this.lblPreviewText.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.lblPreviewText.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblPreviewText.Enabled = false;
-            this.lblPreviewText.FocusedBaseColor = System.Drawing.Color.White;
-            this.lblPreviewText.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.lblPreviewText.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.lblPreviewText.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
-            this.lblPreviewText.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblPreviewText.Location = new System.Drawing.Point(10, 3);
-            this.lblPreviewText.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.lblPreviewText.Multiline = true;
-            this.lblPreviewText.Name = "lblPreviewText";
-            this.lblPreviewText.PasswordChar = '\0';
-            this.lblPreviewText.Radius = 3;
-            this.lblPreviewText.SelectedText = "";
-            this.lblPreviewText.Size = new System.Drawing.Size(292, 44);
-            this.lblPreviewText.TabIndex = 251;
-            this.lblPreviewText.Text = "If the order number is 123, the delivery order number would be";
-            this.lblPreviewText.TextChanged += new System.EventHandler(this.gunaTextBox1_TextChanged);
-            // 
-            // tableLayoutPanel36
-            // 
-            this.tableLayoutPanel36.ColumnCount = 2;
-            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 68F));
-            this.tableLayoutPanel36.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel36.Controls.Add(this.lblRunningNumberEdit, 1, 0);
-            this.tableLayoutPanel36.Controls.Add(this.lblNextRunningNumber, 0, 0);
-            this.tableLayoutPanel36.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel36.Location = new System.Drawing.Point(0, 90);
-            this.tableLayoutPanel36.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel36.Name = "tableLayoutPanel36";
-            this.tableLayoutPanel36.RowCount = 1;
-            this.tableLayoutPanel36.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel36.Size = new System.Drawing.Size(312, 50);
-            this.tableLayoutPanel36.TabIndex = 254;
-            // 
-            // lblRunningNumberEdit
-            // 
-            this.lblRunningNumberEdit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblRunningNumberEdit.AutoSize = true;
-            this.lblRunningNumberEdit.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblRunningNumberEdit.Font = new System.Drawing.Font("Segoe UI", 7.8F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblRunningNumberEdit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRunningNumberEdit.Location = new System.Drawing.Point(274, 30);
-            this.lblRunningNumberEdit.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.lblRunningNumberEdit.Name = "lblRunningNumberEdit";
-            this.lblRunningNumberEdit.Size = new System.Drawing.Size(28, 17);
-            this.lblRunningNumberEdit.TabIndex = 162;
-            this.lblRunningNumberEdit.Text = "Edit";
-            this.lblRunningNumberEdit.Click += new System.EventHandler(this.label4_Click);
-            // 
-            // lblNextRunningNumber
-            // 
-            this.lblNextRunningNumber.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblNextRunningNumber.AutoSize = true;
-            this.lblNextRunningNumber.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblNextRunningNumber.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblNextRunningNumber.Location = new System.Drawing.Point(10, 28);
-            this.lblNextRunningNumber.Margin = new System.Windows.Forms.Padding(10, 3, 10, 3);
-            this.lblNextRunningNumber.Name = "lblNextRunningNumber";
-            this.lblNextRunningNumber.Size = new System.Drawing.Size(144, 19);
-            this.lblNextRunningNumber.TabIndex = 161;
-            this.lblNextRunningNumber.Text = "Next Running number";
             // 
             // txtDOVersionControl
             // 
@@ -657,7 +656,6 @@ namespace FactoryManagementSoftware.UI
             this.txtDOVersionControl.BorderSize = 1;
             this.txtDOVersionControl.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtDOVersionControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDOVersionControl.Enabled = false;
             this.txtDOVersionControl.FocusedBaseColor = System.Drawing.Color.White;
             this.txtDOVersionControl.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.txtDOVersionControl.FocusedForeColor = System.Drawing.SystemColors.ControlText;
@@ -708,7 +706,6 @@ namespace FactoryManagementSoftware.UI
             this.txtDOType.BorderSize = 1;
             this.txtDOType.Cursor = System.Windows.Forms.Cursors.IBeam;
             this.txtDOType.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.txtDOType.Enabled = false;
             this.txtDOType.FocusedBaseColor = System.Drawing.Color.White;
             this.txtDOType.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.txtDOType.FocusedForeColor = System.Drawing.SystemColors.ControlText;
@@ -739,14 +736,14 @@ namespace FactoryManagementSoftware.UI
             this.tlpButton.Controls.Add(this.btnJobPublish, 6, 1);
             this.tlpButton.Controls.Add(this.btnCancel, 5, 1);
             this.tlpButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tlpButton.Location = new System.Drawing.Point(0, 633);
+            this.tlpButton.Location = new System.Drawing.Point(0, 455);
             this.tlpButton.Margin = new System.Windows.Forms.Padding(0);
             this.tlpButton.Name = "tlpButton";
             this.tlpButton.RowCount = 3;
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpButton.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tlpButton.Size = new System.Drawing.Size(1014, 70);
+            this.tlpButton.Size = new System.Drawing.Size(924, 70);
             this.tlpButton.TabIndex = 221;
             // 
             // btnJobPublish
@@ -767,7 +764,7 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.Image = null;
             this.btnJobPublish.ImageAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnJobPublish.ImageSize = new System.Drawing.Size(25, 25);
-            this.btnJobPublish.Location = new System.Drawing.Point(791, 10);
+            this.btnJobPublish.Location = new System.Drawing.Point(701, 10);
             this.btnJobPublish.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
             this.btnJobPublish.Name = "btnJobPublish";
             this.btnJobPublish.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -781,7 +778,7 @@ namespace FactoryManagementSoftware.UI
             this.btnJobPublish.TabIndex = 222;
             this.btnJobPublish.Text = "SAVE";
             this.btnJobPublish.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.btnJobPublish.Click += new System.EventHandler(this.btnJobPublish_Click);
+            this.btnJobPublish.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // btnCancel
             // 
@@ -800,7 +797,7 @@ namespace FactoryManagementSoftware.UI
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(591, 10);
+            this.btnCancel.Location = new System.Drawing.Point(501, 10);
             this.btnCancel.Margin = new System.Windows.Forms.Padding(10, 0, 10, 0);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -852,38 +849,13 @@ namespace FactoryManagementSoftware.UI
             // 
             this.errorProvider6.ContainerControl = this;
             // 
-            // gunaTextBox6
-            // 
-            this.gunaTextBox6.BackColor = System.Drawing.Color.Transparent;
-            this.gunaTextBox6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.gunaTextBox6.BaseColor = System.Drawing.Color.White;
-            this.gunaTextBox6.BorderColor = System.Drawing.Color.Silver;
-            this.gunaTextBox6.BorderSize = 1;
-            this.gunaTextBox6.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.gunaTextBox6.Enabled = false;
-            this.gunaTextBox6.FocusedBaseColor = System.Drawing.Color.White;
-            this.gunaTextBox6.FocusedBorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.gunaTextBox6.FocusedForeColor = System.Drawing.SystemColors.ControlText;
-            this.gunaTextBox6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gunaTextBox6.ForeColor = System.Drawing.Color.Black;
-            this.gunaTextBox6.Location = new System.Drawing.Point(5, 115);
-            this.gunaTextBox6.Margin = new System.Windows.Forms.Padding(5);
-            this.gunaTextBox6.MaximumSize = new System.Drawing.Size(0, 33);
-            this.gunaTextBox6.Name = "gunaTextBox6";
-            this.gunaTextBox6.PasswordChar = '\0';
-            this.gunaTextBox6.Radius = 3;
-            this.gunaTextBox6.SelectedText = "";
-            this.gunaTextBox6.Size = new System.Drawing.Size(133, 33);
-            this.gunaTextBox6.TabIndex = 255;
-            this.gunaTextBox6.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // frmDOFormat
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(1014, 703);
+            this.ClientSize = new System.Drawing.Size(924, 525);
             this.Controls.Add(this.tableLayoutPanel28);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmDOFormat";
@@ -897,16 +869,18 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel2.ResumeLayout(false);
             this.gunaGroupBox3.ResumeLayout(false);
             this.tableLayoutPanel6.ResumeLayout(false);
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
+            this.tableLayoutPanel8.ResumeLayout(false);
+            this.tableLayoutPanel8.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
             this.gunaGroupBox4.ResumeLayout(false);
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel13.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.tableLayoutPanel35.ResumeLayout(false);
-            this.tableLayoutPanel36.ResumeLayout(false);
-            this.tableLayoutPanel36.PerformLayout();
             this.tlpButton.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).EndInit();
@@ -944,25 +918,28 @@ namespace FactoryManagementSoftware.UI
         private Label lblDOType;
         private Guna.UI.WinForms.GunaTextBox txtDOType;
         private TableLayoutPanel tableLayoutPanel3;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox5;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox4;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox3;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox2;
+        private Guna.UI.WinForms.GunaTextBox txtNumber;
+        private Guna.UI.WinForms.GunaTextBox txtSuffix;
+        private Guna.UI.WinForms.GunaTextBox txtPrefix;
+        private Guna.UI.WinForms.GunaTextBox txtDateFormat;
         private Guna.UI.WinForms.GunaTextBox gunaTextBox1;
         private TableLayoutPanel tableLayoutPanel1;
-        private Label label5;
-        private Label label4;
-        private Label label2;
-        private Label label1;
-        private GroupBox groupBox1;
-        private TableLayoutPanel tableLayoutPanel35;
-        private Guna.UI.WinForms.GunaGradientButton btnSaveRunningNumber;
-        private Guna.UI.WinForms.GunaTextBox txtNextRunningNumber;
-        private Guna.UI.WinForms.GunaTextBox txtDONoSample;
-        private Guna.UI.WinForms.GunaTextBox lblPreviewText;
-        private TableLayoutPanel tableLayoutPanel36;
-        private Label lblRunningNumberEdit;
-        private Label lblNextRunningNumber;
-        private Guna.UI.WinForms.GunaTextBox gunaTextBox6;
+        private Label lblSuffix;
+        private Label lblNumber;
+        private Label lblDateFormat;
+        private Label lblPrefix;
+        private TableLayoutPanel tableLayoutPanel4;
+        private Guna.UI.WinForms.GunaTextBox txtNextNumber;
+        private Guna.UI.WinForms.GunaTextBox txtNumberLength;
+        private Label label8;
+        private Label label9;
+        private Label label10;
+        private TableLayoutPanel tableLayoutPanel5;
+        private Label label12;
+        private TableLayoutPanel tableLayoutPanel8;
+        private TextBox txtRunningNumberPreview;
+        private ComboBox cmbResetPeriod;
+        private HelpProvider helpProvider1;
+        private HelpProvider helpProvider2;
     }
 }

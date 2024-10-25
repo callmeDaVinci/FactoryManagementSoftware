@@ -12,6 +12,7 @@ using Syncfusion.XlsIO.Parser.Biff_Records;
 using Guna.UI.WinForms;
 using System.Configuration;
 using Syncfusion.XlsIO;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -21,181 +22,55 @@ namespace FactoryManagementSoftware.UI
 
         Tool tool = new Tool();
         Text text = new Text();
-        itemDAL dalItem = new itemDAL();
         doFormatDAL dalDoFormat = new doFormatDAL();
-        companyDAL dalCompany = new companyDAL();
-        addressBookDAL dalAddressBook = new addressBookDAL();
-        doInternalDAL dalInternalDO = new doInternalDAL();
-        doInternalItemDAL dalInternalDOItem = new doInternalItemDAL();
-
-        AddressBookBLL uBillingAddress = new AddressBookBLL();
-        AddressBookBLL uShippingAddress = new AddressBookBLL();
-        AddressBookBLL uLetterHeadAddress = new AddressBookBLL();
-        internalDOBLL uInternalDO = new internalDOBLL();
-        internalDOItemBLL uInternalDOItem = new internalDOItemBLL();
-
-        private string ITEM_CODE = "ITEM CODE";
-        private string ITEM_CATEGORY = "CATEGORY";
-        bool DO_ITEM_EDIT_MODE = false;
-        bool DO_EDITING_MODE = false;
-        private int EDITING_INDEX = -1;
-        private string BUTTON_ADDTOLIST_TEXT = "Add to List";
-        private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
 
         private bool DATA_SAVED = false;
+
+        private bool EDIT_MODE = false;
+
         public frmDOFormat()
         {
             InitializeComponent();
             InitialSetting();
-            DO_ITEM_EDIT_MODE = false;
-            DO_EDITING_MODE = false;
+            EDIT_MODE = false;
+            TABLE_CODE = -1;
         }
 
+        private int TABLE_CODE;
+        public frmDOFormat(int format_tbl_code)
+        {
+            InitializeComponent();
+            InitialSetting();
+            EDIT_MODE = false;
+            TABLE_CODE = format_tbl_code;
+        }
 
         #endregion
 
         #region UI/UX
         private void InitialSetting()
         {
-            
+            cmbResetPeriod.Text = "Never";
+            LoadData(TABLE_CODE);
         }
 
         #region Appearance
 
-        DataTable DT_ITEM_LIST;
-
-        private DataTable NewItemList()
-        {
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add(text.Header_Index, typeof(int));
-            dt.Columns.Add(text.Header_TableCode, typeof(int));
-            dt.Columns.Add(text.Header_ItemCode, typeof(string));
-            dt.Columns.Add(text.Header_Description, typeof(string));
-            dt.Columns.Add(text.Header_Qty, typeof(decimal));
-            dt.Columns.Add(text.Header_Unit, typeof(string));
-
-            dt.Columns.Add(text.Header_SearchMode, typeof(bool));
-            dt.Columns.Add(text.Header_ItemName, typeof(string));
-
-            dt.Columns.Add(text.Header_TotalQty, typeof(string));
-            dt.Columns.Add(text.Header_TotalQtyUnit, typeof(string));
-            dt.Columns.Add(text.Header_QtyPerBox, typeof(string));
-            dt.Columns.Add(text.Header_BoxQty, typeof(string));
-            dt.Columns.Add(text.Header_BoxUnit, typeof(string));
-            dt.Columns.Add(text.Header_Balance, typeof(decimal));
-
-            dt.Columns.Add(text.Header_Remark, typeof(string));
-
-            dt.Columns.Add(text.Header_DescriptionIncludeCategory, typeof(bool));
-            dt.Columns.Add(text.Header_DescriptionIncludePackaging, typeof(bool));
-            dt.Columns.Add(text.Header_DescriptionIncludeRemark, typeof(bool));
-            dt.Columns.Add(text.Header_ToRemove, typeof(bool));
-
-            return dt;
-        }
-
-
-        private void functiontoTestGibhub()
-        {
-            DataTable dt = new DataTable();
-
-            var testing123 = 13;
-
-        }
-
-        private void dgvUIEdit(DataGridView dgv)
-        {
-            var test = 0;
-
-            //if (dgv == dgvDOItemList)
-            //{
-            //    dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_ItemCode].MinimumWidth = 100;
-
-
-            //    dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_Description].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //    dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //    dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-            //    dgv.Columns[text.Header_TableCode].Visible = false;
-            //    dgv.Columns[text.Header_SearchMode].Visible = false;
-            //    dgv.Columns[text.Header_ItemName].Visible = false;
-            //    dgv.Columns[text.Header_TotalQty].Visible = false;
-            //    dgv.Columns[text.Header_TotalQtyUnit].Visible = false;
-            //    dgv.Columns[text.Header_QtyPerBox].Visible = false;
-            //    dgv.Columns[text.Header_BoxQty].Visible = false;
-            //    dgv.Columns[text.Header_BoxUnit].Visible = false;
-            //    dgv.Columns[text.Header_Balance].Visible = false;
-            //    dgv.Columns[text.Header_Remark].Visible = false;
-            //    dgv.Columns[text.Header_Balance].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
-            //    dgv.Columns[text.Header_ToRemove].Visible = false;
-
-            //}
-            //else if (dgv == dgvPreviewItemList)
-            //{
-            //    dgv.Columns[text.Header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-            //    dgv.Columns[text.Header_ItemCode].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_ItemCode].MinimumWidth = 100;
-
-
-            //    dgv.Columns[text.Header_Description].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            //    dgv.Columns[text.Header_Description].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-            //    dgv.Columns[text.Header_Description].MinimumWidth = 100;
-            //    dgv.Columns[text.Header_Description].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-
-            //    dgv.Columns[text.Header_Qty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            //    dgv.Columns[text.Header_Unit].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-
-            //    dgv.Columns[text.Header_TableCode].Visible = false;
-            //    dgv.Columns[text.Header_SearchMode].Visible = false;
-            //    dgv.Columns[text.Header_ItemName].Visible = false;
-            //    dgv.Columns[text.Header_TotalQty].Visible = false;
-            //    dgv.Columns[text.Header_TotalQtyUnit].Visible = false;
-            //    dgv.Columns[text.Header_QtyPerBox].Visible = false;
-            //    dgv.Columns[text.Header_BoxQty].Visible = false;
-            //    dgv.Columns[text.Header_BoxUnit].Visible = false;
-            //    dgv.Columns[text.Header_Balance].Visible = false;
-            //    dgv.Columns[text.Header_Remark].Visible = false;
-            //    dgv.Columns[text.Header_Balance].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludeCategory].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludePackaging].Visible = false;
-            //    dgv.Columns[text.Header_DescriptionIncludeRemark].Visible = false;
-            //    dgv.Columns[text.Header_ToRemove].Visible = false;
-
-            //}
-        }
-
         #endregion
-
-
-
-
-        #endregion
-
 
         #region Event Handlers
 
-      
-        private void btnJobPublish_Click(object sender, EventArgs e)
+        private void frmDOEditing_Load(object sender, EventArgs e)
         {
-            
+
+
         }
 
+        private void frmDOEditing_Shown(object sender, EventArgs e)
+        {
+
+
+        }
 
         private void frmDOEditing_FormClosing(object sender, FormClosingEventArgs e)
         {
@@ -216,20 +91,124 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-    
-
-        #endregion
-
-     
-
-
-        private void gunaTextBox1_TextChanged(object sender, EventArgs e)
+        private void OnlyNumeric_KeyPress(object sender, KeyPressEventArgs e)
         {
-
+            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            {
+                e.Handled = true;
+            }
         }
-     
 
-      
+        private void UpdatePreview(object sender, EventArgs e)
+        {
+            RunningNumberPreview(); // Call the preview method
+        }
+
+
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            // VALIDATION
+            if (!ValidateForm())
+            {
+                return; // Exit if validation fails
+            }
+
+            DialogResult confirmationResult;
+
+            if (EDIT_MODE && TABLE_CODE > 0)
+            {
+                // CONFIRMATION for updating
+                confirmationResult = MessageBox.Show(
+                    "Are you sure you want to update this DO format?",
+                    "Confirm Update",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+            }
+            else
+            {
+                // CONFIRMATION for saving new format
+                confirmationResult = MessageBox.Show(
+                    "Are you sure you want to save this new DO format?",
+                    "Confirm Save",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+            }
+
+            // Check if the user confirmed the action
+            if (confirmationResult == DialogResult.Yes)
+            {
+                bool saveSuccess = false;
+
+                // INSERT OR UPDATE TO DATABASE
+                if (EDIT_MODE && TABLE_CODE > 0)
+                {
+                    // Update logic here if applicable
+                    saveSuccess = Update();  // Assuming you have an Update method for editing existing entries
+                }
+                else
+                {
+                    saveSuccess = Insert();  // Save new format
+                }
+
+                if(saveSuccess)
+                {
+                    DATA_SAVED = true;
+                    MessageBox.Show("DO format has been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+        }
+
+
+        // Validation Method
+        private bool ValidateForm()
+        {
+            // Validate Date Format (it should not be empty)
+            if (string.IsNullOrEmpty(txtDateFormat.Text))
+            {
+                MessageBox.Show("Date Format is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtDateFormat.Focus();
+                return false;
+            }
+
+            // Validate Number Length (it must be greater than 0)
+            if (!int.TryParse(txtNumberLength.Text, out int numberLength) || numberLength <= 0)
+            {
+                MessageBox.Show("Number Length must be a valid number greater than 0.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtNumberLength.Focus();
+                return false;
+            }
+
+            // Validate Prefix (Optional, but you can enforce checks if needed)
+            if (string.IsNullOrEmpty(txtPrefix.Text))
+            {
+                var result = MessageBox.Show("Prefix is empty. Do you want to continue without a prefix?",
+                                             "Confirm Prefix",
+                                             MessageBoxButtons.YesNo,
+                                             MessageBoxIcon.Warning);
+                if (result == DialogResult.No)
+                {
+                    txtPrefix.Focus();
+                    return false;
+                }
+            }
+
+            // Validate DO Type (If required)
+            if (string.IsNullOrEmpty(txtDOType.Text))
+            {
+                MessageBox.Show("DO Type is required.", "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtDOType.Focus();
+                return false;
+            }
+
+            // You can add more validations as necessary based on your requirements
+
+            return true; // All validations passed
+        }
+
+
         private void btnCancel_Click(object sender, EventArgs e)
         {
             if (!DATA_SAVED)
@@ -241,52 +220,178 @@ namespace FactoryManagementSoftware.UI
                 {
                     Close();
                 }
-               
+
 
             }
         }
 
 
-        private void frmDOEditing_Load(object sender, EventArgs e)
+        #endregion
+
+        #endregion
+
+        #region Logic
+        private void RunningNumberPreview()
         {
-            
-           
-        }
+            string prefix = txtPrefix.Text;
+            string dateFormat = txtDateFormat.Text;
+            string suffix = txtSuffix.Text;
 
+            string nextNumber = txtNextNumber.Text;
+            int numberLength = int.TryParse(txtNumberLength.Text, out numberLength) ? numberLength : 1;
 
-
-        private void tableLayoutPanel28_Paint(object sender, PaintEventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-
-     
-
-        private void txtNextRunningNumber_KeyPress(object sender, KeyPressEventArgs e)
-        {
-            if (!char.IsNumber(e.KeyChar) & (Keys)e.KeyChar != Keys.Back)
+            if (numberLength <= 0)
             {
-                e.Handled = true;
+                numberLength = 1;
             }
+
+            DateTime dateToday = DateTime.Today;
+
+            // Replace custom date placeholders with .NET's DateTime format specifiers
+            if (!string.IsNullOrEmpty(dateFormat))
+            {
+                // Replace placeholders with DateTime format strings
+                dateFormat = dateFormat
+                    .Replace("[yyyy]", "yyyy")
+                    .Replace("[yy]", "yy")
+                    .Replace("[mm]", "MM")
+                    .Replace("[mmm]", "MMM")
+                    .Replace("[dd]", "dd")
+                    .Replace("[d]", "d");
+            }
+
+            // Format the date using the updated format string
+            string date = "";
+            try
+            {
+                if (!string.IsNullOrEmpty(dateFormat))
+                {
+                    date = dateToday.ToString(dateFormat);
+                }
+            }
+            catch (FormatException)
+            {
+                // Handle invalid date format
+                string message = "Invalid date format. Please use valid date format patterns.\n\n" +
+                "For example,\n[dd] = 01, [d] = 1;\n[mm] = 10, [mmm] = Oct\n[yy] = 24, [yyyy] = 2024.\n\n" +
+                "Allowed symbols: '/', '-'.";
+
+                if (txtDateFormat.Text != "[")
+                {
+                    MessageBox.Show(message, "Date Format Error");
+                }
+
+
+                return;
+            }
+
+            // Format the next number to the specified length, padding with leading zeroes if necessary
+            string formattedNumber = nextNumber.PadLeft(numberLength, '0');
+
+            // Combine the parts: Prefix + Date + Formatted Number + Suffix
+            string numberPreview = prefix + date + formattedNumber + suffix;
+
+            // Display the preview (for example, in a label or a textbox)
+            txtRunningNumberPreview.Text = numberPreview;
         }
 
-        private void btnSaveRunningNumber_Click(object sender, EventArgs e)
+        #endregion
+
+        #region Database
+
+        private void LoadData(int tblCode)
         {
-          
+
         }
 
-
-        private void frmDOEditing_Shown(object sender, EventArgs e)
+        private bool Insert()
         {
-            
+            DateTime DateNow = DateTime.Now;
 
+            // Fetch and parse fields
+            string prefix = txtPrefix.Text;
+            string dateFormat = txtDateFormat.Text;
+            string suffix = txtSuffix.Text;
+            int runningNumberLength = int.TryParse(txtNumberLength.Text, out int i) ? i : 1;
+            int nextNumber = 0;
+
+
+            // Format the next number with leading zeros, based on running number length
+            string formattedNumber = nextNumber.ToString().PadLeft(runningNumberLength, '0');
+
+            // Combine prefix, date, formatted number, and suffix into no_format
+            string noFormat = prefix + dateFormat + formattedNumber + suffix;
+
+            // Create new format and set properties
+            doFormatBLL newFormat = new doFormatBLL()
+            {
+                letter_head_tbl_code = -1,
+                sheet_format_tbl_code = -1,
+                do_type = txtDOType.Text,
+                prefix = prefix,
+                date_format = txtDateFormat.Text, // Keep raw date format for future use
+                suffix = suffix,
+                no_format = noFormat, // Combined format
+                running_number_length = runningNumberLength,
+                next_number = nextNumber,
+                reset_running_number = cmbResetPeriod.Text != "Never" && cmbResetPeriod.Text != "" ? "True" : "False",
+                remark = "",
+                updated_by = MainDashboard.USER_ID,
+                updated_date = DateNow,
+                isMonthlyReset = cmbResetPeriod.Text == "Monthly",
+                isYearlyReset = cmbResetPeriod.Text == "Yearly",
+                last_reset_date = DateNow,
+                version_control = txtDOVersionControl.Text
+            };
+
+            // Insert data using the DAL
+            return dalDoFormat.Insert(newFormat);
         }
 
+        private bool Update()
+        {
+            DateTime DateNow = DateTime.Now;
+
+            // Fetch and parse fields
+            string prefix = txtPrefix.Text;
+            string dateFormat = txtDateFormat.Text;
+            string suffix = txtSuffix.Text;
+            int runningNumberLength = int.TryParse(txtNumberLength.Text, out int i) ? i : 1;
+            int nextNumber = 0;
+
+
+            // Format the next number with leading zeros, based on running number length
+            string formattedNumber = nextNumber.ToString().PadLeft(runningNumberLength, '0');
+
+            // Combine prefix, date, formatted number, and suffix into no_format
+            string noFormat = prefix + dateFormat + formattedNumber + suffix;
+
+            // Create new format and set properties
+            doFormatBLL newFormat = new doFormatBLL()
+            {
+                tbl_code = TABLE_CODE,
+                letter_head_tbl_code = -1,
+                sheet_format_tbl_code = -1,
+                do_type = txtDOType.Text,
+                prefix = prefix,
+                date_format = txtDateFormat.Text, // Keep raw date format for future use
+                suffix = suffix,
+                no_format = noFormat, // Combined format
+                running_number_length = runningNumberLength,
+                next_number = nextNumber,
+                reset_running_number = cmbResetPeriod.Text != "Never" && cmbResetPeriod.Text != "" ? "True" : "False",
+                remark = "",
+                updated_by = MainDashboard.USER_ID,
+                updated_date = DateNow,
+                isMonthlyReset = cmbResetPeriod.Text == "Monthly",
+                isYearlyReset = cmbResetPeriod.Text == "Yearly",
+                last_reset_date = DateNow,
+                version_control = txtDOVersionControl.Text
+            };
+
+            // Insert data using the DAL
+            return dalDoFormat.Update(newFormat);
+        }
+        #endregion
     }
 }
