@@ -288,8 +288,8 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tlpStepPanel.AutoScroll = true;
             this.tlpStepPanel.ColumnCount = 3;
-            this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpStepPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpStepPanel.Controls.Add(this.gunaGroupBox2, 2, 0);
             this.tlpStepPanel.Controls.Add(this.gunaGroupBox5, 1, 0);
@@ -716,12 +716,12 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gunaGroupBox5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunaGroupBox5.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
-            this.gunaGroupBox5.Location = new System.Drawing.Point(1253, 5);
+            this.gunaGroupBox5.Location = new System.Drawing.Point(25, 5);
             this.gunaGroupBox5.Margin = new System.Windows.Forms.Padding(5);
             this.gunaGroupBox5.Name = "gunaGroupBox5";
             this.gunaGroupBox5.Padding = new System.Windows.Forms.Padding(8, 43, 8, 15);
             this.gunaGroupBox5.Radius = 3;
-            this.gunaGroupBox5.Size = new System.Drawing.Size(10, 543);
+            this.gunaGroupBox5.Size = new System.Drawing.Size(1238, 543);
             this.gunaGroupBox5.TabIndex = 260;
             this.gunaGroupBox5.Text = "Item List Setting";
             this.gunaGroupBox5.TextLocation = new System.Drawing.Point(10, 8);
@@ -739,7 +739,7 @@ namespace FactoryManagementSoftware.UI
             this.tlpItemListSetting.Name = "tlpItemListSetting";
             this.tlpItemListSetting.RowCount = 1;
             this.tlpItemListSetting.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpItemListSetting.Size = new System.Drawing.Size(0, 485);
+            this.tlpItemListSetting.Size = new System.Drawing.Size(1222, 485);
             this.tlpItemListSetting.TabIndex = 2021;
             // 
             // tableLayoutPanel34
@@ -749,12 +749,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel34.Controls.Add(this.tableLayoutPanel20, 0, 0);
             this.tableLayoutPanel34.Controls.Add(this.dgvDOItemList, 0, 1);
             this.tableLayoutPanel34.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel34.Location = new System.Drawing.Point(14, 3);
+            this.tableLayoutPanel34.Location = new System.Drawing.Point(624, 3);
             this.tableLayoutPanel34.Name = "tableLayoutPanel34";
             this.tableLayoutPanel34.RowCount = 2;
             this.tableLayoutPanel34.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel34.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel34.Size = new System.Drawing.Size(1, 479);
+            this.tableLayoutPanel34.Size = new System.Drawing.Size(595, 479);
             this.tableLayoutPanel34.TabIndex = 2020;
             // 
             // tableLayoutPanel20
@@ -774,7 +774,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel20.Name = "tableLayoutPanel20";
             this.tableLayoutPanel20.RowCount = 1;
             this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(1, 35);
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(595, 35);
             this.tableLayoutPanel20.TabIndex = 2017;
             // 
             // btnItemRemove
@@ -793,7 +793,7 @@ namespace FactoryManagementSoftware.UI
             this.btnItemRemove.ForeColor = System.Drawing.Color.White;
             this.btnItemRemove.Image = ((System.Drawing.Image)(resources.GetObject("btnItemRemove.Image")));
             this.btnItemRemove.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemRemove.Location = new System.Drawing.Point(-36, 3);
+            this.btnItemRemove.Location = new System.Drawing.Point(558, 3);
             this.btnItemRemove.Name = "btnItemRemove";
             this.btnItemRemove.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
             this.btnItemRemove.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
@@ -823,7 +823,7 @@ namespace FactoryManagementSoftware.UI
             this.btnItemEdit.ForeColor = System.Drawing.Color.White;
             this.btnItemEdit.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_pencil_100;
             this.btnItemEdit.ImageSize = new System.Drawing.Size(15, 15);
-            this.btnItemEdit.Location = new System.Drawing.Point(-76, 3);
+            this.btnItemEdit.Location = new System.Drawing.Point(518, 3);
             this.btnItemEdit.Name = "btnItemEdit";
             this.btnItemEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
             this.btnItemEdit.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(96)))), ((int)(((byte)(127)))), ((int)(((byte)(255)))));
@@ -889,7 +889,7 @@ namespace FactoryManagementSoftware.UI
             this.dgvDOItemList.RowTemplate.Height = 55;
             this.dgvDOItemList.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvDOItemList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDOItemList.Size = new System.Drawing.Size(1, 434);
+            this.dgvDOItemList.Size = new System.Drawing.Size(585, 434);
             this.dgvDOItemList.TabIndex = 253;
             // 
             // panel2
@@ -901,7 +901,7 @@ namespace FactoryManagementSoftware.UI
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel2.Location = new System.Drawing.Point(3, 3);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(1, 479);
+            this.panel2.Size = new System.Drawing.Size(595, 479);
             this.panel2.TabIndex = 2019;
             // 
             // tableLayoutPanel29
@@ -925,7 +925,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 165F));
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 45F));
-            this.tableLayoutPanel29.Size = new System.Drawing.Size(1, 393);
+            this.tableLayoutPanel29.Size = new System.Drawing.Size(595, 393);
             this.tableLayoutPanel29.TabIndex = 2020;
             // 
             // tableLayoutPanel33
@@ -943,7 +943,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel33.Name = "tableLayoutPanel33";
             this.tableLayoutPanel33.RowCount = 1;
             this.tableLayoutPanel33.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel33.Size = new System.Drawing.Size(1, 45);
+            this.tableLayoutPanel33.Size = new System.Drawing.Size(595, 45);
             this.tableLayoutPanel33.TabIndex = 2020;
             // 
             // btnAddItem
@@ -962,7 +962,7 @@ namespace FactoryManagementSoftware.UI
             this.btnAddItem.Image = global::FactoryManagementSoftware.Properties.Resources.icons8_more_than_25;
             this.btnAddItem.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnAddItem.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnAddItem.Location = new System.Drawing.Point(-161, 3);
+            this.btnAddItem.Location = new System.Drawing.Point(433, 3);
             this.btnAddItem.Name = "btnAddItem";
             this.btnAddItem.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnAddItem.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -993,7 +993,7 @@ namespace FactoryManagementSoftware.UI
             this.btnCancelItemEdit.Image = null;
             this.btnCancelItemEdit.ImageAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.btnCancelItemEdit.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancelItemEdit.Location = new System.Drawing.Point(-271, 3);
+            this.btnCancelItemEdit.Location = new System.Drawing.Point(323, 3);
             this.btnCancelItemEdit.Name = "btnCancelItemEdit";
             this.btnCancelItemEdit.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnCancelItemEdit.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -1044,7 +1044,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel22.RowCount = 2;
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 35F));
             this.tableLayoutPanel22.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel22.Size = new System.Drawing.Size(1, 80);
+            this.tableLayoutPanel22.Size = new System.Drawing.Size(595, 80);
             this.tableLayoutPanel22.TabIndex = 288;
             // 
             // txtBalanceQty
@@ -1238,7 +1238,7 @@ namespace FactoryManagementSoftware.UI
             this.txtTotalQty.PasswordChar = '\0';
             this.txtTotalQty.Radius = 3;
             this.txtTotalQty.SelectedText = "";
-            this.txtTotalQty.Size = new System.Drawing.Size(1, 39);
+            this.txtTotalQty.Size = new System.Drawing.Size(219, 39);
             this.txtTotalQty.TabIndex = 2004;
             this.txtTotalQty.Text = "0";
             this.txtTotalQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -1254,7 +1254,7 @@ namespace FactoryManagementSoftware.UI
             this.lblTotalQty.Location = new System.Drawing.Point(323, 17);
             this.lblTotalQty.Margin = new System.Windows.Forms.Padding(3);
             this.lblTotalQty.Name = "lblTotalQty";
-            this.lblTotalQty.Size = new System.Drawing.Size(1, 15);
+            this.lblTotalQty.Size = new System.Drawing.Size(81, 15);
             this.lblTotalQty.TabIndex = 274;
             this.lblTotalQty.Text = "Total Quantity";
             // 
@@ -1263,7 +1263,7 @@ namespace FactoryManagementSoftware.UI
             this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 7.2F);
-            this.label16.Location = new System.Drawing.Point(-46, 17);
+            this.label16.Location = new System.Drawing.Point(548, 17);
             this.label16.Margin = new System.Windows.Forms.Padding(3);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(29, 15);
@@ -1284,7 +1284,7 @@ namespace FactoryManagementSoftware.UI
             this.txtTotalQtyUnit.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.txtTotalQtyUnit.Font = new System.Drawing.Font("Segoe UI", 8F);
             this.txtTotalQtyUnit.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtTotalQtyUnit.Location = new System.Drawing.Point(-46, 38);
+            this.txtTotalQtyUnit.Location = new System.Drawing.Point(548, 38);
             this.txtTotalQtyUnit.Name = "txtTotalQtyUnit";
             this.txtTotalQtyUnit.PasswordChar = '\0';
             this.txtTotalQtyUnit.Radius = 3;
@@ -1313,7 +1313,7 @@ namespace FactoryManagementSoftware.UI
             this.label18.Location = new System.Drawing.Point(3, 92);
             this.label18.Margin = new System.Windows.Forms.Padding(3);
             this.label18.Name = "label18";
-            this.label18.Size = new System.Drawing.Size(1, 15);
+            this.label18.Size = new System.Drawing.Size(47, 15);
             this.label18.TabIndex = 285;
             this.label18.Text = "Remark";
             // 
@@ -1337,7 +1337,7 @@ namespace FactoryManagementSoftware.UI
             this.txtRemark.PasswordChar = '\0';
             this.txtRemark.Radius = 3;
             this.txtRemark.SelectedText = "";
-            this.txtRemark.Size = new System.Drawing.Size(1, 29);
+            this.txtRemark.Size = new System.Drawing.Size(589, 29);
             this.txtRemark.TabIndex = 2010;
             this.txtRemark.TextChanged += new System.EventHandler(this.gunaTextBox12_TextChanged);
             // 
@@ -1355,7 +1355,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox6.Name = "gunaGroupBox6";
             this.gunaGroupBox6.Padding = new System.Windows.Forms.Padding(8, 30, 8, 5);
             this.gunaGroupBox6.Radius = 3;
-            this.gunaGroupBox6.Size = new System.Drawing.Size(1, 159);
+            this.gunaGroupBox6.Size = new System.Drawing.Size(589, 159);
             this.gunaGroupBox6.TabIndex = 290;
             this.gunaGroupBox6.Text = "PREVIEW";
             this.gunaGroupBox6.TextLocation = new System.Drawing.Point(10, 8);
@@ -1382,7 +1382,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel26.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel26.Size = new System.Drawing.Size(0, 124);
+            this.tableLayoutPanel26.Size = new System.Drawing.Size(573, 124);
             this.tableLayoutPanel26.TabIndex = 291;
             // 
             // tableLayoutPanel27
@@ -1398,7 +1398,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 1;
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel27.Size = new System.Drawing.Size(1, 25);
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(383, 25);
             this.tableLayoutPanel27.TabIndex = 293;
             // 
             // cbReplaceCartonWithPackaging
@@ -1411,7 +1411,7 @@ namespace FactoryManagementSoftware.UI
             this.cbReplaceCartonWithPackaging.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbReplaceCartonWithPackaging.Location = new System.Drawing.Point(83, 5);
             this.cbReplaceCartonWithPackaging.Name = "cbReplaceCartonWithPackaging";
-            this.cbReplaceCartonWithPackaging.Size = new System.Drawing.Size(1, 19);
+            this.cbReplaceCartonWithPackaging.Size = new System.Drawing.Size(213, 19);
             this.cbReplaceCartonWithPackaging.TabIndex = 2013;
             this.cbReplaceCartonWithPackaging.Text = "Replace \"Carton\" with \"Packaging\"";
             this.cbReplaceCartonWithPackaging.UseVisualStyleBackColor = true;
@@ -1445,7 +1445,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel21.Name = "tableLayoutPanel21";
             this.tableLayoutPanel21.RowCount = 1;
             this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tableLayoutPanel21.Size = new System.Drawing.Size(1, 30);
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(383, 30);
             this.tableLayoutPanel21.TabIndex = 292;
             // 
             // cbDescriptionIncludeCategory
@@ -1501,7 +1501,7 @@ namespace FactoryManagementSoftware.UI
             this.label23.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label23.AutoSize = true;
             this.label23.Font = new System.Drawing.Font("Segoe UI", 7.2F);
-            this.label23.Location = new System.Drawing.Point(-76, 7);
+            this.label23.Location = new System.Drawing.Point(496, 7);
             this.label23.Margin = new System.Windows.Forms.Padding(3);
             this.label23.Name = "label23";
             this.label23.Size = new System.Drawing.Size(53, 15);
@@ -1559,7 +1559,7 @@ namespace FactoryManagementSoftware.UI
             this.txtQtyPreview.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.txtQtyPreview.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.txtQtyPreview.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.txtQtyPreview.Location = new System.Drawing.Point(-76, 28);
+            this.txtQtyPreview.Location = new System.Drawing.Point(496, 28);
             this.txtQtyPreview.Multiline = true;
             this.txtQtyPreview.Name = "txtQtyPreview";
             this.txtQtyPreview.PasswordChar = '\0';
@@ -1588,7 +1588,7 @@ namespace FactoryManagementSoftware.UI
             this.txtDescriptionPreview.PasswordChar = '\0';
             this.txtDescriptionPreview.Radius = 3;
             this.txtDescriptionPreview.SelectedText = "";
-            this.txtDescriptionPreview.Size = new System.Drawing.Size(1, 63);
+            this.txtDescriptionPreview.Size = new System.Drawing.Size(377, 63);
             this.txtDescriptionPreview.TabIndex = 2011;
             // 
             // txtItemDescription
@@ -1601,7 +1601,7 @@ namespace FactoryManagementSoftware.UI
             this.txtItemDescription.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
             this.txtItemDescription.Location = new System.Drawing.Point(18, 51);
             this.txtItemDescription.Name = "txtItemDescription";
-            this.txtItemDescription.Size = new System.Drawing.Size(0, 20);
+            this.txtItemDescription.Size = new System.Drawing.Size(594, 20);
             this.txtItemDescription.TabIndex = 2003;
             this.txtItemDescription.Text = "Search (Item Name/Code)";
             this.txtItemDescription.Values = null;
@@ -1625,7 +1625,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel23.Name = "tableLayoutPanel23";
             this.tableLayoutPanel23.RowCount = 1;
             this.tableLayoutPanel23.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel23.Size = new System.Drawing.Size(1, 29);
+            this.tableLayoutPanel23.Size = new System.Drawing.Size(595, 29);
             this.tableLayoutPanel23.TabIndex = 2001;
             // 
             // cbItemSearch
@@ -1674,7 +1674,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton13.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton13.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton13.Image")));
             this.gunaGradientButton13.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton13.Location = new System.Drawing.Point(-36, 3);
+            this.gunaGradientButton13.Location = new System.Drawing.Point(558, 3);
             this.gunaGradientButton13.Name = "gunaGradientButton13";
             this.gunaGradientButton13.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton13.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -1694,7 +1694,7 @@ namespace FactoryManagementSoftware.UI
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.panel1.Location = new System.Drawing.Point(0, 37);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1, 49);
+            this.panel1.Size = new System.Drawing.Size(595, 49);
             this.panel1.TabIndex = 2016;
             // 
             // tableLayoutPanel2
@@ -1709,7 +1709,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1242, 547);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(14, 547);
             this.tableLayoutPanel2.TabIndex = 265;
             // 
             // gunaGroupBox4
@@ -2137,7 +2137,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel4.RowCount = 2;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(892, 547);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1, 547);
             this.tableLayoutPanel4.TabIndex = 263;
             // 
             // gunaGroupBox3
@@ -2155,7 +2155,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox3.Name = "gunaGroupBox3";
             this.gunaGroupBox3.Padding = new System.Windows.Forms.Padding(8, 43, 8, 15);
             this.gunaGroupBox3.Radius = 3;
-            this.gunaGroupBox3.Size = new System.Drawing.Size(882, 397);
+            this.gunaGroupBox3.Size = new System.Drawing.Size(1, 397);
             this.gunaGroupBox3.TabIndex = 260;
             this.gunaGroupBox3.Text = "TO";
             this.gunaGroupBox3.TextLocation = new System.Drawing.Point(10, 8);
@@ -2174,7 +2174,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 84F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(866, 339);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(0, 339);
             this.tableLayoutPanel6.TabIndex = 260;
             // 
             // tableLayoutPanel17
@@ -2194,7 +2194,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel17.RowCount = 2;
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel17.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel17.Size = new System.Drawing.Size(866, 171);
+            this.tableLayoutPanel17.Size = new System.Drawing.Size(1, 171);
             this.tableLayoutPanel17.TabIndex = 260;
             // 
             // txtShippingAddress
@@ -2212,7 +2212,7 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.txtShippingAddress.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.errorProvider1.SetIconAlignment(this.txtShippingAddress, System.Windows.Forms.ErrorIconAlignment.TopLeft);
-            this.txtShippingAddress.Location = new System.Drawing.Point(441, 33);
+            this.txtShippingAddress.Location = new System.Drawing.Point(9, 33);
             this.txtShippingAddress.Margin = new System.Windows.Forms.Padding(3, 3, 3, 20);
             this.txtShippingAddress.Multiline = true;
             this.txtShippingAddress.Name = "txtShippingAddress";
@@ -2220,7 +2220,7 @@ namespace FactoryManagementSoftware.UI
             this.txtShippingAddress.Radius = 3;
             this.txtShippingAddress.ReadOnly = true;
             this.txtShippingAddress.SelectedText = "";
-            this.txtShippingAddress.Size = new System.Drawing.Size(422, 118);
+            this.txtShippingAddress.Size = new System.Drawing.Size(1, 118);
             this.txtShippingAddress.TabIndex = 247;
             // 
             // txtBillingAddress
@@ -2245,7 +2245,7 @@ namespace FactoryManagementSoftware.UI
             this.txtBillingAddress.Radius = 3;
             this.txtBillingAddress.ReadOnly = true;
             this.txtBillingAddress.SelectedText = "";
-            this.txtBillingAddress.Size = new System.Drawing.Size(422, 118);
+            this.txtBillingAddress.Size = new System.Drawing.Size(1, 118);
             this.txtBillingAddress.TabIndex = 246;
             // 
             // tableLayoutPanel18
@@ -2258,12 +2258,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel18.Controls.Add(this.cbSameWithBilling, 1, 0);
             this.tableLayoutPanel18.Controls.Add(this.label17, 0, 0);
             this.tableLayoutPanel18.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel18.Location = new System.Drawing.Point(438, 0);
+            this.tableLayoutPanel18.Location = new System.Drawing.Point(6, 0);
             this.tableLayoutPanel18.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel18.Name = "tableLayoutPanel18";
             this.tableLayoutPanel18.RowCount = 1;
             this.tableLayoutPanel18.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel18.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel18.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel18.TabIndex = 254;
             // 
             // gunaGradientButton6
@@ -2282,7 +2282,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton6.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton6.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton6.Image")));
             this.gunaGradientButton6.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton6.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton6.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton6.Name = "gunaGradientButton6";
             this.gunaGradientButton6.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton6.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2303,7 +2303,7 @@ namespace FactoryManagementSoftware.UI
             this.cbSameWithBilling.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cbSameWithBilling.Location = new System.Drawing.Point(138, 6);
             this.cbSameWithBilling.Name = "cbSameWithBilling";
-            this.cbSameWithBilling.Size = new System.Drawing.Size(128, 21);
+            this.cbSameWithBilling.Size = new System.Drawing.Size(1, 21);
             this.cbSameWithBilling.TabIndex = 247;
             this.cbSameWithBilling.Text = "Same with billing";
             this.cbSameWithBilling.UseVisualStyleBackColor = true;
@@ -2335,7 +2335,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel19.Name = "tableLayoutPanel19";
             this.tableLayoutPanel19.RowCount = 1;
             this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel19.TabIndex = 253;
             // 
             // gunaGradientButton5
@@ -2354,7 +2354,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton5.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton5.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton5.Image")));
             this.gunaGradientButton5.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton5.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton5.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton5.Name = "gunaGradientButton5";
             this.gunaGradientButton5.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton5.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2376,7 +2376,7 @@ namespace FactoryManagementSoftware.UI
             this.label19.Location = new System.Drawing.Point(3, 8);
             this.label19.Margin = new System.Windows.Forms.Padding(3);
             this.label19.Name = "label19";
-            this.label19.Size = new System.Drawing.Size(98, 19);
+            this.label19.Size = new System.Drawing.Size(1, 19);
             this.label19.TabIndex = 158;
             this.label19.Text = "Billing Address";
             // 
@@ -2397,7 +2397,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel14.RowCount = 2;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(866, 84);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1, 84);
             this.tableLayoutPanel14.TabIndex = 259;
             // 
             // txtDORemark
@@ -2414,12 +2414,12 @@ namespace FactoryManagementSoftware.UI
             this.txtDORemark.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.txtDORemark.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.txtDORemark.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtDORemark.Location = new System.Drawing.Point(441, 33);
+            this.txtDORemark.Location = new System.Drawing.Point(9, 33);
             this.txtDORemark.Name = "txtDORemark";
             this.txtDORemark.PasswordChar = '\0';
             this.txtDORemark.Radius = 3;
             this.txtDORemark.SelectedText = "";
-            this.txtDORemark.Size = new System.Drawing.Size(422, 48);
+            this.txtDORemark.Size = new System.Drawing.Size(1, 48);
             this.txtDORemark.TabIndex = 247;
             this.txtDORemark.Text = "Remark :";
             this.txtDORemark.Enter += new System.EventHandler(this.txtDORemark_Enter);
@@ -2433,12 +2433,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel15.Controls.Add(this.label13, 0, 0);
             this.tableLayoutPanel15.Controls.Add(this.cbShowRemarkinDO, 1, 0);
             this.tableLayoutPanel15.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel15.Location = new System.Drawing.Point(438, 0);
+            this.tableLayoutPanel15.Location = new System.Drawing.Point(6, 0);
             this.tableLayoutPanel15.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel15.Name = "tableLayoutPanel15";
             this.tableLayoutPanel15.RowCount = 1;
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel15.TabIndex = 254;
             // 
             // label13
@@ -2450,7 +2450,7 @@ namespace FactoryManagementSoftware.UI
             this.label13.Location = new System.Drawing.Point(3, 8);
             this.label13.Margin = new System.Windows.Forms.Padding(3);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(55, 19);
+            this.label13.Size = new System.Drawing.Size(1, 19);
             this.label13.TabIndex = 159;
             this.label13.Text = "Remark";
             // 
@@ -2460,7 +2460,7 @@ namespace FactoryManagementSoftware.UI
             this.cbShowRemarkinDO.AutoSize = true;
             this.cbShowRemarkinDO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbShowRemarkinDO.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbShowRemarkinDO.Location = new System.Drawing.Point(64, 6);
+            this.cbShowRemarkinDO.Location = new System.Drawing.Point(-363, 6);
             this.cbShowRemarkinDO.Name = "cbShowRemarkinDO";
             this.cbShowRemarkinDO.Size = new System.Drawing.Size(103, 21);
             this.cbShowRemarkinDO.TabIndex = 248;
@@ -2481,7 +2481,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel16.TabIndex = 253;
             // 
             // gunaGradientButton7
@@ -2500,7 +2500,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton7.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton7.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton7.Image")));
             this.gunaGradientButton7.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton7.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton7.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton7.Name = "gunaGradientButton7";
             this.gunaGradientButton7.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton7.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2523,7 +2523,7 @@ namespace FactoryManagementSoftware.UI
             this.label15.Location = new System.Drawing.Point(3, 8);
             this.label15.Margin = new System.Windows.Forms.Padding(3);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(111, 19);
+            this.label15.Size = new System.Drawing.Size(1, 19);
             this.label15.TabIndex = 158;
             this.label15.Text = "Delivery Method";
             // 
@@ -2547,7 +2547,7 @@ namespace FactoryManagementSoftware.UI
             this.cmbDeliveryMethod.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbDeliveryMethod.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbDeliveryMethod.Radius = 3;
-            this.cmbDeliveryMethod.Size = new System.Drawing.Size(422, 28);
+            this.cmbDeliveryMethod.Size = new System.Drawing.Size(1, 28);
             this.cmbDeliveryMethod.TabIndex = 252;
             this.cmbDeliveryMethod.SelectedIndexChanged += new System.EventHandler(this.cmbDeliveryMethod_SelectedIndexChanged);
             // 
@@ -2568,7 +2568,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel7.RowCount = 2;
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(866, 84);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(1, 84);
             this.tableLayoutPanel7.TabIndex = 258;
             // 
             // tableLayoutPanel10
@@ -2579,12 +2579,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel10.Controls.Add(this.gunaGradientButton9, 1, 0);
             this.tableLayoutPanel10.Controls.Add(this.lblDeliveryLocation, 0, 0);
             this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(438, 0);
+            this.tableLayoutPanel10.Location = new System.Drawing.Point(6, 0);
             this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel10.Name = "tableLayoutPanel10";
             this.tableLayoutPanel10.RowCount = 1;
             this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel10.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel10.TabIndex = 254;
             // 
             // gunaGradientButton9
@@ -2603,7 +2603,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton9.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton9.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton9.Image")));
             this.gunaGradientButton9.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton9.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton9.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton9.Name = "gunaGradientButton9";
             this.gunaGradientButton9.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton9.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2625,7 +2625,7 @@ namespace FactoryManagementSoftware.UI
             this.lblDeliveryLocation.Location = new System.Drawing.Point(3, 8);
             this.lblDeliveryLocation.Margin = new System.Windows.Forms.Padding(3);
             this.lblDeliveryLocation.Name = "lblDeliveryLocation";
-            this.lblDeliveryLocation.Size = new System.Drawing.Size(114, 19);
+            this.lblDeliveryLocation.Size = new System.Drawing.Size(1, 19);
             this.lblDeliveryLocation.TabIndex = 159;
             this.lblDeliveryLocation.Text = "Delivery Location";
             // 
@@ -2643,7 +2643,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel11.Name = "tableLayoutPanel11";
             this.tableLayoutPanel11.RowCount = 1;
             this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel11.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel11.TabIndex = 253;
             // 
             // gunaGradientButton1
@@ -2662,7 +2662,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton1.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton1.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton1.Image")));
             this.gunaGradientButton1.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton1.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton1.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton1.Name = "gunaGradientButton1";
             this.gunaGradientButton1.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton1.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2685,7 +2685,7 @@ namespace FactoryManagementSoftware.UI
             this.lblCompanyTo.Location = new System.Drawing.Point(3, 8);
             this.lblCompanyTo.Margin = new System.Windows.Forms.Padding(3);
             this.lblCompanyTo.Name = "lblCompanyTo";
-            this.lblCompanyTo.Size = new System.Drawing.Size(170, 19);
+            this.lblCompanyTo.Size = new System.Drawing.Size(1, 19);
             this.lblCompanyTo.TabIndex = 158;
             this.lblCompanyTo.Text = "Billing/Receiving Company";
             // 
@@ -2702,12 +2702,12 @@ namespace FactoryManagementSoftware.UI
             this.cmbToDeliveryLocation.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cmbToDeliveryLocation.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cmbToDeliveryLocation.FormattingEnabled = true;
-            this.cmbToDeliveryLocation.Location = new System.Drawing.Point(441, 33);
+            this.cmbToDeliveryLocation.Location = new System.Drawing.Point(9, 33);
             this.cmbToDeliveryLocation.Name = "cmbToDeliveryLocation";
             this.cmbToDeliveryLocation.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbToDeliveryLocation.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbToDeliveryLocation.Radius = 3;
-            this.cmbToDeliveryLocation.Size = new System.Drawing.Size(422, 28);
+            this.cmbToDeliveryLocation.Size = new System.Drawing.Size(1, 28);
             this.cmbToDeliveryLocation.TabIndex = 253;
             this.cmbToDeliveryLocation.SelectedIndexChanged += new System.EventHandler(this.cmbToDeliveryLocation_SelectedIndexChanged);
             // 
@@ -2729,7 +2729,7 @@ namespace FactoryManagementSoftware.UI
             this.cmbToCompany.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbToCompany.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbToCompany.Radius = 3;
-            this.cmbToCompany.Size = new System.Drawing.Size(422, 28);
+            this.cmbToCompany.Size = new System.Drawing.Size(1, 28);
             this.cmbToCompany.TabIndex = 252;
             this.cmbToCompany.SelectedIndexChanged += new System.EventHandler(this.cmbToCompany_SelectedIndexChanged);
             // 
@@ -2748,7 +2748,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox1.Name = "gunaGroupBox1";
             this.gunaGroupBox1.Padding = new System.Windows.Forms.Padding(8, 43, 8, 5);
             this.gunaGroupBox1.Radius = 3;
-            this.gunaGroupBox1.Size = new System.Drawing.Size(882, 130);
+            this.gunaGroupBox1.Size = new System.Drawing.Size(1, 130);
             this.gunaGroupBox1.TabIndex = 256;
             this.gunaGroupBox1.Text = "FROM";
             this.gunaGroupBox1.TextLocation = new System.Drawing.Point(10, 8);
@@ -2764,7 +2764,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 82F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(866, 82);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(0, 82);
             this.tableLayoutPanel3.TabIndex = 259;
             // 
             // tableLayoutPanel1
@@ -2784,7 +2784,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(866, 82);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(1, 82);
             this.tableLayoutPanel1.TabIndex = 258;
             // 
             // tableLayoutPanel9
@@ -2794,12 +2794,12 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel9.Controls.Add(this.label1, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(438, 0);
+            this.tableLayoutPanel9.Location = new System.Drawing.Point(6, 0);
             this.tableLayoutPanel9.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
             this.tableLayoutPanel9.RowCount = 1;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel9.TabIndex = 254;
             // 
             // label1
@@ -2811,7 +2811,7 @@ namespace FactoryManagementSoftware.UI
             this.label1.Location = new System.Drawing.Point(3, 8);
             this.label1.Margin = new System.Windows.Forms.Padding(3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(51, 19);
+            this.label1.Size = new System.Drawing.Size(1, 19);
             this.label1.TabIndex = 159;
             this.label1.Text = "Branch";
             // 
@@ -2828,7 +2828,7 @@ namespace FactoryManagementSoftware.UI
             this.tableLayoutPanel8.Name = "tableLayoutPanel8";
             this.tableLayoutPanel8.RowCount = 1;
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(428, 30);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(1, 30);
             this.tableLayoutPanel8.TabIndex = 253;
             // 
             // gunaGradientButton4
@@ -2847,7 +2847,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGradientButton4.ForeColor = System.Drawing.Color.White;
             this.gunaGradientButton4.Image = ((System.Drawing.Image)(resources.GetObject("gunaGradientButton4.Image")));
             this.gunaGradientButton4.ImageSize = new System.Drawing.Size(15, 15);
-            this.gunaGradientButton4.Location = new System.Drawing.Point(391, 3);
+            this.gunaGradientButton4.Location = new System.Drawing.Point(-36, 3);
             this.gunaGradientButton4.Name = "gunaGradientButton4";
             this.gunaGradientButton4.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.gunaGradientButton4.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -2870,7 +2870,7 @@ namespace FactoryManagementSoftware.UI
             this.lblCompanyFrom.Location = new System.Drawing.Point(3, 8);
             this.lblCompanyFrom.Margin = new System.Windows.Forms.Padding(3);
             this.lblCompanyFrom.Name = "lblCompanyFrom";
-            this.lblCompanyFrom.Size = new System.Drawing.Size(68, 19);
+            this.lblCompanyFrom.Size = new System.Drawing.Size(1, 19);
             this.lblCompanyFrom.TabIndex = 158;
             this.lblCompanyFrom.Text = "Company";
             // 
@@ -2887,12 +2887,12 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromBranch.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.cmbFromBranch.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.cmbFromBranch.FormattingEnabled = true;
-            this.cmbFromBranch.Location = new System.Drawing.Point(441, 33);
+            this.cmbFromBranch.Location = new System.Drawing.Point(9, 33);
             this.cmbFromBranch.Name = "cmbFromBranch";
             this.cmbFromBranch.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbFromBranch.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbFromBranch.Radius = 3;
-            this.cmbFromBranch.Size = new System.Drawing.Size(422, 28);
+            this.cmbFromBranch.Size = new System.Drawing.Size(1, 28);
             this.cmbFromBranch.TabIndex = 253;
             this.cmbFromBranch.SelectedIndexChanged += new System.EventHandler(this.cmbFromBranch_SelectedIndexChanged);
             // 
@@ -2914,7 +2914,7 @@ namespace FactoryManagementSoftware.UI
             this.cmbFromCompany.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbFromCompany.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbFromCompany.Radius = 3;
-            this.cmbFromCompany.Size = new System.Drawing.Size(422, 28);
+            this.cmbFromCompany.Size = new System.Drawing.Size(1, 28);
             this.cmbFromCompany.TabIndex = 252;
             this.cmbFromCompany.SelectedIndexChanged += new System.EventHandler(this.cmbFromCompany_SelectedIndexChanged);
             // 

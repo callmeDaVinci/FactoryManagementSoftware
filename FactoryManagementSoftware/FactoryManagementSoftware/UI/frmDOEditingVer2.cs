@@ -42,11 +42,13 @@ namespace FactoryManagementSoftware.UI
         private string BUTTON_ADDTOLIST_TEXT = "Add to List";
         private string BUTTON_UPDATETOLIST_TEXT = "Update to List";
 
+        private string ADD_NEW_DO_FORMAT = "New";
+        private string EDIT_DO_FORMAT = "Edit";
         private bool DATA_SAVED = false;
         public frmDOEditingVer2()
         {
             InitializeComponent();
-            InitialSetting();
+            InitialSettings();
             DO_ITEM_EDIT_MODE = false;
             DO_EDITING_MODE = false;
         }
@@ -57,7 +59,7 @@ namespace FactoryManagementSoftware.UI
             DO_EDITING_MODE = true;
             uInternalDO.do_no_string = DORow.Table.Columns.Contains(text.Header_DONo) ? DORow[text.Header_DONo].ToString() : null;
 
-            InitialSetting();
+            InitialSettings();
             InternalDOEditInitialInfo(DORow);
 
             DT_ITEM_LIST = dt.Copy();
@@ -123,11 +125,54 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region UI/UX
-        private void InitialSetting()
+        private void InitialSettings()
         {
             CURRENT_STEP = 1;
             StepUIUpdates(CURRENT_STEP, false);
+
         }
+
+
+        private void PopulateDOTypeComboBox()
+        {
+            // Retrieve all data from the database
+            // Filter the DataTable to show only non-removed records
+            // and order by the updated_date column in descending order to get the most recent data first
+            var filteredRows = DT_DO_FORMAT.AsEnumerable()
+                .Where(row => row.Field<bool>("isRemoved") == false)  // Check if isRemoved is false
+                .OrderByDescending(row => row.Field<DateTime>("updated_date"));  // Sort by updated_date in descending order
+
+            // Convert filtered rows back to a DataTable
+            DataTable filteredTable = filteredRows.CopyToDataTable();
+
+            // Set the filtered DataTable as the DataSource for the ComboBox
+            cmbDOType.DataSource = filteredTable;
+
+            // Define which column to display in the ComboBox
+            cmbDOType.DisplayMember = dalDoFormat.doType;
+            cmbDOType.ValueMember = dalDoFormat.tblCode;
+        }
+
+
+
+        private void PopulateDOTypeComboBox(string selectedTblCode)
+        {
+            // Set the DataSource for the ComboBox to the DataTable
+            DataTable dt_DOFormat = dalDoFormat.SelectAll();
+
+            cmbDOType.DataSource = dt_DOFormat;
+
+            // Define which column to display in the ComboBox
+            cmbDOType.DisplayMember = dalDoFormat.doType;
+            cmbDOType.ValueMember = dalDoFormat.tblCode;
+
+            // Preselect the item based on the provided tblCode
+            if (!string.IsNullOrEmpty(selectedTblCode))
+            {
+                cmbDOType.SelectedValue = selectedTblCode;
+            }
+        }
+
 
         #region Appearance
 
@@ -255,109 +300,109 @@ namespace FactoryManagementSoftware.UI
              LETTER_HEAD_ADDRESS = "";
              LETTER_HEAD_CONTACT_INFO = "";
 
-            if (cmbFromBranch.SelectedIndex != -1)
-            {
-                // Get the DataRowView for the selected item
-                DataRowView selectedRow = (DataRowView)cmbFromBranch.SelectedItem;
+            //if (cmbFromBranch.SelectedIndex != -1)
+            //{
+            //    // Get the DataRowView for the selected item
+            //    DataRowView selectedRow = (DataRowView)cmbFromBranch.SelectedItem;
 
-                uLetterHeadAddress = new AddressBookBLL();
+            //    uLetterHeadAddress = new AddressBookBLL();
 
-                // Extract the table code from the selected row
+            //    // Extract the table code from the selected row
 
-                uLetterHeadAddress.tbl_code = int.TryParse(selectedRow[dalAddressBook.tblCode].ToString(), out int i) ? i : -1;
-                uLetterHeadAddress.company_tbl_code = int.TryParse(selectedRow[dalAddressBook.companyTblCode].ToString(), out i) ? i : -1;
-                uLetterHeadAddress.full_name = selectedRow[dalAddressBook.fullName].ToString();
-                uLetterHeadAddress.short_name = selectedRow[dalAddressBook.shortName].ToString();
-                uLetterHeadAddress.registration_no = selectedRow[dalAddressBook.registrationNo].ToString();
-                uLetterHeadAddress.address_1 = selectedRow[dalAddressBook.addressLine1].ToString();
-                uLetterHeadAddress.address_2 = selectedRow[dalAddressBook.addressLine2].ToString();
-                uLetterHeadAddress.address_3 = selectedRow[dalAddressBook.addressLine3].ToString();
-                uLetterHeadAddress.address_state = selectedRow[dalAddressBook.addressState].ToString();
-                uLetterHeadAddress.address_postal_code = selectedRow[dalAddressBook.addressPostalCode].ToString();
-                uLetterHeadAddress.address_country = selectedRow[dalAddressBook.addressCountry].ToString();
+            //    uLetterHeadAddress.tbl_code = int.TryParse(selectedRow[dalAddressBook.tblCode].ToString(), out int i) ? i : -1;
+            //    uLetterHeadAddress.company_tbl_code = int.TryParse(selectedRow[dalAddressBook.companyTblCode].ToString(), out i) ? i : -1;
+            //    uLetterHeadAddress.full_name = selectedRow[dalAddressBook.fullName].ToString();
+            //    uLetterHeadAddress.short_name = selectedRow[dalAddressBook.shortName].ToString();
+            //    uLetterHeadAddress.registration_no = selectedRow[dalAddressBook.registrationNo].ToString();
+            //    uLetterHeadAddress.address_1 = selectedRow[dalAddressBook.addressLine1].ToString();
+            //    uLetterHeadAddress.address_2 = selectedRow[dalAddressBook.addressLine2].ToString();
+            //    uLetterHeadAddress.address_3 = selectedRow[dalAddressBook.addressLine3].ToString();
+            //    uLetterHeadAddress.address_state = selectedRow[dalAddressBook.addressState].ToString();
+            //    uLetterHeadAddress.address_postal_code = selectedRow[dalAddressBook.addressPostalCode].ToString();
+            //    uLetterHeadAddress.address_country = selectedRow[dalAddressBook.addressCountry].ToString();
 
-                uLetterHeadAddress.fax_no = selectedRow[dalAddressBook.faxNo].ToString();
-                uLetterHeadAddress.contact_name_1 = selectedRow[dalAddressBook.contactName1].ToString();
-                uLetterHeadAddress.contact_number_1 = selectedRow[dalAddressBook.contactNo1].ToString();
-                uLetterHeadAddress.contact_name_2 = selectedRow[dalAddressBook.contactName2].ToString();
-                uLetterHeadAddress.contact_number_2 = selectedRow[dalAddressBook.contactNo2].ToString();
+            //    uLetterHeadAddress.fax_no = selectedRow[dalAddressBook.faxNo].ToString();
+            //    uLetterHeadAddress.contact_name_1 = selectedRow[dalAddressBook.contactName1].ToString();
+            //    uLetterHeadAddress.contact_number_1 = selectedRow[dalAddressBook.contactNo1].ToString();
+            //    uLetterHeadAddress.contact_name_2 = selectedRow[dalAddressBook.contactName2].ToString();
+            //    uLetterHeadAddress.contact_number_2 = selectedRow[dalAddressBook.contactNo2].ToString();
 
-                uLetterHeadAddress.email_address = selectedRow[dalAddressBook.emailAddress].ToString();
-                uLetterHeadAddress.website = selectedRow[dalAddressBook.website].ToString();
+            //    uLetterHeadAddress.email_address = selectedRow[dalAddressBook.emailAddress].ToString();
+            //    uLetterHeadAddress.website = selectedRow[dalAddressBook.website].ToString();
 
-                uLetterHeadAddress.route_tbl_code = int.TryParse(selectedRow[dalAddressBook.routeTblCode].ToString(), out i) ? i : -1;
-                uLetterHeadAddress.updated_by = int.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out i) ? i : -1;
-                uLetterHeadAddress.updated_date = DateTime.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out DateTime k) ? k : DateTime.MaxValue;
+            //    uLetterHeadAddress.route_tbl_code = int.TryParse(selectedRow[dalAddressBook.routeTblCode].ToString(), out i) ? i : -1;
+            //    uLetterHeadAddress.updated_by = int.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out i) ? i : -1;
+            //    uLetterHeadAddress.updated_date = DateTime.TryParse(selectedRow[dalAddressBook.updatedBy].ToString(), out DateTime k) ? k : DateTime.MaxValue;
 
-                uLetterHeadAddress.remark = selectedRow[dalAddressBook.remark].ToString();
-                uLetterHeadAddress.delivery_method_remark = selectedRow[dalAddressBook.deliveryMethodRemark].ToString();
+            //    uLetterHeadAddress.remark = selectedRow[dalAddressBook.remark].ToString();
+            //    uLetterHeadAddress.delivery_method_remark = selectedRow[dalAddressBook.deliveryMethodRemark].ToString();
 
-                uLetterHeadAddress.isRemoved = bool.TryParse(selectedRow[dalAddressBook.isRemoved].ToString(), out bool x) ? x : false;
+            //    uLetterHeadAddress.isRemoved = bool.TryParse(selectedRow[dalAddressBook.isRemoved].ToString(), out bool x) ? x : false;
 
-                LETTER_HEAD_ADDRESS = uLetterHeadAddress.address_1;
+            //    LETTER_HEAD_ADDRESS = uLetterHeadAddress.address_1;
 
-                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_2))
-                {
-                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_2;
-                }
+            //    if (!string.IsNullOrEmpty(uLetterHeadAddress.address_2))
+            //    {
+            //        LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_2;
+            //    }
 
-                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_3))
-                {
-                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_3;
-                }
+            //    if (!string.IsNullOrEmpty(uLetterHeadAddress.address_3))
+            //    {
+            //        LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_3;
+            //    }
 
-                if (!string.IsNullOrEmpty(uLetterHeadAddress.address_postal_code) && !string.IsNullOrEmpty(uLetterHeadAddress.address_state))
-                {
-                    LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_postal_code + " " + uLetterHeadAddress.address_state + ".";
-                }
+            //    if (!string.IsNullOrEmpty(uLetterHeadAddress.address_postal_code) && !string.IsNullOrEmpty(uLetterHeadAddress.address_state))
+            //    {
+            //        LETTER_HEAD_ADDRESS += " " + uLetterHeadAddress.address_postal_code + " " + uLetterHeadAddress.address_state + ".";
+            //    }
 
                 
-                if(!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1) || !string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
-                {
+            //    if(!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1) || !string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
+            //    {
 
-                    LETTER_HEAD_CONTACT_INFO = "(Tel) ";
+            //        LETTER_HEAD_CONTACT_INFO = "(Tel) ";
 
-                    if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1))
-                    {
-                        LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_1;
+            //        if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_1))
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_1;
 
-                        if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
-                        {
-                            LETTER_HEAD_CONTACT_INFO += ", " + uLetterHeadAddress.contact_number_2 + " ";
-                        }
-                    }
-                    else
-                    {
-                        LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_2 + " ";
-                    }
+            //            if (!string.IsNullOrEmpty(uLetterHeadAddress.contact_number_2))
+            //            {
+            //                LETTER_HEAD_CONTACT_INFO += ", " + uLetterHeadAddress.contact_number_2 + " ";
+            //            }
+            //        }
+            //        else
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO += uLetterHeadAddress.contact_number_2 + " ";
+            //        }
                   
-                }
+            //    }
 
-                if (!string.IsNullOrEmpty(uLetterHeadAddress.fax_no))
-                {
-                    if(!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
-                    {
-                        LETTER_HEAD_CONTACT_INFO += " (Fax) " + uLetterHeadAddress.fax_no;
-                    }
-                    else
-                    {
-                        LETTER_HEAD_CONTACT_INFO = "(Fax) " + uLetterHeadAddress.fax_no;
-                    }
-                }
+            //    if (!string.IsNullOrEmpty(uLetterHeadAddress.fax_no))
+            //    {
+            //        if(!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO += " (Fax) " + uLetterHeadAddress.fax_no;
+            //        }
+            //        else
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO = "(Fax) " + uLetterHeadAddress.fax_no;
+            //        }
+            //    }
 
-                if (!string.IsNullOrEmpty(uLetterHeadAddress.email_address))
-                {
-                    if (!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
-                    {
-                        LETTER_HEAD_CONTACT_INFO += " (Email) " + uLetterHeadAddress.email_address;
-                    }
-                    else
-                    {
-                        LETTER_HEAD_CONTACT_INFO = "(Email) " + uLetterHeadAddress.email_address;
-                    }
-                }
+            //    if (!string.IsNullOrEmpty(uLetterHeadAddress.email_address))
+            //    {
+            //        if (!string.IsNullOrEmpty(LETTER_HEAD_CONTACT_INFO))
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO += " (Email) " + uLetterHeadAddress.email_address;
+            //        }
+            //        else
+            //        {
+            //            LETTER_HEAD_CONTACT_INFO = "(Email) " + uLetterHeadAddress.email_address;
+            //        }
+            //    }
 
-            }
+            //}
         }
 
         private string GetLetterHeadContactInfo()
@@ -640,28 +685,6 @@ namespace FactoryManagementSoftware.UI
         private int CURRENT_STEP = 1;
         //private bool DO_EDITING_MODE = false;
 
-
-        private void cmbFromBranch_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if(COMPANY_DATA_LOADED)
-            {
-                string branch = cmbFromBranch.Text;
-
-                if (cmbDOType.Text == "Internal Transfer Note")
-                {
-                    if (branch == text.Factory_OUG)
-                    {
-                        cmbToDeliveryLocation.Text = text.Factory_Semenyih;
-                    }
-                    else if (branch == text.Factory_Semenyih)
-                    {
-                        cmbToDeliveryLocation.Text = text.Factory_OUG;
-                    }
-                }
-            }
-           
-        }
-
         private void assignDOItemListtoDGV()
         {
             if (DT_ITEM_LIST == null)
@@ -934,9 +957,9 @@ namespace FactoryManagementSoftware.UI
             DataRowView selectedDOTypeRow;
             DataRowView selectedRecevingCompanyTypeRow;
             DataRowView selectedDeliveryLocationRow;
-            DataRowView selectedInternalFromLocationRow;
+            //DataRowView selectedInternalFromLocationRow;
 
-            selectedInternalFromLocationRow = (DataRowView)cmbFromBranch.SelectedItem;
+            //selectedInternalFromLocationRow = (DataRowView)cmbFromBranch.SelectedItem;
 
             if (cmbDOType.SelectedIndex == -1)
             {
@@ -955,18 +978,18 @@ namespace FactoryManagementSoftware.UI
                 
             }
 
-            if (cmbToCompany.SelectedIndex == -1)
-            {
-                // No item is selected
-                errorProvider2.SetError(lblCompanyTo, "Receving Company Required!");
+            //if (cmbToCompany.SelectedIndex == -1)
+            //{
+            //    // No item is selected
+            //    errorProvider2.SetError(lblCompanyTo, "Receving Company Required!");
 
-                return false;
-            }
-            else
-            {
-                // Get the DataRowView for the selected item
-                selectedRecevingCompanyTypeRow = (DataRowView)cmbToCompany.SelectedItem;
-            }
+            //    return false;
+            //}
+            //else
+            //{
+            //    // Get the DataRowView for the selected item
+            //    selectedRecevingCompanyTypeRow = (DataRowView)cmbToCompany.SelectedItem;
+            //}
 
             if (cmbToDeliveryLocation.SelectedIndex == -1)
             {
@@ -990,8 +1013,8 @@ namespace FactoryManagementSoftware.UI
                 }
                
                 uInternalDO.do_format_tbl_code = int.TryParse(selectedDOTypeRow[dalDoFormat.tblCode].ToString(), out int tblcode) ? tblcode : -1;
-                uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
-                uInternalDO.internal_from_address_tbl_code = int.TryParse(selectedInternalFromLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
+                //uInternalDO.company_tbl_code = int.TryParse(selectedRecevingCompanyTypeRow[dalCompany.tblCode].ToString(), out tblcode) ? tblcode : -1;
+                //uInternalDO.internal_from_address_tbl_code = int.TryParse(selectedInternalFromLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_address_tbl_code = int.TryParse(selectedDeliveryLocationRow[dalAddressBook.tblCode].ToString(), out tblcode) ? tblcode : -1;
                 uInternalDO.shipping_method = cmbDeliveryMethod.Text;
                 uInternalDO.remark = txtDORemark.Text;
@@ -1037,14 +1060,19 @@ namespace FactoryManagementSoftware.UI
         {
             LoadDBData(false);
 
+            PopulateDOTypeComboBox();
+
             // Set DO Type ComboBox
             SetComboBoxByTableCode(cmbDOType, DT_DO_FORMAT, dalDoFormat.tblCode, uInternalDO.do_format_tbl_code);
 
-            SetComboBoxByTableCode(cmbFromCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
+            InitialCompanyTextBox();
 
-            SetComboBoxByTableCode(cmbFromBranch, DT_ADDRESS_BOOK, dalAddressBook.tblCode, uInternalDO.internal_from_address_tbl_code);
 
-            SetComboBoxByTableCode(cmbToCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
+            //SetComboBoxByTableCode(cmbFromCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
+
+            //SetComboBoxByTableCode(cmbFromBranch, DT_ADDRESS_BOOK, dalAddressBook.tblCode, uInternalDO.internal_from_address_tbl_code);
+
+            //SetComboBoxByTableCode(cmbToCompany, DT_COMPANY, dalCompany.tblCode, uInternalDO.company_tbl_code);
 
             // Set Delivery Location ComboBox
             SetComboBoxByTableCode(cmbToDeliveryLocation, DT_ADDRESS_BOOK, dalAddressBook.tblCode, uInternalDO.shipping_address_tbl_code);
@@ -1127,7 +1155,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void btnJobPublish_Click(object sender, EventArgs e)
+        private void btnDOPublish_Click(object sender, EventArgs e)
         {
             PublishDO();
         }
@@ -1139,20 +1167,6 @@ namespace FactoryManagementSoftware.UI
             {
                 errorProvider3.Clear();
                 string DeliveryLocation = cmbToDeliveryLocation.Text;
-
-                if (CheckIfInternalDOType())
-                {
-                    if (DeliveryLocation == text.Factory_OUG)
-                    {
-                        cmbFromBranch.Text = text.Factory_Semenyih;
-                    }
-                    else if (DeliveryLocation == text.Factory_Semenyih)
-                    {
-                        cmbFromBranch.Text = text.Factory_OUG;
-                    }
-
-                    cbSameWithBilling.Checked = false;
-                }
 
                 //LOAD shipping data
                 if(!cbSameWithBilling.Checked)
@@ -1230,25 +1244,35 @@ namespace FactoryManagementSoftware.UI
 
         private void txtItemDescription_Enter(object sender, EventArgs e)
         {
-            if (cbItemSearch.Checked)
-            {
-                if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT)
-                {
-                    txtItemDescription.Text = "";
-                    txtItemDescription.ForeColor = SystemColors.WindowText;
-                }
-            }
-            else
-            {
-                if (txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
-                {
-                    txtItemDescription.Text = "";
-                    txtItemDescription.ForeColor = SystemColors.WindowText;
-                }
-            }
 
         }
 
+        private void txtCompanyTo_Enter(object sender, EventArgs e)
+        {
+            if (txtCompanyTo.Text == ITEM_SEARCH_DEFAULT_TEXT)
+            {
+                txtCompanyTo.Text = "";
+                txtCompanyTo.ForeColor = SystemColors.WindowText;
+            }
+
+            //if (cbItemSearch.Checked)
+            //{
+            //    if (txtItemDescription.Text == ITEM_SEARCH_DEFAULT_TEXT)
+            //    {
+            //        txtItemDescription.Text = "";
+            //        txtItemDescription.ForeColor = SystemColors.WindowText;
+            //    }
+            //}
+            //else
+            //{
+            //    if (txtItemDescription.Text == ITEM_CUSTOM_DEFAULT_TEXT)
+            //    {
+            //        txtItemDescription.Text = "";
+            //        txtItemDescription.ForeColor = SystemColors.WindowText;
+            //    }
+            //}
+
+        }
         private void ItemDescriptionTextSetDefault()
         {
             if (cbItemSearch.Checked)
@@ -1261,11 +1285,6 @@ namespace FactoryManagementSoftware.UI
             }
 
             txtItemDescription.ForeColor = SystemColors.GrayText;
-        }
-
-        private void txtItemDescription_Leave(object sender, EventArgs e)
-        {
-
         }
 
         private void txtNumericWithDecimal_KeyPress(object sender, KeyPressEventArgs e)
@@ -1544,38 +1563,32 @@ namespace FactoryManagementSoftware.UI
             lblQty.Text = "Qty(" + qtyUnit + ")"; 
         }
 
-        private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
+        private void txtCompanyTo_TextChanged(object sender, EventArgs e)
         {
-            string keywords = txtItemDescription.Text;
+            string keywords = txtCompanyTo.Text;
 
-            if (!string.IsNullOrEmpty(keywords) && cbItemSearch.Checked)
+            if (!string.IsNullOrEmpty(keywords))
             {
-                foreach (DataRow row in DT_ITEM_SOURCE.Rows)
+                foreach (DataRow row in DT_COMPANY.Rows)
                 {
+                    //if (keywords == row[header_MasterCode].ToString())
+                    //{
+                    //    ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
+                    //    ITEM_CODE = row[dalItem.ItemCode].ToString();
 
-                    if (keywords == row[header_MasterCode].ToString())
-                    {
-                        ITEM_CATEGORY = row[dalItem.ItemCat].ToString();
-                        ITEM_CODE = row[dalItem.ItemCode].ToString();
-
-                        //get item std packing : main carton = true, max parent qty
-                        txtQtyPerBox.Text = LoadStdPacking(ITEM_CODE);
-
-                        GetItemUnit(ITEM_CATEGORY);
-                        break;
-                    }
+                    //    break;
+                    //}
                 }
             }
-            else
-            {
-                ITEM_CODE = "ITEM CODE";
-                ITEM_CATEGORY = "CATEGORY";
-            }
+           
 
-            UpdatePreviewDescription();
-            itemCodePreviewUpdate();
+          
         }
 
+        private void txtItemDescription_TextChanged_1(object sender, EventArgs e)
+        {
+
+        }
         private void btnNewJob_Click(object sender, EventArgs e)
         {
             if (!DO_ITEM_EDIT_MODE)
@@ -1797,6 +1810,31 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+
+        private void InitialCompanyTextBox()
+        {
+            if(!DT_COMPANY.Columns.Contains(header_MasterCode))
+            {
+                DT_COMPANY.Columns.Add(header_MasterCode, typeof(string));
+
+            }
+            var masterCodes = new List<string>();
+
+            foreach (DataRow row in DT_COMPANY.Rows)
+            {
+                var CompanyFullName = row[dalCompany.fullName].ToString();
+                var CompanyTblCode = row[dalCompany.tblCode].ToString();
+
+                CompanyFullName = tool.ConvertToTitleCase(CompanyFullName);
+
+                var masterCode = $"({CompanyTblCode}) {CompanyFullName}";
+
+                row[header_MasterCode] = masterCode;
+                masterCodes.Add(masterCode);
+            }
+
+            txtCompanyTo.Values = masterCodes.ToArray();
+        }
         public void InsertInternalDOFormat()
         {
             // Create a new instance of the doFormatBLL class and populate it with sample data
@@ -1840,14 +1878,6 @@ namespace FactoryManagementSoftware.UI
         private void LoadDoFormatDB()
         {
             DT_DO_FORMAT = dalDoFormat.SelectAll();
-
-            //if(DT_DO_FORMAT == null || DT_DO_FORMAT.Rows.Count == 0 )
-            //{
-            //    InsertInternalDOFormat();
-
-            //    DT_DO_FORMAT = dalDoFormat.SelectAll();
-
-            //}
         }
 
         private void LoadCompanyDB()
@@ -1874,7 +1904,7 @@ namespace FactoryManagementSoftware.UI
             cmbDOType.ValueMember = dalDoFormat.doType;
 
             cmbDOType.SelectedIndex = -1; // Set selection to null
-            cmbFromBranch.SelectedIndex = -1; // Set selection to null
+            //cmbFromBranch.SelectedIndex = -1; // Set selection to null
             cmbToDeliveryLocation.SelectedIndex = -1; // Set selection to null
 
 
@@ -1883,7 +1913,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool COMPANY_DATA_LOADED = false;
 
-        private void InitialCompanyCombobox(ComboBox cmb, bool isInternal)
+        private void InitialCompanyCombobox(ComboBox cmb)
         {
             COMPANY_DATA_LOADED = false;
 
@@ -1892,19 +1922,7 @@ namespace FactoryManagementSoftware.UI
                 LoadCompanyDB();
             }
 
-            DataTable dt = DT_COMPANY.Clone();
-
-            foreach (DataRow row in DT_COMPANY.Rows)
-            {
-                // Check if the isInternal column is DBNull, and treat DBNull as false
-               //bool rowIsInternal = row[dalCompany.isInternal] != DBNull.Value && Convert.ToBoolean(row[dalCompany.isInternal]);
-                bool rowIsInternal = bool.TryParse(row[dalCompany.isInternal].ToString(), out rowIsInternal) ? rowIsInternal : false;
-
-                if (isInternal == rowIsInternal)
-                {
-                    dt.ImportRow(row);
-                }
-            }
+            DataTable dt = DT_COMPANY.Copy();
 
 
             cmb.DataSource = dt;
@@ -1913,7 +1931,6 @@ namespace FactoryManagementSoftware.UI
             cmb.SelectedIndex = -1;
 
             COMPANY_DATA_LOADED = true;
-
         }
 
         private bool DELIVERY_LOCATION_LOADED = false;
@@ -2045,37 +2062,6 @@ namespace FactoryManagementSoftware.UI
                 if(!DO_EDITING_MODE)
                     LoadDONumberSample(123);
 
-                if(CheckIfInternalDOType())
-                {
-                    string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
-
-                    string doType = cmbDOType.Text.ToUpper().Replace(" ","");
-
-                    if (myconnstrng == text.DB_Semenyih && !doType.Contains("SMY") && !doType.Contains("SEMENYIH"))
-                    {
-                        MessageBox.Show("For internal DO types, please select a 'From SMY' DO type.");
-
-                        cmbDOType.SelectedIndex = -1;
-                    }
-                    else if (myconnstrng == text.DB_OUG && !doType.Contains("OUG"))
-                    {
-                        MessageBox.Show("For internal DO types, please select a 'From OUG' DO type.");
-                        cmbDOType.SelectedIndex = -1;
-
-                    }
-
-                }
-                else
-                {
-
-                }
-
-
-                LoadCompanyData();
-
-                if(!DO_EDITING_MODE)
-                    internalTransferDataAutoLoad();
-
                 DO_TYPE_CHECKING = false;
 
             }
@@ -2162,77 +2148,6 @@ namespace FactoryManagementSoftware.UI
             return address;
         }
 
-        private bool CheckIfInternalDOType()
-        {
-            return false;
-        }
-
-        private void LoadCompanyData()
-        {
-
-            InitialCompanyCombobox(cmbFromCompany, CheckIfInternalDOType());
-            InitialCompanyCombobox(cmbToCompany, CheckIfInternalDOType());
-        }
-
-        private void LoadDeliveryLocationData(ComboBox Company, ComboBox DeliveryLocation)
-        {
-
-        }
-
-        private void internalTransferDataAutoLoad()
-        {
-            string doType = cmbDOType.Text;
-
-            if (CheckIfInternalDOType())
-            {
-                //if do type is internal
-                cmbFromCompany.Text = "Safety Plastics";
-                cmbFromCompany.Enabled = false;
-
-                cmbToCompany.Text = "Safety Plastics";
-                cmbToCompany.Enabled = false;
-
-                txtBillingAddress.Text = "Not Applicable";
-                txtBillingAddress.Enabled = false;
-
-                cbSameWithBilling.Enabled = false;
-                cmbToCompany.Enabled = false;
-
-                COMPANY_DATA_LOADED = true;
-
-                ////if location is between OUG and Semenyih
-                bool fromOUG = doType.ToUpper().Contains("OUG");
-                bool fromSemenyih = doType.ToUpper().Contains("SEMENYIH") || doType.ToUpper().Contains("SMY");
-
-                //cmbFromBranch.Enabled = false;
-                //cmbToDeliveryLocation.Enabled = false;
-
-                if (fromOUG)//SAFETY PLASTICS SDN BHD
-                {
-                    //txtDONoSample.Text = "Sample : IT24/999";
-                    cmbFromBranch.Text = "OUG";
-                    cmbToDeliveryLocation.Text = "Semenyih";
-                    //txtShippingAddress.Text = "No.2, Jalan 10/152, Taman Perindustrian O.U.G., Batu 6,\r\nJalan Puchong, 58200 Kuala Lumpur.\r\nTel : 03-77855278, 03-77820399  Fax : 03-77820399\r\nEmail : safety_plastic@yahoo.com\r\n";
-
-                }
-                else if (fromSemenyih)//SAFETY PLASTICS SDN BHD (SEMENYIH FAC.)
-                {
-                    //txtDONoSample.Text = "Sample : ITN24/S999";
-                    cmbFromBranch.Text = "Semenyih";
-                    cmbToDeliveryLocation.Text = "OUG";
-                    //txtShippingAddress.Text = "No.17, PT 2507, Jalan Hi-Tech 2,\r\nKawasan Perindustrian Hi-Tech,\r\nJalan Sungai Lalang,\r\n43500 Semenyih, Selangor\r\n(Tel) 016 - 282 8195 (Email) safetyplastics.my@gmail.com";
-
-                }
-
-                DELIVERY_LOCATION_LOADED = true;
-                cmbFromBranch.Enabled = false;
-                cmbToDeliveryLocation.Enabled = false;
-
-                cmbDeliveryMethod.SelectedIndex = 0;
-
-            }
-
-        }
 
         private void cbSameWithBilling_CheckedChanged(object sender, EventArgs e)
         {
@@ -2255,24 +2170,16 @@ namespace FactoryManagementSoftware.UI
 
         private void cmbToCompany_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if(cmbToCompany.SelectedIndex != -1 && COMPANY_DATA_LOADED)
-            {
-                errorProvider2.Clear();
+            //if(cmbToCompany.SelectedIndex != -1 && COMPANY_DATA_LOADED)
+            //{
+            //    errorProvider2.Clear();
 
-                //set billing address
-                if (CheckIfInternalDOType())
-                {
-                    txtBillingAddress.Text = "Not Applicable";
-                    txtBillingAddress.Enabled = false;
-                }
-                else
-                {
-                    txtBillingAddress.Enabled = true;
-                }
+            //    //set billing address
+            //    txtBillingAddress.Enabled = true;
 
-                InitialDeliveryLocationCombobox(getCompanyTblCode(cmbToCompany), cmbToDeliveryLocation);
+            //    InitialDeliveryLocationCombobox(getCompanyTblCode(cmbToCompany), cmbToDeliveryLocation);
 
-            }
+            //}
         }
 
         private void gunaTextBox1_TextChanged(object sender, EventArgs e)
@@ -2280,13 +2187,6 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void cmbFromCompany_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (cmbFromCompany.SelectedIndex != -1 && COMPANY_DATA_LOADED)
-            {
-                InitialDeliveryLocationCombobox(getCompanyTblCode(cmbFromCompany), cmbFromBranch);
-            }
-        }
 
         private void btnAddAsDraft_Click(object sender, EventArgs e)
         {
@@ -2580,59 +2480,59 @@ namespace FactoryManagementSoftware.UI
 
         private void SaveAsDraft()
         {
-            if (CheckIfInternalDOType())
-            {
-                string tblCode =  SaveInternalDO(true);
+            //if (CheckIfInternalDOType())
+            //{
+            //    string tblCode =  SaveInternalDO(true);
 
-                if(tblCode != "-1")
-                {
-                    if(SaveInternalDOItem(tblCode))
-                    {
-                        MessageBox.Show("DO save as draft successful!");
-                        DATA_SAVED = true;
-                        Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed to save DO draft!");
+            //    if(tblCode != "-1")
+            //    {
+            //        if(SaveInternalDOItem(tblCode))
+            //        {
+            //            MessageBox.Show("DO save as draft successful!");
+            //            DATA_SAVED = true;
+            //            Close();
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Failed to save DO draft!");
 
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Failed to get tbl code!");
-                    return;
-                }
-            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Failed to get tbl code!");
+            //        return;
+            //    }
+            //}
           
         }
 
         private void PublishDO()
         {
-            if (CheckIfInternalDOType())
-            {
-                string tblCode = SaveInternalDO(false);
+            //if (CheckIfInternalDOType())
+            //{
+            //    string tblCode = SaveInternalDO(false);
 
-                if (tblCode != "-1")
-                {
-                    if (SaveInternalDOItem(tblCode))
-                    {
-                        MessageBox.Show("DO publishedl!");
-                        DATA_SAVED = true;
-                        Close();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Failed publish DO!");
+            //    if (tblCode != "-1")
+            //    {
+            //        if (SaveInternalDOItem(tblCode))
+            //        {
+            //            MessageBox.Show("DO publishedl!");
+            //            DATA_SAVED = true;
+            //            Close();
+            //        }
+            //        else
+            //        {
+            //            MessageBox.Show("Failed publish DO!");
 
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Failed to get tbl code!");
-                    return;
-                }
-            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("Failed to get tbl code!");
+            //        return;
+            //    }
+            //}
 
         }
 
@@ -2664,14 +2564,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmDOEditing_Load(object sender, EventArgs e)
         {
-            if (DO_EDITING_MODE)
-            {
-                //load existing data
-                //dotype, from, to, address,remark, delivery method, item list, do number if have
-                setDOGeneralData();
-            }
-
-           
+            setDOGeneralData();
         }
 
         private void changedCartonNameToPackaging(bool changetoPackaging)
@@ -2838,6 +2731,97 @@ namespace FactoryManagementSoftware.UI
         private void gunaGradientButton3_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private ContextMenuStrip my_menu;
+        private string SELECTED_DO_FORMAT_TBLCODE = "";
+        private void btnDOTypeEdit_MouseDown(object sender, MouseEventArgs e)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+                //handle the row selection on right click
+                if (e.Button == MouseButtons.Left)
+                {
+                    my_menu = new ContextMenuStrip();
+
+                    // Check if there is a selected item in the ComboBox
+
+                    SELECTED_DO_FORMAT_TBLCODE = "";
+
+                    if (cmbDOType.SelectedValue != null)
+                    {
+                        SELECTED_DO_FORMAT_TBLCODE = cmbDOType.SelectedValue.ToString();
+                    }
+                    my_menu.Items.Add("").Name = "";
+
+                    if (!string.IsNullOrEmpty(SELECTED_DO_FORMAT_TBLCODE))
+                    {
+                        my_menu.Items.Add(EDIT_DO_FORMAT).Name = EDIT_DO_FORMAT;
+
+                    }
+
+                    my_menu.Items.Add(ADD_NEW_DO_FORMAT).Name = ADD_NEW_DO_FORMAT;
+
+                   
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(DOTypeMenu_Clicked);
+
+                }
+
+                Cursor = Cursors.Arrow; // change cursor to normal type
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        private void DOTypeMenu_Clicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+          
+            string itemClicked = e.ClickedItem.Name.ToString();
+
+            my_menu.Hide();
+
+            if (itemClicked.Equals(ADD_NEW_DO_FORMAT))
+            {
+                frmDOFormat frm = new frmDOFormat();
+
+                frm.StartPosition = FormStartPosition.CenterScreen;
+
+                frm.ShowDialog();
+
+                PopulateDOTypeComboBox();
+            }
+            else if (itemClicked.Equals(EDIT_DO_FORMAT))
+            {
+
+                int tblCode = int.TryParse(SELECTED_DO_FORMAT_TBLCODE, out tblCode) ? tblCode : -1;
+
+                if(tblCode > 0)
+                {
+                    frmDOFormat frm = new frmDOFormat(tblCode);
+
+                    frm.StartPosition = FormStartPosition.CenterScreen;
+
+                    frm.ShowDialog();
+
+                    PopulateDOTypeComboBox(SELECTED_DO_FORMAT_TBLCODE);
+                }
+                else
+                {
+                    MessageBox.Show("Invalid DO Type found, please contact Jun");
+
+                }
+
+               
+            }
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
         }
     }
 }

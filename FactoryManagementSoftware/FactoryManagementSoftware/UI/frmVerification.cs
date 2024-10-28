@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using FactoryManagementSoftware.Module;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -16,6 +17,7 @@ namespace FactoryManagementSoftware.UI
         {
             InitializeComponent();
             PASSWORD_MATCHED = false;
+            lblPWHint.Text = "Hint";
 
         }
 
@@ -24,10 +26,12 @@ namespace FactoryManagementSoftware.UI
             InitializeComponent();
             PASSWORD = text;
             PASSWORD_MATCHED = false;
+            lblPWHint.Text = "Hint";
         }
 
         private string PASSWORD = "";
         static public bool PASSWORD_MATCHED = false;
+        Text text = new Text();
 
         private void btnSwitchToMatUsed_Click(object sender, EventArgs e)
         {
@@ -60,6 +64,30 @@ namespace FactoryManagementSoftware.UI
             if (e.KeyCode == Keys.Enter)
             {
                 btnCheck_Click(sender, e);
+            }
+        }
+
+        private void lblPWHint_Click(object sender, EventArgs e)
+        {
+            if(PASSWORD == text.PW_Level_1)
+            {
+                lblPWHint.Text = "level 1";
+            }
+            else if (PASSWORD == text.PW_Level_2)
+            {
+                lblPWHint.Text = "level 2";
+            }
+            else if (PASSWORD == text.PW_Level_3)
+            {
+                lblPWHint.Text = "level 3";
+            }
+            else if (PASSWORD == text.PW_Level_4)
+            {
+                lblPWHint.Text = "level 4";
+            }
+            else 
+            {
+                lblPWHint.Text = "Hint not found!";
             }
         }
     }

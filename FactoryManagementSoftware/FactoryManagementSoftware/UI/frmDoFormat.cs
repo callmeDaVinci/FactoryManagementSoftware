@@ -31,7 +31,7 @@ namespace FactoryManagementSoftware.UI
         public frmDOFormat()
         {
             InitializeComponent();
-            InitialSetting();
+            InitialSettings();
             EDIT_MODE = false;
             TABLE_CODE = -1;
         }
@@ -40,15 +40,18 @@ namespace FactoryManagementSoftware.UI
         public frmDOFormat(int format_tbl_code)
         {
             InitializeComponent();
-            InitialSetting();
-            EDIT_MODE = false;
+
+            EDIT_MODE = true;
             TABLE_CODE = format_tbl_code;
+
+            InitialSettings();
+           
         }
 
         #endregion
 
         #region UI/UX
-        private void InitialSetting()
+        private void InitialSettings()
         {
             cmbResetPeriod.Text = "Never";
             LoadData(TABLE_CODE);
@@ -140,24 +143,38 @@ namespace FactoryManagementSoftware.UI
             // Check if the user confirmed the action
             if (confirmationResult == DialogResult.Yes)
             {
-                bool saveSuccess = false;
+                //key in password
+                frmVerification frm = new frmVerification(text.PW_Level_3)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
 
-                // INSERT OR UPDATE TO DATABASE
-                if (EDIT_MODE && TABLE_CODE > 0)
-                {
-                    // Update logic here if applicable
-                    saveSuccess = Update();  // Assuming you have an Update method for editing existing entries
-                }
-                else
-                {
-                    saveSuccess = Insert();  // Save new format
-                }
+                frm.ShowDialog();
 
-                if(saveSuccess)
+                if (frmVerification.PASSWORD_MATCHED)
                 {
-                    DATA_SAVED = true;
-                    MessageBox.Show("DO format has been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    bool saveSuccess = false;
+
+                    // INSERT OR UPDATE TO DATABASE
+                    if (EDIT_MODE && TABLE_CODE > 0)
+                    {
+                        // Update logic here if applicable
+                        saveSuccess = Update();  // Assuming you have an Update method for editing existing entries
+                    }
+                    else
+                    {
+                        saveSuccess = Insert();  // Save new format
+                    }
+
+                    if (saveSuccess)
+                    {
+                        DATA_SAVED = true;
+                        MessageBox.Show("DO format has been successfully saved.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        Close();
+                    }
                 }
+               
+              
             }
         }
 
@@ -301,7 +318,38 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadData(int tblCode)
         {
+            if(EDIT_MODE && tblCode > 0)
+            {
+                DataTable dt_DOFormat = dalDoFormat.SelectAll();
 
+                foreach(DataRow row in dt_DOFormat.Rows)
+                {
+                    if(tblCode.ToString() == row[dalDoFormat.tblCode].ToString())
+                    {
+                        txtDOType.Text = row[dalDoFormat.doType].ToString();
+                        txtDOVersionControl.Text = row[dalDoFormat.versionControl].ToString();
+                        txtPrefix.Text = row[dalDoFormat.prefix].ToString();
+                        txtDateFormat.Text = row[dalDoFormat.dateFormat].ToString();
+                        txtSuffix.Text = row[dalDoFormat.suffix].ToString();
+                        txtNumberLength.Text = row[dalDoFormat.runningNumberLength].ToString();
+
+                        int nextNumber = int.TryParse(row[dalDoFormat.lastNumber].ToString(),out nextNumber) ? nextNumber : 0;
+                        nextNumber++;
+                        txtNextNumber.Text = nextNumber.ToString();
+
+
+                        bool MonthlyReset = bool.TryParse(row[dalDoFormat.isMonthlyReset].ToString(), out MonthlyReset) ? MonthlyReset : false;
+                        bool YearlyReset = bool.TryParse(row[dalDoFormat.isYearlyReset].ToString(), out YearlyReset) ? YearlyReset : false;
+
+                        cmbResetPeriod.Text = YearlyReset? "Yearly" : MonthlyReset ? "Monthly" : "None";
+
+
+                        RunningNumberPreview();
+
+                        break;
+                    }
+                }
+            }
         }
 
         private bool Insert()

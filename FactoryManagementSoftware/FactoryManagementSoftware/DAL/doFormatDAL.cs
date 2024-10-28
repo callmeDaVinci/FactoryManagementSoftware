@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.DAL
         public string isRemoved { get; } = "isRemoved";
         public string updatedDate { get; } = "updated_date";
         public string updatedBy { get; } = "updated_by";
+        public string VersionControl { get; } = "version_control";
 
         public string lastResetDate { get; } = "last_reset_date";
         public string isMonthlyReset { get; } = "isMonthlyReset";
@@ -685,7 +686,9 @@ namespace FactoryManagementSoftware.DAL
                     remark VARCHAR(200),
                     isRemoved BIT,
                     updated_date DATETIME NOT NULL,
-                    updated_by INT NOT NULL
+                    updated_by INT NOT NULL,                    
+                    version_control VARCHAR(100)
+
                 );
             END";
                     SqlCommand createTableCmd = new SqlCommand(createTableSql, conn);
@@ -711,7 +714,8 @@ namespace FactoryManagementSoftware.DAL
                 "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'remark') BEGIN ALTER TABLE tbl_do_format ADD remark VARCHAR(200) END",
                 "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'isRemoved') BEGIN ALTER TABLE tbl_do_format ADD isRemoved BIT END",
                 "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_date') BEGIN ALTER TABLE tbl_do_format ADD updated_date DATETIME NOT NULL END",
-                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_by') BEGIN ALTER TABLE tbl_do_format ADD updated_by INT NOT NULL END"
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_by') BEGIN ALTER TABLE tbl_do_format ADD updated_by INT NOT NULL END",
+                "IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'tbl_do_format' AND COLUMN_NAME = 'updated_by') BEGIN ALTER TABLE tbl_do_format ADD version_control VARCHAR(100) END"
                     };
 
                     foreach (var sql in alterTableSql)

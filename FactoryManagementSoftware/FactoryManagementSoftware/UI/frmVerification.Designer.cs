@@ -33,6 +33,7 @@
             this.btnCheck = new System.Windows.Forms.Button();
             this.btnSwitchToMatUsed = new System.Windows.Forms.Button();
             this.lblWarning = new System.Windows.Forms.Label();
+            this.lblPWHint = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // txtPassword
@@ -98,12 +99,27 @@
             this.lblWarning.Text = "label2";
             this.lblWarning.Visible = false;
             // 
+            // lblPWHint
+            // 
+            this.lblPWHint.AutoSize = true;
+            this.lblPWHint.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblPWHint.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblPWHint.ForeColor = System.Drawing.Color.Blue;
+            this.lblPWHint.Location = new System.Drawing.Point(74, 29);
+            this.lblPWHint.Name = "lblPWHint";
+            this.lblPWHint.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.lblPWHint.Size = new System.Drawing.Size(24, 12);
+            this.lblPWHint.TabIndex = 135;
+            this.lblPWHint.Text = "Hint";
+            this.lblPWHint.Click += new System.EventHandler(this.lblPWHint_Click);
+            // 
             // frmVerification
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(326, 165);
+            this.Controls.Add(this.lblPWHint);
             this.Controls.Add(this.lblWarning);
             this.Controls.Add(this.btnSwitchToMatUsed);
             this.Controls.Add(this.btnCheck);
@@ -124,5 +140,6 @@
         private System.Windows.Forms.Button btnCheck;
         private System.Windows.Forms.Button btnSwitchToMatUsed;
         private System.Windows.Forms.Label lblWarning;
+        private System.Windows.Forms.Label lblPWHint;
     }
 }

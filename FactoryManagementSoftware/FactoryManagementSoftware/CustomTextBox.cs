@@ -19,6 +19,9 @@ namespace FactoryManagementSoftware
         {
             InitializeComponent();
             ResetListBox();
+
+            // Set DrawMode and add DrawItem event for custom rendering
+            _listBox.DrawMode = DrawMode.OwnerDrawFixed;
         }
 
         private void InitializeComponent()
@@ -28,11 +31,12 @@ namespace FactoryManagementSoftware
             // 
             // _listBox
             // 
-            this._listBox.ItemHeight = 20;
+            this._listBox.ItemHeight = 30;
             this._listBox.Location = new System.Drawing.Point(0, 0);
             this._listBox.Name = "_listBox";
             this._listBox.Size = new System.Drawing.Size(120, 84);
             this._listBox.TabIndex = 0;
+            this._listBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this._listBox_DrawItem);
             this._listBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.this_KeyDown);
             this._listBox.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this._listBox_MouseDoubleClick);
             // 
@@ -146,16 +150,17 @@ namespace FactoryManagementSoftware
                     _listBox.Items.Clear();
                     Array.ForEach(matches, x => _listBox.Items.Add(x));
                     _listBox.SelectedIndex = 0;
-                    _listBox.Height = 0;
-                    _listBox.Width = 0;
-                    Focus();
+
+                    // Set a maximum height for the ListBox
+                    const int maxVisibleItems = 10;
+                    int visibleItemsCount = Math.Min(_listBox.Items.Count, maxVisibleItems);
+                    int itemHeight = _listBox.ItemHeight;
+                    _listBox.Height = visibleItemsCount * itemHeight;
+
+                    // Calculate the width dynamically based on item content
+                    int maxWidth = 0;
                     using (Graphics graphics = _listBox.CreateGraphics())
                     {
-                        for (int i = 0; i < _listBox.Items.Count && i < 20; i++)
-                        {
-                            _listBox.Height += _listBox.GetItemHeight(i);
-                        }
-                        int maxWidth = 0;
                         foreach (var item in _listBox.Items)
                         {
                             int itemWidth = (int)graphics.MeasureString(item.ToString() + "_", _listBox.Font).Width;
@@ -163,6 +168,7 @@ namespace FactoryManagementSoftware
                         }
                         _listBox.Width = Math.Max(this.Width, maxWidth);
                     }
+
                     _listBox.EndUpdate();
                 }
                 else
@@ -179,87 +185,7 @@ namespace FactoryManagementSoftware
 
 
 
-        private void OLDUpdateListBox()
-        {
-            if (Text == _formerValue)
-                return;
 
-            //wait(1000);
-
-            _formerValue = this.Text;
-            string word = this.Text;
-
-            if (_values != null && word.Length > 0)
-            {
-                string[] matches = Array.FindAll(_values,
-                x => x != null && x.ToLower().Contains(word.ToLower()));
-
-                if (matches.Length > 0)
-                {
-                    ShowListBox();
-                    _listBox.BeginUpdate();
-                    _listBox.Items.Clear();
-                    Array.ForEach(matches, x => _listBox.Items.Add(x));
-                    _listBox.SelectedIndex = 0;
-                    _listBox.Height = 0;
-                    _listBox.Width = 0;
-                    int height = 0;
-                    int width = 0;
-                    Focus();
-                    using (Graphics graphics = _listBox.CreateGraphics())
-                    {
-                        for (int i = 0; i < _listBox.Items.Count; i++)
-                        {
-                            if (i < 20)
-                                _listBox.Height += _listBox.GetItemHeight(i);
-
-                            // it item width is larger than the current one
-                            // set it to the new max item width
-                            // GetItemRectangle does not work for me
-                            // we add a little extra space by using '_'
-
-                            //int itemWidth = (int)graphics.MeasureString(((string)_listBox.Items[i]) + "_", _listBox.Font).Width;
-                            //width = (_listBox.Width < itemWidth) ? itemWidth : this.Width; ;
-                            //_listBox.Width = (_listBox.Width < itemWidth) ? itemWidth : this.Width; ;
-                        }
-                        //_listBox.Height = _listBox.GetItemHeight(20);
-                        _listBox.Width = this.Width;
-
-                    }
-                    _listBox.EndUpdate();
-                }
-                else
-                {
-                    ResetListBox();
-                }
-            }
-            else
-            {
-                ResetListBox();
-            }
-        }
-        public void wait(int milliseconds)
-        {
-            var timer1 = new Timer();
-            if (milliseconds == 0 || milliseconds < 0) return;
-
-            // Console.WriteLine("start wait timer");
-            timer1.Interval = milliseconds;
-            timer1.Enabled = true;
-            timer1.Start();
-
-            timer1.Tick += (s, e) =>
-            {
-                timer1.Enabled = false;
-                timer1.Stop();
-                // Console.WriteLine("stop wait timer");
-            };
-
-            while (timer1.Enabled)
-            {
-                Application.DoEvents();
-            }
-        }
 
         public String[] Values
         {
@@ -273,14 +199,7 @@ namespace FactoryManagementSoftware
             }
         }
 
-        public List<String> SelectedValues
-        {
-            get
-            {
-                String[] result = Text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                return new List<String>(result);
-            }
-        }
+       
 
         private void _listBox_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -291,6 +210,40 @@ namespace FactoryManagementSoftware
                 _formerValue = Text;
                 this.Select(this.Text.Length, 0);
             }
+        }
+
+        private void _listBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            // Draw the background of the ListBox control for each item.
+            e.DrawBackground();
+
+            // Determine the text color based on whether the item is selected
+            Brush textBrush;
+            if ((e.State & DrawItemState.Selected) == DrawItemState.Selected)
+            {
+                // Set the font color to white for the selected item
+                textBrush = Brushes.White;
+            }
+            else
+            {
+                // Set the font color to black for non-selected items
+                textBrush = Brushes.Black;
+            }
+
+            // Draw the current item text
+            if (e.Index >= 0)
+            {
+                string text = _listBox.Items[e.Index].ToString();
+                e.Graphics.DrawString(
+                    text,
+                    new Font(this.Font.FontFamily, this.Font.Size, FontStyle.Regular), // Regular font
+                    textBrush,
+                    e.Bounds
+                );
+            }
+
+            // Draw the focus rectangle around the selected item.
+            e.DrawFocusRectangle();
         }
     }
 }

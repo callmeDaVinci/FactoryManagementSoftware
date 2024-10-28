@@ -102,7 +102,7 @@ namespace FactoryManagementSoftware.UI
             // 
             this.tableLayoutPanel28.AutoScroll = true;
             this.tableLayoutPanel28.AutoSize = true;
-            this.tableLayoutPanel28.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
+            this.tableLayoutPanel28.BackColor = System.Drawing.Color.WhiteSmoke;
             this.tableLayoutPanel28.ColumnCount = 1;
             this.tableLayoutPanel28.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel28.Controls.Add(this.tlpStepPanel, 0, 1);
@@ -158,7 +158,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox3.BorderSize = 1;
             this.gunaGroupBox3.Controls.Add(this.tableLayoutPanel6);
             this.gunaGroupBox3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGroupBox3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunaGroupBox3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunaGroupBox3.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(219)))), ((int)(((byte)(219)))), ((int)(((byte)(255)))));
             this.gunaGroupBox3.Location = new System.Drawing.Point(355, 5);
             this.gunaGroupBox3.Margin = new System.Windows.Forms.Padding(5);
@@ -615,7 +615,7 @@ namespace FactoryManagementSoftware.UI
             this.gunaGroupBox4.BorderSize = 1;
             this.gunaGroupBox4.Controls.Add(this.tableLayoutPanel13);
             this.gunaGroupBox4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.gunaGroupBox4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.gunaGroupBox4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.gunaGroupBox4.LineColor = System.Drawing.Color.Gainsboro;
             this.gunaGroupBox4.Location = new System.Drawing.Point(5, 5);
             this.gunaGroupBox4.Margin = new System.Windows.Forms.Padding(5);
@@ -854,7 +854,7 @@ namespace FactoryManagementSoftware.UI
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
-            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(924, 525);
             this.Controls.Add(this.tableLayoutPanel28);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
