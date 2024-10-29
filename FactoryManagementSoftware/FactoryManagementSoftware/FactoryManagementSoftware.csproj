@@ -262,6 +262,12 @@
     <Compile Include="UI\DBLayoutPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="UI\OUGSMYDBMerge.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\OUGSMYDBMerge.Designer.cs">
+      <DependentUpon>OUGSMYDBMerge.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\ExcelUpload.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1233,6 +1239,9 @@
     </Compile>
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\OUGSMYDBMerge.resx">
+      <DependentUpon>OUGSMYDBMerge.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\ExcelUpload.resx">
       <DependentUpon>ExcelUpload.cs</DependentUpon>
