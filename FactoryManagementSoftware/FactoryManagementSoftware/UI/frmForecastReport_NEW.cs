@@ -1547,7 +1547,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_Item_Cust = dalItemCust.SelectAllExcludedOTHER();
 
             //filter out terminated item
-            if (!cbIncludeTerminated.Checked)
+            if (!cbIncludeTerminated.Checked && DT_ITEM_CUST != null)
                 dt_Item_Cust = RemoveTerminatedItem(dt_Item_Cust);
 
             //dt_MacSchedule = dalPlanning.SelectOrderByItem();
@@ -2265,7 +2265,7 @@ namespace FactoryManagementSoftware.UI
         {
             string customerName = cmbCustomer.Text;
 
-            DT_ITEM_CUST = null;
+            DT_ITEM_CUST = new DataTable();
 
             if (customerName == text.Cmb_All)
             {
@@ -2277,7 +2277,7 @@ namespace FactoryManagementSoftware.UI
             }
 
 
-            if (!cbIncludeTerminated.Checked)
+            if (!cbIncludeTerminated.Checked && DT_ITEM_CUST != null)
                 DT_ITEM_CUST = RemoveTerminatedItem(DT_ITEM_CUST);
 
             DT_ITEM_CUST.Columns.Add(text.Header_GotNotPackagingChild);
@@ -7927,7 +7927,7 @@ namespace FactoryManagementSoftware.UI
             OK_TO_CHECK_DATE_HABIT = true;
             if (myconnstrng == text.DB_Semenyih)
             {
-                cmbCustomer.Text = "SP OUG";
+                cmbCustomer.Text = "ALL";
             }
         }
 

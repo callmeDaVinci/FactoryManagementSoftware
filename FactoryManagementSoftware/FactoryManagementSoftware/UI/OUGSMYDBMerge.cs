@@ -18,6 +18,7 @@ using System.Security.Cryptography.X509Certificates;
 using FactoryManagementSoftware.BLL;
 using static Syncfusion.XlsIO.Parser.Biff_Records.PaletteRecord;
 using System.Collections.Generic;
+using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -110,35 +111,41 @@ namespace FactoryManagementSoftware.UI
             return DT_SOURCE;
         }
 
-        private DataTable DT_ITEM_SMY;
+        private DataTable DT_SMY_TABLE;
 
+        
         private void ListFilter()
         {
-            // Fetch existing items in SMY database table
-            DT_ITEM_SMY = dalItem.Select();
+            //DT_SMY_TABLE = dalItemCust.SelectAll();
+            
+            DT_SMY_TABLE = dalItemForecast.Select();
+            //DT_SMY_TABLE = dalItem.Select();
 
-            // Create a HashSet to store normalized existing item codes for efficient lookup
-            HashSet<string> existingItemCodes = new HashSet<string>(
-                DT_ITEM_SMY.AsEnumerable()
-                    .Select(r => NormalizeItemCode(r[dalItem.ItemCode].ToString()))
-            );
+            //// Create a HashSet to store normalized existing item codes for efficient lookup
+            //HashSet<string> existingItemCodes = new HashSet<string>(
+            //    DT_SMY_TABLE.AsEnumerable()
+            //        .Select(r => NormalizeItemCode(r[dalItem.ItemCode].ToString()))
+            //);
 
-            // Create a new DataTable to store the filtered results
-            DataTable filteredTable = DT_SOURCE.Clone(); // Clone structure but no data
+            //// Create a new DataTable to store the filtered results
+            //DataTable filteredTable = DT_SOURCE.Clone(); // Clone structure but no data
 
-            foreach (DataRow row in DT_SOURCE.Rows)
-            {
-                string itemCode = NormalizeItemCode(row[dalItem.ItemCode]?.ToString());
+            //foreach (DataRow row in DT_SOURCE.Rows)
+            //{
+            //    //String itemCode = row[dalItem.ItemCode]?.ToString();
+            //    string itemCode = row[dalItemCust.ItemCode]?.ToString();
+            //    int custID = int.TryParse(row[dalItemCust.CustID]?.ToString(), out int i)? i : -1;
 
-                // Check if the normalized itemCode exists in the HashSet
-                if (!existingItemCodes.Contains(itemCode))
-                {
-                    filteredTable.ImportRow(row); // Add only non-existing items
-                }
-            }
+            //    // Check if the normalized itemCode exists in the HashSet
+            //    if (!IfItemCustExist(itemCode, custID)) //IfItemCustExist(itemCode,custID)//!IfItemExist(itemCode)
+            //    {
+            //        filteredTable.ImportRow(row); // Add only non-existing items
+            //    }
+            //}
 
-            // Display filtered data in dgvSubList
-            dgvSubList.DataSource = filteredTable;
+            //// Display filtered data in dgvSubList
+            //dgvSubList.DataSource = filteredTable;
+            dgvSubList.DataSource = DT_SOURCE;
         }
 
         // Helper method to normalize item codes
@@ -159,7 +166,7 @@ namespace FactoryManagementSoftware.UI
             ListFilter();
         }
 
-        private void btnConfirmUpdate_Click(object sender, EventArgs e)
+        private void InsertOrUpdateItemData()
         {
             foreach (DataGridViewRow row in dgvSubList.Rows)
             {
@@ -205,7 +212,7 @@ namespace FactoryManagementSoftware.UI
                 };
 
                 // Check if the item exists in the database
-                bool exists = ItemExistsInDatabase(itemCode);
+                bool exists = ExistsInDatabase(itemCode,dalItem.ItemCode);
 
                 bool success = false;
                 if (exists)
@@ -222,15 +229,163 @@ namespace FactoryManagementSoftware.UI
                     MessageBox.Show($"Failed to update item with code {itemCode}.", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
+        }
 
-            MessageBox.Show("Update operation completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+       
+        custSupplierDAL dalCust = new custSupplierDAL();
+        itemCustDAL dalItemCust  = new itemCustDAL();
+        itemForecastDAL dalItemForecast  = new itemForecastDAL();
+
+        private void InsertOrUpdateCustData()
+        {
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                // Retrieve item code
+                int custID = int.TryParse(row.Cells[dalCust.CustID].Value?.ToString(), out var id) ? id : -1;
+
+                // Create and populate object
+                custSupplierBLL cust = new custSupplierBLL
+                {
+                    cust_id = custID,
+                    cust_name = row.Cells[dalCust.CustName].Value?.ToString(),
+                    cust_added_by = int.TryParse(row.Cells[dalCust.CustAddedBy].Value?.ToString(), out var addedBy) ? addedBy : 0,
+                    cust_updtd_by = int.TryParse(row.Cells[dalCust.CustUpdatedBy].Value?.ToString(), out var updatedBy) ? updatedBy : 0,
+                    cust_added_date = DateTime.TryParse(row.Cells[dalCust.CustAddedDate].Value?.ToString(), out var addDate) ? addDate : DateTime.Now,
+                    cust_updtd_date = DateTime.TryParse(row.Cells[dalCust.CustUpdatedDate].Value?.ToString(), out var updatedDate) ? updatedDate : DateTime.Now,
+                    cust_main = int.TryParse(row.Cells[dalCust.MainCust].Value?.ToString(), out var MainCust) ? MainCust : 0
+                };
+
+                // Check if the item exists in the database
+                bool exists = ExistsInDatabase(custID.ToString(),dalCust.CustID);
+
+                bool success = false;
+
+                if (exists)
+                {
+                    success = dalCust.UpdateCust(cust);
+                }
+                else
+                {
+                    success = dalCust.InsertCust(cust);
+
+                }
+
+                if (!success)
+                {
+                    MessageBox.Show($"Failed to update item with code {custID}.", "Update Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private bool IfItemCustExist(string itemCode, int custID)
+        {
+            // Use LINQ to check if any row matches both itemCode and custID in DT_SMY_TABLE
+            bool exists = DT_SMY_TABLE.AsEnumerable().Any(row =>
+                row.Field<string>(dalItemCust.ItemCode) == itemCode &&
+                row.Field<int>(dalItemCust.CustID) == custID);
+
+            return exists;
+        }
+
+        private bool IfItemExist(string itemCode)
+        {
+            // Trim spaces from itemCode and compare with trimmed values in DT_SMY_TABLE
+            bool exists = DT_SMY_TABLE.AsEnumerable().Any(row =>
+                row.Field<string>(dalItem.ItemCode).Trim() == itemCode.Trim());
+
+            return exists;
+        }
+
+
+        private void InsertOrUpdateCustItemData()
+        {
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                // Retrieve item code
+                int custID = int.TryParse(row.Cells[dalItemCust.CustID].Value?.ToString(), out var id) ? id : -1;
+                string itemCode = row.Cells[dalItemCust.ItemCode].Value?.ToString();
+
+                // Create and populate object
+                itemCustBLL ItemCust = new itemCustBLL
+                {
+                    cust_id = custID,
+                    item_code = itemCode,
+                    item_cust_added_date = DateTime.TryParse(row.Cells["item_cust_added_date"].Value?.ToString(), out var addDate) ? addDate : DateTime.Now,
+                    item_cust_added_by = 1,
+                    forecast_one = int.TryParse(row.Cells["forecast_one"].Value?.ToString(), out var forecast1) ? forecast1 : 0,
+                    forecast_two = int.TryParse(row.Cells["forecast_two"].Value?.ToString(), out var forecast2) ? forecast2 : 0,
+                    forecast_three = int.TryParse(row.Cells["forecast_three"].Value?.ToString(), out var forecast3) ? forecast3 : 0,
+                    forecast_four = int.TryParse(row.Cells["forecast_four"].Value?.ToString(), out var forecast4) ? forecast4 : 0,
+                    forecast_current_month = row.Cells["forecast_current_month"].Value?.ToString(),
+                    forecast_updated_by = int.TryParse(row.Cells["forecast_updated_by"].Value?.ToString(), out var updatedBy) ? updatedBy : 0,
+                    forecast_updated_date = DateTime.TryParse(row.Cells["forecast_updated_date"].Value?.ToString(), out var updatedDate) ? updatedDate : DateTime.Now
+                };
+
+                if (!IfItemCustExist(itemCode, custID))
+                {
+                    bool success = dalItemCust.InsertALL(ItemCust);
+
+                    if (!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show($"Failed to add new {itemCode} record");
+                    }
+                    
+                }
+                else
+                {
+                    MessageBox.Show("Data already exist.");
+                }
+            }
+        }
+
+        private void InsertItemForeacastData()
+        {
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                // Retrieve item code
+                int custID = int.TryParse(row.Cells[dalItemForecast.CustID].Value?.ToString(), out var id) ? id : -1;
+                int forecastYear = int.TryParse(row.Cells[dalItemForecast.ForecastYear].Value?.ToString(), out forecastYear) ? forecastYear : 0;
+                int forecastMonth = int.TryParse(row.Cells[dalItemForecast.ForecastMonth].Value?.ToString(), out forecastMonth) ? forecastMonth : 0;
+                string itemCode = row.Cells[dalItemForecast.ItemCode].Value?.ToString();
+
+                // Create and populate object
+                itemForecastBLL itemForecast = new itemForecastBLL
+                {
+                    cust_id = custID,
+                    item_code = itemCode,
+                    forecast_year = forecastYear,
+                    forecast_month = forecastMonth,
+                    forecast_qty = float.TryParse(row.Cells[dalItemForecast.ForecastQty].Value?.ToString(), out var ForecastQty) ? ForecastQty : 0,
+                    updated_by = int.TryParse(row.Cells[dalItemForecast.UpdatedBy].Value?.ToString(), out var updatedBy) ? updatedBy : 0,
+                    updated_date = DateTime.TryParse(row.Cells[dalItemForecast.UpdatedDate].Value?.ToString(), out var updatedDate) ? updatedDate : DateTime.Now
+                };
+
+                bool success = dalItemForecast.Insert(itemForecast);
+
+                if (!success)
+                {
+                    //Failed to insert data
+                    MessageBox.Show($"Failed to add new {itemCode} {custID} {forecastYear} {forecastMonth} record");
+                }
+
+            }
+        }
+        private void btnConfirmUpdate_Click(object sender, EventArgs e)
+        {
+            //InsertOrUpdateItemData();
+            //InsertOrUpdateCustData();
+            //InsertOrUpdateCustItemData();
+            InsertItemForeacastData();
+
+            MessageBox.Show("Import operation completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         // Helper method to check if an item exists in the database by item_code
-        private bool ItemExistsInDatabase(string itemCode)
+        private bool ExistsInDatabase(string keyID, string PrimaryColumn)
         {
-            return DT_ITEM_SMY.AsEnumerable()
-                .Any(row => row[dalItem.ItemCode].ToString() == itemCode);
+            return DT_SMY_TABLE.AsEnumerable()
+                .Any(row => row[PrimaryColumn].ToString() == keyID);
         }
 
 

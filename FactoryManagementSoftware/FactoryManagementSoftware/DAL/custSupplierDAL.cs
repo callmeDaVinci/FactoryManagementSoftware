@@ -12,6 +12,8 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
         #region data string name getter
+        public string CustID { get; } = "cust_id";
+        public string CustName { get; } = "cust_name";
         public string SupplierID { get; } = "supplier_id";
         public string SupplierName { get; } = "supplier_name";
         public string AddedDate { get; } = "added_date";
@@ -19,8 +21,12 @@ namespace FactoryManagementSoftware.DAL
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
         public string IsRemoved { get; } = "isRemoved";
+        public string MainCust { get; } = "cust_main";
 
-
+        public string CustAddedDate { get; } = "cust_added_date";
+        public string CustAddedBy { get; } = "cust_added_by";
+        public string CustUpdatedDate { get; } = "cust_updtd_date";
+        public string CustUpdatedBy { get; } = "cust_updtd_by";
 
         #endregion
 
@@ -279,7 +285,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
-        public bool Update(custSupplierBLL u)
+        public bool UpdateCust(custSupplierBLL u)
         {
             bool isSuccess = false;
             SqlConnection conn = new SqlConnection(myconnstrng);

@@ -12,6 +12,7 @@ namespace FactoryManagementSoftware.DAL
         static string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
         public string CustID { get; } = "cust_id";
         public string CustName { get; } = "cust_name";
+        public string ItemCode { get; } = "item_code";
 
 
         #region Select Data from Database
@@ -152,6 +153,56 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
                 cmd.Parameters.AddWithValue("@item_cust_added_date", u.item_cust_added_date);
                 cmd.Parameters.AddWithValue("@item_cust_added_by", u.item_cust_added_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertALL(itemCustBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "INSERT INTO tbl_item_cust (item_code, cust_id, forecast_one, forecast_two, forecast_three, forecast_four, forecast_current_month, item_cust_added_date, item_cust_added_by,forecast_updated_date,forecast_updated_by ) VALUES (@item_code, @cust_id, @forecast_one, @forecast_two, @forecast_three, @forecast_four, @forecast_current_month, @item_cust_added_date, @item_cust_added_by, @forecast_updated_date, @forecast_updated_by)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@cust_id", u.cust_id);
+                cmd.Parameters.AddWithValue("@forecast_one", u.forecast_one);
+                cmd.Parameters.AddWithValue("@forecast_two", u.forecast_two);
+                cmd.Parameters.AddWithValue("@forecast_three", u.forecast_three);
+                cmd.Parameters.AddWithValue("@forecast_four", u.forecast_four);
+                cmd.Parameters.AddWithValue("@forecast_current_month", u.forecast_current_month);
+                cmd.Parameters.AddWithValue("@item_cust_added_date", u.item_cust_added_date);
+                cmd.Parameters.AddWithValue("@item_cust_added_by", u.item_cust_added_by);
+                cmd.Parameters.AddWithValue("@forecast_updated_date", u.forecast_updated_date);
+                cmd.Parameters.AddWithValue("@forecast_updated_by", u.forecast_updated_by);
 
                 conn.Open();
 

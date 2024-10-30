@@ -155,7 +155,7 @@ namespace FactoryManagementSoftware.UI
                         uCust.cust_updtd_by = MainDashboard.USER_ID;
 
                         //Updating data into database
-                        bool success = dalCust.Update(uCust);
+                        bool success = dalCust.UpdateCust(uCust);
 
                         //if data is updated successfully then the value = true else false
                         if (success)

@@ -2957,7 +2957,7 @@ namespace FactoryManagementSoftware.Module
 
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
-            cmb.SelectedIndex = -1;
+            cmb.Text = "ALL";
         }
 
         public void loadRAWMaterialToComboBox(ComboBox cmb)

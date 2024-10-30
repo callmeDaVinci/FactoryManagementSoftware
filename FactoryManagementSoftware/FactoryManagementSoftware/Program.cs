@@ -33,11 +33,11 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmPlanningVer2dot1("R 120 141 375 96-OLD",1));
 
-            Application.Run(new OUGSMYDBMerge());
+            //Application.Run(new OUGSMYDBMerge());
 
             //Application.Run(new MainDashboard(1));
 
-            //Application.Run(new frmLogIn());
+            Application.Run(new frmLogIn());
 
         }
 
