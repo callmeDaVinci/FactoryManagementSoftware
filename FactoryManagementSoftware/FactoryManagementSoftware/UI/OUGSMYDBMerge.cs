@@ -371,6 +371,39 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private void InsertTrfHistData()
+        {
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                // Retrieve item code
+                int custID = int.TryParse(row.Cells[dalItemForecast.CustID].Value?.ToString(), out var id) ? id : -1;
+                int forecastYear = int.TryParse(row.Cells[dalItemForecast.ForecastYear].Value?.ToString(), out forecastYear) ? forecastYear : 0;
+                int forecastMonth = int.TryParse(row.Cells[dalItemForecast.ForecastMonth].Value?.ToString(), out forecastMonth) ? forecastMonth : 0;
+                string itemCode = row.Cells[dalItemForecast.ItemCode].Value?.ToString();
+
+                // Create and populate object
+                itemForecastBLL itemForecast = new itemForecastBLL
+                {
+                    cust_id = custID,
+                    item_code = itemCode,
+                    forecast_year = forecastYear,
+                    forecast_month = forecastMonth,
+                    forecast_qty = float.TryParse(row.Cells[dalItemForecast.ForecastQty].Value?.ToString(), out var ForecastQty) ? ForecastQty : 0,
+                    updated_by = int.TryParse(row.Cells[dalItemForecast.UpdatedBy].Value?.ToString(), out var updatedBy) ? updatedBy : 0,
+                    updated_date = DateTime.TryParse(row.Cells[dalItemForecast.UpdatedDate].Value?.ToString(), out var updatedDate) ? updatedDate : DateTime.Now
+                };
+
+                bool success = dalItemForecast.Insert(itemForecast);
+
+                if (!success)
+                {
+                    //Failed to insert data
+                    MessageBox.Show($"Failed to add new {itemCode} {custID} {forecastYear} {forecastMonth} record");
+                }
+
+            }
+        }
         private void btnConfirmUpdate_Click(object sender, EventArgs e)
         {
             //InsertOrUpdateItemData();

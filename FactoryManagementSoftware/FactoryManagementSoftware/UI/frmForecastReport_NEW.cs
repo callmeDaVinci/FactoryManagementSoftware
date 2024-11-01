@@ -2395,6 +2395,14 @@ namespace FactoryManagementSoftware.UI
             //308ms 
             foreach (DataRow row in DT_ITEM_CUST.Rows)
             {
+
+                string itemSearch = row[dalItem.ItemCode].ToString();
+
+                if(itemSearch == "A0LK160R0")
+                {
+                    var checkpoint = 1;
+                }
+
                 bool gotNotPackagingChild = bool.TryParse(row[text.Header_GotNotPackagingChild].ToString(), out bool GotChild) ? GotChild : false;
 
                 if (!gotNotPackagingChild)
@@ -2559,6 +2567,14 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in DT_ITEM_CUST.Rows)
             {
+
+                string itemSearch = row[dalItem.ItemCode].ToString();
+
+                if (itemSearch == "A0LK160R0")
+                {
+                    var checkpoint = 1;
+                }
+
                 int assembly = row[dalItem.ItemAssemblyCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemAssemblyCheck]);
                 int production = row[dalItem.ItemProductionCheck] == DBNull.Value ? 0 : Convert.ToInt32(row[dalItem.ItemProductionCheck]);
                 bool gotNotPackagingChild = bool.TryParse(row[text.Header_GotNotPackagingChild].ToString(), out bool GotChild) ? GotChild : false;

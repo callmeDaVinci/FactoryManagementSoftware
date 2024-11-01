@@ -61,7 +61,9 @@ namespace FactoryManagementSoftware.UI
         readonly string past2Months = "60";
         readonly string past3Months = "90";
         readonly string past6Months = "180";
+        readonly string past9Months = "270";
         readonly string pastYear = "365";
+        readonly string past2Years = "730";
         readonly string All = "ALL";
 
         DataTable dt_Fac;
@@ -164,7 +166,9 @@ namespace FactoryManagementSoftware.UI
             cmb.Items.Add(past2Months);
             cmb.Items.Add(past3Months);
             cmb.Items.Add(past6Months);
+            cmb.Items.Add(past9Months);
             cmb.Items.Add(pastYear);
+            cmb.Items.Add(past2Years);
             cmb.Items.Add(All);
 
             cmb.SelectedIndex = 2;
