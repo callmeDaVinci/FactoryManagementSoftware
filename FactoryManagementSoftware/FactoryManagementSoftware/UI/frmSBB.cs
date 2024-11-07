@@ -3063,7 +3063,7 @@ namespace FactoryManagementSoftware.UI
 
             }
 
-            var ORingDeliveredInfo = GetOringDeliveredQty();
+            var ORingDeliveredInfo = GetOringDeliveredQty();//1682ms
 
             int ORingDeliveredQty = ORingDeliveredInfo.Item2;
             DataTable dt_OringDelivered = ORingDeliveredInfo.Item1;
@@ -3387,7 +3387,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = NewDeliveredTable();
             int deliveredBag = 0;
 
-            DataTable dt_DOList = dalSBB.DOWithTrfInfoSelect(MonthlyDateStart.ToString("yyyy/MM/dd"), MonthlyDateEnd.ToString("yyyy/MM/dd"));
+            DataTable dt_DOList = dalSBB.DOWithTrfInfoSelect(MonthlyDateStart.ToString("yyyy/MM/dd"), MonthlyDateEnd.ToString("yyyy/MM/dd"));//1680
 
             foreach (DataRow row in dt_DOList.Rows)
             {
@@ -3426,7 +3426,7 @@ namespace FactoryManagementSoftware.UI
         {
             //string myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
-            LoadDeliveredData();
+            LoadDeliveredData();//1794ms
 
             var result = LoadPendingPOQty();
 
@@ -3452,7 +3452,7 @@ namespace FactoryManagementSoftware.UI
                 lblBalancePcs.Text = "";
             }
             //262->226
-            var result2 = LoadPendingDOQty();//729
+            var result2 = LoadPendingDOQty();//729>>3181ms>>84ms(07/11/2024)
             lblPendingDO.Text = result2.Item1.ToString();
             lblPendingDOCust.Text = result2.Item2.ToString();
             lblDOBagQty.Text = result2.Item3.ToString();//574
@@ -3460,8 +3460,7 @@ namespace FactoryManagementSoftware.UI
 
         private void RefreshPage()
         {
-
-            NewInitialDBData();//429ms>>461ms>>366ms
+            NewInitialDBData();//429ms>>461ms>>946ms
          
             LoadPendingSummary();//1289ms>>2005ms
 
@@ -3475,11 +3474,11 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.ShowLoadingScreen();
 
-            NewInitialDBData();//429ms>>461ms>>366ms
+            NewInitialDBData();//429ms>>461ms>>366ms>>3597ms>>752ms(07/11/2024)
 
-            LoadPendingSummary();//1289ms>>2005ms
+            LoadPendingSummary();//1289ms>>2005ms>>5147ms>>1926ms(07/11/2024)
 
-            LoadStockAlert();//376ms>>312ms
+            LoadStockAlert();//376ms>>312ms>>205ms
 
             frmLoading.CloseForm();
         }

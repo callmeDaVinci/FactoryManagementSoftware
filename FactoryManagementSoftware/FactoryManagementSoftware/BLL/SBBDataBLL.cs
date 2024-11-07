@@ -130,6 +130,7 @@ namespace FactoryManagementSoftware.BLL
         public int Location_line { get; set; }
         public DateTime Date_start { get; set; }
         public DateTime Date_end { get; set; }
+        public DateTime Target_Delivery_Date { get; set; }
         public int Target_qty { get; set; }
         public int Max_qty { get; set; }
         public string Plan_status { get; set; }

@@ -28,7 +28,7 @@ namespace FactoryManagementSoftware.UI
 
 
             btnFilter.Text = text_HideFilter;
-            dt_POList = dalSPP.POSelect();
+            dt_POList = dalSPP.POSelect();//6861ms->1667ms->993ms->383ms
             LoadCustomerList();
 
         }
@@ -850,8 +850,8 @@ namespace FactoryManagementSoftware.UI
 
         private void DBDataLoading()
         {
-            DB_DO_INFO = dalSPP.DOWithInfoSelect();
-            DB_PO_WITH_SIZE_TYPE = dalSPP.POSelectWithSizeAndType();
+            DB_DO_INFO = dalSPP.DOWithInfoSelect();//15948ms->810ms
+            DB_PO_WITH_SIZE_TYPE = dalSPP.POSelectWithSizeAndType();//714ms
         }
 
         private bool PO_LIST_LOADING = false;
@@ -4560,7 +4560,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.WaitCursor;
             frmLoading.ShowLoadingScreen();
 
-            DBDataLoading();
+            DBDataLoading();//29208ms->1384ms
 
             ShowOrHideFilter();
 

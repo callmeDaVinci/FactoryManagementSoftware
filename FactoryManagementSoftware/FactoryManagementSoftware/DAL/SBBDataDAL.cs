@@ -122,6 +122,7 @@ namespace FactoryManagementSoftware.DAL
         public string ToDeliveryQty { get; } = "to_delivery_qty";
         public string CustOwnDO { get; } = "cust_own_do";
         public string RemarkInDO { get; } = "remark_in_do";
+        public string TargetDeliveryDate { get; } = "target_delivery_date";
 
         //DO table
         public string DOTableName { get; } = "tbl_spp_do";
@@ -1075,7 +1076,21 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
-                String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code ORDER BY po_date ASC";
+                //String sql = @"SELECT * FROM tbl_spp_po INNER JOIN tbl_spp_customer ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code ORDER BY po_date ASC";
+
+
+                //String sql = @"SELECT * FROM tbl_spp_po 
+                //               INNER JOIN tbl_spp_customer 
+                //               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                //               WHERE tbl_spp_po.po_date >= DATEADD(year, -1, GETDATE())
+                //               ORDER BY tbl_spp_po.po_date ASC";
+
+                String sql = @"SELECT * FROM tbl_spp_po 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               WHERE tbl_spp_po.po_date >= DATEADD(month, -3, GETDATE())
+                               ORDER BY tbl_spp_po.po_date ASC";
+
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -1251,7 +1266,22 @@ namespace FactoryManagementSoftware.DAL
             DataTable dt = new DataTable();
             try
             {
-                //sql query to get data from database
+                ////sql query to get data from database
+                //String sql = @"SELECT * FROM tbl_spp_po 
+                //               INNER JOIN tbl_spp_customer 
+                //               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                //               INNER JOIN tbl_item
+                //               ON tbl_spp_po.item_code = tbl_item.item_code
+                //               LEFT JOIN tbl_spp_size SIZE1
+                //               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                //               LEFT JOIN tbl_spp_size SIZE2
+                //               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                //               INNER JOIN tbl_spp_type
+                //               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                //               LEFT JOIN tbl_spp_stdpacking
+                //               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                //               ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
+
                 String sql = @"SELECT * FROM tbl_spp_po 
                                INNER JOIN tbl_spp_customer 
                                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
@@ -1265,6 +1295,7 @@ namespace FactoryManagementSoftware.DAL
                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                                LEFT JOIN tbl_spp_stdpacking
                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               WHERE tbl_spp_po.po_date >= DATEADD(month, -3, GETDATE())
                                ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
 
                 //INNER JOIN tbl_spp_customer
@@ -1318,6 +1349,33 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
+                //String sql = @"SELECT
+                //               tbl_spp_po.isRemoved,
+                //               tbl_spp_po.po_code,
+                //               tbl_spp_po.po_qty,
+                //               tbl_spp_po.delivered_qty,
+                //               tbl_spp_po.po_no,
+                //               tbl_spp_po.po_date,
+                //               tbl_spp_po.customer_tbl_code,
+                //               tbl_spp_stdpacking.qty_per_bag,
+                //               tbl_spp_stdpacking.qty_per_packet,
+                //               tbl_spp_customer.short_name,
+                //               tbl_spp_customer.full_name
+                //               FROM tbl_spp_po 
+                //               INNER JOIN tbl_spp_customer 
+                //               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                //               INNER JOIN tbl_item
+                //               ON tbl_spp_po.item_code = tbl_item.item_code
+                //               LEFT JOIN tbl_spp_size SIZE1
+                //               ON tbl_item.size_tbl_code_1 = SIZE1.tbl_code
+                //               LEFT JOIN tbl_spp_size SIZE2
+                //               ON tbl_item.size_tbl_code_2 = SIZE2.tbl_code
+                //               INNER JOIN tbl_spp_type
+                //               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                //               LEFT JOIN tbl_spp_stdpacking
+                //               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                //               ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
+
                 String sql = @"SELECT
                                tbl_spp_po.isRemoved,
                                tbl_spp_po.po_code,
@@ -1343,7 +1401,9 @@ namespace FactoryManagementSoftware.DAL
                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                                LEFT JOIN tbl_spp_stdpacking
                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               WHERE tbl_spp_po.po_date >= DATEADD(month, -3, GETDATE())
                                ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
+
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
                 //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
@@ -1671,22 +1731,39 @@ namespace FactoryManagementSoftware.DAL
             try
             {
                 //sql query to get data from database
+                //String sql = @"SELECT * FROM tbl_spp_do 
+                //             INNER JOIN tbl_spp_po
+                //             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                //             INNER JOIN tbl_spp_customer 
+                //             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                //             INNER JOIN tbl_item
+                //             ON tbl_spp_po.item_code = tbl_item.item_code
+                //             LEFT JOIN tbl_spp_size size1
+                //                ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                //             LEFT JOIN tbl_spp_size size2
+                //                ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                //             INNER JOIN tbl_spp_type
+                //             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                //             FULL JOIN tbl_spp_stdpacking
+                //             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                //             ORDER BY tbl_spp_do.do_no ASC";
                 String sql = @"SELECT * FROM tbl_spp_do 
-                             INNER JOIN tbl_spp_po
-                             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
-                             INNER JOIN tbl_spp_customer 
-                             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
-                             INNER JOIN tbl_item
-                             ON tbl_spp_po.item_code = tbl_item.item_code
-                             LEFT JOIN tbl_spp_size size1
-                                ON tbl_item.size_tbl_code_1 = size1.tbl_code
-                             LEFT JOIN tbl_spp_size size2
-                                ON tbl_item.size_tbl_code_2 = size2.tbl_code
-                             INNER JOIN tbl_spp_type
-                             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
-                             FULL JOIN tbl_spp_stdpacking
-                             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
-                             ORDER BY tbl_spp_do.do_no ASC";
+                               INNER JOIN tbl_spp_po
+                               ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                               INNER JOIN tbl_spp_customer 
+                               ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                               INNER JOIN tbl_item
+                               ON tbl_spp_po.item_code = tbl_item.item_code
+                               LEFT JOIN tbl_spp_size size1
+                               ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                               LEFT JOIN tbl_spp_size size2
+                               ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                               INNER JOIN tbl_spp_type
+                               ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                               FULL JOIN tbl_spp_stdpacking
+                               ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                               WHERE tbl_spp_do.do_date >= DATEADD(month, -3, GETDATE())
+                               ORDER BY tbl_spp_do.do_no ASC";
 
 
                 //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
@@ -1882,7 +1959,32 @@ namespace FactoryManagementSoftware.DAL
             DataTable dt = new DataTable();
             try
             {
-                //sql query to get data from database
+                ////sql query to get data from database
+                //String sql = @"SELECT 
+                //             tbl_spp_do.do_no,
+                //             tbl_spp_do.to_delivery_qty,
+                //             tbl_spp_do.isRemoved,
+                //             tbl_spp_do.isDelivered,
+                //             tbl_spp_do.trf_tbl_code,
+                //             tbl_spp_stdpacking.qty_per_bag,
+                //             tbl_spp_po.customer_tbl_code
+                //             FROM tbl_spp_do 
+                //             INNER JOIN tbl_spp_po
+                //             ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+                //             INNER JOIN tbl_spp_customer 
+                //             ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+                //             INNER JOIN tbl_item
+                //             ON tbl_spp_po.item_code = tbl_item.item_code
+                //             LEFT JOIN tbl_spp_size size1
+                //                ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                //             LEFT JOIN tbl_spp_size size2
+                //                ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                //             INNER JOIN tbl_spp_type
+                //             ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+                //             FULL JOIN tbl_spp_stdpacking
+                //             ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+                //             WHERE tbl_spp_do.do_no >= 0
+                //             ORDER BY tbl_spp_do.do_no ASC";
                 String sql = @"SELECT 
                              tbl_spp_do.do_no,
                              tbl_spp_do.to_delivery_qty,
@@ -1899,14 +2001,14 @@ namespace FactoryManagementSoftware.DAL
                              INNER JOIN tbl_item
                              ON tbl_spp_po.item_code = tbl_item.item_code
                              LEFT JOIN tbl_spp_size size1
-                                ON tbl_item.size_tbl_code_1 = size1.tbl_code
+                             ON tbl_item.size_tbl_code_1 = size1.tbl_code
                              LEFT JOIN tbl_spp_size size2
-                                ON tbl_item.size_tbl_code_2 = size2.tbl_code
+                             ON tbl_item.size_tbl_code_2 = size2.tbl_code
                              INNER JOIN tbl_spp_type
                              ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
-                             FULL JOIN tbl_spp_stdpacking
+                             LEFT JOIN tbl_spp_stdpacking
                              ON tbl_item.item_code = tbl_spp_stdpacking.item_code
-                             WHERE tbl_spp_do.do_no >= 0
+                             WHERE tbl_spp_do.do_date >= DATEADD(month, -1, GETDATE())
                              ORDER BY tbl_spp_do.do_no ASC";
 
 
@@ -3566,6 +3668,8 @@ namespace FactoryManagementSoftware.DAL
                             + Phone1 + ","
                             + CustOwnDO + ","
                             + RemarkInDO + ","
+                            + PriorityLevel + ","
+                            + TargetDeliveryDate + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@PO_code," +
@@ -3593,6 +3697,8 @@ namespace FactoryManagementSoftware.DAL
                             "@Phone_1," +
                             "@Cust_Own_DO," +
                             "@remark_in_do," +
+                            "@Priority_level," +
+                            "@Target_Delivery_Date," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -3629,6 +3735,8 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Priority_level", u.Priority_level);
+                cmd.Parameters.AddWithValue("@Target_Delivery_Date", u.Target_Delivery_Date);
 
                 conn.Open();
 
@@ -5372,6 +5480,8 @@ namespace FactoryManagementSoftware.DAL
                             + Phone1 + "=@Phone_1,"
                             + CustOwnDO + "=@Cust_Own_DO,"
                             + RemarkInDO + "=@remark_in_do,"
+                            + PriorityLevel + "=@Priority_level,"
+                            + TargetDeliveryDate + "=@Target_Delivery_Date,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE tbl_code=@Table_Code";
@@ -5406,7 +5516,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Table_Code", u.Table_Code);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
-
+                cmd.Parameters.AddWithValue("@Priority_level", u.Priority_level);
+                cmd.Parameters.AddWithValue("@Target_Delivery_Date", u.Target_Delivery_Date);
 
                 conn.Open();
 

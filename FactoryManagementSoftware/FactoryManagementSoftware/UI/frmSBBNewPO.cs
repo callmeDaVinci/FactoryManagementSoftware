@@ -269,6 +269,14 @@ namespace FactoryManagementSoftware.UI
 
                     txtShowInDO.Text = row[dalData.RemarkInDO].ToString();
 
+                    int priorityLevel = int.TryParse(row[dalData.PriorityLevel].ToString(), out priorityLevel) ? priorityLevel :-1;
+
+                    if(priorityLevel > 0)
+                    {
+                        cbUrgent.Checked = true;
+                        DateTime TargetDeliveryDate = DateTime.TryParse(row[dalData.TargetDeliveryDate].ToString(), out TargetDeliveryDate)? TargetDeliveryDate : DateTime.MinValue;
+                        dtpTargetDeliveryDate.Value = TargetDeliveryDate;
+                    }
 
                     DataRow dt_Row = dt_OrderList.NewRow();
 
@@ -709,8 +717,9 @@ namespace FactoryManagementSoftware.UI
             }
 
             ShowShippingInfo();
-           
-            
+
+            lblTel.Visible = true;
+            txtTel.Visible = true;
             loaded = true;
         }
 
@@ -839,7 +848,7 @@ namespace FactoryManagementSoftware.UI
                         string country = row[dalData.AddressCountry] == null ? string.Empty : row[dalData.AddressCountry].ToString();
                         string postalCode = row[dalData.AddressPostalCode] == null ? string.Empty : row[dalData.AddressPostalCode].ToString();
                         string ShortName = row[dalData.ShortName] == null ? string.Empty : row[dalData.ShortName].ToString();
-
+                        string phone1 = row[dalData.Phone1] == null ? string.Empty : row[dalData.Phone1].ToString();
 
                         txtFullName.Text = fullName;
                         txtShortName.Text = ShortName;
@@ -850,7 +859,7 @@ namespace FactoryManagementSoftware.UI
                         txtState.Text = state;
                         txtCountry.Text = country;
                         txtPostalCode.Text = postalCode;
-
+                        txtTel.Text = phone1;
                         cbOwnDO.Checked =  false;
 
                         //LOAD HABIT P/O NUMBER
@@ -968,8 +977,12 @@ namespace FactoryManagementSoftware.UI
 
             if (cbUseBillingAddress.Checked)
             {
-                lblTel.Visible = false;
-                txtTel.Visible = false;
+                //lblTel.Visible = false;
+                //txtTel.Visible = false;
+
+                lblTel.Visible = true;
+                txtTel.Visible = true;
+
                 ShowDataToField(cmbCustomer.Text);
                 lblShippingList.Visible = false;
 
@@ -1287,6 +1300,18 @@ namespace FactoryManagementSoftware.UI
                 uData.IsRemoved = false;
                 uData.Updated_Date = updatedDate;
                 uData.Updated_By = userID;
+
+
+                if (cbUrgent.Checked)
+                {
+                    uData.Target_Delivery_Date = dtpTargetDeliveryDate.Value;
+                    uData.Priority_level = 1;
+                }
+                else
+                {
+                    uData.Priority_level = -1;
+                    uData.Target_Delivery_Date = DateTime.MaxValue;
+                }
 
                 if (poEditing)
                 {
@@ -2634,6 +2659,12 @@ namespace FactoryManagementSoftware.UI
         private void btnResetDiscountRate_Click(object sender, EventArgs e)
         {
             DiscountRateReset();
+        }
+
+        private void cbUrgent_CheckedChanged(object sender, EventArgs e)
+        {
+            lblTargetDeliveryDate.Visible = cbUrgent.Checked;
+            dtpTargetDeliveryDate.Visible = cbUrgent.Checked;
         }
     }
 }
