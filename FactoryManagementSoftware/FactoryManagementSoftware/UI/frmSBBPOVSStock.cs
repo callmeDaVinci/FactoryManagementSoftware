@@ -9,6 +9,7 @@ using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.Module;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -915,27 +916,29 @@ namespace FactoryManagementSoftware.UI
                                     string POInfo = "";
 
 
+                                    string DateString = PODate.ToShortDateString();
+
                                     if (custOwnDO)
                                     {
                                         if(gotBalanceOrder)
                                         {
-                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                         }
                                         else
                                         {
-                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                         }
                                     }
                                     else if (gotBalanceOrder)
                                     {
-                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                     }
                                     else
                                     {
-                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + DateString + " ";
                                     }
 
                                     dt_Planning.Rows[0][colName] = POInfo;
@@ -1273,6 +1276,9 @@ namespace FactoryManagementSoftware.UI
                     int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
                     int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
                     string poTblCode = row[dalSPP.TableCode].ToString();
+                    int priorityLevel = int.TryParse(row[dalSPP.PriorityLevel].ToString(), out priorityLevel) ? priorityLevel : -1;
+
+                    DateTime TargetDeliveryDate = DateTime.TryParse(row[dalSPP.TargetDeliveryDate].ToString(),out TargetDeliveryDate)? TargetDeliveryDate: DateTime.MaxValue;
 
                     int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
                     bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
@@ -1443,27 +1449,37 @@ namespace FactoryManagementSoftware.UI
                                     string POInfo = "";
 
 
+                                    string DateString = PODate.ToShortDateString();
+
                                     if (custOwnDO)
                                     {
                                         if (gotBalanceOrder)
                                         {
-                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                         }
                                         else
                                         {
-                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                         }
                                     }
                                     else if (gotBalanceOrder)
                                     {
-                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + DateString + " ";
 
                                     }
                                     else
                                     {
-                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + PODate.ToShortDateString() + " ";
+                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + DateString + " ";
+                                    }
+
+
+                                    if(priorityLevel > 0)
+                                    {
+                                        POInfo = "!!! " + POInfo;
+
+                                        POInfo = POInfo.Replace(DateString + " ", "PO:"+DateString + "   Del.:" + TargetDeliveryDate.ToShortDateString() + "");
                                     }
 
                                     dt_Planning.Rows[0][colName] = POInfo;
@@ -1566,6 +1582,22 @@ namespace FactoryManagementSoftware.UI
             Color color_Opened = Color.FromArgb(0, 184, 148);//green
             Color color_OpenedWithDiff = Color.FromArgb(52, 160, 225);//blue
             Color color_ToDeliveryMoreThanOrder = Color.FromArgb(255, 118, 117);//red
+
+            for (int j = 5; j < dgv.ColumnCount; j++)
+            {
+                int colIndex = j;
+
+                string cellValue = dgv.Rows[0].Cells[colIndex].Value.ToString();
+
+                if (cellValue.Contains("!!!"))
+                {
+                    dgv.Rows[0].Cells[j].Style.BackColor = Color.FromArgb(251, 255, 147);
+                    dgv.Rows[1].Cells[j].Style.BackColor = Color.FromArgb(251, 255, 147);
+
+                }
+
+              
+            }
 
             for (int i = 2; i < dgv.RowCount; i++)
             {
