@@ -151,7 +151,7 @@
             this.btnFilterApply.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnFilterApply.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
-            this.btnFilterApply.Location = new System.Drawing.Point(648, 69);
+            this.btnFilterApply.Location = new System.Drawing.Point(616, 54);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 1, 4, 1);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.Size = new System.Drawing.Size(124, 36);

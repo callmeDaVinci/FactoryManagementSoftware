@@ -96,6 +96,7 @@ namespace FactoryManagementSoftware.DAL
         public string AddressCity { get; } = "address_city";
         public string AddressState { get; } = "address_state";
         public string AddressPostalCode { get; } = "address_postal_code";
+        public string DiscountAdjust { get; } = "discount_adjust";
         public string AddressCountry { get; } = "address_country";
         public string Fax { get; } = "fax";
         public string Phone1 { get; } = "phone_1";
@@ -3570,6 +3571,7 @@ namespace FactoryManagementSoftware.DAL
                             + Phone1 + ","
                             + RouteTblCode + ","
                             + ShippingTransporter + ","
+                            + DiscountAdjust + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Customer_tbl_code," +
@@ -3585,6 +3587,7 @@ namespace FactoryManagementSoftware.DAL
                             "@Phone_1," +
                             "@route_tbl_code," +
                             "@Shipping_Transporter," +
+                            "@Discount_Adjust," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -3603,6 +3606,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Phone_1", u.Phone_1);
                 cmd.Parameters.AddWithValue("@route_tbl_code", u.Route_tbl_code);
                 cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
+                cmd.Parameters.AddWithValue("@Discount_Adjust", u.Discount_Adjust);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 
@@ -5294,6 +5298,7 @@ namespace FactoryManagementSoftware.DAL
                             + ShippingTransporter + "=@Shipping_Transporter,"
                             + IsRemoved + "=@IsRemoved,"
                             + CustOwnDO + "=@Cust_Own_DO,"
+                            + DiscountAdjust + "=@Discount_Adjust,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE tbl_code=@Table_Code";
@@ -5315,6 +5320,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Shipping_Transporter", u.Shipping_Transporter);
                 cmd.Parameters.AddWithValue("@Cust_Own_DO", u.Cust_Own_DO);
                 cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@Discount_Adjust", u.Discount_Adjust);
                 cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
 

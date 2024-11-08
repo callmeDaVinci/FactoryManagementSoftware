@@ -360,7 +360,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Phone_1 = txtPhone1.Text.ToUpper();
                         uData.Shipping_Transporter = txtTransporter.Text.ToUpper();
                         uData.Cust_Own_DO = cbCustOwnDO.Checked;
-
+                        uData.Discount_Adjust = decimal.TryParse(txtAdjustDIscount.Text, out decimal a) ? a : 0;
                         uData.Updated_Date = DateTime.Now;
                         uData.Updated_By = MainDashboard.USER_ID;
 
@@ -418,7 +418,7 @@ namespace FactoryManagementSoftware.UI
                         uData.Phone_1 = txtPhone1.Text.ToUpper();
                         uData.Shipping_Transporter = txtTransporter.Text.ToUpper();
                         uData.Cust_Own_DO = cbCustOwnDO.Checked;
-
+                        uData.Discount_Adjust = decimal.TryParse(txtAdjustDIscount.Text, out decimal a) ? a : 0;
                         uData.IsRemoved = false;
                         uData.Updated_Date = DateTime.Now;
                         uData.Updated_By = MainDashboard.USER_ID;
@@ -454,6 +454,12 @@ namespace FactoryManagementSoftware.UI
                 }
                 else if (EditMode == BUTTON_SELECT)
                 {
+
+                    uData.Table_Code = tableID;
+
+
+                    uData.Customer_tbl_code = int.TryParse(CUST_TBL_ID, out int custID) ? custID : 0;
+
                     uData.Shipping_Full_Name = txtShippingFullName.Text.ToUpper();
                     uData.Shipping_Short_Name = txtShortName.Text.ToUpper();
                     uData.Address_1 = txtAddress1.Text.ToUpper();
@@ -466,7 +472,35 @@ namespace FactoryManagementSoftware.UI
                     uData.Phone_1 = txtPhone1.Text.ToUpper();
                     uData.Shipping_Transporter = txtTransporter.Text.ToUpper();
                     uData.Cust_Own_DO = cbCustOwnDO.Checked;
+                    uData.Discount_Adjust = decimal.TryParse(txtAdjustDIscount.Text, out decimal a) ? a : 0;
+                    uData.IsRemoved = false;
+                    uData.Updated_Date = DateTime.Now;
+                    uData.Updated_By = MainDashboard.USER_ID;
 
+                    DataTable dt = (DataTable)cmbRoute.DataSource;
+
+                    int index = cmbRoute.SelectedIndex;
+                    int tableCode = int.TryParse(dt.Rows[index][dalData.TableCode].ToString(), out tableCode) ? tableCode : -1;
+
+                    if (tableCode > 0)
+                    {
+                        uData.Route_tbl_code = tableCode;
+
+                    }
+                    else
+                    {
+                        uData.Route_tbl_code = 0;
+                    }
+
+                    if (dalData.ShippingDataUpdate(uData))
+                    {
+                        //MessageBox.Show("Shipping data Updated!");
+                        //dt_ShippingList = dalData.ShippingDataSelectWithCustCode(CUST_TBL_ID);
+                        //LoadShippingList();
+                        //ClearField();
+                        //tableID = -1;
+                    }
+                    
                     dataSelected = true;
 
                     Close();
@@ -488,7 +522,7 @@ namespace FactoryManagementSoftware.UI
             txtCountry.Text = "MALAYSIA";
             txtPostalCode.Clear();
             txtPhone1.Clear();
-
+            txtAdjustDIscount.Text = "0";
             txtTransporter.Clear();
             cmbRoute.SelectedIndex = -1;
 
@@ -516,6 +550,7 @@ namespace FactoryManagementSoftware.UI
                     string postalCode =  row[dalData.AddressPostalCode] == null ? string.Empty : row[dalData.AddressPostalCode].ToString();
                     string phone1 =  row[dalData.Phone1] == null ? string.Empty : row[dalData.Phone1].ToString();
                     string transporter =  row[dalData.ShippingTransporter] == null ? string.Empty : row[dalData.ShippingTransporter].ToString();
+                    string discountAdjust =  row[dalData.DiscountAdjust] == null ? string.Empty : row[dalData.DiscountAdjust].ToString();
 
                     bool custOwnDO = bool.TryParse(row[dalData.CustOwnDO].ToString(), out custOwnDO) ? custOwnDO : false;
 
@@ -549,6 +584,7 @@ namespace FactoryManagementSoftware.UI
                     txtPostalCode.Text = postalCode;
                     txtPhone1.Text = phone1;
                     txtTransporter.Text = transporter;
+                    txtAdjustDIscount.Text = discountAdjust;
 
                     cbCustOwnDO.Checked = custOwnDO;
 
@@ -938,6 +974,46 @@ namespace FactoryManagementSoftware.UI
             if (btnAdd.Text == BUTTON_SELECT)
                 btnAdd.Text = BUTTON_UPDATE;
         }
+
+        private void tableLayoutPanel3_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void txtAdjustDIscount_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            // Allow only digits, backspace, decimal point, and dash
+            if (!char.IsDigit(e.KeyChar) && e.KeyChar != '.' && e.KeyChar != '-' && e.KeyChar != (char)Keys.Back)
+            {
+                e.Handled = true; // Block any other character
+                return;
+            }
+
+            // Allow '-' only at the beginning (index 0) or if the entire text is selected for replacement
+            if (e.KeyChar == '-')
+            {
+                if ((txtAdjustDIscount.SelectionStart != 0 || txtAdjustDIscount.Text.Contains("-")) &&
+                    txtAdjustDIscount.SelectedText != txtAdjustDIscount.Text) // Allow if entire text is selected
+                {
+                    e.Handled = true; // Block if '-' is not at the start, already exists, and full text is not selected
+                    return;
+                }
+            }
+
+            // Allow only one decimal point, and ensure it's not placed immediately after a '-'
+            if (e.KeyChar == '.')
+            {
+                if (txtAdjustDIscount.Text.Contains(".") || txtAdjustDIscount.SelectionStart == 0 ||
+                    (txtAdjustDIscount.Text.StartsWith("-") && txtAdjustDIscount.SelectionStart == 1))
+                {
+                    e.Handled = true; // Block if '.' already exists or is in an invalid position
+                    return;
+                }
+            }
+        }
+
+
+
     }
 
 }

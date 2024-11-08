@@ -104,6 +104,7 @@ namespace FactoryManagementSoftware.BLL
         public string Shipping_Full_Name { get; set; }
         public string Shipping_Short_Name { get; set; }
         public string Shipping_Transporter { get; set; }
+        public decimal Discount_Adjust { get; set; }
 
         //po table
         public int PO_code { get; set; }

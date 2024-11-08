@@ -325,6 +325,8 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = "LOCATION";
+
+            cmb.Text = "ALL";
         }
 
         public void LoadTypeCMB(ComboBox cmb)
@@ -561,8 +563,10 @@ namespace FactoryManagementSoftware.UI
 
             if (string.IsNullOrEmpty(stockLocation))
             {
-                cmbStockLocation.Text = text.Factory_Semenyih;
-                stockLocation = text.Factory_Semenyih;
+                //cmbStockLocation.Text = text.Factory_Semenyih;
+                //stockLocation = text.Factory_Semenyih; 
+                    cmbStockLocation.Text = "ALL";
+                stockLocation = "ALL";
             }
 
             foreach (DataRow row in dt_Product.Rows)
@@ -1155,8 +1159,11 @@ namespace FactoryManagementSoftware.UI
 
             if(string.IsNullOrEmpty(stockLocation))
             {
-                cmbStockLocation.Text = text.Factory_Semenyih;
-                stockLocation = text.Factory_Semenyih;
+                //cmbStockLocation.Text = text.Factory_Semenyih;
+                //stockLocation = text.Factory_Semenyih;
+
+                cmbStockLocation.Text = "ALL";
+                stockLocation = "ALL";
             }
 
             //Load SBB GOODS FILL ALL ALERT
@@ -3270,7 +3277,7 @@ namespace FactoryManagementSoftware.UI
                     otherbal += otherBalPcsDelivered + " PCS";
                 }
             }
-            if(otherBalPacketDelivered > 0 || otherBalPcsDelivered > 0)
+            if(otherBagDelivered > 0 || otherBalPacketDelivered > 0 || otherBalPcsDelivered > 0)
                 lblTopCust_10.Text = "OTHER";
 
             if(otherBagDelivered - otherORingDelivered < 0)
@@ -4686,6 +4693,9 @@ namespace FactoryManagementSoftware.UI
                 {
                     stockLocation = text.Factory_Semenyih;
                     cmbStockLocation.Text = text.Factory_Semenyih;
+
+                    stockLocation = "ALL";
+                    cmbStockLocation.Text = "ALL";
 
                 }
 

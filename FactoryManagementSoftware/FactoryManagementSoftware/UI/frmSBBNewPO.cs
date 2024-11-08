@@ -15,6 +15,7 @@ using Font = System.Drawing.Font;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using Syncfusion.XlsIO;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -1875,10 +1876,16 @@ namespace FactoryManagementSoftware.UI
 
                                 decimal unitPrice = decimal.TryParse(discountRow[dalData.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
                                 decimal discountRate = decimal.TryParse(discountRow[dalData.DiscountRate].ToString(), out discountRate) ? discountRate : 0;
+                                
+                                
+                                discountRate = discountRate + uData.Discount_Adjust;
+
 
                                 decimal amount = (1 - discountRate / 100) * unitPrice;
 
                                 dt_Row[header_UnitPrice] = unitPrice;
+
+
 
                                 dt_Row[header_Discount] = discountRate;
 
@@ -1908,6 +1915,85 @@ namespace FactoryManagementSoftware.UI
                 dgvPOItemList.Rows[dgvPOItemList.Rows.Count - 1].Selected = true;
             }
             
+        }
+
+        private void DiscountRateAdjust(int rowIndex)
+        {
+            if (customerTblCode != "" && rowIndex >= 0)
+            {
+                DataTable dt_Item = (DataTable)dgvPOItemList.DataSource;
+
+                int orderQty = int.TryParse(dt_Item.Rows[rowIndex][header_OrderQty].ToString(), out int i) ? i : 0;
+                decimal discountRate = decimal.TryParse(dt_Item.Rows[rowIndex][header_Discount].ToString(), out decimal j) ? j : 0;
+                decimal unitPrice = decimal.TryParse(dt_Item.Rows[rowIndex][header_UnitPrice].ToString(), out j) ? j : 0;
+
+                decimal amount = (1 - discountRate / 100) * unitPrice;
+
+                dt_Item.Rows[rowIndex][header_UnitPrice] = unitPrice;
+
+
+                dt_Item.Rows[rowIndex][header_Total] = decimal.Round(amount * orderQty, 2, MidpointRounding.AwayFromZero);
+
+                UpdateTotalPrice();
+
+            }
+
+        }
+
+        private void RefreshDiscountRate()
+        {
+            if (customerTblCode != "")
+            {
+                DataTable dt_Item = (DataTable)dgvPOItemList.DataSource;
+                DataTable dt_Discount = dalData.DiscountSelect();
+
+                if (dt_Discount != null && dt_Discount.Rows.Count > 0 && dt_Item != null && dt_Item.Rows.Count > 0)
+                {
+                    foreach (DataRow row in dt_Item.Rows)
+                    {
+                        string itemCode = row[header_Code].ToString();
+
+                        bool isBigSprayJet = itemCode.Contains("SJ360B");
+                        bool isSmallSprayJet = itemCode.Contains("SJ360S");
+                        decimal discountRate = 0;
+
+                        foreach (DataRow discountRow in dt_Discount.Rows)
+                        {
+                            bool dataMatched = discountRow[dalData.CustTblCode].ToString() == customerTblCode;
+                            dataMatched &= discountRow[dalData.ItemTblCode].ToString() == itemCode;
+
+
+                            if (dataMatched)
+                            {
+                                discountRate = decimal.TryParse(discountRow[dalData.DiscountRate].ToString(), out discountRate) ? discountRate : 0;
+
+                                discountRate = discountRate + uData.Discount_Adjust;
+
+                                break;
+                            }
+                        }
+
+                        int orderQty = int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
+                        decimal unitPrice = decimal.TryParse(row[header_UnitPrice].ToString(), out decimal j) ? j : 0;
+
+                        if (discountRate > 0)
+                        {
+                            decimal amount = (1 - discountRate / 100) * unitPrice;
+
+                            row[header_UnitPrice] = unitPrice;
+
+                            row[header_Discount] = discountRate;
+
+                            row[header_Total] = decimal.Round(amount * orderQty, 2, MidpointRounding.AwayFromZero);
+                        }
+
+                    }
+                }
+
+                UpdateTotalPrice();
+
+            }
+
         }
 
         private void DiscountRatePlusOne()
@@ -2248,6 +2334,8 @@ namespace FactoryManagementSoftware.UI
                         int orderQty = int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
                         decimal discountRate = decimal.TryParse(row[header_Discount].ToString(), out discountRate) ? discountRate :  80;
 
+                        discountRate = discountRate + uData.Discount_Adjust;
+
                         row[header_UnitPrice] = unitPrice;
 
                         decimal amount = (1 - discountRate / 100) * unitPrice;
@@ -2301,6 +2389,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         int orderQty = int.TryParse(row[header_OrderQty].ToString(), out int i) ? i : 0;
                         decimal discountRate = decimal.TryParse(row[header_Discount].ToString(), out discountRate) ? discountRate : 80;
+                        discountRate = discountRate + uData.Discount_Adjust;
 
                         row[header_UnitPrice] = unitPrice;
 
@@ -2628,6 +2717,7 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private decimal OLD_DISCOUNT_ADJUST_NUMBER = 0;
         private void lblShippingList_Click(object sender, EventArgs e)
         {
             uData.Customer_tbl_code = int.TryParse(customerTblCode, out int i) ? i : 0;
@@ -2644,6 +2734,26 @@ namespace FactoryManagementSoftware.UI
             //add data to field
             LoadShippingDataToField();
 
+
+            if (dgvPOItemList?.Rows.Count > 0 && OLD_DISCOUNT_ADJUST_NUMBER != uData.Discount_Adjust)
+            {
+                // Prompt user with a message box to confirm updating the discount rate
+                var result = MessageBox.Show(
+                    "The discount rate has changed. Do you want to refresh the item list table with the new discount rate?",
+                    "Discount Rate Update",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                // If user selects "Yes," proceed with refreshing the discount rate
+                if (result == DialogResult.Yes)
+                {
+                    RefreshDiscountRate();
+                }
+            }
+
+
+            OLD_DISCOUNT_ADJUST_NUMBER = uData.Discount_Adjust;
         }
 
         private void btnAddDiscountRate_Click(object sender, EventArgs e)
@@ -2665,6 +2775,74 @@ namespace FactoryManagementSoftware.UI
         {
             lblTargetDeliveryDate.Visible = cbUrgent.Checked;
             dtpTargetDeliveryDate.Visible = cbUrgent.Checked;
+        }
+
+        private void cbDiscountRateAdjust_CheckedChanged(object sender, EventArgs e)
+        {
+            if(cbDiscountRateAdjust.Checked)
+            {
+                frmVerification frm = new frmVerification(text.PW_Level_4)
+                {
+                    StartPosition = FormStartPosition.CenterScreen
+                };
+
+
+                frm.ShowDialog();
+
+                if(!frmVerification.PASSWORD_MATCHED)
+                {
+                    cbDiscountRateAdjust.Checked= false;
+
+                 
+
+                }
+                else
+                {
+                    // Discount rate edit mode
+                    DataGridView dgv = dgvPOItemList;
+
+                    // Cell selection
+                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                    dgv.Enabled = true;
+                    dgv.ReadOnly = false;
+
+                    // Change the background color of the "Discount" column cells to yellow
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        row.Cells[header_Discount].Style.BackColor = Color.Yellow;
+                    }
+
+                }
+            }
+            else
+            {
+                // Discount rate edit mode
+                DataGridView dgv = dgvPOItemList;
+
+                // Cell selection
+                dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                dgv.Enabled = false;
+                dgv.ReadOnly = true;
+
+                // Change the background color of the "Discount" column cells to yellow
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    row.Cells[header_Discount].Style.BackColor = Color.White;
+                }
+            }
+        }
+
+        private void dgvPOItemList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowIndex = e.RowIndex;
+            int colIndex = e.ColumnIndex;
+
+            DataGridView dgv = dgvPOItemList;
+
+            if (dgv.Columns[colIndex].Name == header_Discount && rowIndex >= 0)
+            {
+                DiscountRateAdjust(rowIndex);
+            }
         }
     }
 }

@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tlpPOList = new System.Windows.Forms.TableLayoutPanel();
             this.btnRemove = new System.Windows.Forms.Button();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
@@ -56,6 +56,7 @@
             this.label11 = new System.Windows.Forms.Label();
             this.cbUrgent = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel27 = new System.Windows.Forms.TableLayoutPanel();
+            this.btnGoToAddItem = new System.Windows.Forms.Button();
             this.dtpTargetDeliveryDate = new System.Windows.Forms.DateTimePicker();
             this.lblTargetDeliveryDate = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
@@ -156,7 +157,7 @@
             this.errorProvider11 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider12 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel28 = new System.Windows.Forms.TableLayoutPanel();
-            this.btnGoToAddItem = new System.Windows.Forms.Button();
+            this.cbDiscountRateAdjust = new System.Windows.Forms.CheckBox();
             this.tlpPOList.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpdsd.SuspendLayout();
@@ -326,21 +327,23 @@
             // 
             // tableLayoutPanel24
             // 
-            this.tableLayoutPanel24.ColumnCount = 8;
+            this.tableLayoutPanel24.ColumnCount = 9;
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 71F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 49F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 73F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 43F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel24.Controls.Add(this.cbDiscountRateAdjust, 5, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnResetDiscountRate, 2, 0);
             this.tableLayoutPanel24.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnMinusDiscountRate, 3, 0);
-            this.tableLayoutPanel24.Controls.Add(this.btnTotalPrice, 6, 0);
-            this.tableLayoutPanel24.Controls.Add(this.lblTotalPrice, 5, 0);
-            this.tableLayoutPanel24.Controls.Add(this.cbTotalPrice, 7, 0);
+            this.tableLayoutPanel24.Controls.Add(this.btnTotalPrice, 7, 0);
+            this.tableLayoutPanel24.Controls.Add(this.lblTotalPrice, 6, 0);
+            this.tableLayoutPanel24.Controls.Add(this.cbTotalPrice, 8, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnAddDiscountRate, 1, 0);
             this.tableLayoutPanel24.Controls.Add(this.cbZeroPointOne, 4, 0);
             this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -476,24 +479,24 @@
             this.dgvPOItemList.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPOItemList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.RaisedHorizontal;
             this.dgvPOItemList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvPOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPOItemList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvPOItemList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvPOItemList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvPOItemList.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPOItemList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvPOItemList.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvPOItemList.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvPOItemList.Location = new System.Drawing.Point(3, 1);
@@ -508,6 +511,7 @@
             this.dgvPOItemList.TabIndex = 155;
             this.dgvPOItemList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOItemList_CellClick);
             this.dgvPOItemList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOItemList_CellDoubleClick);
+            this.dgvPOItemList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvPOItemList_CellEndEdit);
             this.dgvPOItemList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvPOItemList_CellFormatting);
             // 
             // tlpDataInput
@@ -629,6 +633,22 @@
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel27.Size = new System.Drawing.Size(233, 299);
             this.tableLayoutPanel27.TabIndex = 209;
+            // 
+            // btnGoToAddItem
+            // 
+            this.btnGoToAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnGoToAddItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
+            this.btnGoToAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnGoToAddItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnGoToAddItem.ForeColor = System.Drawing.Color.Black;
+            this.btnGoToAddItem.Location = new System.Drawing.Point(119, 262);
+            this.btnGoToAddItem.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
+            this.btnGoToAddItem.Name = "btnGoToAddItem";
+            this.btnGoToAddItem.Size = new System.Drawing.Size(110, 32);
+            this.btnGoToAddItem.TabIndex = 223;
+            this.btnGoToAddItem.Text = "ADD ITEM ->";
+            this.btnGoToAddItem.UseVisualStyleBackColor = false;
+            this.btnGoToAddItem.Click += new System.EventHandler(this.btnGoToAddItem_Click);
             // 
             // dtpTargetDeliveryDate
             // 
@@ -1757,7 +1777,7 @@
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.ColumnCount = 4;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 112F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 145F));
@@ -1777,10 +1797,10 @@
             this.lblOrderList.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblOrderList.AutoSize = true;
             this.lblOrderList.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblOrderList.Location = new System.Drawing.Point(2, 0);
+            this.lblOrderList.Location = new System.Drawing.Point(2, 16);
             this.lblOrderList.Margin = new System.Windows.Forms.Padding(2, 0, 2, 5);
             this.lblOrderList.Name = "lblOrderList";
-            this.lblOrderList.Size = new System.Drawing.Size(54, 33);
+            this.lblOrderList.Size = new System.Drawing.Size(77, 17);
             this.lblOrderList.TabIndex = 166;
             this.lblOrderList.Text = "ORDER LIST";
             // 
@@ -1881,21 +1901,16 @@
             this.tableLayoutPanel28.Size = new System.Drawing.Size(3844, 953);
             this.tableLayoutPanel28.TabIndex = 173;
             // 
-            // btnGoToAddItem
+            // cbDiscountRateAdjust
             // 
-            this.btnGoToAddItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnGoToAddItem.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(253)))), ((int)(((byte)(203)))), ((int)(((byte)(110)))));
-            this.btnGoToAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnGoToAddItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGoToAddItem.ForeColor = System.Drawing.Color.Black;
-            this.btnGoToAddItem.Location = new System.Drawing.Point(119, 262);
-            this.btnGoToAddItem.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
-            this.btnGoToAddItem.Name = "btnGoToAddItem";
-            this.btnGoToAddItem.Size = new System.Drawing.Size(110, 32);
-            this.btnGoToAddItem.TabIndex = 223;
-            this.btnGoToAddItem.Text = "ADD ITEM ->";
-            this.btnGoToAddItem.UseVisualStyleBackColor = false;
-            this.btnGoToAddItem.Click += new System.EventHandler(this.btnGoToAddItem_Click);
+            this.cbDiscountRateAdjust.AutoSize = true;
+            this.cbDiscountRateAdjust.Location = new System.Drawing.Point(294, 3);
+            this.cbDiscountRateAdjust.Name = "cbDiscountRateAdjust";
+            this.cbDiscountRateAdjust.Size = new System.Drawing.Size(154, 27);
+            this.cbDiscountRateAdjust.TabIndex = 225;
+            this.cbDiscountRateAdjust.Text = "Adjust Manually";
+            this.cbDiscountRateAdjust.UseVisualStyleBackColor = true;
+            this.cbDiscountRateAdjust.CheckedChanged += new System.EventHandler(this.cbDiscountRateAdjust_CheckedChanged);
             // 
             // frmSBBNewPO
             // 
@@ -2108,5 +2123,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel27;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel28;
         private System.Windows.Forms.Button btnGoToAddItem;
+        private System.Windows.Forms.CheckBox cbDiscountRateAdjust;
     }
 }

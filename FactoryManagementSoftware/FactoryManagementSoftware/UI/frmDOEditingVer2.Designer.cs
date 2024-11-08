@@ -2947,7 +2947,7 @@ namespace FactoryManagementSoftware.UI
             this.txtCompanyTo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(255)))), ((int)(((byte)(192)))));
             this.txtCompanyTo.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtCompanyTo.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.txtCompanyTo.Location = new System.Drawing.Point(21, 86);
+            this.txtCompanyTo.Location = new System.Drawing.Point(21, 88);
             this.txtCompanyTo.Name = "txtCompanyTo";
             this.txtCompanyTo.Size = new System.Drawing.Size(404, 23);
             this.txtCompanyTo.TabIndex = 189;
