@@ -4545,7 +4545,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmSPPPOList_FormClosed(object sender, FormClosedEventArgs e)
         {
-            frmSBB.Reload();
+            frmSBB.Reload(1);
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)

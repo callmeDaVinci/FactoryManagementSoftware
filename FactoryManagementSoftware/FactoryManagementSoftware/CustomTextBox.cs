@@ -122,7 +122,7 @@ namespace FactoryManagementSoftware
             }
         }
 
-        private void UpdateListBox()
+        private void OLDUpdateListBox()
         {
             if (Text == _formerValue)
                 return;
@@ -182,6 +182,67 @@ namespace FactoryManagementSoftware
             }
         }
 
+
+        private void UpdateListBox()
+        {
+            if (Text == _formerValue)
+                return;
+
+            _formerValue = this.Text;
+            string word = this.Text;
+
+            if (_values != null && word.Length > 0)
+            {
+                var searchTerms = word.ToLower().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                string[] matches = Array.FindAll(_values, x =>
+                {
+                    if (x == null) return false;
+                    var text = x.ToLower();
+
+                    // Ensure all search terms are present in the text
+                    return searchTerms.All(term => text.Contains(term));
+                });
+
+                if (matches.Length > 0)
+                {
+                    ShowListBox();
+                    _listBox.BeginUpdate();
+                    _listBox.Items.Clear();
+                    Array.ForEach(matches, x => _listBox.Items.Add(x));
+                    _listBox.SelectedIndex = 0;
+
+                    // Set minimum and maximum height for the ListBox
+                    const int minVisibleItems = 3; // minimum number of items to show, even if fewer matches
+                    const int maxVisibleItems = 10;
+                    int visibleItemsCount = Math.Min(Math.Max(_listBox.Items.Count, minVisibleItems), maxVisibleItems);
+                    int itemHeight = _listBox.ItemHeight;
+                    _listBox.Height = visibleItemsCount * itemHeight;
+
+                    // Calculate the width dynamically based on item content
+                    int maxWidth = 0;
+                    using (Graphics graphics = _listBox.CreateGraphics())
+                    {
+                        foreach (var item in _listBox.Items)
+                        {
+                            int itemWidth = (int)graphics.MeasureString(item.ToString() + "_", _listBox.Font).Width;
+                            maxWidth = Math.Max(maxWidth, itemWidth);
+                        }
+                        _listBox.Width = Math.Max(this.Width, maxWidth);
+                    }
+
+                    _listBox.EndUpdate();
+                }
+                else
+                {
+                    ResetListBox();
+                }
+            }
+            else
+            {
+                ResetListBox();
+            }
+        }
 
 
 

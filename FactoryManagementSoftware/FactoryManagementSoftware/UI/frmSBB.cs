@@ -573,7 +573,7 @@ namespace FactoryManagementSoftware.UI
             {
                 string itemCode = row[header_ItemCode].ToString();
 
-                if(itemCode == "(OK) CFEE 90")
+                if(itemCode == "CF20G")
                 {
                     var checkpoint = 1;
                 }
@@ -599,6 +599,13 @@ namespace FactoryManagementSoftware.UI
                         string childCat = rowJoin[dalJoin.ChildCat].ToString();
                         string childCode = rowJoin[dalJoin.ChildCode].ToString();
                         string childName = rowJoin[dalJoin.ChildName].ToString();
+
+
+                        if (childCode == "CF20G")
+                        {
+                            var checkpoint = 1;
+                        }
+
 
                         if (!string.IsNullOrEmpty(childCode))
                         {
@@ -626,9 +633,12 @@ namespace FactoryManagementSoftware.UI
                             {
                                 PWRWPerPcs = 0;
                             }
+                            
+                            
 
-                            int readyStock = int.TryParse(rowJoin[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+                            //int readyStock = int.TryParse(rowJoin[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
 
+                            int readyStock = double.TryParse(rowJoin[dalItem.ItemStock].ToString(), out double tempStock) ? (int)tempStock : 0;
 
                             if (stockLocation != "ALL")
                             {
@@ -3490,6 +3500,51 @@ namespace FactoryManagementSoftware.UI
             frmLoading.CloseForm();
         }
 
+        private void RefreshPage(int mode)
+        {
+            //1: from PO List
+
+            frmLoading.ShowLoadingScreen();
+
+            NewInitialDBData();//429ms>>461ms>>366ms>>3597ms>>752ms(07/11/2024)
+
+            if(mode == 1)
+            {
+                var result = LoadPendingPOQty();
+
+                lblPendingPO.Text = result.Item1.ToString();
+                lblPendingPOCust.Text = result.Item2.ToString();
+                lblPOBagQty.Text = result.Item3.ToString();
+
+                if (result.Item4 > 0)
+                {
+                    lblBalancePkt.Text = " + " + result.Item4.ToString() + " PKT(s)";
+                }
+                else
+                {
+                    lblBalancePkt.Text = "";
+                }
+
+                if (result.Item5 > 0)
+                {
+                    lblBalancePcs.Text = " + " + result.Item5.ToString() + " PC(s)";
+                }
+                else
+                {
+                    lblBalancePcs.Text = "";
+                }
+            }
+            else
+            {
+                LoadPendingSummary();//1289ms>>2005ms>>5147ms>>1926ms(07/11/2024)
+            }
+           
+
+            LoadStockAlert();//376ms>>312ms>>205ms
+
+            frmLoading.CloseForm();
+        }
+
         private DataTable LoadUsageItemList()
         {
             //DataTable dt_Item = dalItem.Select();
@@ -3768,6 +3823,12 @@ namespace FactoryManagementSoftware.UI
         public static void Reload()
         {
             _instance.RefreshPage(true);
+        }
+
+        public static void Reload(int mode)
+        {
+            //1: from PO List
+            _instance.RefreshPage(1);
         }
 
         private void OpenDOList(object sender, EventArgs e)

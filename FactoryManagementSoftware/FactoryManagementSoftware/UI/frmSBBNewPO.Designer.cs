@@ -39,6 +39,7 @@
             this.tlpdsd = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel23 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbDiscountRateAdjust = new System.Windows.Forms.CheckBox();
             this.btnResetDiscountRate = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.btnMinusDiscountRate = new System.Windows.Forms.Button();
@@ -157,7 +158,6 @@
             this.errorProvider11 = new System.Windows.Forms.ErrorProvider(this.components);
             this.errorProvider12 = new System.Windows.Forms.ErrorProvider(this.components);
             this.tableLayoutPanel28 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbDiscountRateAdjust = new System.Windows.Forms.CheckBox();
             this.tlpPOList.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tlpdsd.SuspendLayout();
@@ -353,6 +353,17 @@
             this.tableLayoutPanel24.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel24.Size = new System.Drawing.Size(2267, 49);
             this.tableLayoutPanel24.TabIndex = 175;
+            // 
+            // cbDiscountRateAdjust
+            // 
+            this.cbDiscountRateAdjust.AutoSize = true;
+            this.cbDiscountRateAdjust.Location = new System.Drawing.Point(294, 3);
+            this.cbDiscountRateAdjust.Name = "cbDiscountRateAdjust";
+            this.cbDiscountRateAdjust.Size = new System.Drawing.Size(154, 27);
+            this.cbDiscountRateAdjust.TabIndex = 225;
+            this.cbDiscountRateAdjust.Text = "Adjust Manually";
+            this.cbDiscountRateAdjust.UseVisualStyleBackColor = true;
+            this.cbDiscountRateAdjust.CheckedChanged += new System.EventHandler(this.cbDiscountRateAdjust_CheckedChanged);
             // 
             // btnResetDiscountRate
             // 
@@ -1900,17 +1911,6 @@
             this.tableLayoutPanel28.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel28.Size = new System.Drawing.Size(3844, 953);
             this.tableLayoutPanel28.TabIndex = 173;
-            // 
-            // cbDiscountRateAdjust
-            // 
-            this.cbDiscountRateAdjust.AutoSize = true;
-            this.cbDiscountRateAdjust.Location = new System.Drawing.Point(294, 3);
-            this.cbDiscountRateAdjust.Name = "cbDiscountRateAdjust";
-            this.cbDiscountRateAdjust.Size = new System.Drawing.Size(154, 27);
-            this.cbDiscountRateAdjust.TabIndex = 225;
-            this.cbDiscountRateAdjust.Text = "Adjust Manually";
-            this.cbDiscountRateAdjust.UseVisualStyleBackColor = true;
-            this.cbDiscountRateAdjust.CheckedChanged += new System.EventHandler(this.cbDiscountRateAdjust_CheckedChanged);
             // 
             // frmSBBNewPO
             // 

@@ -987,6 +987,28 @@ namespace FactoryManagementSoftware.UI
                 ShowDataToField(cmbCustomer.Text);
                 lblShippingList.Visible = false;
 
+                uData.Discount_Adjust = 0;
+
+                if (dgvPOItemList?.Rows.Count > 0 && OLD_DISCOUNT_ADJUST_NUMBER != uData.Discount_Adjust)
+                {
+                    // Prompt user with a message box to confirm updating the discount rate
+                    var result = MessageBox.Show(
+                        "The discount rate has changed. Do you want to refresh the item list table with the new discount rate?",
+                        "Discount Rate Update",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    // If user selects "Yes," proceed with refreshing the discount rate
+                    if (result == DialogResult.Yes)
+                    {
+                        RefreshDiscountRate();
+                    }
+                }
+
+
+                OLD_DISCOUNT_ADJUST_NUMBER = uData.Discount_Adjust;
+
             }
             else
             {

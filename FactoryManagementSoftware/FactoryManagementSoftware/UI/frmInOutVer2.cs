@@ -2061,18 +2061,18 @@ namespace FactoryManagementSoftware.UI
             else
             {
 
-                //frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
-                ////frm2.StartPosition = FormStartPosition.CenterScreen;
-                ////frm2.Show();
+                frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
+                //frm2.StartPosition = FormStartPosition.CenterScreen;
+                //frm2.Show();
 
-                //// Check if frm2 exists and is not disposed
-                //if (frm2 != null && !frm2.IsDisposed)
-                //{
-                //    // The form exists and is not disposed, so just show it
-                //    frm2.StartPosition = FormStartPosition.CenterScreen;
-                //    frm2.Show();
-                //}
-               
+                // Check if frm2 exists and is not disposed
+                if (frm2 != null && !frm2.IsDisposed)
+                {
+                    // The form exists and is not disposed, so just show it
+                    frm2.StartPosition = FormStartPosition.CenterScreen;
+                    frm2.Show();
+                }
+
             }
         }
 

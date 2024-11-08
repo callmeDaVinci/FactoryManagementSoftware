@@ -258,11 +258,11 @@
             // 
             this.txtPartName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtPartName.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.txtPartName.Font = new System.Drawing.Font("Segoe UI", 8.5F);
             this.txtPartName.Location = new System.Drawing.Point(14, 93);
             this.txtPartName.Name = "txtPartName";
             this.txtPartName.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.txtPartName.Size = new System.Drawing.Size(356, 30);
+            this.txtPartName.Size = new System.Drawing.Size(356, 26);
             this.txtPartName.TabIndex = 107;
             this.txtPartName.Values = null;
             this.txtPartName.TextChanged += new System.EventHandler(this.ctbPartName_TextChanged);
@@ -272,7 +272,7 @@
             // 
             this.lblPartCode.AutoSize = true;
             this.lblPartCode.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.lblPartCode.Location = new System.Drawing.Point(14, 310);
+            this.lblPartCode.Location = new System.Drawing.Point(14, 149);
             this.lblPartCode.Name = "lblPartCode";
             this.lblPartCode.Size = new System.Drawing.Size(38, 15);
             this.lblPartCode.TabIndex = 2;
@@ -297,7 +297,7 @@
             this.cmbPartCode.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.cmbPartCode.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cmbPartCode.FormattingEnabled = true;
-            this.cmbPartCode.Location = new System.Drawing.Point(14, 328);
+            this.cmbPartCode.Location = new System.Drawing.Point(14, 167);
             this.cmbPartCode.Name = "cmbPartCode";
             this.cmbPartCode.Size = new System.Drawing.Size(356, 23);
             this.cmbPartCode.TabIndex = 2;
