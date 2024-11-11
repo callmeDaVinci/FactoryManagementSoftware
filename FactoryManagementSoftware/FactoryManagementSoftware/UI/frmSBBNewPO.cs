@@ -144,6 +144,7 @@ namespace FactoryManagementSoftware.UI
         private readonly string header_UnitPrice = "UNIT PRICE(RM)";
         private readonly string header_Discount = "DISC.";
         private readonly string header_Total = "SUB TOTAL(RM)";
+        private readonly string header_TargetDeliveryDate = "Target Delivery Date";
 
 
         private readonly string header_Type = "TYPE";
@@ -179,6 +180,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = new DataTable();
 
             dt.Columns.Add(header_Index, typeof(int));
+            dt.Columns.Add(header_TargetDeliveryDate, typeof(DateTime));
             dt.Columns.Add(header_TblCode, typeof(string));
             dt.Columns.Add(header_DataMode, typeof(string));
 
@@ -231,7 +233,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
             dgv.Columns[header_Code].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
-            dgv.Columns[header_SizeString].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            dgv.Columns[header_SizeString].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
         }
 
@@ -242,6 +244,7 @@ namespace FactoryManagementSoftware.UI
             DataTable dt = dalData.POSelectWithSizeAndType();
 
             loadLocationData(dt_CustomerList, cmbCustomer, dalData.FullName);
+            bool haveTargetDeliveryDateItem = false;
 
             foreach (DataRow row in dt.Rows)
             {
@@ -274,7 +277,7 @@ namespace FactoryManagementSoftware.UI
 
                     if(priorityLevel > 0)
                     {
-                        cbUrgent.Checked = true;
+                        cbTargetDeliveryDate.Checked = true;
                         DateTime TargetDeliveryDate = DateTime.TryParse(row[dalData.TargetDeliveryDate].ToString(), out TargetDeliveryDate)? TargetDeliveryDate : DateTime.MinValue;
                         dtpTargetDeliveryDate.Value = TargetDeliveryDate;
                     }
@@ -288,6 +291,14 @@ namespace FactoryManagementSoftware.UI
                     int numerator_2 = int.TryParse(row[dalData.SizeNumerator + "1"].ToString(), out numerator_2) ? numerator_2 : 0;
                     int denominator_2 = int.TryParse(row[dalData.SizeDenominator + "1"].ToString(), out denominator_2) ? denominator_2 : 1;
 
+                    int itempriorityLevel = int.TryParse(row[dalData.ItemPriorityLevel].ToString(), out itempriorityLevel) ? itempriorityLevel : -1;
+
+                    DateTime ItemTargetDeliveryDate = DateTime.MaxValue;
+
+                    if (itempriorityLevel > 0)
+                    {
+                        ItemTargetDeliveryDate = DateTime.TryParse(row[dalData.ItemTargetDeliveryDate].ToString(), out ItemTargetDeliveryDate) ? ItemTargetDeliveryDate : DateTime.MaxValue;
+                    }
 
                     string sizeString_1 = "";
                     string sizeString_2 = "";
@@ -347,6 +358,12 @@ namespace FactoryManagementSoftware.UI
 
                     }
 
+                    if(ItemTargetDeliveryDate != DateTime.MaxValue)
+                    {
+                        haveTargetDeliveryDateItem = true;
+                        dt_Row[header_TargetDeliveryDate] = ItemTargetDeliveryDate;
+                    }
+
                     dt_Row[header_TblCode] = row[dalData.TableCode];
                     dt_Row[header_DataMode] = text_ToUpdate;
                     dt_Row[header_SizeString] = sizeString;
@@ -379,6 +396,8 @@ namespace FactoryManagementSoftware.UI
             }
 
             DgvUIEdit(dgvPOItemList);
+            dgvPOItemList.Columns[header_TargetDeliveryDate].Visible = haveTargetDeliveryDateItem;
+
             dgvPOItemList.ClearSelection();
         }
 
@@ -1325,7 +1344,7 @@ namespace FactoryManagementSoftware.UI
                 uData.Updated_By = userID;
 
 
-                if (cbUrgent.Checked)
+                if (cbTargetDeliveryDate.Checked)
                 {
                     uData.Target_Delivery_Date = dtpTargetDeliveryDate.Value;
                     uData.Priority_level = 1;
@@ -1336,6 +1355,7 @@ namespace FactoryManagementSoftware.UI
                     uData.Target_Delivery_Date = DateTime.MaxValue;
                 }
 
+               
                 if (poEditing)
                 {
                     uData.PO_code = Convert.ToInt32(EditingPOCode);
@@ -1391,6 +1411,20 @@ namespace FactoryManagementSoftware.UI
                             uData.Unit_price = unitPrice;
                             uData.Discount_rate = discountRate;
                             uData.Sub_total = subTotal;
+                            uData.Item_Priority_level = -1;
+                            uData.Item_Target_Delivery_Date = DateTime.MaxValue;
+
+                            if (dt_OrderList.Columns.Contains(header_TargetDeliveryDate))
+                            {
+                                DateTime targetDeliveryDate = DateTime.TryParse(row[header_TargetDeliveryDate].ToString(), out targetDeliveryDate) ? targetDeliveryDate : DateTime.MaxValue;
+                           
+                                if(targetDeliveryDate != DateTime.MaxValue)
+                                {
+                                    uData.Item_Priority_level = 1;
+                                    uData.Item_Target_Delivery_Date = targetDeliveryDate.Date;
+                                }
+                            }
+                           
 
                             if (dataMode == text_New)
                             {
@@ -1857,6 +1891,19 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
+                DateTime ItemTargetDeliveryDate = DateTime.MaxValue;
+
+                if(cbTargetDeliveryDateItem.Checked)
+                {
+                    ItemTargetDeliveryDate = dtpTargetDeliveryDateItem.Value.Date;
+                    dt_Row[header_TargetDeliveryDate] = ItemTargetDeliveryDate;
+
+                }
+                else if(dt_OrderList.Columns.Contains(header_TargetDeliveryDate))
+                {
+                    dt_Row[header_TargetDeliveryDate] = DBNull.Value;
+                }
+
                 dt_Row[header_SizeString] = sizeString;
 
                 dt_Row[header_Size_1] = cmbSize_1.Text;
@@ -1926,6 +1973,8 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 dt_OrderList.Rows.Add(dt_Row);
+
+               
 
                 //dt_OrderList = AddTypeDivideSpace(dt_OrderList);
                 AddIndexToOrderTable();
@@ -2223,6 +2272,22 @@ namespace FactoryManagementSoftware.UI
                 //}
                 ////cmbSize_2.SelectedIndex = 10;
                
+                if(dt.Columns.Contains(header_TargetDeliveryDate))
+                {
+                    loaded = false;
+
+                    DateTime targetDeliveryDate = DateTime.TryParse(dt.Rows[rowIndex][header_TargetDeliveryDate].ToString(), out targetDeliveryDate) ? targetDeliveryDate : DateTime.MaxValue;
+               
+                    if(targetDeliveryDate != DateTime.MaxValue)
+                    {
+                        dtpTargetDeliveryDateItem.Value = targetDeliveryDate;
+                        cbTargetDeliveryDateItem.Checked = true;
+                    }
+
+                    loaded = true;
+
+                }
+
                 txtPCS.Text = orderQty;
             }
             else
@@ -2457,6 +2522,20 @@ namespace FactoryManagementSoftware.UI
             {
                 if (!string.IsNullOrEmpty(itemCode))
                 {
+                    if (cbTargetDeliveryDateItem.Checked && !dt_OrderList.Columns.Contains(header_TargetDeliveryDate))
+                    {
+                        // Create the new column
+                        DataColumn newColumn = new DataColumn(header_TargetDeliveryDate, typeof(DateTime));
+
+                        // Add the column at the second position (index 1)
+                        dt_OrderList.Columns.Add(newColumn);
+                        newColumn.SetOrdinal(1);
+
+
+                    }
+                  
+
+
                     btnEdit.Visible = false;
                     btnRemoveItem.Visible = false;
 
@@ -2487,6 +2566,27 @@ namespace FactoryManagementSoftware.UI
                     ConvertFromPcs = true;
                     txtBag.Clear();
                     ConvertFromPcs = false;
+
+                    cbTargetDeliveryDateItem.Checked = false;
+
+
+                    if (dt_OrderList.Columns.Contains(header_TargetDeliveryDate))
+                    {
+                        bool hasData = false;
+
+                        // Check if any row has a non-null, non-DBNULL value in the header_TargetDeliveryDate column
+                        foreach (DataRow row in dt_OrderList.Rows)
+                        {
+                            if (row[header_TargetDeliveryDate] != DBNull.Value)
+                            {
+                                hasData = true;
+                                break; // Exit loop if any data is found
+                            }
+                        }
+                        dgvPOItemList.Columns[header_TargetDeliveryDate].Visible = hasData;
+
+                    }
+
                 }
                 else
                 {
@@ -2793,10 +2893,10 @@ namespace FactoryManagementSoftware.UI
             DiscountRateReset();
         }
 
-        private void cbUrgent_CheckedChanged(object sender, EventArgs e)
+        private void cbTargetDeliveryDate_CheckedChanged(object sender, EventArgs e)
         {
-            lblTargetDeliveryDate.Visible = cbUrgent.Checked;
-            dtpTargetDeliveryDate.Visible = cbUrgent.Checked;
+          
+            dtpTargetDeliveryDate.Visible = cbTargetDeliveryDate.Checked;
         }
 
         private void cbDiscountRateAdjust_CheckedChanged(object sender, EventArgs e)
@@ -2865,6 +2965,49 @@ namespace FactoryManagementSoftware.UI
             {
                 DiscountRateAdjust(rowIndex);
             }
+        }
+
+        private void cbTargetDeliveryDateItem_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpTargetDeliveryDateItem.Visible = cbTargetDeliveryDateItem.Checked;
+        }
+
+        private void dtpTargetDeliveryDate_ValueChanged(object sender, EventArgs e)
+        {
+            if(loaded)
+            {
+                DateTime selectedDate = dtpTargetDeliveryDate.Value;
+                DateTime today = DateTime.Today;
+
+                // Check if the selected date is earlier than today
+                if (selectedDate < today)
+                {
+                    MessageBox.Show("The selected date is in the past. Please confirm if this is correct.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    // Optionally, reset to today's date if needed
+                    // dtpTargetDeliveryDate.Value = today;
+                }
+            }
+          
+        }
+
+        private void dtpTargetDeliveryDateItem_ValueChanged(object sender, EventArgs e)
+        {
+            if(loaded)
+            {
+                DateTime selectedDate = dtpTargetDeliveryDateItem.Value;
+                DateTime today = DateTime.Today;
+
+                // Check if the selected date is earlier than today
+                if (selectedDate < today)
+                {
+                    MessageBox.Show("The selected date is in the past. Please confirm if this is correct.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    // Optionally, reset to today's date if needed
+                    // dtpTargetDeliveryDate.Value = today;
+                }
+            }
+           
         }
     }
 }

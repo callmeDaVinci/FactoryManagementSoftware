@@ -17,6 +17,7 @@ namespace FactoryManagementSoftware.DAL
         public string IsRemoved { get; } = "isRemoved";
         public string Freeze { get; } = "freeze";
         public string PriorityLevel { get; } = "priority_level";
+        public string ItemPriorityLevel { get; } = "item_priority_level";
 
         //mould table
         public string MouldTblCode { get; } = "mould_tbl_code";
@@ -124,6 +125,7 @@ namespace FactoryManagementSoftware.DAL
         public string CustOwnDO { get; } = "cust_own_do";
         public string RemarkInDO { get; } = "remark_in_do";
         public string TargetDeliveryDate { get; } = "target_delivery_date";
+        public string ItemTargetDeliveryDate { get; } = "item_target_delivery_date";
 
         //DO table
         public string DOTableName { get; } = "tbl_spp_do";
@@ -3674,6 +3676,8 @@ namespace FactoryManagementSoftware.DAL
                             + RemarkInDO + ","
                             + PriorityLevel + ","
                             + TargetDeliveryDate + ","
+                            + ItemPriorityLevel + ","
+                            + ItemTargetDeliveryDate + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@PO_code," +
@@ -3703,6 +3707,8 @@ namespace FactoryManagementSoftware.DAL
                             "@remark_in_do," +
                             "@Priority_level," +
                             "@Target_Delivery_Date," +
+                            "@Item_Priority_level," +
+                            "@Item_Target_Delivery_Date," +
                             "@Updated_Date," +
                             "@Updated_By)";
 
@@ -3741,6 +3747,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Priority_level", u.Priority_level);
                 cmd.Parameters.AddWithValue("@Target_Delivery_Date", u.Target_Delivery_Date);
+                cmd.Parameters.AddWithValue("@Item_Priority_level", u.Item_Priority_level);
+                cmd.Parameters.AddWithValue("@Item_Target_Delivery_Date", u.Item_Target_Delivery_Date);
 
                 conn.Open();
 
@@ -5488,6 +5496,8 @@ namespace FactoryManagementSoftware.DAL
                             + RemarkInDO + "=@remark_in_do,"
                             + PriorityLevel + "=@Priority_level,"
                             + TargetDeliveryDate + "=@Target_Delivery_Date,"
+                            + ItemPriorityLevel + "=@Item_Priority_level,"
+                            + ItemTargetDeliveryDate + "=@Item_Target_Delivery_Date,"
                             + UpdatedDate + "=@updated_date,"
                             + UpdatedBy + "=@updated_by" +
                             " WHERE tbl_code=@Table_Code";
@@ -5524,7 +5534,8 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
                 cmd.Parameters.AddWithValue("@Priority_level", u.Priority_level);
                 cmd.Parameters.AddWithValue("@Target_Delivery_Date", u.Target_Delivery_Date);
-
+                cmd.Parameters.AddWithValue("@Item_Priority_level", u.Item_Priority_level);
+                cmd.Parameters.AddWithValue("@Item_Target_Delivery_Date", u.Item_Target_Delivery_Date);
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();

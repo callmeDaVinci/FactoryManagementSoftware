@@ -10,6 +10,7 @@ using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.Module;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -108,7 +109,8 @@ namespace FactoryManagementSoftware.UI
         readonly string text_Type = "TYPE";
         readonly string text_Customer = "CUSTOMER";
         readonly string text_ReceivedDate = "RECEIVED DATE";
-       // readonly string text_PriorityLvl = "PRIORITY LEVEL";
+        readonly string TARGET_DATE_TAG = "TDD: ";
+        // readonly string text_PriorityLvl = "PRIORITY LEVEL";
 
         readonly string text_AssemblyNeeded = "ASSEMBLY NEEDED !!!";
         
@@ -419,8 +421,10 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[colCustCodeName].Visible = false;
                 dgv.Columns[colPODateName].Visible = false;
 
-                dgv.Rows[0].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
-                dgv.Rows[1].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
+                dgv.Columns[colName].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+                //dgv.Rows[0].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
+                //dgv.Rows[1].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
 
 
             }
@@ -1265,6 +1269,8 @@ namespace FactoryManagementSoftware.UI
 
 
                 #region old Code to improve speed
+                int itemTargetDeliveryDateCount = 0;
+
                 foreach (DataRow row in DB_PO_ACTIVE.Rows)
                 {
                     bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
@@ -1276,10 +1282,13 @@ namespace FactoryManagementSoftware.UI
                     int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
                     int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
                     string poTblCode = row[dalSPP.TableCode].ToString();
+                    
                     int priorityLevel = int.TryParse(row[dalSPP.PriorityLevel].ToString(), out priorityLevel) ? priorityLevel : -1;
-
                     DateTime TargetDeliveryDate = DateTime.TryParse(row[dalSPP.TargetDeliveryDate].ToString(),out TargetDeliveryDate)? TargetDeliveryDate: DateTime.MaxValue;
 
+                    int itempriorityLevel = int.TryParse(row[dalSPP.ItemPriorityLevel].ToString(), out itempriorityLevel) ? itempriorityLevel : -1;
+                    DateTime ItemTargetDeliveryDate = DateTime.TryParse(row[dalSPP.ItemTargetDeliveryDate].ToString(), out ItemTargetDeliveryDate) ? ItemTargetDeliveryDate : DateTime.MaxValue;
+                    
                     int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
                     bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
                     bool gotBalanceOrder = false;
@@ -1293,7 +1302,7 @@ namespace FactoryManagementSoftware.UI
                         if (prePOCode != poCode)
                         {
                             #region add column to table planning
-
+                            itemTargetDeliveryDateCount = 0;
                             colNum++;
                             colName = header_Priority + colNum;
                             dt_Planning.Columns.Add(colName, typeof(string));
@@ -1436,20 +1445,36 @@ namespace FactoryManagementSoftware.UI
 
                                     POData += " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
 
+                                  
+                                   
+
                                     if ((orderQty - deliveredQty) % divideBy > 0)
                                     {
+                                        if (EditUnit != text_Pcs)
+                                        {
+                                            POData += " (" + orderQty + "pcs) ";
+                                        }
                                         POData += "★";//★⍟☆⋆✪✫❂🌟#%★
 
                                     }
-                                    dt_Planning.Rows[i - 1][colName] = POData;
 
                                     string nl = Environment.NewLine;
+
+                                    if (itempriorityLevel > 0 && ItemTargetDeliveryDate != DateTime.MaxValue)
+                                    {
+                                        itemTargetDeliveryDateCount++;
+
+                                        POData += nl + TARGET_DATE_TAG + ItemTargetDeliveryDate.ToString("dd MMM") + " ";
+                                    }
+                                    dt_Planning.Rows[i - 1][colName] = POData;
+
+                                   
 
 
                                     string POInfo = "";
 
 
-                                    string DateString = PODate.ToShortDateString();
+                                    string DateString = PODate.ToString("dd MMM");
 
                                     if (custOwnDO)
                                     {
@@ -1477,9 +1502,23 @@ namespace FactoryManagementSoftware.UI
 
                                     if(priorityLevel > 0)
                                     {
-                                        POInfo = "!!! " + POInfo;
 
-                                        POInfo = POInfo.Replace(DateString + " ", "PO:"+DateString + "   Del.:" + TargetDeliveryDate.ToShortDateString() + "");
+                                        if (itemTargetDeliveryDateCount > 0)
+                                        {
+                                            POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All)" + " !(" + itemTargetDeliveryDateCount + ") ");
+
+                                        }
+                                        else
+                                        {
+                                            POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All) ");
+
+                                        }
+
+                                        POInfo = POInfo.Replace(DateString + " ", "PO:"+ DateString + "  "+ TARGET_DATE_TAG + TargetDeliveryDate.ToString("dd MMM") + "");
+                                    }
+                                    else if(itemTargetDeliveryDateCount > 0)
+                                    {
+                                        POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(" + itemTargetDeliveryDateCount + ") ");
                                     }
 
                                     dt_Planning.Rows[0][colName] = POInfo;
@@ -1572,8 +1611,9 @@ namespace FactoryManagementSoftware.UI
 
                 frmLoading.CloseForm();
             }
-
         }
+
+
         private void AdjustToDeliveryBackColor()
         {
             DataGridView dgv = dgvList;
@@ -1589,11 +1629,10 @@ namespace FactoryManagementSoftware.UI
 
                 string cellValue = dgv.Rows[0].Cells[colIndex].Value.ToString();
 
-                if (cellValue.Contains("!!!"))
+                if (cellValue.Contains(TARGET_DATE_TAG) || cellValue.Contains("!("))
                 {
                     dgv.Rows[0].Cells[j].Style.BackColor = Color.FromArgb(251, 255, 147);
                     dgv.Rows[1].Cells[j].Style.BackColor = Color.FromArgb(251, 255, 147);
-
                 }
 
               
@@ -1629,6 +1668,11 @@ namespace FactoryManagementSoftware.UI
                     else if (cellValue == text_DeliveryStatus_OpenedWithDiff)
                     {
                         dgv.Rows[rowIndex + 1].Cells[colIndex - 1].Style.BackColor = color_OpenedWithDiff;
+                    }
+
+                    if (cellValue.Contains(TARGET_DATE_TAG))
+                    {
+                        dgv.Rows[rowIndex].Cells[colIndex].Style.BackColor = Color.FromArgb(251, 255, 147);
                     }
                 }
             }
@@ -1684,8 +1728,11 @@ namespace FactoryManagementSoftware.UI
                                 string POData = "";
                                 bool gotBal = false;
 
+                                int pcs = orderQty;
                                 if ((orderQty - deliveredQty) % pcsPerBag > 0)
                                 {
+                                   
+
                                     POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
                                     gotBal = true;
                                 }
@@ -1712,6 +1759,11 @@ namespace FactoryManagementSoftware.UI
 
                                 if (gotBal)
                                 {
+                                    if (cmbEditUnit.Text == text_Bag)
+                                    {
+                                        POData += " (" + pcs + "pcs) ";
+                                    }
+
                                     POData += "★";//★⍟☆⋆✪✫❂🌟#%★
                                 }
 

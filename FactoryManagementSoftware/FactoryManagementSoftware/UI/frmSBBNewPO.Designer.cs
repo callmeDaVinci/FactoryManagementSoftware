@@ -55,11 +55,10 @@
             this.tableLayoutPanel26 = new System.Windows.Forms.TableLayoutPanel();
             this.txtShowInDO = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
-            this.cbUrgent = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel27 = new System.Windows.Forms.TableLayoutPanel();
             this.btnGoToAddItem = new System.Windows.Forms.Button();
+            this.cbTargetDeliveryDate = new System.Windows.Forms.CheckBox();
             this.dtpTargetDeliveryDate = new System.Windows.Forms.DateTimePicker();
-            this.lblTargetDeliveryDate = new System.Windows.Forms.Label();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.cbOwnDO = new System.Windows.Forms.CheckBox();
             this.lblShippingList = new System.Windows.Forms.Label();
@@ -115,6 +114,9 @@
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.lblType = new System.Windows.Forms.Label();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel29 = new System.Windows.Forms.TableLayoutPanel();
+            this.cbTargetDeliveryDateItem = new System.Windows.Forms.CheckBox();
+            this.dtpTargetDeliveryDateItem = new System.Windows.Forms.DateTimePicker();
             this.txtNote = new System.Windows.Forms.TextBox();
             this.lblNote = new System.Windows.Forms.Label();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
@@ -181,6 +183,7 @@
             this.tableLayoutPanel16.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
+            this.tableLayoutPanel29.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
             this.tableLayoutPanel17.SuspendLayout();
             this.gbTargetQty.SuspendLayout();
@@ -562,14 +565,13 @@
             // 
             // tableLayoutPanel25
             // 
-            this.tableLayoutPanel25.ColumnCount = 4;
+            this.tableLayoutPanel25.ColumnCount = 3;
             this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 329F));
             this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 170F));
             this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel25.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel25.Controls.Add(this.tableLayoutPanel26, 0, 0);
-            this.tableLayoutPanel25.Controls.Add(this.cbUrgent, 2, 0);
-            this.tableLayoutPanel25.Controls.Add(this.tableLayoutPanel27, 3, 0);
+            this.tableLayoutPanel25.Controls.Add(this.tableLayoutPanel27, 2, 0);
             this.tableLayoutPanel25.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel25.Location = new System.Drawing.Point(0, 443);
             this.tableLayoutPanel25.Margin = new System.Windows.Forms.Padding(0);
@@ -614,35 +616,21 @@
             this.label11.TabIndex = 203;
             this.label11.Text = "REMARK  (SHOW IN DO)";
             // 
-            // cbUrgent
-            // 
-            this.cbUrgent.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbUrgent.AutoSize = true;
-            this.cbUrgent.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.cbUrgent.Location = new System.Drawing.Point(419, 30);
-            this.cbUrgent.Margin = new System.Windows.Forms.Padding(5, 30, 5, 5);
-            this.cbUrgent.Name = "cbUrgent";
-            this.cbUrgent.Size = new System.Drawing.Size(85, 27);
-            this.cbUrgent.TabIndex = 204;
-            this.cbUrgent.Text = "Urgent";
-            this.cbUrgent.UseVisualStyleBackColor = true;
-            this.cbUrgent.CheckedChanged += new System.EventHandler(this.cbUrgent_CheckedChanged);
-            // 
             // tableLayoutPanel27
             // 
             this.tableLayoutPanel27.ColumnCount = 1;
             this.tableLayoutPanel27.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel27.Controls.Add(this.btnGoToAddItem, 0, 2);
+            this.tableLayoutPanel27.Controls.Add(this.cbTargetDeliveryDate, 0, 0);
             this.tableLayoutPanel27.Controls.Add(this.dtpTargetDeliveryDate, 0, 1);
-            this.tableLayoutPanel27.Controls.Add(this.lblTargetDeliveryDate, 0, 0);
             this.tableLayoutPanel27.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel27.Location = new System.Drawing.Point(512, 3);
+            this.tableLayoutPanel27.Location = new System.Drawing.Point(342, 3);
             this.tableLayoutPanel27.Name = "tableLayoutPanel27";
             this.tableLayoutPanel27.RowCount = 3;
-            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 24F));
+            this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel27.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel27.Size = new System.Drawing.Size(233, 299);
+            this.tableLayoutPanel27.Size = new System.Drawing.Size(403, 299);
             this.tableLayoutPanel27.TabIndex = 209;
             // 
             // btnGoToAddItem
@@ -652,7 +640,7 @@
             this.btnGoToAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnGoToAddItem.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnGoToAddItem.ForeColor = System.Drawing.Color.Black;
-            this.btnGoToAddItem.Location = new System.Drawing.Point(119, 262);
+            this.btnGoToAddItem.Location = new System.Drawing.Point(289, 262);
             this.btnGoToAddItem.Margin = new System.Windows.Forms.Padding(4, 1, 4, 5);
             this.btnGoToAddItem.Name = "btnGoToAddItem";
             this.btnGoToAddItem.Size = new System.Drawing.Size(110, 32);
@@ -661,26 +649,30 @@
             this.btnGoToAddItem.UseVisualStyleBackColor = false;
             this.btnGoToAddItem.Click += new System.EventHandler(this.btnGoToAddItem_Click);
             // 
+            // cbTargetDeliveryDate
+            // 
+            this.cbTargetDeliveryDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbTargetDeliveryDate.AutoSize = true;
+            this.cbTargetDeliveryDate.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbTargetDeliveryDate.Location = new System.Drawing.Point(3, 14);
+            this.cbTargetDeliveryDate.Name = "cbTargetDeliveryDate";
+            this.cbTargetDeliveryDate.Size = new System.Drawing.Size(219, 23);
+            this.cbTargetDeliveryDate.TabIndex = 204;
+            this.cbTargetDeliveryDate.Text = "Target Delivery Date (All Items)";
+            this.cbTargetDeliveryDate.UseVisualStyleBackColor = true;
+            this.cbTargetDeliveryDate.CheckedChanged += new System.EventHandler(this.cbTargetDeliveryDate_CheckedChanged);
+            // 
             // dtpTargetDeliveryDate
             // 
+            this.dtpTargetDeliveryDate.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.dtpTargetDeliveryDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpTargetDeliveryDate.Location = new System.Drawing.Point(3, 27);
+            this.dtpTargetDeliveryDate.Location = new System.Drawing.Point(3, 43);
             this.dtpTargetDeliveryDate.Name = "dtpTargetDeliveryDate";
-            this.dtpTargetDeliveryDate.Size = new System.Drawing.Size(220, 30);
+            this.dtpTargetDeliveryDate.Size = new System.Drawing.Size(397, 30);
             this.dtpTargetDeliveryDate.TabIndex = 173;
             this.dtpTargetDeliveryDate.Visible = false;
-            // 
-            // lblTargetDeliveryDate
-            // 
-            this.lblTargetDeliveryDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblTargetDeliveryDate.AutoSize = true;
-            this.lblTargetDeliveryDate.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.lblTargetDeliveryDate.Location = new System.Drawing.Point(3, 9);
-            this.lblTargetDeliveryDate.Name = "lblTargetDeliveryDate";
-            this.lblTargetDeliveryDate.Size = new System.Drawing.Size(111, 15);
-            this.lblTargetDeliveryDate.TabIndex = 203;
-            this.lblTargetDeliveryDate.Text = "Target Delivery Date";
-            this.lblTargetDeliveryDate.Visible = false;
+            this.dtpTargetDeliveryDate.ValueChanged += new System.EventHandler(this.dtpTargetDeliveryDate_ValueChanged);
             // 
             // tableLayoutPanel3
             // 
@@ -1419,33 +1411,76 @@
             // tableLayoutPanel13
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
-            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel13.Controls.Add(this.txtNote, 0, 1);
-            this.tableLayoutPanel13.Controls.Add(this.lblNote, 0, 0);
+            this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel13.Controls.Add(this.tableLayoutPanel29, 0, 0);
+            this.tableLayoutPanel13.Controls.Add(this.txtNote, 0, 2);
+            this.tableLayoutPanel13.Controls.Add(this.lblNote, 0, 1);
             this.tableLayoutPanel13.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel13.Location = new System.Drawing.Point(3, 308);
             this.tableLayoutPanel13.Name = "tableLayoutPanel13";
-            this.tableLayoutPanel13.RowCount = 2;
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel13.RowCount = 3;
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.Size = new System.Drawing.Size(743, 390);
             this.tableLayoutPanel13.TabIndex = 220;
+            // 
+            // tableLayoutPanel29
+            // 
+            this.tableLayoutPanel29.ColumnCount = 3;
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 26F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel29.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel29.Controls.Add(this.cbTargetDeliveryDateItem, 1, 0);
+            this.tableLayoutPanel29.Controls.Add(this.dtpTargetDeliveryDateItem, 2, 0);
+            this.tableLayoutPanel29.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel29.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel29.Name = "tableLayoutPanel29";
+            this.tableLayoutPanel29.RowCount = 1;
+            this.tableLayoutPanel29.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 44F));
+            this.tableLayoutPanel29.Size = new System.Drawing.Size(737, 44);
+            this.tableLayoutPanel29.TabIndex = 210;
+            // 
+            // cbTargetDeliveryDateItem
+            // 
+            this.cbTargetDeliveryDateItem.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.cbTargetDeliveryDateItem.AutoSize = true;
+            this.cbTargetDeliveryDateItem.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.cbTargetDeliveryDateItem.Location = new System.Drawing.Point(224, 10);
+            this.cbTargetDeliveryDateItem.Name = "cbTargetDeliveryDateItem";
+            this.cbTargetDeliveryDateItem.Size = new System.Drawing.Size(154, 23);
+            this.cbTargetDeliveryDateItem.TabIndex = 205;
+            this.cbTargetDeliveryDateItem.Text = "Target Delivery Date";
+            this.cbTargetDeliveryDateItem.UseVisualStyleBackColor = true;
+            this.cbTargetDeliveryDateItem.CheckedChanged += new System.EventHandler(this.cbTargetDeliveryDateItem_CheckedChanged);
+            // 
+            // dtpTargetDeliveryDateItem
+            // 
+            this.dtpTargetDeliveryDateItem.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.dtpTargetDeliveryDateItem.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpTargetDeliveryDateItem.Location = new System.Drawing.Point(384, 7);
+            this.dtpTargetDeliveryDateItem.Name = "dtpTargetDeliveryDateItem";
+            this.dtpTargetDeliveryDateItem.Size = new System.Drawing.Size(350, 30);
+            this.dtpTargetDeliveryDateItem.TabIndex = 173;
+            this.dtpTargetDeliveryDateItem.Visible = false;
+            this.dtpTargetDeliveryDateItem.ValueChanged += new System.EventHandler(this.dtpTargetDeliveryDateItem_ValueChanged);
             // 
             // txtNote
             // 
             this.txtNote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtNote.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtNote.Location = new System.Drawing.Point(3, 28);
+            this.txtNote.Location = new System.Drawing.Point(3, 83);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(737, 359);
+            this.txtNote.Size = new System.Drawing.Size(737, 304);
             this.txtNote.TabIndex = 216;
             // 
             // lblNote
             // 
+            this.lblNote.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblNote.AutoSize = true;
             this.lblNote.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblNote.Location = new System.Drawing.Point(3, 0);
+            this.lblNote.Location = new System.Drawing.Point(3, 63);
             this.lblNote.Name = "lblNote";
             this.lblNote.Size = new System.Drawing.Size(59, 17);
             this.lblNote.TabIndex = 217;
@@ -1922,6 +1957,7 @@
             this.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "frmSBBNewPO";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "P/O EDIT";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.frmSPPNewPO_Load);
@@ -1935,7 +1971,6 @@
             this.tlpDataInput.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel25.ResumeLayout(false);
-            this.tableLayoutPanel25.PerformLayout();
             this.tableLayoutPanel26.ResumeLayout(false);
             this.tableLayoutPanel26.PerformLayout();
             this.tableLayoutPanel27.ResumeLayout(false);
@@ -1962,6 +1997,8 @@
             this.tableLayoutPanel12.PerformLayout();
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel13.PerformLayout();
+            this.tableLayoutPanel29.ResumeLayout(false);
+            this.tableLayoutPanel29.PerformLayout();
             this.tableLayoutPanel15.ResumeLayout(false);
             this.tableLayoutPanel15.PerformLayout();
             this.tableLayoutPanel17.ResumeLayout(false);
@@ -2117,12 +2154,14 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel26;
         private System.Windows.Forms.Label label11;
         private System.Windows.Forms.CheckBox cbZeroPointOne;
-        private System.Windows.Forms.Label lblTargetDeliveryDate;
-        private System.Windows.Forms.CheckBox cbUrgent;
+        private System.Windows.Forms.CheckBox cbTargetDeliveryDate;
         private System.Windows.Forms.DateTimePicker dtpTargetDeliveryDate;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel27;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel28;
         private System.Windows.Forms.Button btnGoToAddItem;
         private System.Windows.Forms.CheckBox cbDiscountRateAdjust;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
+        private System.Windows.Forms.CheckBox cbTargetDeliveryDateItem;
+        private System.Windows.Forms.DateTimePicker dtpTargetDeliveryDateItem;
     }
 }

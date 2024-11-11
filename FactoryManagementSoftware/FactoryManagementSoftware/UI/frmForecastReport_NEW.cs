@@ -2447,9 +2447,10 @@ namespace FactoryManagementSoftware.UI
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
+              
 
-
-                        uData.ready_stock = uData.ready_stock - (float) SemenyihStock;
+                        //uData.ready_stock = uData.ready_stock - (float) SemenyihStock;
+                        uData.ready_stock = uData.ready_stock;
 
 
                         if (myconnstrng == text.DB_Semenyih)
@@ -2612,7 +2613,7 @@ namespace FactoryManagementSoftware.UI
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
-                        uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
+                        //uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
 
                         if (myconnstrng == text.DB_Semenyih)
                         {
@@ -2738,7 +2739,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Data.Rows.Add(dt_Row);
                         index++;
 
-                        LoadChild(dt_Data, uData, 0.1f);
+                        LoadChild(dt_Data, uData, 0.1m);
                     }
                 }
             }
@@ -3035,7 +3036,7 @@ namespace FactoryManagementSoftware.UI
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
-                        uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
+                        //uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
 
                         if (myconnstrng == text.DB_Semenyih)
                         {
@@ -3203,7 +3204,7 @@ namespace FactoryManagementSoftware.UI
                         uData.ready_stock = row[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(uData.part_code);
-                        uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
+                        //uData.ready_stock = uData.ready_stock - (float)SemenyihStock;
 
                         if (myconnstrng == text.DB_Semenyih)
                         {
@@ -3353,7 +3354,7 @@ namespace FactoryManagementSoftware.UI
                             }
 
                             //load child
-                            LoadChild(dt_Data, uData, 0.1f);
+                            LoadChild(dt_Data, uData, 0.1m);
                         }
 
 
@@ -4464,12 +4465,12 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
-        private void LoadChild(DataTable dt_Data, dataTrfBLL uParentData, float subIndex)
+        private void LoadChild(DataTable dt_Data, dataTrfBLL uParentData, decimal subIndex)
         {
             DataRow dt_Row;
             dataTrfBLL uChildData = new dataTrfBLL();
 
-            double index = uParentData.index + subIndex;
+            decimal index = (decimal) uParentData.index + subIndex;
 
             foreach (DataRow row in DT_JOIN.Rows)
             {
@@ -4498,7 +4499,7 @@ namespace FactoryManagementSoftware.UI
 
                         uChildData.part_code = row_Item[dalItem.ItemCode].ToString();
 
-                        uChildData.index = index;
+                        uChildData.index = (double)index;
                         uChildData.item_remark = row_Item[dalItem.ItemRemark].ToString();
                         uChildData.part_name = row_Item[dalItem.ItemName].ToString();
                         uChildData.color_mat = row_Item[dalItem.ItemMBatch].ToString();
@@ -4643,7 +4644,7 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerBalType] = balType_Unique;
                         dt_Row[headerItemType] = row_Item[dalItem.ItemCat].ToString();
                         dt_Row[headerPartCode] = uChildData.part_code;
-                        dt_Row[headerPartName] = uChildData.part_name;
+                        dt_Row[headerPartName] = CountZeros(subIndex.ToString()) + uChildData.part_name;
                         dt_Row[headerColorMat] = uChildData.color_mat;
                         dt_Row[text.Header_ColorMatCode] = row_Item[dalItem.ItemMBatch].ToString();
                         dt_Row[headerPartWeight] = (uChildData.pw_per_shot / uChildData.cavity).ToString("0.##") + " (" + (uChildData.rw_per_shot / uChildData.cavity).ToString("0.##") + ")";
@@ -4692,6 +4693,27 @@ namespace FactoryManagementSoftware.UI
 
             }
         }
+
+        private string CountZeros(string input)
+        {
+            int count = 0;
+
+            foreach (char c in input)
+            {
+                if (c == '0')
+                {
+                    count++;
+                }
+            }
+
+            if(count >= 3)
+            {
+                var checkoint = 1;
+            }
+
+            return count > 0 ? new string('-', count) + "> " : "";
+        }
+
 
         private Tuple<float,float,float> GetThreeMonthsForecastQty(DataTable dt_ItemForecast, string itemCode, int forecastNum_1, int forecastNum_2, int forecastNum_3)
         {

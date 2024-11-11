@@ -132,6 +132,7 @@ namespace FactoryManagementSoftware.BLL
         public DateTime Date_start { get; set; }
         public DateTime Date_end { get; set; }
         public DateTime Target_Delivery_Date { get; set; }
+        public DateTime Item_Target_Delivery_Date { get; set; }
         public int Target_qty { get; set; }
         public int Max_qty { get; set; }
         public string Plan_status { get; set; }
@@ -164,6 +165,7 @@ namespace FactoryManagementSoftware.BLL
         public bool IsRemoved { get; set; }
         public bool Freeze { get; set; }
         public int Priority_level { get; set; }
+        public int Item_Priority_level { get; set; }
 
         //price
         public decimal Default_price { get; set; }
