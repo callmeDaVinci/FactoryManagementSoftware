@@ -38,7 +38,6 @@ namespace FactoryManagementSoftware
             //Application.Run(new MainDashboard(1));
 
             Application.Run(new frmLogIn());
-
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]

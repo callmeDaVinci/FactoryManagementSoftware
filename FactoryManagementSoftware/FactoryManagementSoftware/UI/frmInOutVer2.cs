@@ -2053,14 +2053,9 @@ namespace FactoryManagementSoftware.UI
             dgvTrf.ClearSelection();
             formLoaded = true;
             btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height) / 2);
-
-            if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+           
+            if (MainDashboard.myconnstrng == text.DB_OUG || MainDashboard.myconnstrng == text.DB_JunPC)
             {
-
-            }
-            else
-            {
-
                 frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
                 //frm2.StartPosition = FormStartPosition.CenterScreen;
                 //frm2.Show();
@@ -2070,9 +2065,10 @@ namespace FactoryManagementSoftware.UI
                 {
                     // The form exists and is not disposed, so just show it
                     frm2.StartPosition = FormStartPosition.CenterScreen;
-                    frm2.Show();
+                    frm2.ShowDialog();
                 }
 
+               
             }
         }
 

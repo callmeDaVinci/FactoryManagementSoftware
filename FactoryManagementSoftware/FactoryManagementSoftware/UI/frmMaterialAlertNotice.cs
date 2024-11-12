@@ -45,7 +45,7 @@ namespace FactoryManagementSoftware.UI
 
             getStartandEndDate();
             NEGATIVE_BAL_FOUND = false;
-            //GetSummaryForecastMatUsedData();
+            GetSummaryForecastMatUsedData();
         }
 
         #region variable declare
@@ -1982,11 +1982,6 @@ namespace FactoryManagementSoftware.UI
         }
         private void frmMaterialUsedReport_NEW_Load(object sender, EventArgs e)
         {
-          
-
-
-
-            
 
 
 
@@ -2032,8 +2027,6 @@ namespace FactoryManagementSoftware.UI
         }
 
       
-    
-
       
 
       

@@ -2084,9 +2084,6 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[headerUnit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[headerStatus].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Bold);
 
-
-
-
         }
 
         private void loadOrderRecord()

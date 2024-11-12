@@ -596,7 +596,7 @@ namespace FactoryManagementSoftware.UI
             //dalStockCountListItemRecord.Update(uStockCountItemRecord);
 
 
-            if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)//|| myconnstrng == text.DB_JunPC
+            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
             {
                 //Semenyih
                 if (!SBBFormOpen)
@@ -620,26 +620,44 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                
-                //OUG
-                if (!inOutFormOpen)
+                if (MainDashboard.USER_ID == 10 || MainDashboard.USER_ID == 1)
                 {
-                    frmLoading.ShowLoadingScreen();
-                    frmInOutVer2 frm = new frmInOutVer2();
-                    frm.MdiParent = this;
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.WindowState = FormWindowState.Maximized;
-                    frm.Show();
-                    inOutFormOpen = true;
-                    frmLoading.CloseForm();
-                }
-                else
-                {
-                    if (Application.OpenForms.OfType<frmInOutVer2>().Count() == 1)
+                    frmOrderRequestNotice frm3 = new frmOrderRequestNotice(this);
+                    //frm2.StartPosition = FormStartPosition.CenterScreen;
+                    //frm2.Show();
+
+                    // Check if frm2 exists and is not disposed
+                    if (frm3 != null && !frm3.IsDisposed)
                     {
-                        Application.OpenForms.OfType<frmInOutVer2>().First().BringToFront();
+                        // The form exists and is not disposed, so just show it
+                        frm3.StartPosition = FormStartPosition.CenterScreen;
+                        frm3.ShowDialog();
                     }
                 }
+
+                if(!frmOrderRequestNotice.PROCCED_TO_ORDER_PAGE)
+                {
+                    //OUG
+                    if (!inOutFormOpen)
+                    {
+                        frmLoading.ShowLoadingScreen();
+                        frmInOutVer2 frm = new frmInOutVer2();
+                        frm.MdiParent = this;
+                        frm.StartPosition = FormStartPosition.CenterScreen;
+                        frm.WindowState = FormWindowState.Maximized;
+                        frm.Show();
+                        inOutFormOpen = true;
+                        frmLoading.CloseForm();
+                    }
+                    else
+                    {
+                        if (Application.OpenForms.OfType<frmInOutVer2>().Count() == 1)
+                        {
+                            Application.OpenForms.OfType<frmInOutVer2>().First().BringToFront();
+                        }
+                    }
+                }
+               
 
             }
 

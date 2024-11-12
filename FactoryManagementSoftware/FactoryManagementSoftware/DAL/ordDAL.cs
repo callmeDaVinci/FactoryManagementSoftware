@@ -582,10 +582,48 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
+
+        public DataTable StatusSearch(string keyword)
+        {
+            // Static method to connect to the database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            // To hold the data from the database
+            DataTable dt = new DataTable();
+            try
+            {
+                // SQL query to get data from database with ord_status matching the keyword
+                String sql = "SELECT * FROM tbl_ord INNER JOIN tbl_item ON tbl_item.item_code = tbl_ord.ord_item_code " +
+                             "WHERE tbl_ord.ord_status LIKE '%' + @keyword + '%'";
+
+                // For executing command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@keyword", keyword);
+
+                // Getting data from the database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                // Open database connection
+                conn.Open();
+                // Fill data in our DataTable
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                // Throw message if any error occurs
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
         #endregion
 
 
-     
+
 
     }
 }
