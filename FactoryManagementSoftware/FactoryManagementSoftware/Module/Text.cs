@@ -635,6 +635,7 @@ namespace FactoryManagementSoftware.Module
 
         public string SPP_BrandName { get; } = "SPP";
         public string SBB_BrandName { get; } = "SBB";
+        public string OEM_BrandName { get; } = "OEM";
 
 
         public string SprayJet_Short { get; } = "SJ";
@@ -745,6 +746,7 @@ namespace FactoryManagementSoftware.Module
         public string Status_Cancelled { get; } = "Cancelled";
 
         #endregion
+
 
         public string ReportType_ByJobNo { get; } = "By Job No.";
         public string ReportType_ByDateAndShift { get; } = "By Date and Shift";

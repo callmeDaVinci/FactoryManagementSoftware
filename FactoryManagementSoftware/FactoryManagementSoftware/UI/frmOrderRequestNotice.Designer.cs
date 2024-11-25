@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvAlertSummary = new System.Windows.Forms.DataGridView();
             this.lblAlertTitle = new System.Windows.Forms.Label();
             this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
@@ -51,24 +51,24 @@
             this.dgvAlertSummary.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvAlertSummary.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvAlertSummary.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvAlertSummary.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle9;
             this.dgvAlertSummary.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvAlertSummary.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvAlertSummary.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvAlertSummary.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvAlertSummary.GridColor = System.Drawing.Color.Gainsboro;
             this.dgvAlertSummary.Location = new System.Drawing.Point(4, 41);
@@ -88,11 +88,11 @@
             // 
             this.lblAlertTitle.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblAlertTitle.AutoSize = true;
-            this.lblAlertTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
-            this.lblAlertTitle.Location = new System.Drawing.Point(4, 20);
-            this.lblAlertTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblAlertTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.lblAlertTitle.Location = new System.Drawing.Point(4, 9);
+            this.lblAlertTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 3);
             this.lblAlertTitle.Name = "lblAlertTitle";
-            this.lblAlertTitle.Size = new System.Drawing.Size(191, 20);
+            this.lblAlertTitle.Size = new System.Drawing.Size(252, 28);
             this.lblAlertTitle.TabIndex = 153;
             this.lblAlertTitle.Text = "Order Request Notification";
             // 
@@ -154,8 +154,8 @@
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
             this.btnFilterApply.Image = null;
             this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilterApply.Location = new System.Drawing.Point(2, 387);
-            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.btnFilterApply.Location = new System.Drawing.Point(4, 386);
+            this.btnFilterApply.Margin = new System.Windows.Forms.Padding(4, 2, 4, 2);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnFilterApply.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -164,7 +164,7 @@
             this.btnFilterApply.OnHoverImage = null;
             this.btnFilterApply.OnPressedColor = System.Drawing.Color.Black;
             this.btnFilterApply.Radius = 2;
-            this.btnFilterApply.Size = new System.Drawing.Size(1018, 44);
+            this.btnFilterApply.Size = new System.Drawing.Size(1014, 46);
             this.btnFilterApply.TabIndex = 225;
             this.btnFilterApply.Text = "Go to Order Page";
             this.btnFilterApply.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;

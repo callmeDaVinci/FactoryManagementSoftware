@@ -7,7 +7,7 @@
     <ProjectGuid>{9E7F30F9-4A96-4D46-ADE4-4E0822E7A066}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>FactoryManagementSoftware</RootNamespace>
-    <AssemblyName>Safety ERP System</AssemblyName>
+    <AssemblyName>SBB ERP System</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -26,10 +26,10 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <InstallUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
-    <UpdateUrl>\\SAFETY-SERVER\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
+    <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
+    <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>647</ApplicationRevision>
+    <ApplicationRevision>650</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -67,7 +67,7 @@
     <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>sp logo 2023.ico</ApplicationIcon>
+    <ApplicationIcon>SBB logo.ico</ApplicationIcon>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>
@@ -267,6 +267,12 @@
     </Compile>
     <Compile Include="UI\frmOrderRequestNotice.Designer.cs">
       <DependentUpon>frmOrderRequestNotice.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPOPlanner.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPOPlanner.Designer.cs">
+      <DependentUpon>frmPOPlanner.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\OUGSMYDBMerge.cs">
       <SubType>Form</SubType>
@@ -1248,6 +1254,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderRequestNotice.resx">
       <DependentUpon>frmOrderRequestNotice.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPOPlanner.resx">
+      <DependentUpon>frmPOPlanner.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\OUGSMYDBMerge.resx">
       <DependentUpon>OUGSMYDBMerge.cs</DependentUpon>

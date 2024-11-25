@@ -1965,7 +1965,8 @@ namespace FactoryManagementSoftware.UI
 
                                 decimal DiscRate = decimal.TryParse(row[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
 
-                                decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
                                 totalAmount += netAmount;
 
                             }
@@ -2156,8 +2157,8 @@ namespace FactoryManagementSoftware.UI
 
                             dt_Row[text.Header_DiscountRate] = DiscRate;
 
-                            decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
-
+                            //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                            decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
                             dt_Row[text.Header_NetAmount] = netAmount;
 
                             totalAmount += netAmount;
@@ -2997,7 +2998,9 @@ namespace FactoryManagementSoftware.UI
                                     //InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
 
                                     //net amount
-                                    decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                    //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                    decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
+
                                     //RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
                                     //InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
 
@@ -7471,17 +7474,19 @@ namespace FactoryManagementSoftware.UI
                                         //unit price
                                         decimal unitPrice = decimal.TryParse(rowDBInfo[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
                                         RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N2"));
 
                                         //discount rate
                                         decimal DiscRate = decimal.TryParse(rowDBInfo[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
                                         RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N2"));
 
                                         //net amount
-                                        decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
+
                                         RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
                                         //total amount
                                         totalAmount += Math.Round(netAmount, 2);
@@ -8481,17 +8486,19 @@ namespace FactoryManagementSoftware.UI
                                         //unit price
                                         decimal unitPrice = decimal.TryParse(rowDBInfo[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
                                         RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N2"));
 
                                         //discount rate
                                         decimal DiscRate = decimal.TryParse(rowDBInfo[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
                                         RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N2"));
 
                                         //net amount
-                                        decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
+
                                         RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
                                         //total amount
                                         totalAmount += netAmount;
@@ -9371,17 +9378,18 @@ namespace FactoryManagementSoftware.UI
                                         //unit price
                                         decimal unitPrice = decimal.TryParse(rowDBInfo[dalSPP.UnitPrice].ToString(), out unitPrice) ? unitPrice : 0;
                                         RowToInsert = "q" + (itemRowOffset + rowNo).ToString() + ":r" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, unitPrice.ToString("N2"));
 
                                         //discount rate
                                         decimal DiscRate = decimal.TryParse(rowDBInfo[dalSPP.DiscountRate].ToString(), out DiscRate) ? DiscRate : 0;
                                         RowToInsert = "s" + (itemRowOffset + rowNo).ToString() + ":t" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N2"));
 
                                         //net amount
-                                        decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
+                                        decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
                                         RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
-                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N3"));
+                                        InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
                                         //total amount
                                         totalAmount += netAmount;
@@ -9878,7 +9886,7 @@ namespace FactoryManagementSoftware.UI
             cbCustomerSummaryList.Checked = false;
 
             cbInvoiceSortByCustomer.Visible = cbInvoiceMode.Checked;
-            cbCustomerSummaryList.Visible = cbInvoiceMode.Checked;
+            //cbCustomerSummaryList.Visible = cbInvoiceMode.Checked;
 
             if (!cbInvoiceMode.Checked)
             {

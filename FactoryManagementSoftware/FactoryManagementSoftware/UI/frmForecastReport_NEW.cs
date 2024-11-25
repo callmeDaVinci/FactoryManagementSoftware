@@ -4512,7 +4512,7 @@ namespace FactoryManagementSoftware.UI
                         uChildData.ready_stock = row_Item[dalItem.ItemStock] == DBNull.Value ? 0 : Convert.ToSingle(row_Item[dalItem.ItemStock]);
 
                         decimal SemenyihStock = deductSemenyihStock(childCode);
-                        uChildData.ready_stock = uChildData.ready_stock - (float)SemenyihStock;
+                        //uChildData.ready_stock = uChildData.ready_stock - (float)SemenyihStock;
 
                         float stock = uChildData.ready_stock;
 
