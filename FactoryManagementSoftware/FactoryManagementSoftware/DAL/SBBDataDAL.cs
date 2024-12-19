@@ -1176,7 +1176,61 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+   
+        public DataTable SelectActivePOPastYear()
+        {
+            // Static method to connect to the database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            // To hold the data from the database
+            DataTable dt = new DataTable();
+            try
+            {
+                // SQL query to get data from the database
+                String sql = @"
+                SELECT 
+                    *
+                FROM 
+                    tbl_spp_po 
+                    INNER JOIN 
+                    tbl_spp_customer 
+                    ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code
+                WHERE 
+                    tbl_spp_po.po_code IN (
+                        SELECT 
+                            po_code
+                        FROM 
+                            tbl_spp_po
+                        GROUP BY 
+                            po_code
+                        HAVING 
+                            SUM(CASE WHEN delivered_qty < po_qty THEN 1 ELSE 0 END) > 0
+                    )
+                AND tbl_spp_po.po_date >= DATEADD(year, -1, GETDATE())
+                ORDER BY 
+                tbl_spp_po.po_date ASC";
 
+                // For executing the command
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                // Getting data from the database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                // Open the database connection
+                conn.Open();
+                // Fill data into our DataTable
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors that occur
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Close the connection
+                conn.Close();
+            }
+            return dt;
+        }
 
 
         public DataTable POSelect(string poNoString)

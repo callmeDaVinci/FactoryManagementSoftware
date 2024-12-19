@@ -16,7 +16,7 @@ namespace FactoryManagementSoftware.UI
         public frmPOPlanner()
         {
             InitializeComponent();
-            tool.DoubleBuffered(dgvList, true);
+            tool.DoubleBuffered(dgvPlanner, true);
             ResetFilterSettings();
         }
 
@@ -333,45 +333,56 @@ namespace FactoryManagementSoftware.UI
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
             dgv.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-           
-            dgv.Columns[header_Code].Visible = false;
-            dgv.Columns[header_Size].Visible = false;
-            dgv.Columns[header_Unit].Visible = false;
-            dgv.Columns[header_StockPcs].Visible = false;
-            dgv.Columns[header_StockBag].Visible = false;
-            dgv.Columns[header_QtyPerBag].Visible = false;
-            dgv.Columns[header_QtyPerPkt].Visible = false;
-            dgv.Columns[header_BalAfterDeliveryInPcs].Visible = false;
-            dgv.Columns[header_BalAfterDelivery].Frozen = true;
 
-            dgv.Columns[header_Code].DefaultCellStyle.ForeColor = Color.Gray;
-            dgv.Columns[header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            if (dgv.Columns.Contains(header_Code)) dgv.Columns[header_Code].Visible = false;
+            if (dgv.Columns.Contains(header_Size)) dgv.Columns[header_Size].Visible = false;
+            if (dgv.Columns.Contains(header_SizeString)) dgv.Columns[header_SizeString].Visible = false;
+            if (dgv.Columns.Contains(header_Unit)) dgv.Columns[header_Unit].Visible = false;
+            if (dgv.Columns.Contains(header_StockPcs)) dgv.Columns[header_StockPcs].Visible = false;
+            if (dgv.Columns.Contains(header_StockBag)) dgv.Columns[header_StockBag].Visible = false;
+            if (dgv.Columns.Contains(header_QtyPerBag)) dgv.Columns[header_QtyPerBag].Visible = false;
+            if (dgv.Columns.Contains(header_QtyPerPkt)) dgv.Columns[header_QtyPerPkt].Visible = false;
+            if (dgv.Columns.Contains(header_BalAfterDeliveryInPcs)) dgv.Columns[header_BalAfterDeliveryInPcs].Visible = false;
+            if (dgv.Columns.Contains(header_BalAfterDelivery))
+            {
+                dgv.Columns[header_BalAfterDelivery].Frozen = true;
+                dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.BackColor = Color.WhiteSmoke;
+                dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopCenter;
+                dgv.Columns[header_BalAfterDelivery].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                dgv.Columns[header_BalAfterDelivery].Width = 170;
+            }
 
-            //dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            //dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
-            //dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+            if (dgv.Columns.Contains(header_Code))
+            {
+                dgv.Columns[header_Code].DefaultCellStyle.ForeColor = Color.Gray;
+                dgv.Columns[header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
+            }
 
-            dgv.Rows[0].Height = 70;
+            if (dgv.Rows.Count > 0)
+            {
+                dgv.Rows[0].Height = 70;
+            }
 
-            dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv.Columns[header_Index].Width = 35;
+            if (dgv.Columns.Contains(header_Index))
+            {
+                dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                dgv.Columns[header_Index].Width = 35;
+                dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
 
-            dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv.Columns[header_StockString].Width = 150;
+            if (dgv.Columns.Contains(header_StockString))
+            {
+                dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                dgv.Columns[header_StockString].Width = 150;
+                dgv.Columns[header_StockString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            }
 
-            dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv.Columns[header_Type].Width = 135;
-
-            dgv.Columns[header_BalAfterDelivery].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            dgv.Columns[header_BalAfterDelivery].Width = 170;
-            dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.BackColor = Color.WhiteSmoke;
-          
-            dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
-            dgv.Columns[header_StockString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-            dgv.Columns[header_SizeString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
-            dgv.Columns[header_BalAfterDelivery].DefaultCellStyle.Alignment = DataGridViewContentAlignment.TopCenter;
-            
+            if (dgv.Columns.Contains(header_Type))
+            {
+                dgv.Columns[header_Type].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+                dgv.Columns[header_Type].Width = 135;
+                dgv.Columns[header_Type].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            }
 
             for (int i = 1; i <= priorityColNum; i++)
             {
@@ -389,27 +400,27 @@ namespace FactoryManagementSoftware.UI
                 string colCustCodeName = header_PriorityCustCode + i;
                 string colPODateName = header_PriorityPODate + i;
 
-                dgv.Columns[colDeliveredName].Visible = false;
-                dgv.Columns[colOrderName].Visible = false;
-                dgv.Columns[colCustShortName].Visible = false;
-                dgv.Columns[colTblCodeName].Visible = false;
-                dgv.Columns[colPOCodeName].Visible = false;
-                dgv.Columns[colPONoName].Visible = false;
-                dgv.Columns[colDeliveryStatusName].Visible = false;
-                dgv.Columns[colToDeliveryQtyName].Visible = false;
-                dgv.Columns[colPlanningToDeliveryQtyName].Visible = false;
-                dgv.Columns[colSelectedName].Visible = false;
-                dgv.Columns[colCustCodeName].Visible = false;
-                dgv.Columns[colPODateName].Visible = false;
+                if (dgv.Columns.Contains(colDeliveredName)) dgv.Columns[colDeliveredName].Visible = false;
+                if (dgv.Columns.Contains(colOrderName)) dgv.Columns[colOrderName].Visible = false;
+                if (dgv.Columns.Contains(colCustShortName)) dgv.Columns[colCustShortName].Visible = false;
+                if (dgv.Columns.Contains(colTblCodeName)) dgv.Columns[colTblCodeName].Visible = false;
+                if (dgv.Columns.Contains(colPOCodeName)) dgv.Columns[colPOCodeName].Visible = false;
+                if (dgv.Columns.Contains(colPONoName)) dgv.Columns[colPONoName].Visible = false;
+                if (dgv.Columns.Contains(colDeliveryStatusName)) dgv.Columns[colDeliveryStatusName].Visible = false;
+                if (dgv.Columns.Contains(colToDeliveryQtyName)) dgv.Columns[colToDeliveryQtyName].Visible = false;
+                if (dgv.Columns.Contains(colPlanningToDeliveryQtyName)) dgv.Columns[colPlanningToDeliveryQtyName].Visible = false;
+                if (dgv.Columns.Contains(colSelectedName)) dgv.Columns[colSelectedName].Visible = false;
+                if (dgv.Columns.Contains(colCustCodeName)) dgv.Columns[colCustCodeName].Visible = false;
+                if (dgv.Columns.Contains(colPODateName)) dgv.Columns[colPODateName].Visible = false;
 
-                dgv.Columns[colName].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
-
-                //dgv.Rows[0].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
-                //dgv.Rows[1].Cells[colName].Style.WrapMode = DataGridViewTriState.True;
-
-
+                if (dgv.Columns.Contains(colName))
+                {
+                    dgv.Columns[colName].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+                    // Optionally adjust other properties of the column
+                }
             }
         }
+
         private void AddToUpdateData(string POTblCode, int ToDeliveryQty)
         {
             if(dt_ToUpdate == null)
@@ -494,599 +505,725 @@ namespace FactoryManagementSoftware.UI
             cmb.DisplayMember = text_POSortBy;
         }
 
-        private void ResetPage()
+        private void ResetSBBPage()
         {
             dt_ToUpdate = null;
             toAssemblyProductQty = 0;
             btnUpdate.Visible = false;
             dataChanged = false;
+            ShowOrHideFilter(false);
+
         }
 
-        private void LoadPOList()
+ 
+        private int ITEM_ROW_START_FROM = 3;
+
+        private void RefreshPlannerList()
         {
-            ShowOrHideFilter(false);
-            DialogResult dialogResult;
+            #region Check if unsaved changes exist
+
+            DialogResult dialogResult = DialogResult.Yes;
 
             if (dataChanged)
             {
                 dialogResult = MessageBox.Show("Reload data will lose all the unsaved changes.\nAre you sure you want to reload data?", "Message",
                                                           MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             }
-            else
-            {
-                dialogResult = DialogResult.Yes;
-            }
+
+            #endregion 
 
             if (dialogResult == DialogResult.Yes)
             {
                 Cursor = Cursors.WaitCursor;
                 frmLoading.ShowLoadingScreen();
 
-                ResetPage();
+                ResetSBBPage();
+                MASTER_PLANNER_LIST = null;
+                dgvPlanner.DataSource = null;
 
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                //filter customer type and customer
+                string customerType = cmbCustomerType.Text;
 
-                #region Load data from database
-
-                DataTable dt_Planner = NewPlanningTable();
-
-                DataRow newRow = dt_Planner.NewRow();
-                dt_Planner.Rows.Add(newRow);
-                newRow = dt_Planner.NewRow();
-                dt_Planner.Rows.Add(newRow);
-
-                string itemCust = text.SPP_BrandName;
-                dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-
-
-                // dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC" ;
-                dt_Product.DefaultView.Sort = dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
-                //dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
-
-                dt_Product = dt_Product.DefaultView.ToTable();
-
-                if (cmbProductSortBy.Text == text_Type)
+                if(customerType == text.SBB_BrandName)
                 {
-                    dt_Product.DefaultView.Sort = dalSPP.TypeName + " ASC";
-                    dt_Product = dt_Product.DefaultView.ToTable();
+                    LoadSBBPlannerMasterList();//2755ms
                 }
-
-                DB_ITEM_ALL = dalItem.Select();
-                DB_PO_ACTIVE = dalSPP.ActivePOSelect();
-                DB_DO_ALL = dalSPP.DOSelect();//124ms
-                //dt_DOList = dalSPP.ActiveDOWithInfoSelect();//487ms
-
-
-                //dt_POList = dalSPP.POSelect();
-                //dt_DOList = dalSPP.DOWithInfoSelect();
-
-                DB_STOCK_ALL = dalStock.Select();
-                DB_JOIN_ALL = dalJoin.SelectAll();
-
-                if (cmbPOSortBy.Text == text_ReceivedDate)
+                else if (customerType == text.OEM_BrandName)
                 {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.CustTblCode + " ASC," + dalSPP.PriorityLevel + " ASC";
-                }
-                else if (cmbPOSortBy.Text == text_Customer)
-                {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.PriorityLevel + " ASC";
+                   
                 }
                 else
                 {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PriorityLevel + " ASC," + dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC";
+
+                    MessageBox.Show("Please select a valid customer type.");
                 }
 
-                //^^2831ms
-                DB_PO_ACTIVE = DB_PO_ACTIVE.DefaultView.ToTable();
-
-                int index = 1;
-                #endregion
-
-                #region load product & stock
-
-                foreach (DataRow row in dt_Product.Rows)
-                {
-                    string itemCode = row[dalSPP.ItemCode].ToString();
-                    string itemName = row[dalSPP.ItemName].ToString();
-                    int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
-                    int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
-                    int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
-                    int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
-                    int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                    int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                    string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
-
-                    string typeName = row[dalSPP.TypeName].ToString();
-
-                    int pcsStock = readyStock;
-                    int bagStock = pcsStock / (qtyPerBag > 0 ? qtyPerBag : 1);
-                    int balStock = pcsStock % (qtyPerBag > 0 ? qtyPerBag : 1);
-
-                    string sizeString = "";
-                    int size = 1;
-                    if (denominator == 1)
-                    {
-                        size = numerator;
-                        sizeString = numerator + " " + sizeUnit;
-
-                    }
-                    else
-                    {
-                        size = numerator / denominator;
-                        sizeString = numerator + "/" + denominator + " " + sizeUnit;
-                    }
-
-
-                    DataRow planning_row = dt_Planner.NewRow();
-
-                    string stockString = pcsStock + " PCS";
-                    string stdPackingString = qtyPerPacket + "/PKT, " + qtyPerBag + "/BAG";
-
-
-                    if (typeName == text.Type_PolyORing)
-                    {
-                        stdPackingString = qtyPerPacket + "/PKT";
-                    }
-
-                    planning_row[header_Type] = itemCode;
-                    planning_row[header_StockString] = stockString;
-                    planning_row[header_BalAfterDelivery] = stdPackingString;
-                    planning_row[header_QtyPerPkt] = qtyPerPacket;
-                    dt_Planner.Rows.Add(planning_row);
-
-                    //stockString = bagStock + " BAGS (" + pcsStock + ")";
-
-
-                    stockString = bagStock + " BAGS";
-
-                    if (typeName == text.Type_PolyORing)
-                    {
-                        stockString = bagStock + " PKTS";
-                    }
-
-                    planning_row = dt_Planner.NewRow();
-
-                    planning_row[header_Index] = index;
-
-                    planning_row[header_Size] = size;
-                    planning_row[header_Unit] = sizeUnit;
-                    planning_row[header_SizeString] = sizeString;
-
-                    planning_row[header_Type] = typeName;
-                    planning_row[header_Code] = itemCode;
-                    planning_row[header_StockPcs] = pcsStock;
-                    planning_row[header_StockBag] = bagStock;
-                    planning_row[header_QtyPerBag] = qtyPerBag;
-                    planning_row[header_QtyPerPkt] = qtyPerPacket;
-                    planning_row[header_BalAfterDelivery] = stockString;
-                    planning_row[header_BalAfterDeliveryInPcs] = pcsStock;
-
-                    if (balStock > 0)
-                    {
-                        string nl = Environment.NewLine;
-                        stockString += nl + " + " + balStock + " PCS";
-                    }
-
-
-
-                    planning_row[header_StockString] = stockString;
-
-                    dt_Planner.Rows.Add(planning_row);
-                    index++;
-
-                    dt_Planner.Rows.Add(dt_Planner.NewRow());
-                }
-
-                #endregion
-
-                #region load PO data
-
-                int prePOCode = -2;
-                string PONo = "", ShortName = "";
-                DateTime PODate = DateTime.MaxValue;
-                int colNum = 0;
-                string colName = "";
-                string colDeliveredName = "";
-                string colOrderName = "";
-                string colTblCodeName = "";
-                string colPOCodeName = "";
-                string colPONoName = "";
-                string colCustShortName = "";
-                string colDeliveryStatusName = "";
-                string colToDeliveryQtyName = "";
-                string colPlanningToDeliveryQtyName = "";
-                string colSelectedName = "";
-                string colCustIDName = "";
-                string colPODateName = "";
-
-                string EditUnit = cmbEditUnit.Text;
-
-                //start: code to improve speed
-
-                DB_DO_ACTIVE = DB_DO_ALL.Clone();
-
-                // Create a dictionary for the DO list.
-                Dictionary<string, List<DataRow>> doDict = new Dictionary<string, List<DataRow>>();
-
-                foreach (DataRow rowDO in DB_DO_ALL.Rows)
-                {
-                    bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
-                    bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
-                    string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
-
-                    if (!isDORemoved && !isDODelivered)
-                    {
-                        if (!doDict.ContainsKey(DO_POTblCode))
-                        {
-                            doDict[DO_POTblCode] = new List<DataRow>();
-                        }
-                        doDict[DO_POTblCode].Add(rowDO);
-                    }
-                }
-
-                // Now, iterate through the PO list and check against the dictionary.
-                foreach (DataRow row in DB_PO_ACTIVE.Rows)
-                {
-                    string poTblCode = row[dalSPP.TableCode].ToString();
-                    if (doDict.ContainsKey(poTblCode))
-                    {
-                        foreach (DataRow matchingRowDO in doDict[poTblCode])
-                        {
-                            DB_DO_ACTIVE.Rows.Add(matchingRowDO.ItemArray);
-                        }
-                    }
-                }
-
-
-                #region old Code to improve speed
-                int itemTargetDeliveryDateCount = 0;
-
-                foreach (DataRow row in DB_PO_ACTIVE.Rows)
-                {
-                    bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
-                    bool isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
-                    bool custOwnDO = bool.TryParse(row[dalSPP.CustOwnDO].ToString(), out custOwnDO) ? custOwnDO : false;
-
-
-                    int deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
-                    int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
-                    int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
-                    string poTblCode = row[dalSPP.TableCode].ToString();
-                    
-                    int priorityLevel = int.TryParse(row[dalSPP.PriorityLevel].ToString(), out priorityLevel) ? priorityLevel : -1;
-                    DateTime TargetDeliveryDate = DateTime.TryParse(row[dalSPP.TargetDeliveryDate].ToString(),out TargetDeliveryDate)? TargetDeliveryDate: DateTime.MaxValue;
-
-                    int itempriorityLevel = int.TryParse(row[dalSPP.ItemPriorityLevel].ToString(), out itempriorityLevel) ? itempriorityLevel : -1;
-                    DateTime ItemTargetDeliveryDate = DateTime.TryParse(row[dalSPP.ItemTargetDeliveryDate].ToString(), out ItemTargetDeliveryDate) ? ItemTargetDeliveryDate : DateTime.MaxValue;
-                    
-                    int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
-                    bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
-                    bool gotBalanceOrder = false;
-
-                    if (!isRemoved && !isFreeze && deliveredQty < orderQty)
-                    {
-                        int poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
-                        string poItemCode = row[dalSPP.ItemCode].ToString();
-
-
-                        if (prePOCode != poCode)
-                        {
-                            #region add column to table planning
-                            itemTargetDeliveryDateCount = 0;
-                            colNum++;
-                            colName = header_Priority + colNum;
-                            dt_Planner.Columns.Add(colName, typeof(string));
-
-                            colDeliveryStatusName = header_PriorityToDeliveryStatus + colNum;
-                            dt_Planner.Columns.Add(colDeliveryStatusName, typeof(string));
-
-                            colDeliveredName = header_PriorityDelivered + colNum;
-                            dt_Planner.Columns.Add(colDeliveredName, typeof(int));
-
-                            colOrderName = header_PriorityOrder + colNum;
-                            dt_Planner.Columns.Add(colOrderName, typeof(int));
-
-                            colTblCodeName = header_PriorityTblCode + colNum;
-                            dt_Planner.Columns.Add(colTblCodeName, typeof(string));
-
-                            colPOCodeName = header_PriorityPOCode + colNum;
-                            dt_Planner.Columns.Add(colPOCodeName, typeof(string));
-
-                            colPONoName = header_PriorityPONo + colNum;
-                            dt_Planner.Columns.Add(colPONoName, typeof(string));
-
-                            colCustShortName = header_PriorityCustShortName + colNum;
-                            dt_Planner.Columns.Add(colCustShortName, typeof(string));
-
-                            colToDeliveryQtyName = header_PriorityToDeliveryQty + colNum;
-                            dt_Planner.Columns.Add(colToDeliveryQtyName, typeof(int));
-
-                            colPlanningToDeliveryQtyName = header_PriorityToDeliveryPlanningInPCS + colNum;
-                            dt_Planner.Columns.Add(colPlanningToDeliveryQtyName, typeof(int));
-
-                            colSelectedName = header_ColSelected + colNum;
-                            dt_Planner.Columns.Add(colSelectedName, typeof(bool));
-
-                            colCustIDName = header_PriorityCustCode + colNum;
-                            dt_Planner.Columns.Add(colCustIDName, typeof(int));
-
-                            colPODateName = header_PriorityPODate + colNum;
-                            dt_Planner.Columns.Add(colPODateName, typeof(DateTime));
-
-                            #endregion
-
-                            prePOCode = poCode;
-
-                            PONo = row[dalSPP.PONo].ToString();
-
-                            PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
-
-                            ShortName = row[dalSPP.ShortName].ToString();
-
-                        }
-
-                        //add data
-                        for (int i = 0; i < dt_Planner.Rows.Count; i++)
-                        {
-                            string planningCode = dt_Planner.Rows[i][header_Code].ToString();
-                            int pcsPerBag = int.TryParse(dt_Planner.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : 1;
-
-                            if (planningCode == poItemCode && i - 1 >= 0)
-                            {
-                                DataColumnCollection columns = dt_Planner.Columns;
-
-                                if (columns.Contains(colName) && columns.Contains(colDeliveredName) && columns.Contains(colOrderName))
-                                {
-                                    int planningDelivered = int.TryParse(dt_Planner.Rows[i - 1][colDeliveredName].ToString(), out planningDelivered) ? planningDelivered : 0;
-                                    int planningOrder = int.TryParse(dt_Planner.Rows[i - 1][colOrderName].ToString(), out planningOrder) ? planningOrder : 0;
-                                    //int planningToDelivery = int.TryParse(dt_Planning.Rows[i][colOrderName].ToString(), out planningToDelivery) ? planningToDelivery : 0;
-
-                                    planningDelivered += deliveredQty;
-                                    planningOrder += orderQty;
-
-                                    int divideBy = pcsPerBag;
-
-                                    if (EditUnit == text_Pcs)
-                                    {
-                                        divideBy = 1;
-                                    }
-
-                                    //planningToDelivery =  toDeliveryQty;
-
-                                    //planningDelivered /= pcsPerBag;
-                                    //planningOrder /= pcsPerBag;
-
-
-                                    dt_Planner.Rows[i - 1][colDeliveredName] = planningDelivered;
-                                    dt_Planner.Rows[i - 1][colOrderName] = planningOrder;
-
-                                    dt_Planner.Rows[i - 1][colTblCodeName] = poTblCode;
-                                    dt_Planner.Rows[i - 1][colPOCodeName] = poCode;
-                                    dt_Planner.Rows[i - 1][colPONoName] = PONo;
-                                    dt_Planner.Rows[i - 1][colCustShortName] = ShortName;
-                                    dt_Planner.Rows[i - 1][colCustIDName] = poCustTblCode;
-                                    dt_Planner.Rows[i - 1][colPODateName] = PODate;
-
-                                    //get DO to delivery qty from tbl_DO, and compare to planning toDelivery
-                                    //input delivery status
-                                    int DO_ToDeliveryQty = 0;
-                                    string deliveryStatus = text_DeliveryStatus_ToOpen;
-
-                                    foreach (DataRow rowDO in DB_DO_ACTIVE.Rows)
-                                    {
-                                        bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
-                                        bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
-                                        string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
-
-                                        if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
-                                        {
-                                            //get to delivery qty
-                                            DO_ToDeliveryQty += int.TryParse(rowDO[dalSPP.ToDeliveryQty].ToString(), out DO_ToDeliveryQty) ? DO_ToDeliveryQty : 0;
-
-                                        }
-                                    }
-
-                                    if (DO_ToDeliveryQty != 0)
-                                    {
-                                        if (DO_ToDeliveryQty == toDeliveryQty)
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_Opened;
-                                        }
-                                        else
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                        }
-                                    }
-
-                                    dt_Planner.Rows[i][colName] = toDeliveryQty / divideBy;
-                                    dt_Planner.Rows[i - 1][colPlanningToDeliveryQtyName] = toDeliveryQty;
-                                    dt_Planner.Rows[i - 1][colDeliveryStatusName] = deliveryStatus;
-                                    dt_Planner.Rows[i - 1][colToDeliveryQtyName] = DO_ToDeliveryQty;
-
-                                    //string POData = " " + ShortName + " (" + PONo + "): " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
-                                    string POData = "";
-
-
-                                    if ((orderQty - deliveredQty) % divideBy > 0)
-                                    {
-                                        POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
-                                        gotBalanceOrder = true;
-                                    }
-
-                                    POData += " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
-
-                                  
-                                   
-
-                                    if ((orderQty - deliveredQty) % divideBy > 0)
-                                    {
-                                        if (EditUnit != text_Pcs)
-                                        {
-                                            POData += " (" + orderQty + "pcs) ";
-                                        }
-                                        POData += "★";//★⍟☆⋆✪✫❂🌟#%★
-
-                                    }
-
-                                    string nl = Environment.NewLine;
-
-                                    if (itempriorityLevel > 0 && ItemTargetDeliveryDate != DateTime.MaxValue)
-                                    {
-                                        itemTargetDeliveryDateCount++;
-
-                                        POData += nl + TARGET_DATE_TAG + ItemTargetDeliveryDate.ToString("dd MMM") + " ";
-                                    }
-                                    dt_Planner.Rows[i - 1][colName] = POData;
-
-                                   
-
-
-                                    string POInfo = "";
-
-
-                                    string DateString = PODate.ToString("dd MMM");
-
-                                    if (custOwnDO)
-                                    {
-                                        if (gotBalanceOrder)
-                                        {
-                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                        }
-                                        else
-                                        {
-                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                        }
-                                    }
-                                    else if (gotBalanceOrder)
-                                    {
-                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                    }
-                                    else
-                                    {
-                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + DateString + " ";
-                                    }
-
-
-                                    if(priorityLevel > 0)
-                                    {
-
-                                        if (itemTargetDeliveryDateCount > 0)
-                                        {
-                                            POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All)" + " !(" + itemTargetDeliveryDateCount + ") ");
-
-                                        }
-                                        else
-                                        {
-                                            POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All) ");
-
-                                        }
-
-                                        POInfo = POInfo.Replace(DateString + " ", "PO:"+ DateString + "  "+ TARGET_DATE_TAG + TargetDeliveryDate.ToString("dd MMM") + "");
-                                    }
-                                    else if(itemTargetDeliveryDateCount > 0)
-                                    {
-                                        POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(" + itemTargetDeliveryDateCount + ") ");
-                                    }
-
-                                    dt_Planner.Rows[0][colName] = POInfo;
-                                    dt_Planner.Rows[0][colCustIDName] = poCustTblCode;
-
-                                    ShortName = row[dalSPP.ShortName].ToString();
-
-
-                                    // string POShippingInfo = " " + PODate.ToShortDateString() + " ";
-                                    string POShippingInfo = "";
-
-                                    string ShippingShortName = row[dalSPP.ShippingShortName].ToString();
-                                    string ShippingState = row[dalSPP.AddressState].ToString().ToUpper();
-                                    string ShippingTransporter = row[dalSPP.ShippingTransporter].ToString();
-
-
-                                    POShippingInfo += nl;
-
-                                    if (ShippingShortName != ShortName && !usingBillingAddress)
-                                        POShippingInfo += " " + ShippingShortName;
-                                    else
-                                        POShippingInfo += nl;
-
-
-
-                                    if (ShippingState != "SELANGOR" && ShippingState != "KL" && ShippingState != "KUALA LUMPUR")
-                                    {
-                                        POShippingInfo += " (" + ShippingState + ")";
-                                    }
-
-                                    POShippingInfo += " " + nl + ShippingTransporter + " ";
-                                    dt_Planner.Rows[1][colName] = POShippingInfo;
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Columns not exist!");
-                                }
-
-                                break;
-                            }
-                        }
-
-
-                    }
-
-                }
-                #endregion
-                //ennd: code to improve speed
-
-                #endregion
-                
-                #region DGV Settings
-
-                //^^ 375ms
-                //vv 847ms
-                dgvList.SuspendLayout();
-
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-                dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-                dgvList.ColumnHeadersVisible = false;
-
-                dgvList.DataSource = dt_Planner;
-
-
-
-                DgvUIEdit(dgvList, colNum);//222ms
-
-                AdjustDGVRowAlignment(dgvList);//292ms
-
-                AdjustToDeliveryBackColor();//141ms
-
-                UpdateBalAfterDelivery();//194ms
-
-                dgvList.ResumeLayout();
-
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-
-                dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
-
-                dgvList.ColumnHeadersVisible = true;
-
-
-
-                dgvList.ClearSelection();
-
-                #endregion
-
-  
                 Cursor = Cursors.Arrow;
-
                 frmLoading.CloseForm();
             }
         }
 
 
+        private DataTable MASTER_PLANNER_LIST;
+        private DataTable FILTERED_PLANNER_LIST;
+        private int MASTERLIST_COL_NUM = 0;
+
+        private void LoadSBBPlannerMasterList()
+        {
+            dgvPlanner.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+
+            MASTER_PLANNER_LIST = NewPlanningTable();
+            DataRow newRow;
+
+            for (int i = 1; i < ITEM_ROW_START_FROM; i++)
+            {
+                newRow = MASTER_PLANNER_LIST.NewRow();
+                MASTER_PLANNER_LIST.Rows.Add(newRow);
+            }
+
+            string itemCust = text.SPP_BrandName;
+            dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
+
+            dt_Product.DefaultView.Sort = dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
+
+            dt_Product = dt_Product.DefaultView.ToTable();
+
+            if (cmbProductSortBy.Text == text_Type)
+            {
+                dt_Product.DefaultView.Sort = dalSPP.TypeName + " ASC";
+                dt_Product = dt_Product.DefaultView.ToTable();
+            }
+
+            DB_ITEM_ALL = dalItem.Select();
+            DB_PO_ACTIVE = dalSPP.ActivePOSelect();//914ms
+            DB_DO_ALL = dalSPP.DOSelect();//124ms
+            
+            DB_STOCK_ALL = dalStock.Select();
+            DB_JOIN_ALL = dalJoin.SelectAll();
+
+            if (cmbPOSortBy.Text == text_ReceivedDate)
+            {
+                DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.CustTblCode + " ASC," + dalSPP.PriorityLevel + " ASC";
+            }
+            else if (cmbPOSortBy.Text == text_Customer)
+            {
+                DB_PO_ACTIVE.DefaultView.Sort = dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.PriorityLevel + " ASC";
+            }
+            else
+            {
+                DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PriorityLevel + " ASC," + dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC";
+            }
+
+            //^^2831ms
+            DB_PO_ACTIVE = DB_PO_ACTIVE.DefaultView.ToTable();
+
+            int index = 1;
+
+            #region load product & stock
+
+            foreach (DataRow row in dt_Product.Rows)
+            {
+                string itemCode = row[dalSPP.ItemCode].ToString();
+                string itemName = row[dalSPP.ItemName].ToString();
+                int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+                int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
+                int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
+                int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
+                int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
+                int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
+                string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
+
+                string typeName = row[dalSPP.TypeName].ToString();
+
+                int pcsStock = readyStock;
+                int bagStock = pcsStock / (qtyPerBag > 0 ? qtyPerBag : 1);
+                int balStock = pcsStock % (qtyPerBag > 0 ? qtyPerBag : 1);
+
+                string sizeString = "";
+                int size = 1;
+                if (denominator == 1)
+                {
+                    size = numerator;
+                    sizeString = numerator + " " + sizeUnit;
+
+                }
+                else
+                {
+                    size = numerator / denominator;
+                    sizeString = numerator + "/" + denominator + " " + sizeUnit;
+                }
+
+
+                DataRow planning_row = MASTER_PLANNER_LIST.NewRow();
+
+                string stockString = pcsStock + " PCS";
+                string stdPackingString = qtyPerPacket + "/PKT, " + qtyPerBag + "/BAG";
+
+
+                if (typeName == text.Type_PolyORing)
+                {
+                    stdPackingString = qtyPerPacket + "/PKT";
+                }
+
+                planning_row[header_Type] = itemCode;
+                planning_row[header_StockString] = stockString;
+                planning_row[header_BalAfterDelivery] = stdPackingString;
+                planning_row[header_QtyPerPkt] = qtyPerPacket;
+                MASTER_PLANNER_LIST.Rows.Add(planning_row);
+
+                //stockString = bagStock + " BAGS (" + pcsStock + ")";
+
+
+                stockString = bagStock + " BAGS";
+
+                if (typeName == text.Type_PolyORing)
+                {
+                    stockString = bagStock + " PKTS";
+                }
+
+                planning_row = MASTER_PLANNER_LIST.NewRow();
+
+                planning_row[header_Index] = index;
+
+                planning_row[header_Size] = size;
+                planning_row[header_Unit] = sizeUnit;
+                planning_row[header_SizeString] = sizeString;
+
+                planning_row[header_Type] = typeName;
+                planning_row[header_Code] = itemCode;
+                planning_row[header_StockPcs] = pcsStock;
+                planning_row[header_StockBag] = bagStock;
+                planning_row[header_QtyPerBag] = qtyPerBag;
+                planning_row[header_QtyPerPkt] = qtyPerPacket;
+                planning_row[header_BalAfterDelivery] = stockString;
+                planning_row[header_BalAfterDeliveryInPcs] = pcsStock;
+
+                if (balStock > 0)
+                {
+                    string nl = Environment.NewLine;
+                    stockString += nl + " + " + balStock + " PCS";
+                }
+
+
+
+                planning_row[header_StockString] = stockString;
+
+                MASTER_PLANNER_LIST.Rows.Add(planning_row);
+                index++;
+
+                MASTER_PLANNER_LIST.Rows.Add(MASTER_PLANNER_LIST.NewRow());
+            }
+
+            #endregion
+
+            #region load PO data
+
+            int prePOCode = -2;
+            string PONo = "", ShortName = "";
+            DateTime PODate = DateTime.MaxValue;
+            string colName = "";
+            string colDeliveredName = "";
+            string colOrderName = "";
+            string colTblCodeName = "";
+            string colPOCodeName = "";
+            string colPONoName = "";
+            string colCustShortName = "";
+            string colDeliveryStatusName = "";
+            string colToDeliveryQtyName = "";
+            string colPlanningToDeliveryQtyName = "";
+            string colSelectedName = "";
+            string colCustIDName = "";
+            string colPODateName = "";
+
+            string EditUnit = cmbEditUnit.Text;
+
+            //start: code to improve speed
+
+            DB_DO_ACTIVE = DB_DO_ALL.Clone();
+
+            // Create a dictionary for the DO list.
+            Dictionary<string, List<DataRow>> doDict = new Dictionary<string, List<DataRow>>();
+
+            foreach (DataRow rowDO in DB_DO_ALL.Rows)
+            {
+                bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
+                bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
+                string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
+
+                if (!isDORemoved && !isDODelivered)
+                {
+                    if (!doDict.ContainsKey(DO_POTblCode))
+                    {
+                        doDict[DO_POTblCode] = new List<DataRow>();
+                    }
+                    doDict[DO_POTblCode].Add(rowDO);
+                }
+            }
+
+            // Now, iterate through the PO list and check against the dictionary.
+            foreach (DataRow row in DB_PO_ACTIVE.Rows)
+            {
+                string poTblCode = row[dalSPP.TableCode].ToString();
+                if (doDict.ContainsKey(poTblCode))
+                {
+                    foreach (DataRow matchingRowDO in doDict[poTblCode])
+                    {
+                        DB_DO_ACTIVE.Rows.Add(matchingRowDO.ItemArray);
+                    }
+                }
+            }
+
+
+            #region old Code to improve speed
+            int itemTargetDeliveryDateCount = 0;
+
+            foreach (DataRow row in DB_PO_ACTIVE.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+                bool isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
+                bool custOwnDO = bool.TryParse(row[dalSPP.CustOwnDO].ToString(), out custOwnDO) ? custOwnDO : false;
+
+
+                int deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
+                int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
+                int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
+                string poTblCode = row[dalSPP.TableCode].ToString();
+
+                int priorityLevel = int.TryParse(row[dalSPP.PriorityLevel].ToString(), out priorityLevel) ? priorityLevel : -1;
+                DateTime TargetDeliveryDate = DateTime.TryParse(row[dalSPP.TargetDeliveryDate].ToString(), out TargetDeliveryDate) ? TargetDeliveryDate : DateTime.MaxValue;
+
+                int itempriorityLevel = int.TryParse(row[dalSPP.ItemPriorityLevel].ToString(), out itempriorityLevel) ? itempriorityLevel : -1;
+                DateTime ItemTargetDeliveryDate = DateTime.TryParse(row[dalSPP.ItemTargetDeliveryDate].ToString(), out ItemTargetDeliveryDate) ? ItemTargetDeliveryDate : DateTime.MaxValue;
+
+                int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
+                bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
+                bool gotBalanceOrder = false;
+
+                if (!isRemoved && !isFreeze && deliveredQty < orderQty)
+                {
+                    int poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
+                    string poItemCode = row[dalSPP.ItemCode].ToString();
+
+
+                    if (prePOCode != poCode)
+                    {
+                        #region add column to table planning
+                        itemTargetDeliveryDateCount = 0;
+                        MASTERLIST_COL_NUM++;
+                        colName = header_Priority + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colName, typeof(string));
+
+                        colDeliveryStatusName = header_PriorityToDeliveryStatus + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colDeliveryStatusName, typeof(string));
+
+                        colDeliveredName = header_PriorityDelivered + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colDeliveredName, typeof(int));
+
+                        colOrderName = header_PriorityOrder + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colOrderName, typeof(int));
+
+                        colTblCodeName = header_PriorityTblCode + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colTblCodeName, typeof(string));
+
+                        colPOCodeName = header_PriorityPOCode + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colPOCodeName, typeof(string));
+
+                        colPONoName = header_PriorityPONo + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colPONoName, typeof(string));
+
+                        colCustShortName = header_PriorityCustShortName + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colCustShortName, typeof(string));
+
+                        colToDeliveryQtyName = header_PriorityToDeliveryQty + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colToDeliveryQtyName, typeof(int));
+
+                        colPlanningToDeliveryQtyName = header_PriorityToDeliveryPlanningInPCS + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colPlanningToDeliveryQtyName, typeof(int));
+
+                        colSelectedName = header_ColSelected + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colSelectedName, typeof(bool));
+
+                        colCustIDName = header_PriorityCustCode + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colCustIDName, typeof(int));
+
+                        colPODateName = header_PriorityPODate + MASTERLIST_COL_NUM;
+                        MASTER_PLANNER_LIST.Columns.Add(colPODateName, typeof(DateTime));
+
+                        #endregion
+
+                        prePOCode = poCode;
+
+                        PONo = row[dalSPP.PONo].ToString();
+
+                        PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
+
+                        ShortName = row[dalSPP.ShortName].ToString();
+
+                    }
+
+                    //add data
+                    for (int i = 0; i < MASTER_PLANNER_LIST.Rows.Count; i++)
+                    {
+                        string planningCode = MASTER_PLANNER_LIST.Rows[i][header_Code].ToString();
+                        int pcsPerBag = int.TryParse(MASTER_PLANNER_LIST.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : 1;
+
+                        if (planningCode == poItemCode && i - 1 >= 0)
+                        {
+                            DataColumnCollection columns = MASTER_PLANNER_LIST.Columns;
+
+                            if (columns.Contains(colName) && columns.Contains(colDeliveredName) && columns.Contains(colOrderName))
+                            {
+                                int planningDelivered = int.TryParse(MASTER_PLANNER_LIST.Rows[i - 1][colDeliveredName].ToString(), out planningDelivered) ? planningDelivered : 0;
+                                int planningOrder = int.TryParse(MASTER_PLANNER_LIST.Rows[i - 1][colOrderName].ToString(), out planningOrder) ? planningOrder : 0;
+                                //int planningToDelivery = int.TryParse(dt_Planning.Rows[i][colOrderName].ToString(), out planningToDelivery) ? planningToDelivery : 0;
+
+                                planningDelivered += deliveredQty;
+                                planningOrder += orderQty;
+
+                                int divideBy = pcsPerBag;
+
+                                if (EditUnit == text_Pcs)
+                                {
+                                    divideBy = 1;
+                                }
+
+                                //planningToDelivery =  toDeliveryQty;
+
+                                //planningDelivered /= pcsPerBag;
+                                //planningOrder /= pcsPerBag;
+
+
+                                MASTER_PLANNER_LIST.Rows[i - 1][colDeliveredName] = planningDelivered;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colOrderName] = planningOrder;
+
+                                MASTER_PLANNER_LIST.Rows[i - 1][colTblCodeName] = poTblCode;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colPOCodeName] = poCode;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colPONoName] = PONo;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colCustShortName] = ShortName;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colCustIDName] = poCustTblCode;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colPODateName] = PODate;
+
+                                //get DO to delivery qty from tbl_DO, and compare to planning toDelivery
+                                //input delivery status
+                                int DO_ToDeliveryQty = 0;
+                                string deliveryStatus = text_DeliveryStatus_ToOpen;
+
+                                foreach (DataRow rowDO in DB_DO_ACTIVE.Rows)
+                                {
+                                    bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
+                                    bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
+                                    string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
+
+                                    if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
+                                    {
+                                        //get to delivery qty
+                                        DO_ToDeliveryQty += int.TryParse(rowDO[dalSPP.ToDeliveryQty].ToString(), out DO_ToDeliveryQty) ? DO_ToDeliveryQty : 0;
+
+                                    }
+                                }
+
+                                if (DO_ToDeliveryQty != 0)
+                                {
+                                    if (DO_ToDeliveryQty == toDeliveryQty)
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_Opened;
+                                    }
+                                    else
+                                    {
+                                        deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
+                                    }
+                                }
+
+                                MASTER_PLANNER_LIST.Rows[i][colName] = toDeliveryQty / divideBy;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colPlanningToDeliveryQtyName] = toDeliveryQty;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colDeliveryStatusName] = deliveryStatus;
+                                MASTER_PLANNER_LIST.Rows[i - 1][colToDeliveryQtyName] = DO_ToDeliveryQty;
+
+                                //string POData = " " + ShortName + " (" + PONo + "): " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
+                                string POData = "";
+
+
+                                if ((orderQty - deliveredQty) % divideBy > 0)
+                                {
+                                    POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
+                                    gotBalanceOrder = true;
+                                }
+
+                                POData += " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
+
+
+
+
+                                if ((orderQty - deliveredQty) % divideBy > 0)
+                                {
+                                    if (EditUnit != text_Pcs)
+                                    {
+                                        POData += " (" + orderQty + "pcs) ";
+                                    }
+                                    POData += "★";//★⍟☆⋆✪✫❂🌟#%★
+
+                                }
+
+                                string nl = Environment.NewLine;
+
+                                if (itempriorityLevel > 0 && ItemTargetDeliveryDate != DateTime.MaxValue)
+                                {
+                                    itemTargetDeliveryDateCount++;
+
+                                    POData += nl + TARGET_DATE_TAG + ItemTargetDeliveryDate.ToString("dd MMM") + " ";
+                                }
+                                MASTER_PLANNER_LIST.Rows[i - 1][colName] = POData;
+
+
+
+
+                                string POInfo = "";
+
+
+                                string DateString = PODate.ToString("dd MMM");
+
+                                if (custOwnDO)
+                                {
+                                    if (gotBalanceOrder)
+                                    {
+                                        POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + DateString + " ";
+
+                                    }
+                                    else
+                                    {
+                                        POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + DateString + " ";
+
+                                    }
+                                }
+                                else if (gotBalanceOrder)
+                                {
+                                    POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + DateString + " ";
+
+                                }
+                                else
+                                {
+                                    POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + DateString + " ";
+                                }
+
+
+                                if (priorityLevel > 0)
+                                {
+
+                                    if (itemTargetDeliveryDateCount > 0)
+                                    {
+                                        POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All)" + " !(" + itemTargetDeliveryDateCount + ") ");
+
+                                    }
+                                    else
+                                    {
+                                        POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(All) ");
+
+                                    }
+
+                                    POInfo = POInfo.Replace(DateString + " ", "PO:" + DateString + "  " + TARGET_DATE_TAG + TargetDeliveryDate.ToString("dd MMM") + "");
+                                }
+                                else if (itemTargetDeliveryDateCount > 0)
+                                {
+                                    POInfo = POInfo.Replace(ShortName, ShortName + " " + "!(" + itemTargetDeliveryDateCount + ") ");
+                                }
+
+                                MASTER_PLANNER_LIST.Rows[0][colName] = POInfo;
+                                MASTER_PLANNER_LIST.Rows[0][colCustIDName] = poCustTblCode;
+
+                                ShortName = row[dalSPP.ShortName].ToString();
+
+
+                                // string POShippingInfo = " " + PODate.ToShortDateString() + " ";
+                                string POShippingInfo = "";
+
+                                string ShippingShortName = row[dalSPP.ShippingShortName].ToString();
+                                string ShippingState = row[dalSPP.AddressState].ToString().ToUpper();
+                                string ShippingTransporter = row[dalSPP.ShippingTransporter].ToString();
+
+
+                                POShippingInfo += nl;
+
+                                if (ShippingShortName != ShortName && !usingBillingAddress)
+                                    POShippingInfo += " " + ShippingShortName;
+                                else
+                                    POShippingInfo += nl;
+
+
+
+                                if (ShippingState != "SELANGOR" && ShippingState != "KL" && ShippingState != "KUALA LUMPUR")
+                                {
+                                    POShippingInfo += " (" + ShippingState + ")";
+                                }
+
+                                POShippingInfo += " " + nl + ShippingTransporter + " ";
+                                MASTER_PLANNER_LIST.Rows[1][colName] = POShippingInfo;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Columns not exist!");
+                            }
+
+                            break;
+                        }
+                    }
+
+
+                }
+
+            }
+            #endregion
+            //ennd: code to improve speed
+
+            #endregion
+            FilterDataByCustomer();
+        }
+
+        private void FilterDataByCustomer()
+        {
+            string selectedCustomer = cmbCustomer.Text;
+
+            if (selectedCustomer != "ALL")
+            {
+                // Copy the master list data
+                FILTERED_PLANNER_LIST = MASTER_PLANNER_LIST.Copy();
+
+                // List to keep track of columns to remove
+                List<string> columnsToRemove = new List<string>();
+
+                // Dictionary to map old column names to new column names
+                Dictionary<string, string> columnRenameMap = new Dictionary<string, string>();
+
+                // Identify the colNums (suffixes)
+                HashSet<string> colNums = new HashSet<string>();
+                foreach (DataColumn col in MASTER_PLANNER_LIST.Columns)
+                {
+                    if (col.ColumnName.StartsWith(header_PriorityCustShortName))
+                    {
+                        string colNum = col.ColumnName.Substring(header_PriorityCustShortName.Length);
+                        colNums.Add(colNum);
+                    }
+                }
+
+                // For each colNum, check if the customer short name matches the selected customer
+                foreach (string colNum in colNums)
+                {
+                    string custShortNameCol = header_PriorityCustShortName + colNum;
+                    bool customerMatch = false;
+
+                    if (FILTERED_PLANNER_LIST.Columns.Contains(custShortNameCol))
+                    {
+                        // Get the customer short name from row 0
+                        string custShortName = FILTERED_PLANNER_LIST.Rows[0][custShortNameCol]?.ToString();
+                        if (custShortName == selectedCustomer)
+                        {
+                            customerMatch = true;
+                        }
+                    }
+
+                    if (!customerMatch)
+                    {
+                        // Remove columns with this colNum suffix
+                        foreach (DataColumn col in FILTERED_PLANNER_LIST.Columns)
+                        {
+                            if (col.ColumnName.EndsWith(colNum))
+                            {
+                                columnsToRemove.Add(col.ColumnName);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // Rename columns by removing the colNum suffix
+                        foreach (DataColumn col in FILTERED_PLANNER_LIST.Columns)
+                        {
+                            if (col.ColumnName.EndsWith(colNum))
+                            {
+                                string oldColName = col.ColumnName;
+                                string newColName = col.ColumnName.Substring(0, col.ColumnName.Length - colNum.Length);
+                                if (!columnRenameMap.ContainsKey(oldColName))
+                                {
+                                    columnRenameMap.Add(oldColName, newColName);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // Remove columns not related to the selected customer
+                foreach (string colName in columnsToRemove)
+                {
+                    FILTERED_PLANNER_LIST.Columns.Remove(colName);
+                }
+
+                // Rename columns to standard names
+                foreach (var kvp in columnRenameMap)
+                {
+                    string oldColName = kvp.Key;
+                    string newColName = kvp.Value;
+                    if (!FILTERED_PLANNER_LIST.Columns.Contains(newColName))
+                    {
+                        FILTERED_PLANNER_LIST.Columns[oldColName].ColumnName = newColName;
+                    }
+                    else
+                    {
+                        // Handle potential column name conflicts if necessary
+                    }
+                }
+
+                // Update the DataGridView with the filtered data
+                DGVDataSettings(FILTERED_PLANNER_LIST, 1); // Only one set of priority columns now
+            }
+            else
+            {
+                DGVDataSettings(MASTER_PLANNER_LIST, MASTERLIST_COL_NUM);
+            }
+        }
+
+
+
+        private void DGVDataSettings(DataTable dt, int colNum)
+        {
+            #region DGV Settings
+
+            //^^ 375ms
+            //vv 847ms
+            dgvPlanner.SuspendLayout();
+
+            dgvPlanner.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+            dgvPlanner.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
+            dgvPlanner.ColumnHeadersVisible = false;
+
+            dgvPlanner.DataSource = dt;
+
+
+
+            DgvUIEdit(dgvPlanner, colNum);//222ms
+
+            AdjustDGVRowAlignment(dgvPlanner);//292ms
+
+            AdjustToDeliveryBackColor();//141ms
+
+            UpdateBalAfterDelivery();//194ms
+
+            dgvPlanner.ResumeLayout();
+
+            dgvPlanner.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
+            dgvPlanner.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
+
+            dgvPlanner.ColumnHeadersVisible = true;
+
+
+            dgvPlanner.ClearSelection();
+
+            #endregion
+        }
+
+
+
         private void AdjustToDeliveryBackColor()
         {
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
             Font bold_12 = new Font("Segoe UI", 12F, FontStyle.Bold);
             Color color_ToOpen = Color.FromArgb(253, 203, 110);//yellow
             Color color_Opened = Color.FromArgb(0, 184, 148);//green
@@ -1189,7 +1326,7 @@ namespace FactoryManagementSoftware.UI
         {
             Cursor = Cursors.WaitCursor;
 
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
 
             DataTable dt = (DataTable)dgv.DataSource;
 
@@ -1317,7 +1454,7 @@ namespace FactoryManagementSoftware.UI
         {
             try
             {
-                DataGridView dgv = dgvList;
+                DataGridView dgv = dgvPlanner;
 
                 e.Control.KeyPress -= new KeyPressEventHandler(Column1_KeyPress);
                 e.Control.KeyPress -= new KeyPressEventHandler(Column2_KeyPress);
@@ -1463,7 +1600,7 @@ namespace FactoryManagementSoftware.UI
         {
             bool productionNeeded = false;
 
-            DataTable dt = (DataTable)dgvList.DataSource;
+            DataTable dt = (DataTable)dgvPlanner.DataSource;
 
             DataTable dt_Product = NewStockAlertTable();
 
@@ -1540,7 +1677,7 @@ namespace FactoryManagementSoftware.UI
 
         private void UpdateBalAfterDelivery()
         {
-            DataTable dt = (DataTable)dgvList.DataSource;
+            DataTable dt = (DataTable)dgvPlanner.DataSource;
 
             int rowIndex = 0;
             int TotalAssemblyNeededInBags = 0;
@@ -1622,30 +1759,30 @@ namespace FactoryManagementSoftware.UI
 
                     if (stockInPcs < 0)
                     {
-                        dgvList.Rows[rowIndex].Cells[header_Stock].Style.ForeColor = Color.Red;
-                        dgvList.Rows[rowIndex - 1].Cells[header_Stock].Style.ForeColor = Color.Red;
+                        dgvPlanner.Rows[rowIndex].Cells[header_Stock].Style.ForeColor = Color.Red;
+                        dgvPlanner.Rows[rowIndex - 1].Cells[header_Stock].Style.ForeColor = Color.Red;
 
                     }
                    
                     if (bal_Pcs < 0)
                     {
-                        if (dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Black)
+                        if (dgvPlanner.Rows[rowIndex].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Black)
                         {
                             toAssemblyProductQty++;
                         }
 
-                        dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
+                        dgvPlanner.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
                         TotalAssemblyNeededInBags += bal_Pcs / pcsPerBag;
                         TotalAssemblyNeededInPcs += bal_Pcs;
                     }
                     else
                     {
-                        if (dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Red)
+                        if (dgvPlanner.Rows[rowIndex].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Red)
                         {
                             toAssemblyProductQty--;
                         }
 
-                        dgvList.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Black;
+                        dgvPlanner.Rows[rowIndex].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Black;
 
                     }
                 }
@@ -1662,7 +1799,7 @@ namespace FactoryManagementSoftware.UI
 
         private void UpdateBalAfterDelivery(int row)
         {
-            DataTable dt = (DataTable)dgvList.DataSource;
+            DataTable dt = (DataTable)dgvPlanner.DataSource;
 
             int pcsPerBag = int.TryParse(dt.Rows[row][header_QtyPerBag].ToString(), out pcsPerBag)? pcsPerBag : 1;
             int stockInPcs = int.TryParse(dt.Rows[row][header_StockPcs].ToString(), out stockInPcs) ? stockInPcs : 0;
@@ -1707,24 +1844,24 @@ namespace FactoryManagementSoftware.UI
             {
                 //Color test = dgvList.Rows[row].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor;
 
-                if (dgvList.Rows[row].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Black)
+                if (dgvPlanner.Rows[row].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Black)
                 {
                     toAssemblyProductQty ++;
                 }
 
-                dgvList.Rows[row].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
+                dgvPlanner.Rows[row].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Red;
                 TotalAssemblyNeededInBags += balInPcs / pcsPerBag;
                 TotalAssemblyNeededInPcs += balInPcs;
 
             }
             else
             {
-                if(dgvList.Rows[row].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Red)
+                if(dgvPlanner.Rows[row].Cells[header_BalAfterDelivery].InheritedStyle.ForeColor == Color.Red)
                 {
                     toAssemblyProductQty --;
                 }
 
-                dgvList.Rows[row].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Black;
+                dgvPlanner.Rows[row].Cells[header_BalAfterDelivery].Style.ForeColor = Color.Black;
 
             }
 
@@ -1736,7 +1873,7 @@ namespace FactoryManagementSoftware.UI
         private void dgvList_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             //compare old value with new value
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
             int rowIndex = e.RowIndex;
             int colIndex = e.ColumnIndex;
 
@@ -3311,7 +3448,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (Loaded)
             {
-                LoadPOList();
+                RefreshPlannerList();
             }
         }
 
@@ -3320,7 +3457,7 @@ namespace FactoryManagementSoftware.UI
 
             if (Loaded)
             {
-                LoadPOList();
+                RefreshPlannerList();
             }
         }
 
@@ -3345,7 +3482,7 @@ namespace FactoryManagementSoftware.UI
         {
             if (Loaded)
             {
-                LoadPOList();
+                RefreshPlannerList();
             }
         }
 
@@ -3395,7 +3532,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvList_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
 
             if (e.RowIndex != -1)
             {
@@ -3415,7 +3552,7 @@ namespace FactoryManagementSoftware.UI
 
             int colIndex = e.ColumnIndex;
 
-            if((fillStatus == text_SelectCol || fillStatus == text_FillIn) && dgvList.SelectedColumns.Count > 0)
+            if((fillStatus == text_SelectCol || fillStatus == text_FillIn) && dgvPlanner.SelectedColumns.Count > 0)
             {
                 dgv.EnableHeadersVisualStyles = false;
 
@@ -3460,7 +3597,7 @@ namespace FactoryManagementSoftware.UI
 
             string DOStatus = DO_STATUS;
 
-            if ((DOStatus == text_SelectCol || DOStatus == text_OpenDO) && dgvList.SelectedColumns.Count > 0)
+            if ((DOStatus == text_SelectCol || DOStatus == text_OpenDO) && dgvPlanner.SelectedColumns.Count > 0)
             {
                 dgv.EnableHeadersVisualStyles = false;
 
@@ -3532,7 +3669,7 @@ namespace FactoryManagementSoftware.UI
 
                     if(frmSBBPOList.DOOpened)
                     {
-                        LoadPOList();
+                        RefreshPlannerList();
                     }
 
                 }
@@ -3613,7 +3750,7 @@ namespace FactoryManagementSoftware.UI
 
         private void lblFillSettingReset_Click(object sender, EventArgs e)
         {
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
 
             dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
             dgv.EnableHeadersVisualStyles = true;
@@ -3633,7 +3770,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(e.RowIndex == -1)
             {
-                DataGridView dgv = dgvList;
+                DataGridView dgv = dgvPlanner;
                 int col = e.ColumnIndex;
 
                 //dgv.CurrentCell = dgv.Rows[1].Cells[col];
@@ -3660,7 +3797,7 @@ namespace FactoryManagementSoftware.UI
         private bool CheckIfWithinSelectedCell(int rowIndex, int colIndex)
         {
             int minSelectedCol = -1, maxSelectedCol = -1, minSelectedRow = -1, maxSelectedRow = -1;
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
 
             if(dgv.CurrentCell != null)
             {
@@ -3728,7 +3865,7 @@ namespace FactoryManagementSoftware.UI
 
         private bool CheckIfValidCellSelected()
         {
-            DataGridView dgv = dgvList;
+            DataGridView dgv = dgvPlanner;
 
             if (dgv.CurrentCell != null)
             {
@@ -3768,7 +3905,7 @@ namespace FactoryManagementSoftware.UI
             try
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
-                DataGridView dgv = dgvList;
+                DataGridView dgv = dgvPlanner;
 
                 
                 //handle the row selection on right click
@@ -4114,7 +4251,7 @@ namespace FactoryManagementSoftware.UI
             {
                 Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                DataGridView dgv = dgvList;
+                DataGridView dgv = dgvPlanner;
 
                 int rowIndex = dgv.CurrentCell.RowIndex;
                 int colIndex = dgv.CurrentCell.ColumnIndex;
@@ -4203,7 +4340,7 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvList_MouseClick(object sender, MouseEventArgs e)
         {
-            CalculateTotalBag(dgvList);
+            CalculateTotalBag(dgvPlanner);
         }
 
         private DataTable GetToAssemblyList()
@@ -4212,7 +4349,7 @@ namespace FactoryManagementSoftware.UI
 
            
 
-            DataTable dt = (DataTable)dgvList.DataSource;
+            DataTable dt = (DataTable)dgvPlanner.DataSource;
 
             int index = 1;
             foreach(DataRow row in dt.Rows)
@@ -4267,7 +4404,8 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadSBBCustomerList(ComboBox cmb)
         {
-            DataTable dt = dalSPP.CustomerWithoutRemovedDataSelect();
+            Loaded = false;
+            DataTable dt = dalSPP.CustomerWithoutRemovedDataSelect();//711ms
 
             //DataTable locationTable = dt.DefaultView.ToTable(true, dalSPP.FullName);
 
@@ -4283,10 +4421,14 @@ namespace FactoryManagementSoftware.UI
 
             cmb.DataSource = dt;
             cmb.DisplayMember = dalSPP.ShortName;
+            Loaded = true;
+
         }
 
         private void LoadCustomerList()
         {
+            Loaded = false;
+
             string customerType = cmbCustomerType.Text;
 
             cmbCustomer.DataSource = null;
@@ -4294,7 +4436,7 @@ namespace FactoryManagementSoftware.UI
             if (customerType == text.SBB_BrandName)
             {
                 LoadSBBCustomerList(cmbCustomer);
-            }
+            }//4093ms
             else if (customerType == text.OEM_BrandName)
             {
                 bool MainCustomerOnly = false;
@@ -4312,6 +4454,9 @@ namespace FactoryManagementSoftware.UI
 
                 cmbCustomer.Text = "ALL";
             }
+
+            Loaded = true;
+
         }
         private void cmbBrand_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -4323,7 +4468,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmPOPlanner_Shown(object sender, EventArgs e)
         {
-            LoadCustomerList();
+            LoadCustomerList();//620ms
 
             //habit settings auto-load
             //preload data
@@ -4331,7 +4476,7 @@ namespace FactoryManagementSoftware.UI
             //press load button to load list
 
             //auto load list
-            LoadPOList();
+            RefreshPlannerList();
         }
 
         private void cmbCustomer_SelectedIndexChanged(object sender, EventArgs e)
@@ -4341,7 +4486,7 @@ namespace FactoryManagementSoftware.UI
 
         private void LoadPO_Click(object sender, EventArgs e)
         {
-            LoadPOList();
+            RefreshPlannerList();
         }
 
         private void btnFilter_Click(object sender, EventArgs e)
@@ -4351,12 +4496,37 @@ namespace FactoryManagementSoftware.UI
 
         private void btnFilterApply_Click(object sender, EventArgs e)
         {
-            LoadPOList();
+            RefreshPlannerList();
         }
 
         private void dgvList_CellContentClick_3(object sender, DataGridViewCellEventArgs e)
         {
 
+        }
+
+        private void cmbCustomer_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            if(Loaded)
+            {
+                if(MASTER_PLANNER_LIST == null)
+                {
+                    dgvPlanner.DataSource = null;
+                }
+                else
+                {
+                    //proceed to filter
+                    FilterDataByCustomer();
+
+                }
+            }
+        }
+
+        private void cmbCustomerType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if(Loaded)
+            {
+                dgvPlanner.DataSource = null;
+            }
         }
     }
 }

@@ -169,12 +169,12 @@
             this.tableLayoutPanel14.Controls.Add(this.gunaGroupBox2, 1, 0);
             this.tableLayoutPanel14.Controls.Add(this.btnFilterApply, 5, 0);
             this.tableLayoutPanel14.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 17);
+            this.tableLayoutPanel14.Location = new System.Drawing.Point(3, 14);
             this.tableLayoutPanel14.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel14.Name = "tableLayoutPanel14";
             this.tableLayoutPanel14.RowCount = 1;
             this.tableLayoutPanel14.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel14.Size = new System.Drawing.Size(1302, 230);
+            this.tableLayoutPanel14.Size = new System.Drawing.Size(1302, 233);
             this.tableLayoutPanel14.TabIndex = 263;
             // 
             // gunaGroupBox4
@@ -190,7 +190,7 @@
             this.gunaGroupBox4.Name = "gunaGroupBox4";
             this.gunaGroupBox4.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox4.Radius = 3;
-            this.gunaGroupBox4.Size = new System.Drawing.Size(214, 224);
+            this.gunaGroupBox4.Size = new System.Drawing.Size(214, 227);
             this.gunaGroupBox4.TabIndex = 262;
             this.gunaGroupBox4.Text = "D/O Type & Status";
             this.gunaGroupBox4.TextLocation = new System.Drawing.Point(10, 8);
@@ -210,7 +210,7 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel13.Size = new System.Drawing.Size(208, 188);
+            this.tableLayoutPanel13.Size = new System.Drawing.Size(208, 191);
             this.tableLayoutPanel13.TabIndex = 258;
             // 
             // cmbDOType
@@ -233,7 +233,7 @@
             this.cmbDOType.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbDOType.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbDOType.Radius = 3;
-            this.cmbDOType.Size = new System.Drawing.Size(198, 26);
+            this.cmbDOType.Size = new System.Drawing.Size(198, 23);
             this.cmbDOType.StartIndex = 0;
             this.cmbDOType.TabIndex = 253;
             // 
@@ -255,7 +255,7 @@
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel15.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel15.Size = new System.Drawing.Size(208, 142);
+            this.tableLayoutPanel15.Size = new System.Drawing.Size(208, 145);
             this.tableLayoutPanel15.TabIndex = 263;
             // 
             // cbDraftDO
@@ -268,7 +268,7 @@
             this.cbDraftDO.Location = new System.Drawing.Point(127, 5);
             this.cbDraftDO.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
             this.cbDraftDO.Name = "cbDraftDO";
-            this.cbDraftDO.Size = new System.Drawing.Size(59, 21);
+            this.cbDraftDO.Size = new System.Drawing.Size(52, 17);
             this.cbDraftDO.TabIndex = 247;
             this.cbDraftDO.Text = "Draft";
             this.cbDraftDO.UseVisualStyleBackColor = true;
@@ -282,7 +282,7 @@
             this.cbCompleted.Location = new System.Drawing.Point(10, 45);
             this.cbCompleted.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
             this.cbCompleted.Name = "cbCompleted";
-            this.cbCompleted.Size = new System.Drawing.Size(94, 21);
+            this.cbCompleted.Size = new System.Drawing.Size(82, 17);
             this.cbCompleted.TabIndex = 247;
             this.cbCompleted.Text = "Completed";
             this.cbCompleted.UseVisualStyleBackColor = true;
@@ -297,7 +297,7 @@
             this.cbInProgress.Location = new System.Drawing.Point(10, 5);
             this.cbInProgress.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
             this.cbInProgress.Name = "cbInProgress";
-            this.cbInProgress.Size = new System.Drawing.Size(97, 21);
+            this.cbInProgress.Size = new System.Drawing.Size(84, 17);
             this.cbInProgress.TabIndex = 246;
             this.cbInProgress.Text = "In progress";
             this.cbInProgress.UseVisualStyleBackColor = true;
@@ -310,7 +310,7 @@
             this.cbCancelled.Location = new System.Drawing.Point(10, 85);
             this.cbCancelled.Margin = new System.Windows.Forms.Padding(10, 5, 5, 5);
             this.cbCancelled.Name = "cbCancelled";
-            this.cbCancelled.Size = new System.Drawing.Size(86, 21);
+            this.cbCancelled.Size = new System.Drawing.Size(76, 17);
             this.cbCancelled.TabIndex = 248;
             this.cbCancelled.Text = "Cancelled";
             this.cbCancelled.UseVisualStyleBackColor = true;
@@ -329,7 +329,7 @@
             this.gunaGroupBox3.Name = "gunaGroupBox3";
             this.gunaGroupBox3.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox3.Radius = 3;
-            this.gunaGroupBox3.Size = new System.Drawing.Size(344, 224);
+            this.gunaGroupBox3.Size = new System.Drawing.Size(344, 227);
             this.gunaGroupBox3.TabIndex = 260;
             this.gunaGroupBox3.Text = "Search";
             this.gunaGroupBox3.TextLocation = new System.Drawing.Point(10, 8);
@@ -345,7 +345,7 @@
             this.tableLayoutPanel9.RowCount = 2;
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(338, 188);
+            this.tableLayoutPanel9.Size = new System.Drawing.Size(338, 191);
             this.tableLayoutPanel9.TabIndex = 258;
             // 
             // gunaGroupBox1
@@ -453,7 +453,7 @@
             this.gunaGroupBox5.Name = "gunaGroupBox5";
             this.gunaGroupBox5.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox5.Radius = 3;
-            this.gunaGroupBox5.Size = new System.Drawing.Size(214, 224);
+            this.gunaGroupBox5.Size = new System.Drawing.Size(214, 227);
             this.gunaGroupBox5.TabIndex = 261;
             this.gunaGroupBox5.Text = "Date Range";
             this.gunaGroupBox5.TextLocation = new System.Drawing.Point(10, 8);
@@ -472,7 +472,7 @@
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 53F));
             this.tableLayoutPanel8.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel8.Size = new System.Drawing.Size(208, 188);
+            this.tableLayoutPanel8.Size = new System.Drawing.Size(208, 191);
             this.tableLayoutPanel8.TabIndex = 258;
             // 
             // tableLayoutPanel12
@@ -498,10 +498,10 @@
             this.lblRangeEnd.AutoSize = true;
             this.lblRangeEnd.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRangeEnd.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRangeEnd.Location = new System.Drawing.Point(13, 13);
+            this.lblRangeEnd.Location = new System.Drawing.Point(16, 15);
             this.lblRangeEnd.Margin = new System.Windows.Forms.Padding(5);
             this.lblRangeEnd.Name = "lblRangeEnd";
-            this.lblRangeEnd.Size = new System.Drawing.Size(30, 17);
+            this.lblRangeEnd.Size = new System.Drawing.Size(27, 13);
             this.lblRangeEnd.TabIndex = 243;
             this.lblRangeEnd.Text = "End";
             this.lblRangeEnd.Visible = false;
@@ -557,9 +557,9 @@
             this.cbCustomPeriod.AutoSize = true;
             this.cbCustomPeriod.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbCustomPeriod.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbCustomPeriod.Location = new System.Drawing.Point(98, 7);
+            this.cbCustomPeriod.Location = new System.Drawing.Point(98, 9);
             this.cbCustomPeriod.Name = "cbCustomPeriod";
-            this.cbCustomPeriod.Size = new System.Drawing.Size(74, 21);
+            this.cbCustomPeriod.Size = new System.Drawing.Size(65, 17);
             this.cbCustomPeriod.TabIndex = 239;
             this.cbCustomPeriod.Text = "Custom";
             this.cbCustomPeriod.UseVisualStyleBackColor = true;
@@ -573,10 +573,10 @@
             this.cbAllTimeRange.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbAllTimeRange.Font = new System.Drawing.Font("Segoe UI", 7.8F);
             this.cbAllTimeRange.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbAllTimeRange.Location = new System.Drawing.Point(10, 7);
+            this.cbAllTimeRange.Location = new System.Drawing.Point(10, 9);
             this.cbAllTimeRange.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
             this.cbAllTimeRange.Name = "cbAllTimeRange";
-            this.cbAllTimeRange.Size = new System.Drawing.Size(76, 21);
+            this.cbAllTimeRange.Size = new System.Drawing.Size(66, 17);
             this.cbAllTimeRange.TabIndex = 238;
             this.cbAllTimeRange.Text = "All Time";
             this.cbAllTimeRange.UseVisualStyleBackColor = true;
@@ -634,10 +634,10 @@
             this.lblRangeStart.AutoSize = true;
             this.lblRangeStart.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblRangeStart.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblRangeStart.Location = new System.Drawing.Point(8, 13);
+            this.lblRangeStart.Location = new System.Drawing.Point(12, 15);
             this.lblRangeStart.Margin = new System.Windows.Forms.Padding(5);
             this.lblRangeStart.Name = "lblRangeStart";
-            this.lblRangeStart.Size = new System.Drawing.Size(35, 17);
+            this.lblRangeStart.Size = new System.Drawing.Size(31, 13);
             this.lblRangeStart.TabIndex = 242;
             this.lblRangeStart.Text = "Start";
             this.lblRangeStart.Visible = false;
@@ -656,7 +656,7 @@
             this.gunaGroupBox2.Name = "gunaGroupBox2";
             this.gunaGroupBox2.Padding = new System.Windows.Forms.Padding(3, 33, 3, 3);
             this.gunaGroupBox2.Radius = 3;
-            this.gunaGroupBox2.Size = new System.Drawing.Size(294, 224);
+            this.gunaGroupBox2.Size = new System.Drawing.Size(294, 227);
             this.gunaGroupBox2.TabIndex = 255;
             this.gunaGroupBox2.Text = "Location";
             this.gunaGroupBox2.TextLocation = new System.Drawing.Point(10, 8);
@@ -681,7 +681,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(288, 188);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(288, 191);
             this.tableLayoutPanel7.TabIndex = 258;
             // 
             // txtTo
@@ -698,7 +698,7 @@
             this.txtTo.FocusedForeColor = System.Drawing.SystemColors.ControlText;
             this.txtTo.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Italic);
             this.txtTo.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.txtTo.Location = new System.Drawing.Point(55, 140);
+            this.txtTo.Location = new System.Drawing.Point(55, 141);
             this.txtTo.Margin = new System.Windows.Forms.Padding(5);
             this.txtTo.MaximumSize = new System.Drawing.Size(1000, 33);
             this.txtTo.Name = "txtTo";
@@ -717,10 +717,10 @@
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label2.Location = new System.Drawing.Point(23, 108);
+            this.label2.Location = new System.Drawing.Point(26, 111);
             this.label2.Margin = new System.Windows.Forms.Padding(5);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(22, 17);
+            this.label2.Size = new System.Drawing.Size(19, 13);
             this.label2.TabIndex = 244;
             this.label2.Text = "To";
             // 
@@ -739,13 +739,13 @@
             this.cmbCustomer.FormattingEnabled = true;
             this.cmbCustomer.Items.AddRange(new object[] {
             "All"});
-            this.cmbCustomer.Location = new System.Drawing.Point(55, 104);
+            this.cmbCustomer.Location = new System.Drawing.Point(55, 105);
             this.cmbCustomer.Margin = new System.Windows.Forms.Padding(5);
             this.cmbCustomer.Name = "cmbCustomer";
             this.cmbCustomer.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cmbCustomer.OnHoverItemForeColor = System.Drawing.Color.White;
             this.cmbCustomer.Radius = 3;
-            this.cmbCustomer.Size = new System.Drawing.Size(228, 26);
+            this.cmbCustomer.Size = new System.Drawing.Size(228, 23);
             this.cmbCustomer.StartIndex = 0;
             this.cmbCustomer.TabIndex = 251;
             // 
@@ -755,10 +755,10 @@
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.label1.Location = new System.Drawing.Point(7, 9);
+            this.label1.Location = new System.Drawing.Point(12, 11);
             this.label1.Margin = new System.Windows.Forms.Padding(5);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(38, 17);
+            this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 243;
             this.label1.Text = "From";
             // 
@@ -810,7 +810,7 @@
             this.gunaComboBox1.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.gunaComboBox1.OnHoverItemForeColor = System.Drawing.Color.White;
             this.gunaComboBox1.Radius = 3;
-            this.gunaComboBox1.Size = new System.Drawing.Size(228, 26);
+            this.gunaComboBox1.Size = new System.Drawing.Size(228, 23);
             this.gunaComboBox1.StartIndex = 0;
             this.gunaComboBox1.TabIndex = 252;
             // 
@@ -831,7 +831,7 @@
             this.btnFilterApply.ForeColor = System.Drawing.Color.White;
             this.btnFilterApply.Image = null;
             this.btnFilterApply.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilterApply.Location = new System.Drawing.Point(1105, 185);
+            this.btnFilterApply.Location = new System.Drawing.Point(1105, 188);
             this.btnFilterApply.Margin = new System.Windows.Forms.Padding(5);
             this.btnFilterApply.Name = "btnFilterApply";
             this.btnFilterApply.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
@@ -1094,10 +1094,10 @@
             this.lblMainList.AutoSize = true;
             this.lblMainList.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblMainList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblMainList.Location = new System.Drawing.Point(5, 22);
+            this.lblMainList.Location = new System.Drawing.Point(5, 26);
             this.lblMainList.Margin = new System.Windows.Forms.Padding(5);
             this.lblMainList.Name = "lblMainList";
-            this.lblMainList.Size = new System.Drawing.Size(72, 23);
+            this.lblMainList.Size = new System.Drawing.Size(60, 19);
             this.lblMainList.TabIndex = 166;
             this.lblMainList.Text = "D/O List";
             // 
@@ -1244,10 +1244,10 @@
             this.lblSubList.AutoSize = true;
             this.lblSubList.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.lblSubList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblSubList.Location = new System.Drawing.Point(5, 22);
+            this.lblSubList.Location = new System.Drawing.Point(5, 26);
             this.lblSubList.Margin = new System.Windows.Forms.Padding(5);
             this.lblSubList.Name = "lblSubList";
-            this.lblSubList.Size = new System.Drawing.Size(112, 23);
+            this.lblSubList.Size = new System.Drawing.Size(92, 19);
             this.lblSubList.TabIndex = 157;
             this.lblSubList.Text = "D/O Item List";
             // 
@@ -1282,7 +1282,7 @@
             // 
             // frmDOManagement
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(245)))), ((int)(((byte)(247)))), ((int)(((byte)(255)))));
             this.ClientSize = new System.Drawing.Size(1348, 703);

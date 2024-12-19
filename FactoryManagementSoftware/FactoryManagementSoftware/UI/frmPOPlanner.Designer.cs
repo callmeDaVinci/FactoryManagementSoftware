@@ -28,11 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmPOPlanner));
-            this.dgvList = new System.Windows.Forms.DataGridView();
+            this.dgvPlanner = new System.Windows.Forms.DataGridView();
             this.cbMergePO = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.lblFillSettingReset = new System.Windows.Forms.Label();
@@ -40,37 +40,36 @@
             this.label3 = new System.Windows.Forms.Label();
             this.lblAssemblyNeeded = new System.Windows.Forms.Label();
             this.lblProductionAlert = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.Button();
             this.lblTotalBag = new System.Windows.Forms.Label();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
             this.tlpPoList = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new System.Windows.Forms.Panel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGroupBox1 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel16 = new System.Windows.Forms.TableLayoutPanel();
             this.txtSearch = new Guna.UI.WinForms.GunaTextBox();
             this.gunaGradientButton1 = new Guna.UI.WinForms.GunaGradientButton();
-            this.btnUpdate = new Guna.UI.WinForms.GunaGradientButton();
-            this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblMainList = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.gunaGradientButton2 = new Guna.UI.WinForms.GunaGradientButton();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.cmbCustomerType = new Guna.UI.WinForms.GunaComboBox();
-            this.cmbCustomer = new Guna.UI.WinForms.GunaComboBox();
+            this.btnUpdate = new Guna.UI.WinForms.GunaGradientButton();
             this.btnFilter = new Guna.UI.WinForms.GunaGradientButton();
             this.btnLoadPO = new Guna.UI.WinForms.GunaGradientButton();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbCustomer = new Guna.UI.WinForms.GunaComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.cmbCustomerType = new Guna.UI.WinForms.GunaComboBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.gbFilter = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel15 = new System.Windows.Forms.TableLayoutPanel();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.cmbEditUnit = new Guna.UI.WinForms.GunaComboBox();
             this.gunaGroupBox3 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.gunaGroupBox5 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
@@ -86,21 +85,22 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbPOSortBy = new Guna.UI.WinForms.GunaComboBox();
             this.cmbProductSortBy = new Guna.UI.WinForms.GunaComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dgvList)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPlanner)).BeginInit();
             this.tableLayoutPanel6.SuspendLayout();
             this.tlpPoList.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.gunaGroupBox1.SuspendLayout();
             this.tableLayoutPanel16.SuspendLayout();
-            this.tableLayoutPanel3.SuspendLayout();
-            this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel5.SuspendLayout();
             this.gbFilter.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
             this.tableLayoutPanel15.SuspendLayout();
             this.gunaGroupBox4.SuspendLayout();
             this.tableLayoutPanel13.SuspendLayout();
             this.gunaGroupBox3.SuspendLayout();
+            this.tableLayoutPanel9.SuspendLayout();
             this.gunaGroupBox5.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
@@ -110,67 +110,65 @@
             this.tableLayoutPanel7.SuspendLayout();
             this.SuspendLayout();
             // 
-            // dgvList
+            // dgvPlanner
             // 
-            this.dgvList.AllowUserToAddRows = false;
-            this.dgvList.AllowUserToDeleteRows = false;
-            this.dgvList.AllowUserToOrderColumns = true;
-            this.dgvList.AllowUserToResizeColumns = false;
-            this.dgvList.AllowUserToResizeRows = false;
-            this.dgvList.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.dgvList.BackgroundColor = System.Drawing.Color.WhiteSmoke;
-            this.dgvList.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
-            this.dgvList.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvList.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
-            this.dgvList.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvList.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle8.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle8.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle8.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle8.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle8.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvList.DefaultCellStyle = dataGridViewCellStyle8;
-            this.dgvList.GridColor = System.Drawing.Color.LightGray;
-            this.dgvList.Location = new System.Drawing.Point(3, 361);
-            this.dgvList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
-            this.dgvList.Name = "dgvList";
-            this.dgvList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvList.RowHeadersDefaultCellStyle = dataGridViewCellStyle9;
-            this.dgvList.RowHeadersVisible = false;
-            this.dgvList.RowHeadersWidth = 51;
-            this.dgvList.RowTemplate.Height = 50;
-            this.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.dgvList.Size = new System.Drawing.Size(1308, 319);
-            this.dgvList.TabIndex = 179;
-            this.dgvList.MultiSelectChanged += new System.EventHandler(this.dgvList_MultiSelectChanged);
-            this.dgvList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellClick);
-            this.dgvList.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellContentClick_3);
-            this.dgvList.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellEndEdit);
-            this.dgvList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_CellMouseDown);
-            this.dgvList.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellValueChanged);
-            this.dgvList.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnAdded);
-            this.dgvList.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnDisplayIndexChanged);
-            this.dgvList.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_ColumnHeaderMouseClick);
-            this.dgvList.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvList_EditingControlShowing);
-            this.dgvList.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvList_MouseClick);
+            this.dgvPlanner.AllowUserToAddRows = false;
+            this.dgvPlanner.AllowUserToDeleteRows = false;
+            this.dgvPlanner.AllowUserToOrderColumns = true;
+            this.dgvPlanner.AllowUserToResizeColumns = false;
+            this.dgvPlanner.AllowUserToResizeRows = false;
+            this.dgvPlanner.BackgroundColor = System.Drawing.Color.WhiteSmoke;
+            this.dgvPlanner.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleVertical;
+            this.dgvPlanner.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPlanner.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            this.dgvPlanner.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvPlanner.Cursor = System.Windows.Forms.Cursors.Hand;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvPlanner.DefaultCellStyle = dataGridViewCellStyle2;
+            this.dgvPlanner.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dgvPlanner.GridColor = System.Drawing.Color.LightGray;
+            this.dgvPlanner.Location = new System.Drawing.Point(3, 306);
+            this.dgvPlanner.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
+            this.dgvPlanner.Name = "dgvPlanner";
+            this.dgvPlanner.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvPlanner.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            this.dgvPlanner.RowHeadersVisible = false;
+            this.dgvPlanner.RowHeadersWidth = 51;
+            this.dgvPlanner.RowTemplate.Height = 50;
+            this.dgvPlanner.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.dgvPlanner.Size = new System.Drawing.Size(1308, 374);
+            this.dgvPlanner.TabIndex = 179;
+            this.dgvPlanner.MultiSelectChanged += new System.EventHandler(this.dgvList_MultiSelectChanged);
+            this.dgvPlanner.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellClick);
+            this.dgvPlanner.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellContentClick_3);
+            this.dgvPlanner.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellEndEdit);
+            this.dgvPlanner.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_CellMouseDown);
+            this.dgvPlanner.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvList_CellValueChanged);
+            this.dgvPlanner.ColumnAdded += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnAdded);
+            this.dgvPlanner.ColumnDisplayIndexChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.dgvList_ColumnDisplayIndexChanged);
+            this.dgvPlanner.ColumnHeaderMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvList_ColumnHeaderMouseClick);
+            this.dgvPlanner.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvList_EditingControlShowing);
+            this.dgvPlanner.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvList_MouseClick);
             // 
             // cbMergePO
             // 
@@ -238,14 +236,16 @@
             // 
             // lblAssemblyNeeded
             // 
-            this.lblAssemblyNeeded.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblAssemblyNeeded.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblAssemblyNeeded.AutoSize = true;
             this.lblAssemblyNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblAssemblyNeeded.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
             this.lblAssemblyNeeded.ForeColor = System.Drawing.Color.Red;
-            this.lblAssemblyNeeded.Location = new System.Drawing.Point(3, 5);
+            this.lblAssemblyNeeded.Location = new System.Drawing.Point(3, 12);
+            this.lblAssemblyNeeded.Margin = new System.Windows.Forms.Padding(3);
             this.lblAssemblyNeeded.Name = "lblAssemblyNeeded";
-            this.lblAssemblyNeeded.Size = new System.Drawing.Size(121, 15);
+            this.lblAssemblyNeeded.Size = new System.Drawing.Size(144, 15);
             this.lblAssemblyNeeded.TabIndex = 188;
             this.lblAssemblyNeeded.Text = "ASSEMBLY NEEDED !!!";
             this.lblAssemblyNeeded.Visible = false;
@@ -253,43 +253,29 @@
             // 
             // lblProductionAlert
             // 
-            this.lblProductionAlert.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblProductionAlert.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lblProductionAlert.AutoSize = true;
             this.lblProductionAlert.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblProductionAlert.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
             this.lblProductionAlert.ForeColor = System.Drawing.Color.Red;
-            this.lblProductionAlert.Location = new System.Drawing.Point(3, 30);
+            this.lblProductionAlert.Location = new System.Drawing.Point(153, 12);
+            this.lblProductionAlert.Margin = new System.Windows.Forms.Padding(3);
             this.lblProductionAlert.Name = "lblProductionAlert";
-            this.lblProductionAlert.Size = new System.Drawing.Size(139, 15);
+            this.lblProductionAlert.Size = new System.Drawing.Size(144, 15);
             this.lblProductionAlert.TabIndex = 189;
             this.lblProductionAlert.Text = "PRODUCTION NEEDED !!!";
             this.lblProductionAlert.Visible = false;
             this.lblProductionAlert.Click += new System.EventHandler(this.lblProductionAlert_Click);
             // 
-            // btnRefresh
-            // 
-            this.btnRefresh.BackColor = System.Drawing.Color.Transparent;
-            this.btnRefresh.BackgroundImage = global::FactoryManagementSoftware.Properties.Resources.icons8_refresh_480;
-            this.btnRefresh.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.btnRefresh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRefresh.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRefresh.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRefresh.ForeColor = System.Drawing.Color.White;
-            this.btnRefresh.Location = new System.Drawing.Point(2, 2);
-            this.btnRefresh.Margin = new System.Windows.Forms.Padding(2);
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(45, 45);
-            this.btnRefresh.TabIndex = 190;
-            this.btnRefresh.UseVisualStyleBackColor = false;
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
-            // 
             // lblTotalBag
             // 
-            this.lblTotalBag.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.lblTotalBag.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalBag.AutoSize = true;
             this.lblTotalBag.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTotalBag.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.lblTotalBag.Location = new System.Drawing.Point(637, 17);
+            this.lblTotalBag.Location = new System.Drawing.Point(1160, 12);
+            this.lblTotalBag.Margin = new System.Windows.Forms.Padding(3);
             this.lblTotalBag.Name = "lblTotalBag";
             this.lblTotalBag.Size = new System.Drawing.Size(151, 15);
             this.lblTotalBag.TabIndex = 193;
@@ -312,7 +298,8 @@
             // 
             this.tlpPoList.ColumnCount = 1;
             this.tlpPoList.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tlpPoList.Controls.Add(this.dgvList, 0, 4);
+            this.tlpPoList.Controls.Add(this.panel1, 0, 2);
+            this.tlpPoList.Controls.Add(this.dgvPlanner, 0, 4);
             this.tlpPoList.Controls.Add(this.tableLayoutPanel4, 0, 3);
             this.tlpPoList.Controls.Add(this.tableLayoutPanel2, 0, 0);
             this.tlpPoList.Controls.Add(this.gbFilter, 0, 1);
@@ -321,38 +308,70 @@
             this.tlpPoList.Margin = new System.Windows.Forms.Padding(20);
             this.tlpPoList.Name = "tlpPoList";
             this.tlpPoList.RowCount = 5;
-            this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 80F));
+            this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 70F));
             this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 200F));
+            this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 5F));
             this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
-            this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 50F));
             this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tlpPoList.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpPoList.Size = new System.Drawing.Size(1314, 681);
             this.tlpPoList.TabIndex = 172;
             // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.Gainsboro;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 273);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1308, 1);
+            this.panel1.TabIndex = 195;
+            // 
             // tableLayoutPanel4
             // 
-            this.tableLayoutPanel4.ColumnCount = 6;
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 50F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 85F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 499F));
+            this.tableLayoutPanel4.ColumnCount = 3;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 150F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 149F));
-            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel4.Controls.Add(this.gunaGroupBox1, 2, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnUpdate, 5, 0);
-            this.tableLayoutPanel4.Controls.Add(this.tableLayoutPanel3, 4, 0);
-            this.tableLayoutPanel4.Controls.Add(this.btnRefresh, 0, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblMainList, 1, 0);
-            this.tableLayoutPanel4.Controls.Add(this.lblTotalBag, 3, 0);
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.tableLayoutPanel4.Controls.Add(this.lblProductionAlert, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblAssemblyNeeded, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.lblTotalBag, 2, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 310);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 275);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(1314, 50);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(1314, 30);
             this.tableLayoutPanel4.TabIndex = 167;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.ColumnCount = 8;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 250F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
+            this.tableLayoutPanel2.Controls.Add(this.gunaGroupBox1, 4, 0);
+            this.tableLayoutPanel2.Controls.Add(this.gunaGradientButton2, 7, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnUpdate, 6, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnFilter, 3, 0);
+            this.tableLayoutPanel2.Controls.Add(this.btnLoadPO, 2, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel5, 0, 0);
+            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(1314, 70);
+            this.tableLayoutPanel2.TabIndex = 160;
             // 
             // gunaGroupBox1
             // 
@@ -363,12 +382,12 @@
             this.gunaGroupBox1.Controls.Add(this.tableLayoutPanel16);
             this.gunaGroupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gunaGroupBox1.LineColor = System.Drawing.Color.Transparent;
-            this.gunaGroupBox1.Location = new System.Drawing.Point(140, 5);
-            this.gunaGroupBox1.Margin = new System.Windows.Forms.Padding(5);
+            this.gunaGroupBox1.Location = new System.Drawing.Point(635, 26);
+            this.gunaGroupBox1.Margin = new System.Windows.Forms.Padding(5, 26, 5, 5);
             this.gunaGroupBox1.Name = "gunaGroupBox1";
             this.gunaGroupBox1.Padding = new System.Windows.Forms.Padding(3);
             this.gunaGroupBox1.Radius = 3;
-            this.gunaGroupBox1.Size = new System.Drawing.Size(489, 40);
+            this.gunaGroupBox1.Size = new System.Drawing.Size(340, 39);
             this.gunaGroupBox1.TabIndex = 250;
             this.gunaGroupBox1.TextLocation = new System.Drawing.Point(10, 8);
             // 
@@ -385,7 +404,7 @@
             this.tableLayoutPanel16.Name = "tableLayoutPanel16";
             this.tableLayoutPanel16.RowCount = 1;
             this.tableLayoutPanel16.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel16.Size = new System.Drawing.Size(483, 34);
+            this.tableLayoutPanel16.Size = new System.Drawing.Size(334, 33);
             this.tableLayoutPanel16.TabIndex = 0;
             // 
             // txtSearch
@@ -408,7 +427,7 @@
             this.txtSearch.PasswordChar = '\0';
             this.txtSearch.Radius = 3;
             this.txtSearch.SelectedText = "";
-            this.txtSearch.Size = new System.Drawing.Size(427, 28);
+            this.txtSearch.Size = new System.Drawing.Size(278, 28);
             this.txtSearch.TabIndex = 245;
             this.txtSearch.Text = "Search (PO Number Or Item Name/Code)";
             // 
@@ -438,15 +457,46 @@
             this.gunaGradientButton1.OnHoverImage = null;
             this.gunaGradientButton1.OnPressedColor = System.Drawing.Color.Black;
             this.gunaGradientButton1.Radius = 2;
-            this.gunaGradientButton1.Size = new System.Drawing.Size(43, 24);
+            this.gunaGradientButton1.Size = new System.Drawing.Size(43, 23);
             this.gunaGradientButton1.TabIndex = 249;
             this.gunaGradientButton1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // gunaGradientButton2
+            // 
+            this.gunaGradientButton2.AnimationHoverSpeed = 0.07F;
+            this.gunaGradientButton2.AnimationSpeed = 0.03F;
+            this.gunaGradientButton2.BackColor = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BaseColor1 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BaseColor2 = System.Drawing.Color.Transparent;
+            this.gunaGradientButton2.BorderColor = System.Drawing.Color.Black;
+            this.gunaGradientButton2.BorderSize = 1;
+            this.gunaGradientButton2.DialogResult = System.Windows.Forms.DialogResult.None;
+            this.gunaGradientButton2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.gunaGradientButton2.FocusedColor = System.Drawing.Color.Empty;
+            this.gunaGradientButton2.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.gunaGradientButton2.ForeColor = System.Drawing.Color.Black;
+            this.gunaGradientButton2.Image = null;
+            this.gunaGradientButton2.ImageSize = new System.Drawing.Size(20, 20);
+            this.gunaGradientButton2.Location = new System.Drawing.Point(1179, 26);
+            this.gunaGradientButton2.Margin = new System.Windows.Forms.Padding(5, 26, 5, 4);
+            this.gunaGradientButton2.Name = "gunaGradientButton2";
+            this.gunaGradientButton2.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
+            this.gunaGradientButton2.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
+            this.gunaGradientButton2.OnHoverBorderColor = System.Drawing.Color.Black;
+            this.gunaGradientButton2.OnHoverForeColor = System.Drawing.Color.White;
+            this.gunaGradientButton2.OnHoverImage = null;
+            this.gunaGradientButton2.OnPressedColor = System.Drawing.Color.Black;
+            this.gunaGradientButton2.Radius = 3;
+            this.gunaGradientButton2.Size = new System.Drawing.Size(130, 40);
+            this.gunaGradientButton2.TabIndex = 231;
+            this.gunaGradientButton2.Text = "Add PO";
+            this.gunaGradientButton2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
             // btnUpdate
             // 
             this.btnUpdate.AnimationHoverSpeed = 0.07F;
             this.btnUpdate.AnimationSpeed = 0.03F;
-            this.btnUpdate.BackColor = System.Drawing.Color.White;
+            this.btnUpdate.BackColor = System.Drawing.Color.Transparent;
             this.btnUpdate.BaseColor1 = System.Drawing.Color.Transparent;
             this.btnUpdate.BaseColor2 = System.Drawing.Color.Transparent;
             this.btnUpdate.BorderColor = System.Drawing.Color.Blue;
@@ -458,7 +508,8 @@
             this.btnUpdate.ForeColor = System.Drawing.Color.Blue;
             this.btnUpdate.Image = null;
             this.btnUpdate.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnUpdate.Location = new System.Drawing.Point(1177, 3);
+            this.btnUpdate.Location = new System.Drawing.Point(1039, 26);
+            this.btnUpdate.Margin = new System.Windows.Forms.Padding(5, 26, 5, 4);
             this.btnUpdate.Name = "btnUpdate";
             this.btnUpdate.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnUpdate.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -467,177 +518,11 @@
             this.btnUpdate.OnHoverImage = null;
             this.btnUpdate.OnPressedColor = System.Drawing.Color.Black;
             this.btnUpdate.Radius = 3;
-            this.btnUpdate.Size = new System.Drawing.Size(134, 44);
+            this.btnUpdate.Size = new System.Drawing.Size(130, 40);
             this.btnUpdate.TabIndex = 230;
             this.btnUpdate.Text = "Save";
             this.btnUpdate.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
-            // 
-            // tableLayoutPanel3
-            // 
-            this.tableLayoutPanel3.ColumnCount = 1;
-            this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 300F));
-            this.tableLayoutPanel3.Controls.Add(this.lblProductionAlert, 0, 1);
-            this.tableLayoutPanel3.Controls.Add(this.lblAssemblyNeeded, 0, 0);
-            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(1025, 0);
-            this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel3.Name = "tableLayoutPanel3";
-            this.tableLayoutPanel3.RowCount = 2;
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 25F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(149, 50);
-            this.tableLayoutPanel3.TabIndex = 232;
-            // 
-            // lblMainList
-            // 
-            this.lblMainList.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.lblMainList.AutoSize = true;
-            this.lblMainList.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.lblMainList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblMainList.Location = new System.Drawing.Point(55, 13);
-            this.lblMainList.Margin = new System.Windows.Forms.Padding(5);
-            this.lblMainList.Name = "lblMainList";
-            this.lblMainList.Size = new System.Drawing.Size(68, 23);
-            this.lblMainList.TabIndex = 166;
-            this.lblMainList.Text = "Planner";
-            // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.ColumnCount = 5;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 350F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
-            this.tableLayoutPanel2.Controls.Add(this.gunaGradientButton2, 4, 0);
-            this.tableLayoutPanel2.Controls.Add(this.tableLayoutPanel1, 0, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnFilter, 2, 0);
-            this.tableLayoutPanel2.Controls.Add(this.btnLoadPO, 1, 0);
-            this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(1308, 74);
-            this.tableLayoutPanel2.TabIndex = 160;
-            // 
-            // gunaGradientButton2
-            // 
-            this.gunaGradientButton2.AnimationHoverSpeed = 0.07F;
-            this.gunaGradientButton2.AnimationSpeed = 0.03F;
-            this.gunaGradientButton2.BackColor = System.Drawing.Color.White;
-            this.gunaGradientButton2.BaseColor1 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BaseColor2 = System.Drawing.Color.Transparent;
-            this.gunaGradientButton2.BorderColor = System.Drawing.Color.Black;
-            this.gunaGradientButton2.BorderSize = 1;
-            this.gunaGradientButton2.DialogResult = System.Windows.Forms.DialogResult.None;
-            this.gunaGradientButton2.FocusedColor = System.Drawing.Color.Empty;
-            this.gunaGradientButton2.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.gunaGradientButton2.ForeColor = System.Drawing.Color.Black;
-            this.gunaGradientButton2.Image = null;
-            this.gunaGradientButton2.ImageSize = new System.Drawing.Size(20, 20);
-            this.gunaGradientButton2.Location = new System.Drawing.Point(1173, 25);
-            this.gunaGradientButton2.Margin = new System.Windows.Forms.Padding(5, 25, 5, 3);
-            this.gunaGradientButton2.Name = "gunaGradientButton2";
-            this.gunaGradientButton2.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
-            this.gunaGradientButton2.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
-            this.gunaGradientButton2.OnHoverBorderColor = System.Drawing.Color.Black;
-            this.gunaGradientButton2.OnHoverForeColor = System.Drawing.Color.White;
-            this.gunaGradientButton2.OnHoverImage = null;
-            this.gunaGradientButton2.OnPressedColor = System.Drawing.Color.Black;
-            this.gunaGradientButton2.Radius = 3;
-            this.gunaGradientButton2.Size = new System.Drawing.Size(130, 46);
-            this.gunaGradientButton2.TabIndex = 231;
-            this.gunaGradientButton2.Text = "Add PO";
-            this.gunaGradientButton2.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.ColumnCount = 2;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.label7, 1, 0);
-            this.tableLayoutPanel1.Controls.Add(this.label8, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.cmbCustomerType, 0, 1);
-            this.tableLayoutPanel1.Controls.Add(this.cmbCustomer, 1, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(350, 74);
-            this.tableLayoutPanel1.TabIndex = 231;
-            // 
-            // label7
-            // 
-            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label7.AutoSize = true;
-            this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label7.Location = new System.Drawing.Point(103, 14);
-            this.label7.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(69, 19);
-            this.label7.TabIndex = 232;
-            this.label7.Text = "Customer";
-            // 
-            // label8
-            // 
-            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label8.AutoSize = true;
-            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label8.Location = new System.Drawing.Point(3, 14);
-            this.label8.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(37, 19);
-            this.label8.TabIndex = 231;
-            this.label8.Text = "Type";
-            // 
-            // cmbCustomerType
-            // 
-            this.cmbCustomerType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbCustomerType.BackColor = System.Drawing.Color.Transparent;
-            this.cmbCustomerType.BaseColor = System.Drawing.Color.White;
-            this.cmbCustomerType.BorderColor = System.Drawing.Color.Silver;
-            this.cmbCustomerType.BorderSize = 1;
-            this.cmbCustomerType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbCustomerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCustomerType.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbCustomerType.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbCustomerType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cmbCustomerType.FormattingEnabled = true;
-            this.cmbCustomerType.Location = new System.Drawing.Point(3, 36);
-            this.cmbCustomerType.Name = "cmbCustomerType";
-            this.cmbCustomerType.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.cmbCustomerType.OnHoverItemForeColor = System.Drawing.Color.White;
-            this.cmbCustomerType.Radius = 3;
-            this.cmbCustomerType.Size = new System.Drawing.Size(94, 35);
-            this.cmbCustomerType.TabIndex = 252;
-            // 
-            // cmbCustomer
-            // 
-            this.cmbCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbCustomer.BackColor = System.Drawing.Color.Transparent;
-            this.cmbCustomer.BaseColor = System.Drawing.Color.White;
-            this.cmbCustomer.BorderColor = System.Drawing.Color.Silver;
-            this.cmbCustomer.BorderSize = 1;
-            this.cmbCustomer.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
-            this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbCustomer.FocusedColor = System.Drawing.Color.Empty;
-            this.cmbCustomer.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.cmbCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cmbCustomer.FormattingEnabled = true;
-            this.cmbCustomer.Location = new System.Drawing.Point(103, 36);
-            this.cmbCustomer.Name = "cmbCustomer";
-            this.cmbCustomer.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
-            this.cmbCustomer.OnHoverItemForeColor = System.Drawing.Color.White;
-            this.cmbCustomer.Radius = 3;
-            this.cmbCustomer.Size = new System.Drawing.Size(244, 35);
-            this.cmbCustomer.TabIndex = 251;
             // 
             // btnFilter
             // 
@@ -655,8 +540,8 @@
             this.btnFilter.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
             this.btnFilter.Image = null;
             this.btnFilter.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnFilter.Location = new System.Drawing.Point(495, 25);
-            this.btnFilter.Margin = new System.Windows.Forms.Padding(5, 25, 5, 3);
+            this.btnFilter.Location = new System.Drawing.Point(495, 26);
+            this.btnFilter.Margin = new System.Windows.Forms.Padding(5, 26, 5, 4);
             this.btnFilter.Name = "btnFilter";
             this.btnFilter.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnFilter.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -665,7 +550,7 @@
             this.btnFilter.OnHoverImage = null;
             this.btnFilter.OnPressedColor = System.Drawing.Color.Black;
             this.btnFilter.Radius = 3;
-            this.btnFilter.Size = new System.Drawing.Size(130, 46);
+            this.btnFilter.Size = new System.Drawing.Size(130, 40);
             this.btnFilter.TabIndex = 230;
             this.btnFilter.Text = "Show Filter";
             this.btnFilter.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -687,8 +572,8 @@
             this.btnLoadPO.ForeColor = System.Drawing.Color.White;
             this.btnLoadPO.Image = null;
             this.btnLoadPO.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnLoadPO.Location = new System.Drawing.Point(355, 25);
-            this.btnLoadPO.Margin = new System.Windows.Forms.Padding(5, 25, 5, 3);
+            this.btnLoadPO.Location = new System.Drawing.Point(355, 26);
+            this.btnLoadPO.Margin = new System.Windows.Forms.Padding(5, 26, 5, 4);
             this.btnLoadPO.Name = "btnLoadPO";
             this.btnLoadPO.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnLoadPO.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -697,11 +582,115 @@
             this.btnLoadPO.OnHoverImage = null;
             this.btnLoadPO.OnPressedColor = System.Drawing.Color.Black;
             this.btnLoadPO.Radius = 3;
-            this.btnLoadPO.Size = new System.Drawing.Size(130, 46);
+            this.btnLoadPO.Size = new System.Drawing.Size(130, 40);
             this.btnLoadPO.TabIndex = 228;
             this.btnLoadPO.Text = "Load";
             this.btnLoadPO.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.btnLoadPO.Click += new System.EventHandler(this.LoadPO_Click);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.cmbCustomer, 0, 1);
+            this.tableLayoutPanel1.Controls.Add(this.label7, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(100, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 2;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(250, 70);
+            this.tableLayoutPanel1.TabIndex = 233;
+            // 
+            // cmbCustomer
+            // 
+            this.cmbCustomer.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbCustomer.BackColor = System.Drawing.Color.Transparent;
+            this.cmbCustomer.BaseColor = System.Drawing.Color.White;
+            this.cmbCustomer.BorderColor = System.Drawing.Color.Silver;
+            this.cmbCustomer.BorderSize = 1;
+            this.cmbCustomer.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbCustomer.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCustomer.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbCustomer.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmbCustomer.FormattingEnabled = true;
+            this.cmbCustomer.Location = new System.Drawing.Point(5, 35);
+            this.cmbCustomer.Margin = new System.Windows.Forms.Padding(5);
+            this.cmbCustomer.Name = "cmbCustomer";
+            this.cmbCustomer.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cmbCustomer.OnHoverItemForeColor = System.Drawing.Color.White;
+            this.cmbCustomer.Radius = 3;
+            this.cmbCustomer.Size = new System.Drawing.Size(240, 31);
+            this.cmbCustomer.TabIndex = 251;
+            this.cmbCustomer.SelectedIndexChanged += new System.EventHandler(this.cmbCustomer_SelectedIndexChanged_1);
+            // 
+            // label7
+            // 
+            this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label7.AutoSize = true;
+            this.label7.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label7.Location = new System.Drawing.Point(5, 11);
+            this.label7.Margin = new System.Windows.Forms.Padding(5, 5, 5, 0);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(69, 19);
+            this.label7.TabIndex = 232;
+            this.label7.Text = "Customer";
+            // 
+            // tableLayoutPanel5
+            // 
+            this.tableLayoutPanel5.ColumnCount = 1;
+            this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Controls.Add(this.cmbCustomerType, 0, 1);
+            this.tableLayoutPanel5.Controls.Add(this.label8, 0, 0);
+            this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel5.Name = "tableLayoutPanel5";
+            this.tableLayoutPanel5.RowCount = 2;
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(100, 70);
+            this.tableLayoutPanel5.TabIndex = 234;
+            // 
+            // cmbCustomerType
+            // 
+            this.cmbCustomerType.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.cmbCustomerType.BackColor = System.Drawing.Color.Transparent;
+            this.cmbCustomerType.BaseColor = System.Drawing.Color.White;
+            this.cmbCustomerType.BorderColor = System.Drawing.Color.Silver;
+            this.cmbCustomerType.BorderSize = 1;
+            this.cmbCustomerType.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.cmbCustomerType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmbCustomerType.FocusedColor = System.Drawing.Color.Empty;
+            this.cmbCustomerType.Font = new System.Drawing.Font("Segoe UI", 10F);
+            this.cmbCustomerType.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cmbCustomerType.FormattingEnabled = true;
+            this.cmbCustomerType.Location = new System.Drawing.Point(5, 35);
+            this.cmbCustomerType.Margin = new System.Windows.Forms.Padding(5);
+            this.cmbCustomerType.Name = "cmbCustomerType";
+            this.cmbCustomerType.OnHoverItemBaseColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cmbCustomerType.OnHoverItemForeColor = System.Drawing.Color.White;
+            this.cmbCustomerType.Radius = 3;
+            this.cmbCustomerType.Size = new System.Drawing.Size(90, 31);
+            this.cmbCustomerType.TabIndex = 252;
+            this.cmbCustomerType.SelectedIndexChanged += new System.EventHandler(this.cmbCustomerType_SelectedIndexChanged);
+            // 
+            // label8
+            // 
+            this.label8.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label8.AutoSize = true;
+            this.label8.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label8.Location = new System.Drawing.Point(5, 11);
+            this.label8.Margin = new System.Windows.Forms.Padding(5, 5, 5, 0);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(37, 19);
+            this.label8.TabIndex = 231;
+            this.label8.Text = "Type";
             // 
             // gbFilter
             // 
@@ -709,7 +698,7 @@
             this.gbFilter.Controls.Add(this.tableLayoutPanel14);
             this.gbFilter.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gbFilter.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gbFilter.Location = new System.Drawing.Point(3, 83);
+            this.gbFilter.Location = new System.Drawing.Point(3, 73);
             this.gbFilter.Name = "gbFilter";
             this.gbFilter.Size = new System.Drawing.Size(1308, 194);
             this.gbFilter.TabIndex = 172;
@@ -812,7 +801,6 @@
             // 
             this.tableLayoutPanel13.ColumnCount = 1;
             this.tableLayoutPanel13.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel13.Controls.Add(this.checkBox1, 0, 3);
             this.tableLayoutPanel13.Controls.Add(this.cmbEditUnit, 0, 1);
             this.tableLayoutPanel13.Controls.Add(this.cbMergePO, 0, 2);
             this.tableLayoutPanel13.Controls.Add(this.label2, 0, 0);
@@ -827,18 +815,6 @@
             this.tableLayoutPanel13.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel13.Size = new System.Drawing.Size(208, 132);
             this.tableLayoutPanel13.TabIndex = 258;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox1.Location = new System.Drawing.Point(3, 106);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(159, 21);
-            this.checkBox1.TabIndex = 195;
-            this.checkBox1.Text = "Show Order Item Only";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.Visible = false;
             // 
             // cmbEditUnit
             // 
@@ -878,13 +854,14 @@
             this.gunaGroupBox3.Radius = 3;
             this.gunaGroupBox3.Size = new System.Drawing.Size(344, 168);
             this.gunaGroupBox3.TabIndex = 260;
-            this.gunaGroupBox3.Text = "Search";
+            this.gunaGroupBox3.Text = "Item Settings";
             this.gunaGroupBox3.TextLocation = new System.Drawing.Point(10, 8);
             // 
             // tableLayoutPanel9
             // 
             this.tableLayoutPanel9.ColumnCount = 1;
             this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel9.Controls.Add(this.checkBox1, 0, 0);
             this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel9.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel9.Name = "tableLayoutPanel9";
@@ -897,6 +874,18 @@
             this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel9.Size = new System.Drawing.Size(338, 132);
             this.tableLayoutPanel9.TabIndex = 258;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.checkBox1.Location = new System.Drawing.Point(3, 3);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(159, 21);
+            this.checkBox1.TabIndex = 195;
+            this.checkBox1.Text = "Show Order Item Only";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.Visible = false;
             // 
             // gunaGroupBox5
             // 
@@ -1198,18 +1187,18 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmSBBDeliveryPlanning_FormClosing);
             this.Load += new System.EventHandler(this.frmSBBDeliveryPlanning_Load);
             this.Shown += new System.EventHandler(this.frmPOPlanner_Shown);
-            ((System.ComponentModel.ISupportInitialize)(this.dgvList)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.dgvPlanner)).EndInit();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tlpPoList.ResumeLayout(false);
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
             this.gunaGroupBox1.ResumeLayout(false);
             this.tableLayoutPanel16.ResumeLayout(false);
-            this.tableLayoutPanel3.ResumeLayout(false);
-            this.tableLayoutPanel3.PerformLayout();
-            this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel5.ResumeLayout(false);
+            this.tableLayoutPanel5.PerformLayout();
             this.gbFilter.ResumeLayout(false);
             this.tableLayoutPanel14.ResumeLayout(false);
             this.tableLayoutPanel15.ResumeLayout(false);
@@ -1218,6 +1207,8 @@
             this.tableLayoutPanel13.ResumeLayout(false);
             this.tableLayoutPanel13.PerformLayout();
             this.gunaGroupBox3.ResumeLayout(false);
+            this.tableLayoutPanel9.ResumeLayout(false);
+            this.tableLayoutPanel9.PerformLayout();
             this.gunaGroupBox5.ResumeLayout(false);
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
@@ -1240,15 +1231,13 @@
         private System.Windows.Forms.Label lblProductionAlert;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button btnRefresh;
-        private System.Windows.Forms.DataGridView dgvList;
+        private System.Windows.Forms.DataGridView dgvPlanner;
         private System.Windows.Forms.Label lblFillSettingReset;
         private System.Windows.Forms.Label lblTotalBag;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
         private System.Windows.Forms.TableLayoutPanel tlpPoList;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
         private Guna.UI.WinForms.GunaGradientButton btnUpdate;
-        private System.Windows.Forms.Label lblMainList;
         private System.Windows.Forms.GroupBox gbFilter;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private Guna.UI.WinForms.GunaGroupBox gunaGroupBox4;
@@ -1276,7 +1265,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private Guna.UI.WinForms.GunaGradientButton btnLoadPO;
         private Guna.UI.WinForms.GunaGradientButton btnFilter;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private Guna.UI.WinForms.GunaComboBox cmbCustomerType;
@@ -1284,9 +1272,11 @@
         private Guna.UI.WinForms.GunaComboBox cmbEditUnit;
         private Guna.UI.WinForms.GunaComboBox cmbPOSortBy;
         private Guna.UI.WinForms.GunaComboBox cmbProductSortBy;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel15;
         private System.Windows.Forms.CheckBox checkBox1;
         private Guna.UI.WinForms.GunaGradientButton gunaGradientButton2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
     }
 }

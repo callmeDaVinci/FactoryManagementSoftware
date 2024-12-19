@@ -191,6 +191,76 @@ namespace FactoryManagementSoftware.DAL
             return sortedDt;
         }
 
+        public DataTable SelectByMonthYear(int month, int year)
+        {
+            // Connection string to your database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            // DataTable to hold the data from the database
+            DataTable dt = new DataTable();
+
+            try
+            {
+                // Calculate the start date (first day of the specified month and year)
+                DateTime startDate = new DateTime(year, month, 1);
+                // Calculate the end date (last day of the specified month and year)
+                DateTime endDate = new DateTime(year, month, DateTime.DaysInMonth(year, month));
+
+                // SQL query to get data from the database within the specific date range
+                string sql = @"
+            SELECT 
+                tbl_trf_hist.trf_hist_id,
+                tbl_trf_hist.trf_hist_added_date,
+                tbl_trf_hist.trf_hist_trf_date,
+                tbl_trf_hist.trf_hist_item_code,
+                tbl_item.item_name,
+                tbl_trf_hist.trf_hist_from,
+                tbl_trf_hist.trf_hist_to,
+                tbl_trf_hist.trf_hist_qty,
+                tbl_trf_hist.trf_hist_unit,
+                tbl_trf_hist.trf_hist_note,
+                tbl_trf_hist.trf_hist_added_by,
+                tbl_trf_hist.trf_result
+            FROM 
+                tbl_trf_hist 
+            INNER JOIN 
+                tbl_item 
+            ON 
+                tbl_trf_hist.trf_hist_item_code = tbl_item.item_code
+            WHERE 
+                CONVERT(date, tbl_trf_hist.trf_hist_trf_date) BETWEEN @StartDate AND @EndDate";
+
+                // Command for executing the query
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@StartDate", startDate);
+                cmd.Parameters.AddWithValue("@EndDate", endDate);
+
+                // Adapter to handle the data from the database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+
+                // Open database connection
+                conn.Open();
+
+                // Fill data into the DataTable
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions (you may want to log this error)
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                // Ensure the connection is closed
+                conn.Close();
+            }
+
+            // Sort the DataTable if necessary
+            dt.DefaultView.Sort = "trf_hist_id DESC";
+            DataTable sortedDt = dt.DefaultView.ToTable();
+
+            return sortedDt;
+        }
 
         public DataTable SelectWithBalance()
         {

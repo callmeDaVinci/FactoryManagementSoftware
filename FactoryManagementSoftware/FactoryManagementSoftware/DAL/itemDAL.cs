@@ -2600,6 +2600,46 @@ namespace FactoryManagementSoftware.DAL
             return success;
         }
 
+        public bool directUpdateFacStock(string itemCode, string facID, decimal newStock)
+        {
+            float totalStock = 0;
+            facStockDAL dalStock = new facStockDAL();
+            itemBLL uItem = new itemBLL();
+            facStockDAL dalFacStock = new facStockDAL();
+
+            DataTable dtStock = dalStock.Select(itemCode);
+
+            foreach (DataRow stock in dtStock.Rows)
+            {
+                decimal facStock = Convert.ToDecimal(stock["stock_qty"].ToString());
+
+                string stockLocation = stock["fac_id"].ToString();
+
+                if (stockLocation == facID)
+                {
+                    newStock = Math.Truncate(newStock * 1000) / 1000;
+
+                    if (!dalFacStock.facStockDirectUpdate(facID, itemCode, (float)newStock, stock["stock_unit"].ToString()))
+                    {
+                        MessageBox.Show("Failed to update stock, please contact Jun Ong.");
+                    }
+                }
+
+                totalStock += (float)facStock;
+            }
+
+            //Update data
+            uItem.item_code = itemCode;
+            uItem.item_qty = totalStock;
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+            //Updating data into database
+            bool success = qtyUpdate(uItem);
+
+            return success;
+        }
+
         public bool BackupQty(itemBLL u)
         {
             bool isSuccess = false;

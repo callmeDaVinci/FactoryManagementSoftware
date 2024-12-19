@@ -2228,9 +2228,7 @@ namespace FactoryManagementSoftware.UI
                                                                 MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (dialogResult == DialogResult.Yes)
                     {
-                        //foreach row and make transfer action
-                        DataTable dt_DODataBase = dalData.DOSelect();
-                        DataTable dt_PODataBase = dalData.POSelect();
+                        
 
                         foreach (DataGridViewRow c in dgvTransfer.Rows)
                         {
@@ -2254,6 +2252,10 @@ namespace FactoryManagementSoftware.UI
                                 }
                                 else if (callFromDOlist)
                                 {
+                                    //foreach row and make transfer action
+                                    DataTable dt_DODataBase = dalData.DOSelect();
+                                    DataTable dt_PODataBase = dalData.POSelect();
+
                                     string itemCode = c.Cells[CodeColumnName].Value.ToString();
                                     string trfQty = c.Cells[QtyColumnName].Value.ToString();
 

@@ -125,10 +125,10 @@
             this.lblUnit.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblUnit.AutoSize = true;
             this.lblUnit.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblUnit.Location = new System.Drawing.Point(3, 5);
+            this.lblUnit.Location = new System.Drawing.Point(3, 9);
             this.lblUnit.Margin = new System.Windows.Forms.Padding(3);
             this.lblUnit.Name = "lblUnit";
-            this.lblUnit.Size = new System.Drawing.Size(31, 17);
+            this.lblUnit.Size = new System.Drawing.Size(29, 13);
             this.lblUnit.TabIndex = 60;
             this.lblUnit.Text = "Unit";
             // 
@@ -137,10 +137,10 @@
             this.lblCategory.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblCategory.AutoSize = true;
             this.lblCategory.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblCategory.Location = new System.Drawing.Point(3, 5);
+            this.lblCategory.Location = new System.Drawing.Point(3, 9);
             this.lblCategory.Margin = new System.Windows.Forms.Padding(3);
             this.lblCategory.Name = "lblCategory";
-            this.lblCategory.Size = new System.Drawing.Size(61, 17);
+            this.lblCategory.Size = new System.Drawing.Size(53, 13);
             this.lblCategory.TabIndex = 56;
             this.lblCategory.Text = "Category";
             // 
@@ -152,7 +152,7 @@
             this.cmbTrfFromCategory.FormattingEnabled = true;
             this.cmbTrfFromCategory.Location = new System.Drawing.Point(3, 33);
             this.cmbTrfFromCategory.Name = "cmbTrfFromCategory";
-            this.cmbTrfFromCategory.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfFromCategory.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfFromCategory.TabIndex = 55;
             this.cmbTrfFromCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfFromCategory_SelectedIndexChanged);
             // 
@@ -164,7 +164,7 @@
             this.cmbTrfFrom.FormattingEnabled = true;
             this.cmbTrfFrom.Location = new System.Drawing.Point(205, 33);
             this.cmbTrfFrom.Name = "cmbTrfFrom";
-            this.cmbTrfFrom.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfFrom.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfFrom.TabIndex = 53;
             this.cmbTrfFrom.SelectedIndexChanged += new System.EventHandler(this.cmbTrfFrom_SelectedIndexChanged);
             // 
@@ -173,10 +173,10 @@
             this.lblTo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblTo.AutoSize = true;
             this.lblTo.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTo.Location = new System.Drawing.Point(3, 10);
+            this.lblTo.Location = new System.Drawing.Point(3, 14);
             this.lblTo.Margin = new System.Windows.Forms.Padding(3);
             this.lblTo.Name = "lblTo";
-            this.lblTo.Size = new System.Drawing.Size(22, 17);
+            this.lblTo.Size = new System.Drawing.Size(19, 13);
             this.lblTo.TabIndex = 51;
             this.lblTo.Text = "To";
             // 
@@ -186,7 +186,7 @@
             this.txtTrfQty.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtTrfQty.Location = new System.Drawing.Point(3, 28);
             this.txtTrfQty.Name = "txtTrfQty";
-            this.txtTrfQty.Size = new System.Drawing.Size(186, 27);
+            this.txtTrfQty.Size = new System.Drawing.Size(186, 23);
             this.txtTrfQty.TabIndex = 50;
             this.txtTrfQty.TextChanged += new System.EventHandler(this.txtTrfQty_TextChanged);
             this.txtTrfQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtTrfQty_KeyPress);
@@ -196,10 +196,10 @@
             this.lblQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblQty.AutoSize = true;
             this.lblQty.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblQty.Location = new System.Drawing.Point(3, 5);
+            this.lblQty.Location = new System.Drawing.Point(3, 9);
             this.lblQty.Margin = new System.Windows.Forms.Padding(3);
             this.lblQty.Name = "lblQty";
-            this.lblQty.Size = new System.Drawing.Size(56, 17);
+            this.lblQty.Size = new System.Drawing.Size(51, 13);
             this.lblQty.TabIndex = 49;
             this.lblQty.Text = "Quantity";
             // 
@@ -208,10 +208,10 @@
             this.lblFrom.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblFrom.AutoSize = true;
             this.lblFrom.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblFrom.Location = new System.Drawing.Point(3, 10);
+            this.lblFrom.Location = new System.Drawing.Point(3, 14);
             this.lblFrom.Margin = new System.Windows.Forms.Padding(3);
             this.lblFrom.Name = "lblFrom";
-            this.lblFrom.Size = new System.Drawing.Size(38, 17);
+            this.lblFrom.Size = new System.Drawing.Size(33, 13);
             this.lblFrom.TabIndex = 48;
             this.lblFrom.Text = "From";
             // 
@@ -224,7 +224,7 @@
             this.cmbTrfItemCat.FormattingEnabled = true;
             this.cmbTrfItemCat.Location = new System.Drawing.Point(3, 28);
             this.cmbTrfItemCat.Name = "cmbTrfItemCat";
-            this.cmbTrfItemCat.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfItemCat.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfItemCat.TabIndex = 47;
             this.cmbTrfItemCat.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCat_SelectedIndexChanged);
             // 
@@ -233,9 +233,9 @@
             this.lblItemName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblItemName.AutoSize = true;
             this.lblItemName.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemName.Location = new System.Drawing.Point(3, 8);
+            this.lblItemName.Location = new System.Drawing.Point(3, 12);
             this.lblItemName.Name = "lblItemName";
-            this.lblItemName.Size = new System.Drawing.Size(43, 17);
+            this.lblItemName.Size = new System.Drawing.Size(36, 13);
             this.lblItemName.TabIndex = 44;
             this.lblItemName.Text = "Name";
             // 
@@ -244,9 +244,9 @@
             this.lblItemCode.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblItemCode.AutoSize = true;
             this.lblItemCode.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblItemCode.Location = new System.Drawing.Point(3, 8);
+            this.lblItemCode.Location = new System.Drawing.Point(3, 12);
             this.lblItemCode.Name = "lblItemCode";
-            this.lblItemCode.Size = new System.Drawing.Size(39, 17);
+            this.lblItemCode.Size = new System.Drawing.Size(34, 13);
             this.lblItemCode.TabIndex = 42;
             this.lblItemCode.Text = "Code";
             // 
@@ -255,10 +255,10 @@
             this.label7.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label7.Location = new System.Drawing.Point(3, 3);
+            this.label7.Location = new System.Drawing.Point(3, 9);
             this.label7.Margin = new System.Windows.Forms.Padding(3);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(59, 19);
+            this.label7.Size = new System.Drawing.Size(75, 13);
             this.label7.TabIndex = 63;
             this.label7.Text = "Transfer Date";
             this.label7.Click += new System.EventHandler(this.label7_Click);
@@ -271,7 +271,7 @@
             this.dtpTrfDate.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpTrfDate.Location = new System.Drawing.Point(205, 28);
             this.dtpTrfDate.Name = "dtpTrfDate";
-            this.dtpTrfDate.Size = new System.Drawing.Size(186, 27);
+            this.dtpTrfDate.Size = new System.Drawing.Size(186, 23);
             this.dtpTrfDate.TabIndex = 64;
             this.dtpTrfDate.ValueChanged += new System.EventHandler(this.dtpTrfDate_ValueChanged);
             // 
@@ -285,7 +285,7 @@
             this.cmbTrfItemName.FormattingEnabled = true;
             this.cmbTrfItemName.Location = new System.Drawing.Point(3, 28);
             this.cmbTrfItemName.Name = "cmbTrfItemName";
-            this.cmbTrfItemName.Size = new System.Drawing.Size(388, 28);
+            this.cmbTrfItemName.Size = new System.Drawing.Size(388, 23);
             this.cmbTrfItemName.TabIndex = 65;
             this.cmbTrfItemName.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemName_SelectedIndexChanged);
             this.cmbTrfItemName.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cmbTrfItemName_KeyPress);
@@ -299,7 +299,7 @@
             this.cmbTrfItemCode.FormattingEnabled = true;
             this.cmbTrfItemCode.Location = new System.Drawing.Point(3, 28);
             this.cmbTrfItemCode.Name = "cmbTrfItemCode";
-            this.cmbTrfItemCode.Size = new System.Drawing.Size(388, 28);
+            this.cmbTrfItemCode.Size = new System.Drawing.Size(388, 23);
             this.cmbTrfItemCode.TabIndex = 66;
             this.cmbTrfItemCode.SelectedIndexChanged += new System.EventHandler(this.cmbTrfItemCode_SelectedIndexChanged);
             // 
@@ -311,7 +311,7 @@
             this.cmbTrfToCategory.FormattingEnabled = true;
             this.cmbTrfToCategory.Location = new System.Drawing.Point(3, 33);
             this.cmbTrfToCategory.Name = "cmbTrfToCategory";
-            this.cmbTrfToCategory.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfToCategory.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfToCategory.TabIndex = 68;
             this.cmbTrfToCategory.SelectedIndexChanged += new System.EventHandler(this.cmbTrfToCategory_SelectedIndexChanged);
             // 
@@ -323,7 +323,7 @@
             this.cmbTrfTo.FormattingEnabled = true;
             this.cmbTrfTo.Location = new System.Drawing.Point(205, 33);
             this.cmbTrfTo.Name = "cmbTrfTo";
-            this.cmbTrfTo.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfTo.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfTo.TabIndex = 67;
             this.cmbTrfTo.SelectedIndexChanged += new System.EventHandler(this.cmbTrfTo_SelectedIndexChanged);
             // 
@@ -335,7 +335,7 @@
             this.cmbTrfQtyUnit.FormattingEnabled = true;
             this.cmbTrfQtyUnit.Location = new System.Drawing.Point(205, 28);
             this.cmbTrfQtyUnit.Name = "cmbTrfQtyUnit";
-            this.cmbTrfQtyUnit.Size = new System.Drawing.Size(186, 28);
+            this.cmbTrfQtyUnit.Size = new System.Drawing.Size(186, 23);
             this.cmbTrfQtyUnit.TabIndex = 69;
             this.cmbTrfQtyUnit.SelectedIndexChanged += new System.EventHandler(this.cmbTrfQtyUnit_SelectedIndexChanged);
             // 
@@ -354,10 +354,10 @@
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(3, 8);
+            this.label3.Location = new System.Drawing.Point(3, 12);
             this.label3.Margin = new System.Windows.Forms.Padding(3, 0, 0, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(52, 17);
+            this.label3.Size = new System.Drawing.Size(45, 13);
             this.label3.TabIndex = 70;
             this.label3.Text = "Remark";
             // 
@@ -429,10 +429,10 @@
             this.label15.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label15.AutoSize = true;
             this.label15.Font = new System.Drawing.Font("Segoe UI", 10F);
-            this.label15.Location = new System.Drawing.Point(3, 14);
+            this.label15.Location = new System.Drawing.Point(3, 18);
             this.label15.Margin = new System.Windows.Forms.Padding(3);
             this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(100, 23);
+            this.label15.Size = new System.Drawing.Size(82, 19);
             this.label15.TabIndex = 103;
             this.label15.Text = "Transfer List";
             this.label15.Click += new System.EventHandler(this.label15_Click);
@@ -443,10 +443,10 @@
             this.label16.AutoSize = true;
             this.label16.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label16.ForeColor = System.Drawing.Color.Red;
-            this.label16.Location = new System.Drawing.Point(265, 20);
+            this.label16.Location = new System.Drawing.Point(265, 24);
             this.label16.Margin = new System.Windows.Forms.Padding(3);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(94, 17);
+            this.label16.Size = new System.Drawing.Size(84, 13);
             this.label16.TabIndex = 105;
             this.label16.Text = "Red: Stock Out";
             this.label16.Click += new System.EventHandler(this.label16_Click);
@@ -458,10 +458,10 @@
             this.label17.AutoSize = true;
             this.label17.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label17.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
-            this.label17.Location = new System.Drawing.Point(128, 20);
+            this.label17.Location = new System.Drawing.Point(128, 24);
             this.label17.Margin = new System.Windows.Forms.Padding(3);
             this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(95, 17);
+            this.label17.Size = new System.Drawing.Size(85, 13);
             this.label17.TabIndex = 106;
             this.label17.Text = "Green: Stock In";
             // 
@@ -490,10 +490,10 @@
             this.lblPartCodeReset.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblPartCodeReset.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Underline, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblPartCodeReset.ForeColor = System.Drawing.Color.Blue;
-            this.lblPartCodeReset.Location = new System.Drawing.Point(146, 5);
+            this.lblPartCodeReset.Location = new System.Drawing.Point(152, 9);
             this.lblPartCodeReset.Margin = new System.Windows.Forms.Padding(3);
             this.lblPartCodeReset.Name = "lblPartCodeReset";
-            this.lblPartCodeReset.Size = new System.Drawing.Size(43, 17);
+            this.lblPartCodeReset.Size = new System.Drawing.Size(37, 13);
             this.lblPartCodeReset.TabIndex = 149;
             this.lblPartCodeReset.Text = "Today";
             this.lblPartCodeReset.Click += new System.EventHandler(this.lblPartCodeReset_Click);
@@ -635,9 +635,9 @@
             this.cbFreeze.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cbFreeze.AutoSize = true;
             this.cbFreeze.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbFreeze.Location = new System.Drawing.Point(321, 3);
+            this.cbFreeze.Location = new System.Drawing.Point(332, 6);
             this.cbFreeze.Name = "cbFreeze";
-            this.cbFreeze.Size = new System.Drawing.Size(70, 23);
+            this.cbFreeze.Size = new System.Drawing.Size(59, 17);
             this.cbFreeze.TabIndex = 78;
             this.cbFreeze.Text = "Freeze";
             this.cbFreeze.UseVisualStyleBackColor = true;
@@ -666,9 +666,9 @@
             this.cbFromBina.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cbFromBina.AutoSize = true;
             this.cbFromBina.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbFromBina.Location = new System.Drawing.Point(54, 66);
+            this.cbFromBina.Location = new System.Drawing.Point(70, 69);
             this.cbFromBina.Name = "cbFromBina";
-            this.cbFromBina.Size = new System.Drawing.Size(93, 23);
+            this.cbFromBina.Size = new System.Drawing.Size(77, 17);
             this.cbFromBina.TabIndex = 124;
             this.cbFromBina.Text = "From Bina";
             this.cbFromBina.UseVisualStyleBackColor = true;
@@ -700,10 +700,10 @@
             this.lblStdPacking.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblStdPacking.Font = new System.Drawing.Font("Segoe UI", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Italic | System.Drawing.FontStyle.Underline))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblStdPacking.ForeColor = System.Drawing.Color.Blue;
-            this.lblStdPacking.Location = new System.Drawing.Point(141, 7);
+            this.lblStdPacking.Location = new System.Drawing.Point(150, 10);
             this.lblStdPacking.Margin = new System.Windows.Forms.Padding(3);
             this.lblStdPacking.Name = "lblStdPacking";
-            this.lblStdPacking.Size = new System.Drawing.Size(48, 15);
+            this.lblStdPacking.Size = new System.Drawing.Size(39, 12);
             this.lblStdPacking.TabIndex = 124;
             this.lblStdPacking.Text = "xxx/bag";
             this.lblStdPacking.Visible = false;
@@ -738,9 +738,9 @@
             this.cbItemGroupAutoOut.Checked = true;
             this.cbItemGroupAutoOut.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbItemGroupAutoOut.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cbItemGroupAutoOut.Location = new System.Drawing.Point(275, 3);
+            this.cbItemGroupAutoOut.Location = new System.Drawing.Point(296, 3);
             this.cbItemGroupAutoOut.Name = "cbItemGroupAutoOut";
-            this.cbItemGroupAutoOut.Size = new System.Drawing.Size(122, 23);
+            this.cbItemGroupAutoOut.Size = new System.Drawing.Size(101, 17);
             this.cbItemGroupAutoOut.TabIndex = 231;
             this.cbItemGroupAutoOut.Text = "ItemGroupOut";
             this.cbItemGroupAutoOut.UseVisualStyleBackColor = true;
@@ -866,9 +866,9 @@
             this.cbChildPartOutFromAssemblyLine.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.cbChildPartOutFromAssemblyLine.AutoSize = true;
             this.cbChildPartOutFromAssemblyLine.Font = new System.Drawing.Font("Segoe UI", 6F);
-            this.cbChildPartOutFromAssemblyLine.Location = new System.Drawing.Point(214, 6);
+            this.cbChildPartOutFromAssemblyLine.Location = new System.Drawing.Point(245, 7);
             this.cbChildPartOutFromAssemblyLine.Name = "cbChildPartOutFromAssemblyLine";
-            this.cbChildPartOutFromAssemblyLine.Size = new System.Drawing.Size(177, 17);
+            this.cbChildPartOutFromAssemblyLine.Size = new System.Drawing.Size(146, 15);
             this.cbChildPartOutFromAssemblyLine.TabIndex = 231;
             this.cbChildPartOutFromAssemblyLine.Text = "Child Part Out From AssemblyLine";
             this.cbChildPartOutFromAssemblyLine.UseVisualStyleBackColor = true;
@@ -1156,7 +1156,7 @@
             // 
             // frmInOutEdit
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoScroll = true;
             this.AutoSize = true;

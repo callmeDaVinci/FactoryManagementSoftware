@@ -4493,7 +4493,7 @@ namespace FactoryManagementSoftware.UI
 
                         string path = @"\\SAFETY-SERVER\Server\(INTERNAL)\(Internal Transfer_NEW)\" + folderName;
 
-                        if (myconnstrng == text.DB_Semenyih)
+                        if (myconnstrng == text.DB_Semenyih || myconnstrng == text.DB_JunPC)
                         {
 
                             path = @"\\ADMIN001\Admin Server\( OFFICE )\(Internal Transfer_NEW)\" + folderName;

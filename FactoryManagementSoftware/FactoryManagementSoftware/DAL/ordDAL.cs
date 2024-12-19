@@ -273,6 +273,59 @@ namespace FactoryManagementSoftware.DAL
             }
             return isSuccess;
         }
+
+        public bool DataMerge(ordBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = "INSERT INTO tbl_ord (ord_item_code, ord_qty, ord_unit, ord_status, ord_required_date, ord_added_date, ord_added_by, ord_note,ord_type,ord_po_no,ord_pending,ord_received) VALUES ( @ord_item_code, @ord_qty, @ord_unit, @ord_status, @ord_required_date, @ord_added_date, @ord_added_by, @ord_note, @ord_type,@ord_po_no,@ord_pending,@ord_received)";
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@ord_item_code", u.ord_item_code);
+                cmd.Parameters.AddWithValue("@ord_qty", u.ord_qty);
+                cmd.Parameters.AddWithValue("@ord_unit", u.ord_unit);
+                cmd.Parameters.AddWithValue("@ord_status", u.ord_status);
+                cmd.Parameters.AddWithValue("@ord_required_date", u.ord_required_date);
+                cmd.Parameters.AddWithValue("@ord_added_date", u.ord_added_date);
+                cmd.Parameters.AddWithValue("@ord_added_by", u.ord_added_by);
+                cmd.Parameters.AddWithValue("@ord_note", u.ord_note);
+                cmd.Parameters.AddWithValue("@ord_type", u.ord_type);
+                cmd.Parameters.AddWithValue("@ord_po_no", u.ord_po_no);
+                cmd.Parameters.AddWithValue("@ord_pending", u.ord_pending);
+                cmd.Parameters.AddWithValue("@ord_received", u.ord_received);
+
+
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         #endregion
 
         #region Update data in Database

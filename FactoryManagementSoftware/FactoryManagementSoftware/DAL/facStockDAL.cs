@@ -604,6 +604,43 @@ namespace FactoryManagementSoftware.DAL
             return result;
         }
 
+        public bool facStockDirectUpdate(string facID, string itemCode, float qty, string unit)
+        {
+            bool result = true;
+            uStock.stock_item_code = itemCode;
+            uStock.stock_fac_id = Convert.ToInt32(facID);
+            uStock.stock_qty = (float)Math.Truncate(qty * 1000) / 1000;
+            uStock.stock_unit = unit;
+            uStock.stock_updtd_date = DateTime.Now;
+            uStock.stock_updtd_by = MainDashboard.USER_ID;
+
+            if (IfExists(itemCode, facID))
+            {
+                //Updating data into database
+                bool success = FixUpdate(uStock);
+
+                if (!success)
+                {
+                    //failed to update user
+                    result = false;
+                    MessageBox.Show("Failed to updated stock");
+                }
+            }
+            else
+            {
+                //Inserting Data into Database
+                bool success = FixInsert(uStock);
+                //If the data is successfully inserted then the value of success will be true else false
+                if (!success)
+                {
+                    //Failed to insert data
+                    result = false;
+                    MessageBox.Show("Failed to add new stock");
+                }
+            }
+            return result;
+
+        }
         public bool facStockOut(string facID, string itemCode, float qty,string unit)
         {
             bool result = true;

@@ -19,6 +19,7 @@ using FactoryManagementSoftware.BLL;
 using static Syncfusion.XlsIO.Parser.Biff_Records.PaletteRecord;
 using System.Collections.Generic;
 using System.Data.Entity.Core.Common.CommandTrees.ExpressionBuilder;
+using System.Data.Entity.Core.Metadata.Edm;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -118,7 +119,8 @@ namespace FactoryManagementSoftware.UI
         {
             //DT_SMY_TABLE = dalItemCust.SelectAll();
             
-            DT_SMY_TABLE = dalItemForecast.Select();
+            //DT_SMY_TABLE = dalItemForecast.Select();
+
             //DT_SMY_TABLE = dalItem.Select();
 
             //// Create a HashSet to store normalized existing item codes for efficient lookup
@@ -134,7 +136,7 @@ namespace FactoryManagementSoftware.UI
             //{
             //    //String itemCode = row[dalItem.ItemCode]?.ToString();
             //    string itemCode = row[dalItemCust.ItemCode]?.ToString();
-            //    int custID = int.TryParse(row[dalItemCust.CustID]?.ToString(), out int i)? i : -1;
+            //    int custID = int.TryParse(row[dalItemCust.CustID]?.ToString(), out int i) ? i : -1;
 
             //    // Check if the normalized itemCode exists in the HashSet
             //    if (!IfItemCustExist(itemCode, custID)) //IfItemCustExist(itemCode,custID)//!IfItemExist(itemCode)
@@ -372,6 +374,107 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+    
+        ordDAL dalOrd = new ordDAL();
+
+        private void getDataFromUser()
+        {
+           
+        }
+
+        private void InsertOrderData()
+        {
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                string itemCode = row.Cells["ord_item_code"].Value?.ToString();
+                int poNo = int.TryParse(row.Cells["ord_po_no"].Value?.ToString(), out var poNoInt) ? poNoInt : 0;
+                float ordQty = float.TryParse(row.Cells["ord_qty"].Value?.ToString(), out var QrdQty) ? QrdQty : 0;
+                DateTime requiredDate = DateTime.TryParse(row.Cells["ord_required_date"].Value?.ToString(), out var updatedDate) ? updatedDate : DateTime.Now;
+                ordBLL uOrd = new ordBLL
+                {
+                    ord_item_code = itemCode,
+                    ord_po_no = poNo,
+                    ord_qty = ordQty,
+                    ord_pending = float.TryParse(row.Cells["ord_pending"].Value?.ToString(), out var pendingQty) ? pendingQty : 0,
+                    ord_received = float.TryParse(row.Cells["ord_received"].Value?.ToString(), out var receivedQty) ? receivedQty : 0,
+                    ord_required_date = requiredDate,
+                    ord_note = row.Cells["ord_note"].Value?.ToString(),
+                    ord_unit = row.Cells["ord_unit"].Value?.ToString(),
+                    ord_status = row.Cells["ord_status"].Value?.ToString(),
+                    ord_type = row.Cells["ord_type"].Value?.ToString(),
+                    ord_added_by = int.TryParse(row.Cells["ord_added_by"].Value?.ToString(), out var addedBy) ? addedBy : 0,
+                    ord_added_date = DateTime.TryParse(row.Cells["ord_added_date"].Value?.ToString(), out var addedDate) ? addedDate : DateTime.Now
+                };
+
+                bool success = dalOrd.DataMerge(uOrd);
+
+                if (!success)
+                {
+                    //Failed to insert data
+                    MessageBox.Show($"Failed to add new {itemCode} ,pono:{poNo} ,ordQty:{ordQty}, required Date: {requiredDate} record");
+                }
+
+            }
+
+        }
+
+        pmmaDAL dalPMMA = new pmmaDAL();
+        pmmaBLL uPMMA = new pmmaBLL();
+        private void InsertPMMAZeroCOstData()
+        {
+
+            foreach (DataGridViewRow row in dgvSubList.Rows)
+            {
+                string itemCode = row.Cells[dalPMMA.itemCode].Value?.ToString();
+
+                float openingStock = float.TryParse(row.Cells[dalPMMA.OpenStock].Value?.ToString(), out openingStock) ? openingStock : 0;
+                float balanceQty = float.TryParse(row.Cells[dalPMMA.BalStock].Value?.ToString(), out balanceQty) ? balanceQty : 0;
+                float directOutQty = float.TryParse(row.Cells[dalPMMA.DirectOut].Value?.ToString(), out directOutQty) ? directOutQty : 0;
+                float adjustQty = float.TryParse(row.Cells[dalPMMA.Adjust].Value?.ToString(), out adjustQty) ? adjustQty : 0;
+                string note = row.Cells[dalPMMA.Note].Value?.ToString();
+                string month = row.Cells[dalPMMA.Month].Value?.ToString();
+                string year = row.Cells[dalPMMA.Year].Value?.ToString();
+
+                DateTime addedDate = DateTime.TryParse(row.Cells[dalPMMA.AddedDate].Value?.ToString(), out addedDate) ? addedDate : DateTime.Now;
+                DateTime updatedDate = DateTime.TryParse(row.Cells[dalPMMA.UpdatedDate].Value?.ToString(), out updatedDate) ? updatedDate : DateTime.Now;
+                int addedBy = int.TryParse(row.Cells[dalPMMA.AddedBy].Value?.ToString(), out addedBy) ? addedBy : 0;
+                int udatedBy = int.TryParse(row.Cells[dalPMMA.UpdatedBy].Value?.ToString(), out udatedBy) ? udatedBy : 0;
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    pmmaBLL uPMMA = new pmmaBLL
+                    {
+                        pmma_item_code = itemCode,
+                        pmma_openning_stock = openingStock,
+                        pmma_bal_stock = balanceQty,
+                        pmma_direct_out = directOutQty,
+                        pmma_adjust = adjustQty,
+                        pmma_note = note,
+                        pmma_month = month,
+                        pmma_year = year,
+                        pmma_updated_date = updatedDate,
+                        pmma_updated_by = udatedBy,
+                        pmma_added_date = addedDate,
+                        pmma_added_by = addedBy
+                    };
+
+                    bool success = dalPMMA.InsertOrUpdate(uPMMA);
+
+                    if (!success)
+                    {
+                        //Failed to insert data
+                        MessageBox.Show($"Failed to add new {itemCode} ,Month:{month} ,Year:{year} record");
+                    }
+                }
+            }
+
+        }
+        private void InsertItemSMYStockData()
+        {
+           
+        }
+
+
         private void InsertTrfHistData()
         {
             foreach (DataGridViewRow row in dgvSubList.Rows)
@@ -406,11 +509,15 @@ namespace FactoryManagementSoftware.UI
         }
         private void btnConfirmUpdate_Click(object sender, EventArgs e)
         {
+            Cursor = Cursors.WaitCursor;
             //InsertOrUpdateItemData();
             //InsertOrUpdateCustData();
             //InsertOrUpdateCustItemData();
-            InsertItemForeacastData();
-
+            //InsertItemForeacastData();
+            //InsertItemSMYStockData();
+            //InsertOrderData();
+            InsertPMMAZeroCOstData();
+            Cursor = Cursors.Arrow;
             MessageBox.Show("Import operation completed.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
