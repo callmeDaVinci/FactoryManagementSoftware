@@ -444,47 +444,65 @@ namespace FactoryManagementSoftware.UI
 
         private void materialUsedReportToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            //OUG
+            if (!MaterialUsedReportFormOpen)
             {
-                //Semenyih
-                if (!MaterialUsedReportFormOpen)
-                {
-                    frmMaterialUsedReport frm = new frmMaterialUsedReport();
-                    frm.MdiParent = this;
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.WindowState = FormWindowState.Maximized;
-                    frm.Show();
-                    MaterialUsedReportFormOpen = true;
-                }
-                else
-                {
-                    if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
-                    {
-                        Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
-                    }
-                }
+                frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                MaterialUsedReportFormOpen = true;
             }
             else
             {
-                //OUG
-                if (!MaterialUsedReportFormOpen)
+                if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
                 {
-                    frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
-                    frm.MdiParent = this;
-                    frm.StartPosition = FormStartPosition.CenterScreen;
-                    frm.WindowState = FormWindowState.Maximized;
-                    frm.Show();
-                    MaterialUsedReportFormOpen = true;
+                    Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
                 }
-                else
-                {
-                    if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
-                    {
-                        Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
-                    }
-                }
-
             }
+
+            //if (myconnstrng == text.DB_Semenyih)//|| myconnstrng == text.DB_JunPC
+            //{
+            //    //Semenyih
+            //    if (!MaterialUsedReportFormOpen)
+            //    {
+            //        frmMaterialUsedReport frm = new frmMaterialUsedReport();
+            //        frm.MdiParent = this;
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.WindowState = FormWindowState.Maximized;
+            //        frm.Show();
+            //        MaterialUsedReportFormOpen = true;
+            //    }
+            //    else
+            //    {
+            //        if (Application.OpenForms.OfType<frmMaterialUsedReport>().Count() == 1)
+            //        {
+            //            Application.OpenForms.OfType<frmMaterialUsedReport>().First().BringToFront();
+            //        }
+            //    }
+            //}
+            //else
+            //{
+            //    //OUG
+            //    if (!MaterialUsedReportFormOpen)
+            //    {
+            //        frmMaterialUsedReport_NEW frm = new frmMaterialUsedReport_NEW();
+            //        frm.MdiParent = this;
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.WindowState = FormWindowState.Maximized;
+            //        frm.Show();
+            //        MaterialUsedReportFormOpen = true;
+            //    }
+            //    else
+            //    {
+            //        if (Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().Count() == 1)
+            //        {
+            //            Application.OpenForms.OfType<frmMaterialUsedReport_NEW>().First().BringToFront();
+            //        }
+            //    }
+
+            //}
 
            
         }
