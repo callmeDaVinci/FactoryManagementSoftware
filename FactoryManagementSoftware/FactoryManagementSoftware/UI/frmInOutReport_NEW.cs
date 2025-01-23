@@ -662,7 +662,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 #endregion
 
-                if (!cbIncludeTerminated.Checked)
+                  if (!cbIncludeTerminated.Checked)
                     dt_ItemList = RemoveTerminatedItem(dt_ItemList);
 
                 #region get start and end date
@@ -871,7 +871,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (passed != "Passed")
                         {
-                            itemSearchMatched = false;
+                            //itemSearchMatched = false;
                             trfRow.Delete();
                             continue;
                         }
@@ -1253,6 +1253,7 @@ namespace FactoryManagementSoftware.UI
                     }
 
                 }
+
                 #endregion
 
                 #region TOTAL
