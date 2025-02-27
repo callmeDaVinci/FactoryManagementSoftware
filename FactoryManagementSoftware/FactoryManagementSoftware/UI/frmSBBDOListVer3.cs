@@ -4112,7 +4112,7 @@ namespace FactoryManagementSoftware.UI
             DOFormat = xlWorkSheet.get_Range(rowCompanyAddress).Cells;
             DOFormat.Merge();
             DOFormat.RowHeight = 22.20;
-            DOFormat.Value = text.Company_OUG_AddressAndContact;
+            DOFormat.Value = text.Company_Semenyih_AddressAndContact;
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
             DOFormat.Font.Size = 8;

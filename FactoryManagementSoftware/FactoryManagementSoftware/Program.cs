@@ -37,7 +37,7 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmPOPlanner());
 
-            //Application.Run(new MainDashboard(1));
+           //Application.Run(new MainDashboard(1));
 
             Application.Run(new frmLogIn());
         }

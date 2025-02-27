@@ -1537,9 +1537,7 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = NewProductionRecordTable();
 
-            DT_JOBSHEETRECORD = dalProRecord.SelectWithItemInfo();//1483ms
-
-           
+            DT_JOBSHEETRECORD = dalProRecord.SelectWithItemInfo();//1483ms -> 4656ms(10FEB2025)
 
             DT_METERRECORD = dalProRecord.MeterRecordSelect();
 
