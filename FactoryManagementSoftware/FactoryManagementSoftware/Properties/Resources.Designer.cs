@@ -224,6 +224,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_check_file_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-check-file-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_chevron_down_16 {
             get {
                 object obj = ResourceManager.GetObject("icons8-chevron-down-16", resourceCulture);
@@ -587,6 +597,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_more_than_25 {
             get {
                 object obj = ResourceManager.GetObject("icons8-more-than-25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_pdf_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-pdf-100", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

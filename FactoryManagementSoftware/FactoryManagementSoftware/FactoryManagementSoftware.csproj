@@ -256,6 +256,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\POAttachmentForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\POAttachmentForm.Designer.cs">
+      <DependentUpon>POAttachmentForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\CircleLabel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -1252,6 +1258,10 @@
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\POAttachmentForm.resx">
+      <DependentUpon>POAttachmentForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmOrderRequestNotice.resx">
       <DependentUpon>frmOrderRequestNotice.cs</DependentUpon>
     </EmbeddedResource>
@@ -1847,6 +1857,8 @@
     <None Include="Resources\icons8-search-500.png" />
     <None Include="Resources\icons8-pencil-100.png" />
     <None Include="Resources\iso-logo-black.bmp" />
+    <None Include="Resources\icons8-pdf-100.png" />
+    <None Include="Resources\icons8-check-file-100.png" />
     <Content Include="Resources\sbbdeliveryorderwithrectacgle.png" />
     <None Include="Resources\SP ISO LOGO %28BLACK%29.png" />
     <Content Include="SBB logo.ico" />

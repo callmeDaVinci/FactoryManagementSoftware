@@ -55,7 +55,8 @@ namespace FactoryManagementSoftware.UI
             txtPath.BackColor = SystemColors.Window;
             txtPath.Clear();
             OpenFileDialog fd = new OpenFileDialog();
-            fd.Filter = "CSV files (*.csv)|*.csv";
+            fd.Filter = "PDF Files (*.pdf)|*.pdf";
+            fd.Title = "Select P/O PDF";
 
             DialogResult re = fd.ShowDialog();
             if (re == DialogResult.OK)
