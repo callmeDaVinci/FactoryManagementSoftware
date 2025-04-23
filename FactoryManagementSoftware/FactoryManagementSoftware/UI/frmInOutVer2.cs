@@ -171,7 +171,7 @@ namespace FactoryManagementSoftware.UI
             cmb.Items.Add(past2Years);
             cmb.Items.Add(All);
 
-            cmb.SelectedIndex = 2;
+            cmb.SelectedIndex = 1;
         }
 
         private void loadItemCategoryData()
@@ -187,15 +187,15 @@ namespace FactoryManagementSoftware.UI
 
             //cmbSearchCat.SelectedIndex = 1;
 
-            if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
-            {
-                //Semenyih
-                cmbSearchCat.Text = text.Cat_Part;
-            }
-            else
-            {
-                cmbSearchCat.SelectedIndex = 0;
-            }
+            //if (MainDashboard.myconnstrng == text.DB_Semenyih || MainDashboard.myconnstrng == text.DB_JunPC)
+            //{
+            //    //Semenyih
+            //    cmbSearchCat.Text = text.Cat_Part;
+            //}
+            //else
+            //{
+            //    cmbSearchCat.SelectedIndex = 0;
+            //}
 
         }
 
@@ -391,7 +391,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     float qty = 0;
 
-                    if (dgv.Rows[n].Cells["stock_qty"].Value.ToString() != null)
+                    if (dgv.Rows[n].Cells["stock_qty"].Value != null)
                     {
                         float.TryParse(dgv.Rows[n].Cells["stock_qty"].Value.ToString(), out (qty));
                     }
@@ -426,59 +426,56 @@ namespace FactoryManagementSoftware.UI
             if (formLoaded)
             {
                 DataTable dt = dalStock.Select(itemCode);
-
-                bool isRawMaterial =  tool.getItemCat(itemCode) == text.Cat_RawMat;
-
+                bool isRawMaterial = tool.getItemCat(itemCode) == text.Cat_RawMat;
                 dgvFactoryStock.Columns["Remark"].Visible = isRawMaterial;
-
                 dgvFactoryStock.Rows.Clear();
+
+                bool rowsAdded = false;
 
                 if (dt.Rows.Count > 0)
                 {
                     foreach (DataRow stock in dt.Rows)
                     {
-                        int n = dgvFactoryStock.Rows.Add();
-                        dgvFactoryStock.Rows[n].Cells["fac_name"].Value = stock["fac_name"].ToString();
-
                         float facStock = Convert.ToSingle(stock["stock_qty"].ToString());
                         facStock = (float)Math.Truncate(facStock * 1000) / 1000;
+                        string facName = stock["fac_name"].ToString();
 
-                        string facStock_string = facStock.ToString("0.##");
-
-                        dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = facStock_string;
-
-
-                        string remark = "";
-
-
-                        if(isRawMaterial)
+                        // Only add rows that meet your criteria
+                        if (facStock > 0 || facName.Contains("Semenyih") || facName.Contains("Assembly"))
                         {
-                            int bagQty = (int) facStock / 25;
+                            int n = dgvFactoryStock.Rows.Add();
+                            string facStock_string = facStock.ToString("0.##");
+                            dgvFactoryStock.Rows[n].Cells["fac_name"].Value = facName;
+                            dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = facStock_string;
 
-                            if(bagQty == 1)
+                            string remark = "";
+                            if (isRawMaterial)
                             {
-                                remark = bagQty + " bag";
-
+                                int bagQty = (int)facStock / 25;
+                                if (bagQty == 1)
+                                {
+                                    remark = bagQty + " bag";
+                                }
+                                else if (bagQty > 1)
+                                {
+                                    remark = bagQty + " bags";
+                                }
                             }
-                            else if(bagQty > 1)
-                            {
-                                remark = bagQty + " bags";
+                            dgvFactoryStock.Rows[n].Cells["Remark"].Value = remark;
 
-                            }
+                            rowsAdded = true;
                         }
-
-                        dgvFactoryStock.Rows[n].Cells["Remark"].Value = remark;
-
                     }
-
                 }
-                else
+
+                // If no rows were added, add a default row
+                if (!rowsAdded)
                 {
                     int n = dgvFactoryStock.Rows.Add();
-                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = "null";
-                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "null";
-
+                    dgvFactoryStock.Rows[n].Cells["fac_name"].Value = text.Factory_Semenyih;
+                    dgvFactoryStock.Rows[n].Cells["stock_qty"].Value = "0";
                 }
+
                 listPaint(dgvFactoryStock);
             }
             else
@@ -486,7 +483,6 @@ namespace FactoryManagementSoftware.UI
                 dgvFactoryStock.Rows.Clear();
                 dgvFactoryStock.Refresh();
             }
-
         }
 
         private void calTotalStock(string itemCode)

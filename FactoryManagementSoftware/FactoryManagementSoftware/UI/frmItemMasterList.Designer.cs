@@ -212,6 +212,8 @@
             // 
             this.cbShowSBBProduct.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.cbShowSBBProduct.AutoSize = true;
+            this.cbShowSBBProduct.Checked = true;
+            this.cbShowSBBProduct.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbShowSBBProduct.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowSBBProduct.Location = new System.Drawing.Point(187, 24);
             this.cbShowSBBProduct.Name = "cbShowSBBProduct";

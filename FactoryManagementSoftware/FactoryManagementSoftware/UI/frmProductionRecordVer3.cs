@@ -4,10 +4,12 @@ using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web.Configuration;
+using System.Web.Services.Description;
 using System.Windows.Forms;
 using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
+using Newtonsoft.Json.Linq;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace FactoryManagementSoftware.UI
@@ -152,6 +154,9 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_TimeEnd, typeof(string));
             dt.Columns.Add(text.Header_Cavity, typeof(int));
             dt.Columns.Add(text.Header_Production_Max_Qty, typeof(int));
+            dt.Columns.Add(text.Header_IdealHourlyShot, typeof(int));
+            dt.Columns.Add(text.Header_AvgHourlyShot, typeof(int));
+            dt.Columns.Add(text.Header_EfficiencyRate, typeof(decimal));
             dt.Columns.Add(text.Header_StockIn_Remark, typeof(string));
             dt.Columns.Add(text.Header_RawMat_Lot_No, typeof(string));
             dt.Columns.Add(text.Header_ColorMat_Lot_No, typeof(string));
@@ -618,6 +623,8 @@ namespace FactoryManagementSoftware.UI
 
         private string SELECTED_JOB_STATUS = "";
 
+       
+
         private void LoadJobDailyRecord()
         {
             LOADING_JOB_RECORD = true;
@@ -637,6 +644,10 @@ namespace FactoryManagementSoftware.UI
                 string itemCode = dgv.Rows[itemRow].Cells[text.Header_ItemCode].Value.ToString();
                 string JobNo = dgv.Rows[itemRow].Cells[text.Header_JobNo].Value.ToString();
                 string planStatus = dgv.Rows[itemRow].Cells[text.Header_Status].Value.ToString();
+                int cycleTime = int.TryParse(dgv.Rows[itemRow].Cells[text.Header_ProCT].Value.ToString(), out cycleTime) ? cycleTime : 0;
+
+                int idealHourlyShot = cycleTime == 0 ? 0 : (int)((double)3600 / cycleTime);
+
                 macID = int.TryParse(dgv.Rows[itemRow].Cells[text.Header_MacID].Value.ToString(), out macID) ? macID : 0;
 
                 SELECTED_JOB_STATUS = planStatus;
@@ -652,6 +663,8 @@ namespace FactoryManagementSoftware.UI
                 int totalStockedIn = 0;
                 int maxOutputQty = 0;
                 int totalActualRejectQty = 0;
+                int totalAvgShot = 0;
+                int totalIdealShot = 0;
 
                 foreach (DataRow row in DT_JOB_DAILY_RECORD.Rows)
                 {
@@ -680,6 +693,42 @@ namespace FactoryManagementSoftware.UI
                         int meterEnd = int.TryParse(row[dalProRecord.MeterEnd].ToString(), out meterEnd) ? meterEnd : 0;
 
                         int totalShot = meterEnd - meterStart;
+                        int avgHourlyShot = 0;
+
+                        var valueStart = row[dalProRecord.TimeStart];
+                        var valueEnd = row[dalProRecord.TimeEnd];
+
+                        DateTime? dateTimeStart = null;
+                        DateTime? dateTimeEnd = null;
+
+                        if (valueStart is TimeSpan timeStart)
+                        {
+                            dateTimeStart = DateTime.Today.Add(timeStart);
+                            dt_Row[text.Header_TimeStart] = dateTimeStart.Value.ToString("HH:mm tt");
+                        }
+
+
+                        if (valueEnd is TimeSpan timeEnd)
+                        {
+                            dateTimeEnd = DateTime.Today.Add(timeEnd);
+                            dt_Row[text.Header_TimeEnd] = dateTimeEnd.Value.ToString("HH:mm tt");
+                        }
+
+                        // Calculate average hourly shot if both times and totalShot are valid
+                        if (totalShot > 0 && dateTimeStart.HasValue && dateTimeEnd.HasValue)
+                        {
+                            TimeSpan duration = dateTimeEnd.Value - dateTimeStart.Value;
+                            double totalHours = Math.Abs(duration.TotalHours);
+
+                            // Prevent divide-by-zero just in case
+                            if (totalHours > 0)
+                            {
+                                avgHourlyShot = (int)(totalShot / totalHours);
+                            }
+                        }
+
+
+                        decimal efficiencyRate = idealHourlyShot == 0 ? 0 : Math.Round((decimal)avgHourlyShot / idealHourlyShot * 100, 2);
 
                         int maxQty = totalShot * cavity;
 
@@ -696,6 +745,12 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[text.Header_MeterEnd] = row[dalProRecord.MeterEnd];
                         dt_Row[text.Header_Cavity] = cavity;
                         dt_Row[text.Header_Production_Max_Qty] = maxQty;
+                        dt_Row[text.Header_IdealHourlyShot] = idealHourlyShot;
+                        dt_Row[text.Header_AvgHourlyShot] = avgHourlyShot;
+                        dt_Row[text.Header_EfficiencyRate] = efficiencyRate;
+
+                        totalAvgShot += avgHourlyShot;
+                        totalIdealShot += idealHourlyShot;
 
                         dt_Row[text.Header_QtyReject] = actualRejectQty;
 
@@ -711,16 +766,9 @@ namespace FactoryManagementSoftware.UI
        
                         dt_Row[text.Header_Remark] = jobNote;
 
-                        if (row[dalProRecord.TimeStart] is DateTime TimeStart)
-                        {
-                            dt_Row[text.Header_TimeStart] = TimeStart.ToString("HH:mm tt");
-                        }
-
-                        if (row[dalProRecord.TimeEnd] is DateTime TimeEnd)
-                        {
-                            dt_Row[text.Header_TimeEnd] = TimeEnd.ToString("HH:mm tt");
-                        }
                        
+
+
                         //dt_Row[header_ProducedQty] = produced;
                         dt_Row[text.Header_UpdatedDate] = row[dalProRecord.UpdatedDate].ToString();
                         dt_Row[text.Header_UpdatedBy] = dalUser.getUsername(Convert.ToInt32(row[dalProRecord.UpdatedBy].ToString()));
@@ -746,17 +794,21 @@ namespace FactoryManagementSoftware.UI
                 txtTotalMaxOutputQty.Text = maxOutputQty.ToString();
                 txtQtyStockedIn.Text = totalStockedIn.ToString();
                 txtActualRejectQty.Text = totalActualRejectQty.ToString();
+                int QtyAtMachine = int.TryParse(txtPendingStockIn.Text, out int a)? a : 0;
 
                 if (maxOutputQty > 0)
                 {
-                    txtRejectRate.Text = ((decimal)totalActualRejectQty / maxOutputQty * 100).ToString("0.##");
+                    txtRejectRate.Text = ((decimal)totalActualRejectQty / maxOutputQty * 100).ToString("0.##") + "%";
 
                 }
                 else
                 {
                     txtRejectRate.Text = "0";
-
                 }
+
+                decimal overallEfficiency = totalIdealShot == 0 ? 0 : Math.Round((decimal)totalAvgShot / totalIdealShot * 100, 2);
+                string overallEfficiencyStr = overallEfficiency.ToString("0.##") + "%";
+                txtEfficiency.Text = overallEfficiencyStr;
 
                 ProducedVSTargetQty();
                 //update total produced
@@ -1276,22 +1328,24 @@ namespace FactoryManagementSoftware.UI
             int maxOutputQty_INT = int.TryParse(maxOutputQty, out maxOutputQty_INT) ? maxOutputQty_INT : 0;
             int stockInQty = int.TryParse(totalStockIn, out stockInQty) ? stockInQty : 0;
 
-            int diff = maxOutputQty_INT - stockInQty;
 
             int actualRejectQty = int.TryParse(txtActualRejectQty.Text, out actualRejectQty) ? actualRejectQty : 0;
+            int diff = maxOutputQty_INT - stockInQty - actualRejectQty;
 
+            diff = diff > 0 ? diff : 0;
 
             if (SELECTED_JOB_STATUS == text.planning_status_completed)
             {
-                diff = diff < 0 ? 0 : diff;
                 txtPendingStockIn.Text = "0";
+
                 txtRejectedQty.Text = diff.ToString();
 
                 if (maxOutputQty_INT > 0)
                 {
 
                     txtRejectRate.Text = ((decimal)actualRejectQty / maxOutputQty_INT * 100).ToString("0.##");
-                    //txtRejectRate.Text = ((decimal)diff / maxOutputQty_INT * 100).ToString("0.##");
+                    //txtEfficiency.Text = ((decimal)stockInQty / maxOutputQty_INT * 100).ToString("0.##");
+                   
                 }
 
 
@@ -1304,11 +1358,13 @@ namespace FactoryManagementSoftware.UI
                 if (maxOutputQty_INT > 0)
                 {
                     txtRejectRate.Text = ((decimal)actualRejectQty / maxOutputQty_INT * 100).ToString("0.##");
+                    //txtEfficiency.Text = ((decimal)(stockInQty+diff) / maxOutputQty_INT * 100).ToString("0.##");
 
                 }
                 else
                 {
                     txtRejectRate.Text = "0";
+                    //txtEfficiency.Text = "0";
 
                 }
             }
@@ -1692,16 +1748,21 @@ namespace FactoryManagementSoftware.UI
             int stockInQty = int.TryParse(totalStockIn, out stockInQty) ? stockInQty : 0;
             int actualRejectQty = int.TryParse(txtActualRejectQty.Text, out actualRejectQty) ? actualRejectQty : 0;
 
-            int diff = maxOutputQty_INT - stockInQty;
+            int diff = maxOutputQty_INT - stockInQty - actualRejectQty;
+
+            diff = diff > 0 ? diff : 0;
 
             if (SELECTED_JOB_STATUS == text.planning_status_completed )
             {
-                diff = diff < 0 ? 0 : diff;
                 txtPendingStockIn.Text = "0";
                 txtRejectedQty.Text = diff.ToString();
 
                 if(maxOutputQty_INT > 0)
+                {
                     txtRejectRate.Text = ((decimal)actualRejectQty / maxOutputQty_INT * 100).ToString("0.##");
+                   // txtEfficiency.Text = ((decimal)(stockInQty + diff) / maxOutputQty_INT * 100).ToString("0.##");
+
+                }
 
             }
             else
@@ -1712,11 +1773,14 @@ namespace FactoryManagementSoftware.UI
                 if(maxOutputQty_INT > 0)
                 {
                     txtRejectRate.Text = ((decimal)actualRejectQty / maxOutputQty_INT * 100).ToString("0.##");
+                    //txtEfficiency.Text = ((decimal)(stockInQty + diff) / maxOutputQty_INT * 100).ToString("0.##");
+
 
                 }
                 else
                 {
                     txtRejectRate.Text = "0";
+                    //txtEfficiency.Text = "0";
 
                 }
 
@@ -1724,24 +1788,11 @@ namespace FactoryManagementSoftware.UI
         }
         private void txtQtyStockedIn_TextChanged_1(object sender, EventArgs e)
         {
-            int maxQty = int.TryParse(txtTotalMaxOutputQty.Text, out maxQty) ? maxQty : 0;
-            int stockedIn = int.TryParse(txtQtyStockedIn.Text, out stockedIn) ? stockedIn : 0;
-
-            //int pendingStockIn = maxQty - stockedIn;
-
-            //txtPendingStockIn.Text = pendingStockIn.ToString();
-
             PendingOrRejectRateUpdate();
         }
 
         private void txtTotalMaxOutputQty_TextChanged_1(object sender, EventArgs e)
         {
-            int maxQty = int.TryParse(txtTotalMaxOutputQty.Text, out maxQty) ? maxQty : 0;
-            int stockedIn = int.TryParse(txtQtyStockedIn.Text, out stockedIn) ? stockedIn : 0;
-
-            //int pendingStockIn = maxQty - stockedIn;
-
-            //txtPendingStockIn.Text = pendingStockIn.ToString();
             PendingOrRejectRateUpdate();
         }
 
@@ -1781,6 +1832,12 @@ namespace FactoryManagementSoftware.UI
         private void dgvRecordHistory_DoubleClick(object sender, EventArgs e)
         {
             editJobSheet();
+        }
+
+        private void txtActualRejectQty_TextChanged(object sender, EventArgs e)
+        {
+            PendingOrRejectRateUpdate();
+
         }
     }
 }

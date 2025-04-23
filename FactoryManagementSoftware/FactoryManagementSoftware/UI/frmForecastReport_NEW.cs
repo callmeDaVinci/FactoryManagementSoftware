@@ -2027,7 +2027,7 @@ namespace FactoryManagementSoftware.UI
         {
             string MachineHistory = " Mac : ";
 
-            List<int> listRange = new List<int>();
+            List<string> listMacName = new List<string>();
 
             DT_MACHINE_SCHEDULE_COPY.AcceptChanges();
 
@@ -2037,54 +2037,25 @@ namespace FactoryManagementSoftware.UI
 
                 if (itemCode == _ItemCode)
                 {
-                    int macID = int.TryParse(row[dalPlanning.machineID].ToString(), out macID) ? macID : 0;
-
-                    listRange.Add(macID);
-
+                    string macName = row[dalPlanning.machineName].ToString();
+                    listMacName.Add(macName);
                     row.Delete();
                 }
             }
 
             DT_MACHINE_SCHEDULE_COPY.AcceptChanges();
 
-            //DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '" + _ItemCode + "'");
+            List<string> noDupes = listMacName.Distinct().ToList();
 
-
-
-            //foreach (DataRow row in rowSchedule)
-            //{
-            //    string itemCode = row[dalPlanning.partCode].ToString();
-
-            //    if (itemCode == _ItemCode)
-            //    {
-            //        int macID = int.TryParse(row[dalPlanning.machineID].ToString(), out macID)? macID : 0;
-
-            //        listRange.Add(macID);
-
-            //    }
-
-            //}
-
-            List<int> noDupes = listRange.Distinct().ToList();
-
-            foreach (int i in noDupes)
+            for (int i = 0; i < noDupes.Count; i++)
             {
-                var value = noDupes[noDupes.Count - 1];
-
-                if (i == value)
-                {
-                    MachineHistory += i + ";";
-
-                }
-                else
-                {
-                    MachineHistory += i + ", ";
-
-                }
+                MachineHistory += noDupes[i];
+                MachineHistory += (i == noDupes.Count - 1) ? ";" : ", ";
             }
 
             return MachineHistory;
         }
+
 
         private DataTable RemoveTerminatedItem(DataTable dt)
         {

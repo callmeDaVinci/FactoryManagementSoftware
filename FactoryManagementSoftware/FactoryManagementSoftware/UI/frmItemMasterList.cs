@@ -1591,8 +1591,8 @@ namespace FactoryManagementSoftware.UI
                 cbShowCustomer.Checked = false;
                 cbShowCustomer.Enabled = false;
 
-                cbShowSBBProduct.Checked = false;
-                cbShowSBBProduct.Enabled = false;
+                //cbShowSBBProduct.Checked = false;
+                //cbShowSBBProduct.Enabled = false;
             }
             else
             {
@@ -1905,8 +1905,8 @@ namespace FactoryManagementSoftware.UI
             {
                 cbShowDeliveryProductOnly.Enabled = true;
                 cbShowDeliveryProductOnly.Checked = true;
-                cbShowSBBProduct.Checked = false;
-                cbShowSBBProduct.Enabled = false;
+                //cbShowSBBProduct.Checked = false;
+                //cbShowSBBProduct.Enabled = false;
 
                 cbShowCustomer.Checked = true;
                 cbShowCustomer.Enabled = true;

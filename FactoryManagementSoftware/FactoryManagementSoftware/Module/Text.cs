@@ -362,6 +362,7 @@ H/P: 012 - 733 0617 Email: general@safetyplastics.com.my / Sales Dept.: sales@sa
         public string Header_YieldRate { get; } = "Yield %";
         public string Header_IdealHourlyShot { get; } = "Ideal Hourly Shot";
         public string Header_AvgHourlyShot { get; } = "Avg. Hourly Shot";
+        public string Header_SystemReject { get; } = "System Reject";
 
         public string Header_EfficiencyRate { get; } = "Efficiency %"; 
         public string Header_TotalStockIn { get; } = "Stock In Qty";

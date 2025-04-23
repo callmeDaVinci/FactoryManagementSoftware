@@ -454,6 +454,16 @@ namespace FactoryManagementSoftware.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap icons8_document_100 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-document-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap icons8_exit_full_screen_64 {
             get {
                 object obj = ResourceManager.GetObject("icons8-exit-full-screen-64", resourceCulture);
@@ -607,6 +617,16 @@ namespace FactoryManagementSoftware.Properties {
         internal static System.Drawing.Bitmap icons8_pdf_100 {
             get {
                 object obj = ResourceManager.GetObject("icons8-pdf-100", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap icons8_pdf_1001 {
+            get {
+                object obj = ResourceManager.GetObject("icons8-pdf-1001", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

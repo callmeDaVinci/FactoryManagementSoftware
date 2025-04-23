@@ -172,6 +172,7 @@ namespace FactoryManagementSoftware.UI
             LoadJobData();
             OLD_PRO_DATE = DateTime.MaxValue;
             txtSheetID.Text = string_NewSheet;
+            IDEAL_HOURLY_SHOT = 0;
 
             string rawLotNo = "";
             string colorLotNo = "";
@@ -261,12 +262,16 @@ namespace FactoryManagementSoftware.UI
             dtpProDate.Value = latestProductionDate;
 
             int idealHourlyShot = (int) ((double) 3600 / CYCLE_TIME);
+            IDEAL_HOURLY_SHOT = idealHourlyShot;
 
             lblIdealHourlyShot.Text = "Ideal Hourly Shot: " + idealHourlyShot;
 
             LoadCartonData();
 
         }
+
+        private int IDEAL_HOURLY_SHOT = 0;
+        private int AVG_HOURLY_SHOT = 0;
 
         private int ORIGINAL_TOTAL_STOCK_IN_QTY = -1;
 
@@ -278,6 +283,7 @@ namespace FactoryManagementSoftware.UI
             //tlpButton.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0);
 
             LoadJobData();
+            IDEAL_HOURLY_SHOT = 0;
 
             string sheetID = "";
             string rawLotNo = "";
@@ -380,6 +386,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             int idealHourlyShot = (int)((double)3600 / CYCLE_TIME);
+            IDEAL_HOURLY_SHOT = idealHourlyShot;
 
             lblIdealHourlyShot.Text = "Ideal Hourly Shot: " + idealHourlyShot;
 
@@ -1369,6 +1376,26 @@ namespace FactoryManagementSoftware.UI
             return dt;
         }
 
+        private bool SearchItem(DataTable dt, string itemCode, string colName)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row[colName].ToString() == itemCode)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private string RAW_MAT_CODE = "";
+        private string COLOR_MAT_CODE = "";
+        private float COLOR_MAT_RATE = 0;
+        private float PW_PER_SHOT = 0;
+        private float RW_PER_SHOT = 0;
+
+    
         private void NewSaveAndStock()
         {
             bool OKToProcess = true;
@@ -1564,68 +1591,68 @@ namespace FactoryManagementSoftware.UI
 
                         if (totalShot > 0)
                         {
-                            //float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
-                            //float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
+                            float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
+                            float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
 
-                            //float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
+                            float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
 
-                            //float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
+                            float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
 
-                            //if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
-                            //{
-                            //    dt_Row = dt.NewRow();
-                            //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                            //    dt_Row[header_ItemCode] = RAW_MAT_CODE;
-                            //    dt_Row[header_Cat] = text.Cat_RawMat;
+                            if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = RAW_MAT_CODE;
+                                dt_Row[header_Cat] = text.Cat_RawMat;
 
-                            //    dt_Row[header_From] = factory;
-                            //    dt_Row[header_To] = text.Production;
-
-
-                            //    dt_Row[header_Qty] = raw_Material_Used_kg;
-
-                            //    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                            //    if (cbMorning.Checked)
-                            //    {
-                            //        dt_Row[header_Shift] = "M";
-                            //    }
-                            //    else if (cbNight.Checked)
-                            //    {
-                            //        dt_Row[header_Shift] = "N";
-                            //    }
-
-                            //    dt.Rows.Add(dt_Row);
-                            //}
-
-                            //if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
-                            //{
-                            //    dt_Row = dt.NewRow();
-                            //    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-
-                            //    dt_Row[header_ItemCode] = COLOR_MAT_CODE;
-
-                            //    dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
-
-                            //    dt_Row[header_From] = factory;
-                            //    dt_Row[header_To] = text.Production;
+                                dt_Row[header_From] = factory;
+                                dt_Row[header_To] = text.Production;
 
 
-                            //    dt_Row[header_Qty] = color_Material_Used_kg;
+                                dt_Row[header_Qty] = raw_Material_Used_kg;
 
-                            //    dt_Row[text.Header_JobNo] = JOB_NO;
+                                dt_Row[text.Header_JobNo] = JOB_NO;
 
-                            //    if (cbMorning.Checked)
-                            //    {
-                            //        dt_Row[header_Shift] = "M";
-                            //    }
-                            //    else if (cbNight.Checked)
-                            //    {
-                            //        dt_Row[header_Shift] = "N";
-                            //    }
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
 
-                            //    dt.Rows.Add(dt_Row);
-                            //}
+                                dt.Rows.Add(dt_Row);
+                            }
+
+                            if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+
+                                dt_Row[header_ItemCode] = COLOR_MAT_CODE;
+
+                                dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
+
+                                dt_Row[header_From] = factory;
+                                dt_Row[header_To] = text.Production;
+
+
+                                dt_Row[header_Qty] = color_Material_Used_kg;
+
+                                dt_Row[text.Header_JobNo] = JOB_NO;
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+                                dt.Rows.Add(dt_Row);
+                            }
 
                         }
                     }
@@ -1802,6 +1829,7 @@ namespace FactoryManagementSoftware.UI
             int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
 
             string message = "Avg Hourly Shot: ERROR";
+            AVG_HOURLY_SHOT = 0;
 
             if (totalShot > 0)
             {
@@ -1812,6 +1840,8 @@ namespace FactoryManagementSoftware.UI
                 totalHours = totalHours < 0 ? totalHours * -1 : totalHours;
 
                 int avgHourlyShot = (int)( totalShot / totalHours);
+
+                AVG_HOURLY_SHOT = avgHourlyShot;
 
                 if(avgHourlyShot >= 0)
                 {

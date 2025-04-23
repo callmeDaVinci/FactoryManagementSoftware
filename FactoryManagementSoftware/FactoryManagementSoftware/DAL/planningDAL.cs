@@ -55,6 +55,7 @@ namespace FactoryManagementSoftware.DAL
 
         public string planProduced { get; } = "plan_produced";
         public string machineID { get; } = "machine_id";
+        public string machineName { get; } = "mac_name";
         public string familyWith { get; } = "family_with";
 
         public string recording { get; } = "recording";
