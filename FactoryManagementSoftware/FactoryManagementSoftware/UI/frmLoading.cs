@@ -6,11 +6,14 @@ using System.Drawing;
 namespace FactoryManagementSoftware.UI
 {
     public partial class frmLoading : Form
-    { 
+    {
+        // NEW: Add a static property to store the last loading duration
+        private static int lastLoadingDuration = 0;
+
         public frmLoading() 
         {
             InitializeComponent();
-
+            lastLoadingDuration = 0;
             // StartPosition was set to FormStartPosition.Manual in the properties window.
             Rectangle screen = Screen.PrimaryScreen.WorkingArea;
             int w = Width >= screen.Width ? screen.Width : (screen.Width + Width) / 4;
@@ -74,6 +77,12 @@ namespace FactoryManagementSoftware.UI
                     //Thread.Sleep(100);
                 }
 
+                // NEW: Save the seconds count before closing
+                if (loadingForm.sec > 0)
+                {
+                    lastLoadingDuration = loadingForm.sec;
+                }
+
                 loadingForm.Invoke(new CloseDelegate(CloseFormInternal));
 
                 loadingForm = null;
@@ -81,6 +90,13 @@ namespace FactoryManagementSoftware.UI
             
             
         }
+
+        // NEW: Method to get the last loading duration
+        static public int GetLastLoadingDuration()
+        {
+            return lastLoadingDuration;
+        }
+
 
         static private void CloseFormInternal()
         {

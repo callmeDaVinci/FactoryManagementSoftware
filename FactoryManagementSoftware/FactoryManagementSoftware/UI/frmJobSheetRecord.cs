@@ -174,6 +174,8 @@ namespace FactoryManagementSoftware.UI
             txtSheetID.Text = string_NewSheet;
             IDEAL_HOURLY_SHOT = 0;
 
+            string rawMaterial = "";
+            string colorMaterial = "";
             string rawLotNo = "";
             string colorLotNo = "";
             string latestShift = text.Shift_Morning;
@@ -218,6 +220,11 @@ namespace FactoryManagementSoftware.UI
 
             if (DT_JOB_LIST?.Rows.Count > 0 && JOB_LIST_SELECTED_ROW_INDEX > -1 && JOB_LIST_SELECTED_ROW_INDEX <= DT_JOB_LIST.Rows.Count - 1)
             {
+                rawMaterial = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_String].ToString();
+                colorMaterial = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorMat].ToString();
+
+
+
                 if (latestProductionDate == DateTime.MinValue)
                 {
                     latestProductionDate = DateTime.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_DateStart].ToString(), out latestProductionDate)? latestProductionDate : DateTime.Now;

@@ -135,7 +135,9 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ProCT, typeof(int));
             dt.Columns.Add(text.Header_QCPassedQty, typeof(int));
             dt.Columns.Add(text.Header_ItemName, typeof(string));
-            dt.Columns.Add(text.Header_ItemCode, typeof(string));
+            dt.Columns.Add(text.Header_ItemCode, typeof(string)); 
+            dt.Columns.Add(text.Header_RawMat_String, typeof(string)); 
+            dt.Columns.Add(text.Header_ColorMat, typeof(string));
             return dt;
         }
 
@@ -209,6 +211,8 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ProCT].Visible = false;
             dgv.Columns[text.Header_Production_Max_Qty].Visible = false;
             dgv.Columns[text.Header_TotalStockIn].Visible = false;
+            dgv.Columns[text.Header_RawMat_String].Visible = false;
+            dgv.Columns[text.Header_ColorMat].Visible = false;
 
 
         }
@@ -439,6 +443,47 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[text.Header_Fac] = row[dalMac.MacLocationName];
                     dt_Row[text.Header_JobNo] = row[dalPlan.jobNo];
 
+                    string rawMat_1 = row[dalPlan.materialCode].ToString();
+                    string rawMat_2 = row[dalPlan.materialCode2].ToString();
+                    double rawMat_1_ratio = double.TryParse(row[dalPlan.rawMatRatio_1].ToString(), out rawMat_1_ratio) ? rawMat_1_ratio : 0;
+                    double rawMat_2_ratio = double.TryParse(row[dalPlan.rawMatRatio_2].ToString(), out rawMat_2_ratio) ? rawMat_2_ratio : 0;
+                    string rawMix = "";
+
+                    if (rawMat_1_ratio == 0)
+                    {
+                        if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
+                        {
+                            rawMat_1_ratio = 50;
+                        }
+                        else
+                        {
+                            rawMat_1_ratio = 100;
+
+                        }
+                    }
+
+                    if (rawMat_2_ratio == 0)
+                    {
+                        if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
+                        {
+                            rawMat_2_ratio = 50;
+                        }
+                    }
+
+                    if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))
+                    {
+                        rawMix = rawMat_1 + "(" + rawMat_1_ratio + "%)" + " + " + rawMat_2 + "(" + rawMat_2_ratio + "%)";
+                    }
+                    else
+                    {
+                        rawMix = rawMat_1;
+                    }
+
+                    string colorMatCode = row[dalPlan.colorMaterialCode].ToString();
+                    string colorMatName = tool.getItemNameFromDataTable(DT_ITEM_INFO, colorMatCode);
+
+                    colorMatName = string.IsNullOrEmpty(colorMatName) ? colorMatCode : colorMatName;
+
                     string itemName = row[dalItem.ItemName].ToString();
                     string itemCode = row[dalItem.ItemCode].ToString();
                     string itemCodePresent = row[dalItem.ItemCodePresent].ToString();
@@ -449,6 +494,9 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     string itemNameAndCodeString = tool.getItemNameAndCodeString(itemCodePresent, itemName);
+
+                    dt_Row[text.Header_RawMat_String] = rawMix;
+                    dt_Row[text.Header_ColorMat] = colorMatName;
 
                     dt_Row[text.Header_ItemName] = itemName;
                     dt_Row[text.Header_ItemCode] = itemCodePresent;

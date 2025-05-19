@@ -262,6 +262,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmInOutReport_ver2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmInOutReport_ver2.Designer.cs">
+      <DependentUpon>frmInOutReport_ver2.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\POAttachmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1263,6 +1269,9 @@
     </Compile>
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmInOutReport_ver2.resx">
+      <DependentUpon>frmInOutReport_ver2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\POAttachmentForm.resx">
       <DependentUpon>POAttachmentForm.cs</DependentUpon>

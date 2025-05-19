@@ -2436,6 +2436,61 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+      
+
+        public DataTable ItemInOutSearchAllCustomer_NonSBB(string start, string end)
+        {
+            Tool tool = new Tool();
+            //static methodd to connect database
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            //to hold the data from database
+            DataTable dt = new DataTable();
+
+            string cat = "Part";
+            try
+            {
+                //sql query to get data from database
+                String sql = @"SELECT * FROM tbl_trf_hist 
+                                INNER JOIN tbl_item 
+                                ON tbl_trf_hist.trf_hist_item_code = tbl_item.item_code 
+                                WHERE 
+                                trf_hist_trf_date 
+                                BETWEEN @start AND @end 
+                                AND tbl_item.item_cat = @cat 
+                                 AND (tbl_item.item_sbb = 0 OR tbl_item.item_sbb IS NULL)
+                                ORDER BY tbl_trf_hist.trf_hist_item_code ASC, tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+                cmd.Parameters.AddWithValue("@cat", cat);
+              
+
+                //for executing command
+                //getting data from database
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                //database connection open
+                conn.Open();
+                //fill data in our database
+                adapter.Fill(dt);
+
+
+
+            }
+            catch (Exception ex)
+            {
+                tool = new Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                //closing connection
+                conn.Close();
+            }
+            return dt;
+
+        }
         public DataTable ItemInOutSearch(string start, string end, string customer)
         {
             Tool tool = new Tool();

@@ -530,7 +530,8 @@ namespace FactoryManagementSoftware.DAL
                                 AND tbl_item_cust.cust_id = tbl_cust.cust_id) 
                                 INNER JOIN tbl_item 
                                 ON tbl_item_cust.item_code = tbl_item.item_code) ORDER BY tbl_item.item_name ASC";
-                //
+              
+
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
 

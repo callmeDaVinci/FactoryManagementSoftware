@@ -2825,9 +2825,28 @@ namespace FactoryManagementSoftware.Module
 
         public void loadCustomerToComboBox(ComboBox cmb)
         {
+            // Get all customers from data access layer
             DataTable dt = dalCust.CustSelectAll();
+
+            // Create a table with distinct customer names
             DataTable distinctTable = dt.DefaultView.ToTable(true, "cust_name");
+
+            // Remove "SPP" entry if it exists
+            DataRow[] sppRows = distinctTable.Select("cust_name = 'SPP'");
+            foreach (DataRow row in sppRows)
+            {
+                distinctTable.Rows.Remove(row);
+            }
+
+            // Sort customer names alphabetically
             distinctTable.DefaultView.Sort = "cust_name ASC";
+
+            // Add "ALL" as the first item
+            DataRow allRow = distinctTable.NewRow();
+            allRow["cust_name"] = "ALL";
+            distinctTable.Rows.InsertAt(allRow, 0);
+
+            // Bind to combobox
             cmb.DataSource = distinctTable;
             cmb.DisplayMember = "cust_name";
             cmb.SelectedIndex = -1;

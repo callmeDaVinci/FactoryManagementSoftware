@@ -1425,9 +1425,6 @@ namespace FactoryManagementSoftware.UI
 
                     string rawMix = "";
 
-                    //rawMat_1_ratio = rawMat_1_ratio < 1 ? rawMat_1_ratio * 100 : rawMat_1_ratio;
-                    //rawMat_2_ratio = rawMat_2_ratio < 1 ? rawMat_2_ratio * 100 : rawMat_2_ratio;
-
                     if(rawMat_1_ratio == 0)
                     {
                         if (!string.IsNullOrEmpty(rawMat_1) && !string.IsNullOrEmpty(rawMat_2))

@@ -125,7 +125,6 @@ namespace FactoryManagementSoftware.UI
             MainDashboard.inOutFormOpen = false;
         }
 
-
         private void frmInOut_Load(object sender, EventArgs e)
         {
             try
