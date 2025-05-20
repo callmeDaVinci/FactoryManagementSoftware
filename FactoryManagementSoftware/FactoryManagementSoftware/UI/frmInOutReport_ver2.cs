@@ -529,7 +529,7 @@ namespace FactoryManagementSoftware.UI
 
         private void DefaultFilterSetting()
         {
-            cmbInOutType.Text = inOutType_InOut;
+            //cmbInOutType.Text = inOutType_InOut;
             cmbDateType.Text = dateType_Monthly;
 
             cmbMonthFrom.Text = DateTime.Now.Month.ToString();
@@ -550,6 +550,9 @@ namespace FactoryManagementSoftware.UI
 
             //cmbItemType.Text = tool.getCustName(1);
             cmbItemType.Text = "ALL";
+            cmbInOutType.Text = inOutType_Out;
+            cmbInOutType.Enabled = false;
+
             loaded = true;
             DefaultFilterSetting();
 
@@ -1598,6 +1601,10 @@ namespace FactoryManagementSoftware.UI
 
                             if (trfItemCode == itemCode)
                             {
+                                if(itemCode == "R 500 641 530 08")
+                                {
+                                    var checkpoint = 1;
+                                }
 
                                 itemFound = true;
 
@@ -1703,7 +1710,7 @@ namespace FactoryManagementSoftware.UI
 
                                 }
 
-                                else if ((inOutType == inOutType_Out || inOutType == inOutType_InOut) && trfTo == itemCustomer && cbRemoveOutEqual0.Checked? trfQty > 0 : true)
+                                else if ((inOutType == inOutType_Out || inOutType == inOutType_InOut) && trfTo == itemCustomer )
                                 {
                                     dataPrinted = true;
 
@@ -1874,6 +1881,36 @@ namespace FactoryManagementSoftware.UI
                     dt.AcceptChanges();
 
                 }
+
+
+                // Add total row
+                DataRow totalRow = dt.NewRow();
+                totalRow[header_Customer] = "TOTAL";
+
+                // Loop through each column starting from the column after 'Customer'
+                int customerColumnIndex = dt.Columns.IndexOf(header_Customer);
+
+                for (int col = customerColumnIndex + 1; col < dt.Columns.Count; col++)
+                {
+                    double sum = 0;
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row.RowState != DataRowState.Deleted)
+                        {
+                            var val = row[col];
+                            if (val != DBNull.Value && double.TryParse(val.ToString(), out double num))
+                            {
+                                sum += num;
+                            }
+                        }
+                    }
+
+                    totalRow[col] = sum;
+                }
+
+                // Add the total row to the DataTable
+                dt.Rows.Add(totalRow);
 
 
                 dgv.DataSource = dt;
