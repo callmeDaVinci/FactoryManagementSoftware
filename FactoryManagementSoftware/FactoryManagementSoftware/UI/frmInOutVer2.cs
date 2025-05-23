@@ -529,15 +529,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    if (MainDashboard.myconnstrng == text.DB_Semenyih && cmbSearchCat.Text == text.Cat_Part)
-                    {
-                        dtItem = dalItem.InOutCatSBBItemSearch(keywords);
-                    }
-                    else
-                    {
-                        dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
-
-                    }
+                    dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
                 }
             }
             else
@@ -549,14 +541,7 @@ namespace FactoryManagementSoftware.UI
                 }
                 else
                 {
-                    if (MainDashboard.myconnstrng == text.DB_Semenyih && cmbSearchCat.Text == text.Cat_Part)
-                    {
-                        dtItem = dalItem.InOutCatSBBItemSearch();
-                    }
-                    else
-                    {
-                        dtItem = dalItem.catInOutSearch(cmbSearchCat.Text);
-                    }
+                    dtItem = dalItem.catInOutSearch(cmbSearchCat.Text);
                 }
 
             }
@@ -2043,28 +2028,10 @@ namespace FactoryManagementSoftware.UI
 
         private void frmInOut_Shown(object sender, EventArgs e)
         {
-
             dgvItem.ClearSelection();
             dgvTrf.ClearSelection();
             formLoaded = true;
             btn.Location = new Point(txtSearch.ClientSize.Width - btn.Width, (txtSearch.ClientSize.Height - btn.Height) / 2);
-           
-            if (MainDashboard.myconnstrng == text.DB_OUG || MainDashboard.myconnstrng == text.DB_JunPC)
-            {
-                //frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
-                ////frm2.StartPosition = FormStartPosition.CenterScreen;
-                ////frm2.Show();
-
-                //// Check if frm2 exists and is not disposed
-                //if (frm2 != null && !frm2.IsDisposed)
-                //{
-                //    // The form exists and is not disposed, so just show it
-                //    frm2.StartPosition = FormStartPosition.CenterScreen;
-                //    frm2.ShowDialog();
-                //}
-
-               
-            }
         }
 
         private void dgvTrf_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)

@@ -1219,7 +1219,7 @@ namespace FactoryManagementSoftware.UI
             if (!PMMAFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
-                frmNewPMMA frm = new frmNewPMMA
+                frmZeroCost frm = new frmZeroCost
                 {
                     MdiParent = this,
                     StartPosition = FormStartPosition.CenterScreen,
@@ -1231,9 +1231,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmNewPMMA>().Count() == 1)
+                if (Application.OpenForms.OfType<frmZeroCost>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmNewPMMA>().First().BringToFront();
+                    Application.OpenForms.OfType<frmZeroCost>().First().BringToFront();
                 }
             }
         }

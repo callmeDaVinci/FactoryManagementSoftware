@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>661</ApplicationRevision>
+    <ApplicationRevision>662</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -267,6 +267,12 @@
     </Compile>
     <Compile Include="UI\frmInOutReport_ver2.Designer.cs">
       <DependentUpon>frmInOutReport_ver2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmZeroCost.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmZeroCost.Designer.cs">
+      <DependentUpon>frmZeroCost.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\POAttachmentForm.cs">
       <SubType>Form</SubType>
@@ -1272,6 +1278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOutReport_ver2.resx">
       <DependentUpon>frmInOutReport_ver2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmZeroCost.resx">
+      <DependentUpon>frmZeroCost.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\POAttachmentForm.resx">
       <DependentUpon>POAttachmentForm.cs</DependentUpon>

@@ -74,7 +74,9 @@ namespace FactoryManagementSoftware.DAL
         public string ItemLastQty { get; } = "item_last_qty";
         public string ItemStock { get; } = "item_qty";
         public string ItemLastPMMAQty { get; } = "item_last_pmma_qty";
+        public string ItemLastPERMABONNQty { get; } = "item_last_permabonn_qty";
         public string ItemPMMAQty { get; } = "item_pmma_qty";
+        public string ItemPERMABONNQty { get; } = "item_permabonn_qty";
 
         public string ItemAssemblyCheck { get; } = "item_assembly";
         public string ItemProductionCheck { get; } = "item_production";
@@ -2738,6 +2740,55 @@ namespace FactoryManagementSoftware.DAL
             return isSuccess;
         }
 
+        public bool UpdatePermabonnQty(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemLastPERMABONNQty + "=@item_last_permabonn_qty,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by,"
+                            + ItemPERMABONNQty + "=@item_permabonn_qty" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_last_permabonn_qty", u.item_last_permabonn_qty);
+                cmd.Parameters.AddWithValue("@item_permabonn_qty", u.item_permabonn_qty);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Tool tool = new Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
         public bool updateAndHistoryRecord(itemBLL u)
         {
             

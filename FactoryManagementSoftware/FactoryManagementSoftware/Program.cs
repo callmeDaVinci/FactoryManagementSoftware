@@ -36,7 +36,7 @@ namespace FactoryManagementSoftware
             //Application.Run(new OUGSMYDBMerge());
 
             //Application.Run(new frmMachineScheduleVer2());
-            //Application.Run(new frmInOutReport_ver2());
+            //Application.Run(new frmInOutVer2());
 
             //Application.Run(new MainDashboard(1));
 

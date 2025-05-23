@@ -24,6 +24,7 @@ namespace FactoryManagementSoftware.BLL
 
         public string pmma_month { get; set; }
         public string pmma_year { get; set; }
+        public string pmma_supplier { get; set; }
 
         public DateTime pmma_added_date { get; set; }
         public int pmma_added_by { get; set; }
