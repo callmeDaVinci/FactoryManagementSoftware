@@ -443,7 +443,7 @@ namespace FactoryManagementSoftware.UI
             Cursor = Cursors.Arrow;
         }
 
-        private void loadForecastListAndComboBox()
+        private void OLD_loadForecastListAndComboBox()
         {
             Cursor = Cursors.WaitCursor;
 
@@ -495,6 +495,7 @@ namespace FactoryManagementSoftware.UI
                     dt_Row[headerPartName] = row[dalItem.ItemName];
 
                     DateTime date = DateTime.MaxValue;
+
                     for (int i = 0; i < forecastMonthQty; i++)
                     {
                         //get month and year
@@ -564,6 +565,134 @@ namespace FactoryManagementSoftware.UI
 
             btnSearch.Enabled = true;
 
+            Cursor = Cursors.Arrow;
+        }
+
+        private void loadForecastListAndComboBox()
+        {
+            Cursor = Cursors.WaitCursor;
+
+            cbEditMode.Checked = false;
+
+            btnSearch.Enabled = false;
+            frmLoading.ShowLoadingScreen();
+
+            dgvForecast.DataSource = null;
+            string keywords = cmbCustomer.Text;
+            CalTotalMonth();
+
+            //check if the keywords has value or not
+            if (!string.IsNullOrEmpty(keywords))
+            {
+                DataTable dt_Data = NewForecastTable();
+                DataRow dt_Row;
+                DataTable dt = dalItemCust.custSearch(keywords);
+                DataTable dt_ItemForecast = dalItemForecast.Select(tool.getCustID(keywords).ToString());
+
+                int index = 1;
+
+                dt.DefaultView.Sort = "item_name ASC";
+                dt = dt.DefaultView.ToTable();
+
+                ableLoadCodeData = false;
+                cmbPartName.DataSource = null;
+                cmbPartCode.DataSource = null;
+
+                dt = RemoveTerminatedItem(dt);
+
+                cmbPartName.DisplayMember = "item_name";
+                cmbPartName.ValueMember = "item_name";
+                cmbPartName.DataSource = tool.RemoveDuplicates(dt.Copy(), "item_name");
+
+                cmbPartName.SelectedIndex = -1;
+
+                ableLoadCodeData = true;
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    dt_Row = dt_Data.NewRow();
+                    string itemCode = row[dalItem.ItemCode].ToString();
+                    dt_Row[headerIndex] = index;
+                    dt_Row[headerPartCode] = itemCode;
+                    dt_Row[headerPartName] = row[dalItem.ItemName];
+
+                    // Find the latest updated date for this item across ALL forecast data
+                    DateTime latestDate = DateTime.MinValue;
+                    string latestUpdatedBy = "";
+
+                    // Filter all forecast data for this specific item
+                    DataRow[] itemForecastRows = dt_ItemForecast.Select($"{dalItemForecast.ItemCode} = '{itemCode}'");
+
+                    foreach (DataRow forecastRow in itemForecastRows)
+                    {
+                        if (forecastRow[dalItemForecast.UpdatedDate] != DBNull.Value)
+                        {
+                            DateTime currentDate = Convert.ToDateTime(forecastRow[dalItemForecast.UpdatedDate]);
+                            if (currentDate > latestDate)
+                            {
+                                latestDate = currentDate;
+
+                                int updatedID = int.TryParse(forecastRow[dalItemForecast.UpdatedBy].ToString(), out updatedID) ? updatedID : 0;
+
+                                if (updatedID <= 0)
+                                {
+                                    latestUpdatedBy = "ADMIN";
+                                }
+                                else
+                                {
+                                    latestUpdatedBy = dalUser.getUsername(updatedID);
+                                }
+                            }
+                        }
+                    }
+
+                    // Set the latest date and updated by (regardless of selected period)
+                    if (latestDate != DateTime.MinValue)
+                    {
+                        dt_Row[headerUpdatedDate] = latestDate;
+                        dt_Row[headerUpdatedBy] = latestUpdatedBy;
+                    }
+
+                    // Now populate the forecast quantities for the selected period
+                    for (int i = 0; i < forecastMonthQty; i++)
+                    {
+                        //get month and year
+                        string headerText = dt_Data.Columns[3 + i].ColumnName;
+                        int year = Convert.ToInt32(getYear(headerText));
+                        int month = DateTime.Parse("1." + getMonthName(headerText) + " 2008").Month;
+
+                        //search data for the specific month/year in the selected period
+                        DataRow data = tool.getItemForecastDataRow(dt_ItemForecast, itemCode, year, month);
+
+                        if (data != null)
+                        {
+                            dt_Row[3 + i] = data[dalItemForecast.ForecastQty];
+                        }
+                        else
+                        {
+                            dt_Row[3 + i] = 0;
+                        }
+                    }
+
+                    dt_Data.Rows.Add(dt_Row);
+                    index++;
+                }
+
+                if (dt_Data.Rows.Count > 0)
+                {
+                    dgvForecast.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
+                    dgvForecast.ColumnHeadersVisible = false;
+                    dgvForecast.DataSource = dt_Data;
+                    dgvForecastUIEdit(dgvForecast);
+                    dgvForecast.ColumnHeadersVisible = true;
+                    dgvForecast.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
+                    dgvForecast.ClearSelection();
+                }
+            }
+
+            frmLoading.CloseForm();
+            btnSearch.Enabled = true;
             Cursor = Cursors.Arrow;
         }
 
