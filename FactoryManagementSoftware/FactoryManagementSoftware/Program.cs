@@ -36,11 +36,11 @@ namespace FactoryManagementSoftware
             //Application.Run(new OUGSMYDBMerge());
 
             //Application.Run(new frmMachineScheduleVer2());
-            //Application.Run(new frmInOutVer2());
+            //Application.Run(new frmProductionRecordVer3());
 
-            //Application.Run(new MainDashboard(1));
+            Application.Run(new MainDashboard(1));
 
-            Application.Run(new frmLogIn());
+            //Application.Run(new frmLogIn());
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]

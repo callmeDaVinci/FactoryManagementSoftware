@@ -971,6 +971,28 @@ namespace FactoryManagementSoftware.UI
             DB_DO_INFO = dt.Copy();
         }
 
+
+        // This approach formats the DISPLAY only, not the underlying data
+     
+        private void FormatAllDONumbersInGrid()
+        {
+            DataGridView dgv = dgvDOList;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            if (dt != null && dt.Columns.Contains(header_DONoString))
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    // Get the integer DO number from header_DONo column
+                    if (row[header_DONo] != null && int.TryParse(row[header_DONo].ToString(), out int doNoInt))
+                    {
+                        // Format it and put in the header_DONoString column
+                        row[header_DONoString] = tool.FormatDONumber(doNoInt);
+                    }
+                }
+            }
+        }
+
         private bool DATA_LOADED = false;
         private void LoadDOList()
         {
@@ -1118,7 +1140,9 @@ namespace FactoryManagementSoftware.UI
             
             dgvDOList.DataSource = dt;
 
-            if(cbInvoiceMode.Checked)
+            FormatAllDONumbersInGrid();
+
+            if (cbInvoiceMode.Checked)
             {
                 ShowTotalInvoiceAmountInDOList();
             }
@@ -2360,8 +2384,13 @@ namespace FactoryManagementSoftware.UI
                     int DONo = Convert.ToInt32(dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString());
                     string Customer = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
 
-                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to REMOVE DO: " + DONo.ToString("D6") + " ?", "Message",
-                                                              MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                    //DialogResult dialogResult = MessageBox.Show("Are you sure you want to REMOVE DO: " + DONo.ToString("D6") + " ?", "Message",
+                                                              //MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                    string formattedDO = tool.FormatDONumber(DONo);
+                    DialogResult dialogResult = MessageBox.Show("Are you sure you want to REMOVE DO: " + formattedDO + " ?", "Message",
+                                                                  MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
                     if (dialogResult == DialogResult.Yes)
                     {
                         RemoveDO(DONo, Customer);
@@ -2546,9 +2575,9 @@ namespace FactoryManagementSoftware.UI
 
                                 dt_Row[header_DOTblCode] = DOTableCode;
                                 dt_Row[header_DONo] = doNo;
-                                dt_Row[header_DONoString] = doNo.ToString("D6");
+                                //dt_Row[header_DONoString] = doNo.ToString("D6");
+                                dt_Row[header_DONoString] = tool.FormatDONumber(doNo);
 
-                             
 
                                 if (deliveryQty > 0)
                                 {
@@ -3358,6 +3387,7 @@ namespace FactoryManagementSoftware.UI
                 ClearToDeliveryQtyAfterDelivered(dt);
                 ResetDBDOInfoList();
                 LoadDOList();
+
                 tool.historyRecord(text.DO_Delivered, text.GetDONumberAndCustomer(Convert.ToInt32(doCode), customerShortName), DateTime.Now, MainDashboard.USER_ID, dalSPP.DOTableName, Convert.ToInt32(doCode));
             }
             else
@@ -3616,7 +3646,11 @@ namespace FactoryManagementSoftware.UI
             //message
             if (success)
             {
-                MessageBox.Show("D/O: " + Convert.ToInt32(doCode).ToString("D6") + " Incomplete Successful!");
+                //MessageBox.Show("D/O: " + Convert.ToInt32(doCode).ToString("D6") + " Incomplete Successful!");
+
+                string formattedDO = tool.FormatDONumber(Convert.ToInt32(doCode));
+                MessageBox.Show("D/O: " + formattedDO + " Incomplete Successful!");
+
                 dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
             }
           
@@ -3691,7 +3725,10 @@ namespace FactoryManagementSoftware.UI
             //message
             if(success)
             {
-                MessageBox.Show("D/O: " + Convert.ToInt32(newDONo).ToString("D6") + " remove undo successful!");
+                //MessageBox.Show("D/O: " + Convert.ToInt32(newDONo).ToString("D6") + " remove undo successful!");
+
+                string formattedDO = tool.FormatDONumber(Convert.ToInt32(newDONo));
+                MessageBox.Show("D/O: " + formattedDO + " remove undo successful!");
                 dgv.Rows[rowIndex].Cells[header_DataType].Value = DataType_InProgress;
             }
 
@@ -4676,6 +4713,8 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private bool IS_NON_BILLING_DO = false;
+
         private void InitialSPSMYDOFormat(Worksheet xlWorkSheet, bool MultiPo)
         {
             if (MultiPo)
@@ -4721,10 +4760,23 @@ namespace FactoryManagementSoftware.UI
             //var filePath = @"D:\CodeBase\FactoryManagementSoftware\FactoryManagementSoftware\FactoryManagementSoftware\Resources\safety-logo-black.png";
             xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 10, 2, 88f, 49f);
 
-            tempPath = Path.GetTempFileName();
-            Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
-            filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
-            xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
+
+            if(IS_NON_BILLING_DO)
+            {
+                tempPath = Path.GetTempFileName();
+                Resources.SBB_NON_BILLING_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbnonbillingdeliveryorderwithrectacgle.png");
+                filePath = tempPath + "sbbnonbillingdeliveryorderwithrectacgle.png";
+                xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
+            }
+            else
+            {
+                tempPath = Path.GetTempFileName();
+                Resources.SBB_DELIVERY_ORDER_LOGO.Save(tempPath + "sbbdeliveryorderwithrectacgle.png");
+                filePath = tempPath + "sbbdeliveryorderwithrectacgle.png";
+                xlWorkSheet.Shapes.AddPicture(filePath, Microsoft.Office.Core.MsoTriState.msoFalse, Microsoft.Office.Core.MsoTriState.msoCTrue, 370, 100, 164.28f, 28.95f);
+            }
+
+           
 
 
             tempPath = Path.GetTempFileName();
@@ -5121,10 +5173,10 @@ namespace FactoryManagementSoftware.UI
 
             DOFormat = xlWorkSheet.get_Range(areaDriver).Cells;
             DOFormat.Merge();
-            DOFormat.Value = "Driver";
+            DOFormat.Value = "Driver / Plate No.";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignTop;
-            DOFormat.Font.Size = 10;
+            DOFormat.Font.Size = 9;
             DOFormat.Font.Name = "Cambria";
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
 
@@ -10003,6 +10055,20 @@ namespace FactoryManagementSoftware.UI
                 };
 
                 frm.ShowDialog();
+            }
+        }
+
+        private void dgvDOList_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            // Check if this is the DO number column
+            if (dgvDOList.Columns[e.ColumnIndex].Name == header_DONo && e.Value != null)
+            {
+                if (int.TryParse(e.Value.ToString(), out int doNoInt))
+                {
+                    // Format for display without changing underlying data
+                    e.Value = tool.FormatDONumber(doNoInt);
+                    e.FormattingApplied = true;
+                }
             }
         }
     }

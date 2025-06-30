@@ -638,7 +638,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (MainDashboard.USER_ID == 10 || MainDashboard.USER_ID == 1)
+            if (MainDashboard.USER_ID == 10) //|| MainDashboard.USER_ID == 1
             {
                 frmOrderRequestNotice frm3 = new frmOrderRequestNotice(this);
                 //frm2.StartPosition = FormStartPosition.CenterScreen;
@@ -654,7 +654,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             int userID = MainDashboard.USER_ID;
-            if (userID == 10 || userID == 1 || userID == 21 || userID == 23)
+            if (userID == 10 || userID == 21 || userID == 23) //|| MainDashboard.USER_ID == 1
             {
                 frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
                 //frm2.StartPosition = FormStartPosition.CenterScreen;

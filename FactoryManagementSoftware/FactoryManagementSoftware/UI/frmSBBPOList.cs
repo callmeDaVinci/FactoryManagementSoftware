@@ -2322,7 +2322,7 @@ namespace FactoryManagementSoftware.UI
 
 
 
-        private void POToDOFromPlanner() 
+        private void OLDPOToDOFromPlanner() 
         {
             TotalToDeliveryBag = 0;
             //DataTable dt = (DataTable)dgvPOList.DataSource;
@@ -2369,6 +2369,97 @@ namespace FactoryManagementSoftware.UI
             dgvDOList.DataSource = dt_DO;
             DgvUIEdit(dgvDOList);
 
+        }
+
+
+        private void POToDOFromPlanner()
+        {
+            TotalToDeliveryBag = 0;
+            DataTable dt_DO = NewDOTable();
+            DataRow dt_Row;
+
+            int regularDoNo = -1;     // Lazy initialization flag
+            int nonBillingDoNo = -1;  // Lazy initialization flag
+
+            foreach (DataRow row in dt_PlannerPO.Rows)
+            {
+                int assignedDoNo;
+                string doNoString;
+
+                if (isJune25PO(row[header_PODate]))
+                {
+                    // Initialize non-billing DO number only when first needed
+                    if (nonBillingDoNo == -1)
+                        nonBillingDoNo = tool.GetNewNonBillingDONo();
+
+                    assignedDoNo = nonBillingDoNo;
+                    doNoString = tool.FormatDONumber(nonBillingDoNo) + "-NEW";
+                    nonBillingDoNo++;
+                }
+                else
+                {
+                    // Initialize regular DO number only when first needed
+                    if (regularDoNo == -1)
+                        regularDoNo = tool.GetNewDONo();
+
+                    assignedDoNo = regularDoNo;
+                    doNoString = tool.FormatDONumber(regularDoNo) + "-NEW";
+                    regularDoNo++;
+                }
+
+                dt_Row = dt_DO.NewRow();
+                dt_Row[header_DONo] = assignedDoNo;
+                dt_Row[header_DONoString] = doNoString;
+                dt_Row[header_PONoString] = row[header_PONoString];
+                dt_Row[header_POCode] = row[header_POCode];
+                dt_Row[header_PODate] = row[header_PODate];
+                dt_Row[header_Customer] = row[header_Customer];
+                dt_Row[header_CustomerCode] = row[header_CustomerCode];
+                dt_Row[header_StockCheck] = text_AvailableStock;
+                dt_Row[header_CombinedCode] = DBNull.Value;
+                dt_DO.Rows.Add(dt_Row);
+            }
+
+            // Rest of existing code...
+            if (IfCustomerDuplicated(dt_DO.Copy()))
+            {
+                btnAddNewPO.Visible = true;
+            }
+            else
+            {
+                btnAddNewPO.Visible = false;
+            }
+
+            CombineDOItemList(dt_DO);
+            DOItemStockChecking(dt_DO);
+            dgvItemList.DataSource = dt_DOItemList_1;
+            DgvUIEdit(dgvItemList);
+            dgvItemList.ClearSelection();
+            dgvDOList.DataSource = dt_DO;
+            DgvUIEdit(dgvDOList);
+        }
+
+        // Keep your existing isJune25PO method
+        private bool isJune25PO(object poDateValue)
+        {
+            try
+            {
+                if (poDateValue == null || poDateValue == DBNull.Value)
+                    return false;
+
+                DateTime poDate;
+                if (poDateValue is DateTime)
+                    poDate = (DateTime)poDateValue;
+                else if (!DateTime.TryParse(poDateValue.ToString(), out poDate))
+                    return false;
+
+                DateTime cutoffDate = new DateTime(2025, 6, 30);
+                return poDate.Date <= cutoffDate;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
         private void POToDO()

@@ -1604,6 +1604,7 @@ namespace FactoryManagementSoftware.UI
                             float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
 
                             float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
+                            color_Material_Used_kg = (float)Math.Round(color_Material_Used_kg, 2);
 
                             if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
                             {

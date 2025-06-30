@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>663</ApplicationRevision>
+    <ApplicationRevision>665</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -1885,8 +1885,11 @@
     <None Include="Resources\icons8-check-file-100.png" />
     <None Include="Resources\icons8-pdf-1001.png" />
     <None Include="Resources\icons8-document-100.png" />
+    <None Include="Resources\SBB NON BILLING DELIVERY ORDER LOGO.png" />
     <Content Include="Resources\sbbdeliveryorderwithrectacgle.png" />
     <None Include="Resources\SP ISO LOGO %28BLACK%29.png" />
+    <None Include="Resources\sbbnonbillingdeliveryorder.bmp" />
+    <None Include="Resources\sbbnonbillingdeliveryorderwithrectacgle.png" />
     <Content Include="SBB logo.ico" />
     <Content Include="sp logo 2023.ico" />
     <Content Include="website tiny logo.ico" />

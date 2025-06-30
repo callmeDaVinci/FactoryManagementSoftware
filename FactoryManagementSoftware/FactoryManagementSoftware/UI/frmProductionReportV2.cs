@@ -1858,9 +1858,16 @@ namespace FactoryManagementSoftware.UI
                     {
                         qcPassedQty += Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject += Convert.ToInt32(row[text.Header_TotalReject].ToString());
-                        systemReject += Convert.ToInt32(row[text.Header_SystemReject].ToString());
+                        //systemReject += Convert.ToInt32(row[text.Header_SystemReject].ToString());
                         maxOutput += Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         totalAvgHourlyShot += Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
+
+                        systemReject = maxOutput - qcPassedQty;
+
+                        if(systemReject < 0)
+                        {
+                            systemReject = 0;
+                        }
 
                         avgCount++;
 
@@ -1886,6 +1893,7 @@ namespace FactoryManagementSoftware.UI
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_YieldRate] = yieldRate;
 
                         dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_MaxOutput] = maxOutput;
+                        dt_FilterDuplicatePlan.Rows[dt_FilterDuplicatePlan.Rows.Count - 1][text.Header_SystemReject] = systemReject;
 
                         decimal ActualAvgHourlyShot = decimal.Round(totalAvgHourlyShot / avgCount, 0);
 
@@ -1897,22 +1905,25 @@ namespace FactoryManagementSoftware.UI
                     else
                     {
 
-
                         avgCount = 1;
 
                         previousJobNo = row[text.Header_JobNo].ToString();
                         qcPassedQty = Convert.ToInt32(row[text.Header_QCPassedQty].ToString());
                         totalReject = Convert.ToInt32(row[text.Header_TotalReject].ToString());
-                        systemReject = Convert.ToInt32(row[text.Header_SystemReject].ToString());
+
                         maxOutput = Convert.ToInt32(row[text.Header_MaxOutput].ToString());
                         totalAvgHourlyShot = Convert.ToDecimal(row[text.Header_AvgHourlyShot].ToString());
                         totalIdealHourlyShot = Convert.ToInt32(row[text.Header_IdealHourlyShot].ToString());
 
+                        systemReject = maxOutput - qcPassedQty;
+
+                        if (systemReject < 0)
+                        {
+                            systemReject = 0;
+                        }
+
                         dt_FilterDuplicatePlan.ImportRow(row);
                     }
-
-
-
                 }
 
                 dt_FilterDuplicatePlan.DefaultView.Sort = text.Header_Mac + " ASC, " + text.Header_DateFrom + " ASC";

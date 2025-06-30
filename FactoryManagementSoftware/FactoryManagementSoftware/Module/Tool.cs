@@ -2239,7 +2239,88 @@ namespace FactoryManagementSoftware.Module
             return DoNo;
         }
 
+        public bool IsNonBillingDO(int doNo)
+        {
+            return doNo >= 1000000;
+        }
+
+        public int GetNewNonBillingDONo()
+        {
+            int DoNo = 1000001; // Start from 1 million + 1
+            SBBDataDAL dalSPP = new SBBDataDAL();
+
+            DataTable dt = dalSPP.DOSelect();
+            dt.DefaultView.Sort = dalSPP.DONo + " DESC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    int number = int.TryParse(row[dalSPP.DONo].ToString(), out number) ? number : 0;
+
+                    // Only consider non-billing range numbers (>= 1,000,000)
+                    if (number >= 1000000)
+                    {
+                        DoNo = number + 1;
+                        return DoNo;
+                    }
+                }
+            }
+
+            return DoNo; // Return 1000001 if no non-billing DOs exist yet
+        }
+
+        public string FormatDONumber(int doNo)
+        {
+            if (IsNonBillingDO(doNo))
+            {
+                // Convert 1000001 → "NB2025001"
+                int runningNumber = doNo - 1000000;
+                int currentYear = DateTime.Now.Year;
+                return $"NB{currentYear}{runningNumber:D3}";
+            }
+            else
+            {
+                // Regular format: 000001
+                return doNo.ToString("D6");
+            }
+        }
+
         public int GetNewDONo()
+        {
+            int DoNo = 1;
+            SBBDataDAL dalSPP = new SBBDataDAL();
+
+            DataTable dt = dalSPP.DOSelect();
+            dt.DefaultView.Sort = dalSPP.DONo + " DESC";
+            dt = dt.DefaultView.ToTable();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
+
+                if (!isRemoved)
+                {
+                    int number = int.TryParse(row[dalSPP.DONo].ToString(), out number) ? number : 0;
+
+                    // CRITICAL: Skip non-billing numbers (>= 1,000,000)
+                    // Only consider regular DO numbers (< 1,000,000)
+                    if (number < 1000000)
+                    {
+                        DoNo = number + 1;
+                        return DoNo;
+                    }
+                    // If this is a non-billing number, continue to next row
+                }
+            }
+
+            return DoNo;
+        }
+
+        public int OLDGetNewDONo()
         {
             int DoNo = 1;
             SBBDataDAL dalSPP = new SBBDataDAL();

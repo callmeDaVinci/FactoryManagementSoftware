@@ -946,6 +946,7 @@
             this.dgvDOList.TabIndex = 156;
             this.dgvDOList.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellClick);
             this.dgvDOList.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvDOList_CellDoubleClick);
+            this.dgvDOList.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvDOList_CellFormatting);
             this.dgvDOList.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvDOList_CellMouseDown);
             this.dgvDOList.DataBindingComplete += new System.Windows.Forms.DataGridViewBindingCompleteEventHandler(this.dgvDOList_DataBindingComplete);
             this.dgvDOList.SelectionChanged += new System.EventHandler(this.dgvDOList_SelectionChanged);
