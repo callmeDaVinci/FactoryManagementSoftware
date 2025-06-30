@@ -2576,10 +2576,24 @@ namespace FactoryManagementSoftware.Module
                 if(row[dalMac.MacID].ToString() == machineID)
                 {
                     factoryName = row[dalMac.MacLocationName].ToString();
+                    return factoryName;
                 }
             }
             
             return factoryName;
+        }
+
+        public string getMachineNameFromMachineID(string machineID, DataTable dt)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row[dalMac.MacID].ToString() == machineID)
+                {
+                    return row[dalMac.MacName].ToString();
+                }
+            }
+
+            return "";
         }
 
         public void DoubleBuffered(DataGridView dgv, bool setting)

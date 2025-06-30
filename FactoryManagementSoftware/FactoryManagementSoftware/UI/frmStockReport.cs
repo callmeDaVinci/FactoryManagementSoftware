@@ -459,8 +459,7 @@ namespace FactoryManagementSoftware.UI
             dtStock_row[headerTotal] = stockQty;
             string factoryName = "";
 
-            float TotalStockExcludedSemenyih = 0;
-
+            float TotalStock = 0;
 
             if (dt_StockData.Rows.Count > 0)
             {
@@ -468,29 +467,32 @@ namespace FactoryManagementSoftware.UI
                 {
                      factoryName = stock[tool.headerFacName].ToString();
 
-                    bool canDisplayStockData = factoryName != text.Factory_Semenyih || (factoryName == text.Factory_Semenyih && cbShowSemenyihStock.Checked);
+                    bool canDisplayStockData = factoryName == text.Factory_Semenyih  || factoryName == text.Factory_SMY_AssemblyLine ;
 
                     if(canDisplayStockData)
                     {
                         float qty = Convert.ToSingle(stock[tool.headerReadyStock]);
-                        qty = (float)Math.Round(qty * 100f) / 100f;
+
+                        if (itemCat.Equals("Part", StringComparison.OrdinalIgnoreCase))
+                        {
+                            qty = (float)Math.Floor(qty); // Remove decimal part (1034.03 becomes 1034)
+                        }
+                        else
+                        {
+                            qty = (float)Math.Round(qty * 100f) / 100f; // Keep 2 decimal places for non-Part items
+                        }
 
                         dtStock_row[factoryName] = qty;
                         dtStock_row[headerUnit] = stock[tool.headerUnit].ToString();
 
-                        if(factoryName != text.Factory_Semenyih)
-                        {
-                            TotalStockExcludedSemenyih += qty;
-                        }
+                        TotalStock += qty;
                     }
                    
                 }
             }
 
-            if(cbExcludeSemenyihStockFromTotal.Checked)
-            {
-                dtStock_row[headerTotal] = TotalStockExcludedSemenyih;
-            }
+           
+            dtStock_row[headerTotal] = TotalStock;
 
             factoryName = "";
             dt_Stock.Rows.Add(dtStock_row);

@@ -659,7 +659,10 @@ namespace FactoryManagementSoftware.UI
                             DONo += "/";
                         }
 
-                        DONo += Convert.ToInt16(currentDO).ToString("D6");
+                        //DONo += Convert.ToInt16(currentDO).ToString("D6");
+                        DONo += tool.FormatDONumber(Convert.ToInt32(currentDO));
+
+
                         preDoNo = currentDO;
                     }
 
@@ -1679,13 +1682,15 @@ namespace FactoryManagementSoftware.UI
 
                         dt_Row[header_POCode] = row[dalSPP.POCode];
                         dt_Row[header_DONo] = DONo;
-                        dt_Row[header_DONoString] = DONo.ToString("D6") + "-NEW";
+                       // dt_Row[header_DONoString] = DONo.ToString("D6") + "-NEW";
+                        dt_Row[header_DONoString] = tool.FormatDONumber(DONo) + "-NEW";
 
                         if (EditMode)
                         {
                             dt_Row[header_DOTblCode] = row[dalSPP.TableCode];
                             dt_Row[header_DataMode] = text_ToEdit;
-                            dt_Row[header_DONoString] = DONo.ToString("D6") + "-EDIT";
+                            //dt_Row[header_DONoString] = DONo.ToString("D6") + "-EDIT";
+                            dt_Row[header_DONoString] = tool.FormatDONumber(DONo) + "-EDIT";
                         }
 
                         dt_Row[header_Customer] = customerName;
@@ -2338,6 +2343,7 @@ namespace FactoryManagementSoftware.UI
 
                 dt_Row[header_DONo] = doNo;
                 dt_Row[header_DONoString] = doNo.ToString("D6") + "-NEW";
+
                 dt_Row[header_PONoString] = row[header_PONoString];
                 dt_Row[header_POCode] = row[header_POCode];
                 dt_Row[header_PODate] = row[header_PODate];
@@ -2486,7 +2492,9 @@ namespace FactoryManagementSoftware.UI
                     dt_Row = dt_DO.NewRow();
 
                     dt_Row[header_DONo] = doNo;
-                    dt_Row[header_DONoString] = doNo.ToString("D6") + "-NEW";
+                    //dt_Row[header_DONoString] = doNo.ToString("D6") + "-NEW";
+                    dt_Row[header_DONoString] = tool.FormatDONumber(doNo) + "-NEW";
+
                     dt_Row[header_PONoString] = row[header_PONoString];
                     dt_Row[header_POCode] = row[header_POCode];
                     dt_Row[header_PODate] = row[header_PODate];
@@ -2742,7 +2750,8 @@ namespace FactoryManagementSoftware.UI
                                     dt_Row[header_StockString] = row[header_StockString];
                                     dt_Row[header_DONo] = row2[dalSPP.DONo];
                                     dt_Row[header_POCode] = row2[dalSPP.POCode];
-                                    dt_Row[header_DONoString] = Convert.ToInt16(row2[dalSPP.DONo]).ToString("D6");
+                                    //dt_Row[header_DONoString] = Convert.ToInt32(row2[dalSPP.DONo]).ToString("D6");
+                                    dt_Row[header_DONoString] = tool.FormatDONumber(Convert.ToInt32(row2[dalSPP.DONo]));
                                     dt_Row[header_Customer] = row2[dalSPP.ShortName];
                                     dt_Row[header_DeliveryPCS] = row2[dalSPP.DOToDeliveryQty];
 
@@ -2958,7 +2967,10 @@ namespace FactoryManagementSoftware.UI
 
                     string combinedCode = row[header_CombinedCode].ToString();
                     dt_Row[header_DONo] = DoNo;
-                    dt_Row[header_DONoString] = DoNo.ToString("D6") + "-NEW";
+
+                    //dt_Row[header_DONoString] = DoNo.ToString("D6") + "-NEW";
+                    dt_Row[header_DONoString] = tool.FormatDONumber(DoNo) + "-NEW";
+
                     dt_Row[header_PONoString] = row[header_PONoString];
                     dt_Row[header_POCode] = row[header_POCode];
                     dt_Row[header_PODate] = row[header_PODate];

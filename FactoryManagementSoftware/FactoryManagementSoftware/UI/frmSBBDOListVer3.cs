@@ -202,6 +202,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_DOTblCode, typeof(string));
             dt.Columns.Add(header_DONo, typeof(string));
+            dt.Columns.Add(header_DONoString, typeof(string));
             dt.Columns.Add(header_Customer, typeof(string));
             dt.Columns.Add(header_CustomerCode, typeof(string));
             dt.Columns.Add(header_ItemCode, typeof(string));
@@ -3337,6 +3338,7 @@ namespace FactoryManagementSoftware.UI
 
 
             string doCode = dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString();
+            string doCodeString = dgv.Rows[rowIndex].Cells[header_DONoString].Value.ToString();
             string customerShortName = dgv.Rows[rowIndex].Cells[header_Customer].Value.ToString();
             string customerCode = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
 
@@ -3357,6 +3359,7 @@ namespace FactoryManagementSoftware.UI
                     dt_Row = dt.NewRow();
 
                     dt_Row[header_DOTblCode] = doTableCode;
+                    dt_Row[header_DONoString] = tool.FormatDONumber(Convert.ToInt32(doCode));
                     dt_Row[header_DONo] = doCode;
                     dt_Row[header_Customer] = customerShortName;
                     dt_Row[header_CustomerCode] = customerCode;
@@ -4714,6 +4717,17 @@ namespace FactoryManagementSoftware.UI
         }
 
         private bool IS_NON_BILLING_DO = false;
+
+        private bool IsNonBillingDO(string doNo)
+        {
+            if (string.IsNullOrEmpty(doNo))
+                return false;
+
+            string upperDoNo = doNo.ToUpper();
+
+            // Check if DO number contains "NB" indicating non-billing
+            return upperDoNo.Contains("NB");
+        }
 
         private void InitialSPSMYDOFormat(Worksheet xlWorkSheet, bool MultiPo)
         {
@@ -6079,6 +6093,8 @@ namespace FactoryManagementSoftware.UI
                         string DONo = row[header_DONo].ToString();
                         string DONoString = row[header_DONoString].ToString();
 
+                        IS_NON_BILLING_DO = IsNonBillingDO(DONoString);
+
                         sfd.Filter = "Excel Documents (*.xls)|*.xls";
                         sfd.FileName = DONoString + ".xls";
 
@@ -7068,6 +7084,9 @@ namespace FactoryManagementSoftware.UI
                         string PONo = rowDOList[header_PONo].ToString();
                         string DONo = rowDOList[header_DONo].ToString();
                         string DONoString = rowDOList[header_DONoString].ToString();
+
+                        // Check if this is a non-billing DO
+                        IS_NON_BILLING_DO = IsNonBillingDO(DONo);
 
                         sfd.Filter = "Excel Documents (*.xls)|*.xls";
                         sfd.FileName = "INV_"+ DONoString + ".xls";

@@ -4755,75 +4755,78 @@ namespace FactoryManagementSoftware.UI
 
         private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
-            try
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            DataGridView dgv = dgvList;
+
+            int rowIndex = dgv.CurrentCell.RowIndex;
+            int colIndex = dgv.CurrentCell.ColumnIndex;
+
+            string ClickedItem = e.ClickedItem.Name.ToString();
+            stopAfterBalUpdate = true;
+            if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_JumpToLastItem) || ClickedItem.Equals(text_JumpToFirstItem) || ClickedItem.Equals(text_JumpToNextItem) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer) || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
             {
-                Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                DataGridView dgv = dgvList;
-
-                int rowIndex = dgv.CurrentCell.RowIndex;
-                int colIndex = dgv.CurrentCell.ColumnIndex;
-
-                string ClickedItem = e.ClickedItem.Name.ToString();
-                stopAfterBalUpdate = true;
-                if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_JumpToLastItem) || ClickedItem.Equals(text_JumpToFirstItem) || ClickedItem.Equals(text_JumpToNextItem) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer)  || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
+                if (ClickedItem.Equals(text_Reset))
                 {
-
-                    if (ClickedItem.Equals(text_Reset))
-                    {
-                        Reset(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_ResetAll))
-                    {
-                        ResetAll(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_ResetAllByCustomer))
-                    {
-                        ResetAllByCustomer(dgv, colIndex);
-                    }
-                    else if (ClickedItem.Equals(text_FillIn))
-                    {
-                        NewAutoFill(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_FillAll))
-                    {
-                        NewAutoFillAll(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_FillAllByCustomer))
-                    {
-                        NewAutoFillAllByCustomer(dgv, colIndex);
-                    }
-                    else if (ClickedItem.Equals(text_NewTrip))
-                    {
-                        NewTripTest(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_AddDO))
-                    {
-                        OpenDO(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_JumpToNextItem))
-                    {
-                        JumpToNextItem(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_JumpToLastItem))
-                    {
-                        JumpToLastItem(dgv);
-                    }
-                    else if (ClickedItem.Equals(text_JumpToFirstItem))
-                    {
-                        JumpToFirstItem(dgv);
-                    }
-                    CalculateTotalBag(dgv);
+                    Reset(dgv);
                 }
-                stopAfterBalUpdate = false;
+                else if (ClickedItem.Equals(text_ResetAll))
+                {
+                    ResetAll(dgv);
+                }
+                else if (ClickedItem.Equals(text_ResetAllByCustomer))
+                {
+                    ResetAllByCustomer(dgv, colIndex);
+                }
+                else if (ClickedItem.Equals(text_FillIn))
+                {
+                    NewAutoFill(dgv);
+                }
+                else if (ClickedItem.Equals(text_FillAll))
+                {
+                    NewAutoFillAll(dgv);
+                }
+                else if (ClickedItem.Equals(text_FillAllByCustomer))
+                {
+                    NewAutoFillAllByCustomer(dgv, colIndex);
+                }
+                else if (ClickedItem.Equals(text_NewTrip))
+                {
+                    NewTripTest(dgv);
+                }
+                else if (ClickedItem.Equals(text_AddDO))
+                {
+                    OpenDO(dgv);
+                }
+                else if (ClickedItem.Equals(text_JumpToNextItem))
+                {
+                    JumpToNextItem(dgv);
+                }
+                else if (ClickedItem.Equals(text_JumpToLastItem))
+                {
+                    JumpToLastItem(dgv);
+                }
+                else if (ClickedItem.Equals(text_JumpToFirstItem))
+                {
+                    JumpToFirstItem(dgv);
+                }
+                CalculateTotalBag(dgv);
+            }
+            stopAfterBalUpdate = false;
 
 
-                Cursor = Cursors.Arrow; // change cursor to normal type
-            }
-            catch (Exception ex)
-            {
-                tool.saveToTextAndMessageToUser(ex);
-            }
+            Cursor = Cursors.Arrow; // change cursor to normal type
+
+            //try
+            //{
+               
+            //}
+            //catch (Exception ex)
+            //{
+            //    tool.saveToTextAndMessageToUser(ex);
+            //}
         }
 
         private void dgvList_CellContentClick_2(object sender, DataGridViewCellEventArgs e)

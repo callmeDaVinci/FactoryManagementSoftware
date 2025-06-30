@@ -156,7 +156,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_JobNo, typeof(int));
 
             dt.Columns.Add(text.Header_Fac, typeof(string));
-            dt.Columns.Add(text.Header_Mac, typeof(int));
+            dt.Columns.Add(text.Header_Mac, typeof(string));
 
             if (cmbReportType.Text == text.ReportType_ByJobNo)
             {
@@ -1584,6 +1584,7 @@ namespace FactoryManagementSoftware.UI
                 int macID = int.TryParse(row[dalPlan.machineID].ToString(), out macID) ? macID : 0;
 
                 string fac = tool.getFactoryNameFromMachineID(macID.ToString(), dt_Mac);
+                string macName = tool.getMachineNameFromMachineID(macID.ToString(), dt_Mac);
 
                 DateTime proDate = Convert.ToDateTime(row[dalProRecord.ProDate]).Date;
 
@@ -1787,7 +1788,7 @@ namespace FactoryManagementSoftware.UI
 
                     dt_Row[text.Header_Index] = index;
                     dt_Row[text.Header_Fac] = fac;
-                    dt_Row[text.Header_Mac] = macID;
+                    dt_Row[text.Header_Mac] = macName;
 
                     if (cmbReportType.Text == text.ReportType_ByJobNo)
                     {

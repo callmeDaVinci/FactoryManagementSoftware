@@ -3049,6 +3049,7 @@ namespace FactoryManagementSoftware.UI
             }
             dgv.ClearSelection();
         }
+        readonly string header_DONoString = "D/O NO";
 
         private void addPartToDGV(DataTable dt)
         {
@@ -3069,6 +3070,7 @@ namespace FactoryManagementSoftware.UI
                 string bagQty = row[header_DeliveryBAG].ToString();
                 string unit = text.Unit_Set;
                 string DOCode = row[header_DONo].ToString();
+                string DOString = row[header_DONoString].ToString();
                 string PONo = row[header_PONo].ToString();
 
                 dgv.Rows[n].Cells[IndexColumnName].Value = index;
@@ -3087,7 +3089,16 @@ namespace FactoryManagementSoftware.UI
                 int doCode = int.TryParse(DOCode, out doCode) ? doCode : 0;
 
                 dgv.Rows[n].Cells[UnitColumnName].Value = unit;
-                dgv.Rows[n].Cells[NoteColumnName].Value = "[DO " + doCode.ToString("D6") + ": " + bagQty + " Bags][PO:" + PONo + "]";
+
+                if(DOString.Contains("NB"))
+                {
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[DO " + DOString + ": " + bagQty + " Bags][PO:" + PONo + "]";
+                }
+                else
+                {
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[DO " + doCode.ToString("D6") + ": " + bagQty + " Bags][PO:" + PONo + "]";
+
+                }
 
                 if (cmbTrfFromCategory.Text.Equals("Factory"))
                 {

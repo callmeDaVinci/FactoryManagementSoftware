@@ -322,8 +322,6 @@
             // 
             this.cbExcludeSemenyihStockFromTotal.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.cbExcludeSemenyihStockFromTotal.AutoSize = true;
-            this.cbExcludeSemenyihStockFromTotal.Checked = true;
-            this.cbExcludeSemenyihStockFromTotal.CheckState = System.Windows.Forms.CheckState.Checked;
             this.cbExcludeSemenyihStockFromTotal.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbExcludeSemenyihStockFromTotal.Location = new System.Drawing.Point(3, 57);
             this.cbExcludeSemenyihStockFromTotal.Name = "cbExcludeSemenyihStockFromTotal";
@@ -331,6 +329,7 @@
             this.cbExcludeSemenyihStockFromTotal.TabIndex = 117;
             this.cbExcludeSemenyihStockFromTotal.Text = "Exclude Semenyih Stock From Total";
             this.cbExcludeSemenyihStockFromTotal.UseVisualStyleBackColor = true;
+            this.cbExcludeSemenyihStockFromTotal.Visible = false;
             // 
             // cbShowSemenyihStock
             // 
@@ -338,6 +337,7 @@
             this.cbShowSemenyihStock.AutoSize = true;
             this.cbShowSemenyihStock.Checked = true;
             this.cbShowSemenyihStock.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbShowSemenyihStock.Enabled = false;
             this.cbShowSemenyihStock.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbShowSemenyihStock.Location = new System.Drawing.Point(3, 12);
             this.cbShowSemenyihStock.Name = "cbShowSemenyihStock";
@@ -345,6 +345,7 @@
             this.cbShowSemenyihStock.TabIndex = 106;
             this.cbShowSemenyihStock.Text = "Show Semenyih Stock";
             this.cbShowSemenyihStock.UseVisualStyleBackColor = true;
+            this.cbShowSemenyihStock.Visible = false;
             this.cbShowSemenyihStock.CheckedChanged += new System.EventHandler(this.cbShowSemenyihStock_CheckedChanged);
             // 
             // btnFilterApply
