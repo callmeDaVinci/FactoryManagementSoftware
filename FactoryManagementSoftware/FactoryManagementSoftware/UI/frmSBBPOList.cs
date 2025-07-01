@@ -2448,6 +2448,7 @@ namespace FactoryManagementSoftware.UI
         // Keep your existing isJune25PO method
         private bool isJune25PO(object poDateValue)
         {
+            return false;
             try
             {
                 if (poDateValue == null || poDateValue == DBNull.Value)

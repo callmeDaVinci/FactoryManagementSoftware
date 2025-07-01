@@ -2218,7 +2218,7 @@ namespace FactoryManagementSoftware.UI
 
             try
             {
-                if (NegativeBalCheck())
+                if (true)//NegativeBalCheck()
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 

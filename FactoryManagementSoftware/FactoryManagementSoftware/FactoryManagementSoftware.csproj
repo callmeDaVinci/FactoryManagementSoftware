@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>665</ApplicationRevision>
+    <ApplicationRevision>666</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
