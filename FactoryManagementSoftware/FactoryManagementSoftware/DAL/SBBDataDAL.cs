@@ -1608,7 +1608,8 @@ namespace FactoryManagementSoftware.DAL
                                tbl_item.item_qty,
                                tbl_spp_po.po_qty,
                                tbl_spp_po.delivered_qty,
-                               tbl_spp_stdpacking.qty_per_bag
+                               tbl_spp_stdpacking.qty_per_bag,
+                               tbl_spp_po.po_date
                                FROM tbl_spp_po 
                                INNER JOIN tbl_spp_customer 
                                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
@@ -1631,6 +1632,7 @@ namespace FactoryManagementSoftware.DAL
                 //for executing command
                 SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@false", false);
+                cmd.Parameters.AddWithValue("@StartDate", DateTime.Now.AddYears(-1));
                 //getting data from database
                 SqlDataAdapter adapter = new SqlDataAdapter(cmd);
                 //database connection open

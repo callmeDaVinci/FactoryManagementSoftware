@@ -86,7 +86,7 @@
             dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
             this.dgvList.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvList.GridColor = System.Drawing.Color.LightGray;
-            this.dgvList.Location = new System.Drawing.Point(21, 139);
+            this.dgvList.Location = new System.Drawing.Point(12, 140);
             this.dgvList.Margin = new System.Windows.Forms.Padding(3, 1, 3, 1);
             this.dgvList.Name = "dgvList";
             this.dgvList.RowHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.None;
@@ -99,6 +99,7 @@
             dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
             this.dgvList.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
             this.dgvList.RowHeadersVisible = false;
+            this.dgvList.RowHeadersWidth = 51;
             this.dgvList.RowTemplate.Height = 50;
             this.dgvList.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dgvList.Size = new System.Drawing.Size(1303, 556);
@@ -131,7 +132,7 @@
             this.cbMergePO.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.cbMergePO.Location = new System.Drawing.Point(657, 42);
             this.cbMergePO.Name = "cbMergePO";
-            this.cbMergePO.Size = new System.Drawing.Size(252, 23);
+            this.cbMergePO.Size = new System.Drawing.Size(238, 21);
             this.cbMergePO.TabIndex = 182;
             this.cbMergePO.Text = "MERGE PO WITH SAME CUSTOMER";
             this.cbMergePO.UseVisualStyleBackColor = true;
@@ -153,7 +154,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(424, 21);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(40, 19);
+            this.label2.Size = new System.Drawing.Size(37, 17);
             this.label2.TabIndex = 184;
             this.label2.Text = "UNIT";
             // 
@@ -200,9 +201,9 @@
             this.cbFillALL.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.cbFillALL.AutoSize = true;
             this.cbFillALL.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.cbFillALL.Location = new System.Drawing.Point(1145, 17);
+            this.cbFillALL.Location = new System.Drawing.Point(1153, 17);
             this.cbFillALL.Name = "cbFillALL";
-            this.cbFillALL.Size = new System.Drawing.Size(83, 23);
+            this.cbFillALL.Size = new System.Drawing.Size(75, 21);
             this.cbFillALL.TabIndex = 191;
             this.cbFillALL.Text = "FILL ALL";
             this.cbFillALL.UseVisualStyleBackColor = true;
@@ -226,7 +227,7 @@
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label4.Location = new System.Drawing.Point(216, 18);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(89, 19);
+            this.label4.Size = new System.Drawing.Size(83, 17);
             this.label4.TabIndex = 188;
             this.label4.Text = "P/O SORT BY";
             // 
@@ -247,7 +248,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label3.Location = new System.Drawing.Point(9, 18);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(128, 19);
+            this.label3.Size = new System.Drawing.Size(119, 17);
             this.label3.TabIndex = 186;
             this.label3.Text = "PRODUCT SORT BY";
             // 

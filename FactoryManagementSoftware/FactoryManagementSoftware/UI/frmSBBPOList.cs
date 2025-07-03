@@ -2408,7 +2408,10 @@ namespace FactoryManagementSoftware.UI
                     if (regularDoNo == -1)
                         regularDoNo = tool.GetNewDONo();
 
+
+                    regularDoNo = regularDoNo <= 3940? 3941 : regularDoNo;
                     assignedDoNo = regularDoNo;
+
                     doNoString = tool.FormatDONumber(regularDoNo) + "-NEW";
                     regularDoNo++;
                 }
@@ -2445,10 +2448,8 @@ namespace FactoryManagementSoftware.UI
             DgvUIEdit(dgvDOList);
         }
 
-        // Keep your existing isJune25PO method
         private bool isJune25PO(object poDateValue)
         {
-            return false;
             try
             {
                 if (poDateValue == null || poDateValue == DBNull.Value)
@@ -3445,8 +3446,9 @@ namespace FactoryManagementSoftware.UI
                         bool selected = bool.TryParse(dgv.Rows[rowIndex].Cells[header_Selected].Value.ToString(), out selected) ? selected : false;
 
                         string customerID = dgv.Rows[rowIndex].Cells[header_CustomerCode].Value.ToString();
+                        int doNo = int.TryParse(dgv.Rows[rowIndex].Cells[header_DONo].Value.ToString(), out doNo) ? doNo : 0;
 
-                        if (!selected && IfSameCustomerSelected(customerID))
+                        if (!selected && IfSameCustomerAndDOTypeSelected(customerID, doNo)) //IfSameCustomerSelected(customerID)
                         {
                             dgv.Rows[rowIndex].Cells[header_Selected].Value = true;
 
@@ -3522,6 +3524,47 @@ namespace FactoryManagementSoftware.UI
 
             return result;
 
+        }
+
+        private bool IfSameCustomerAndDOTypeSelected(string customerID, int doNo)
+        {
+            bool result = true;
+            DataTable dt = (DataTable)dgvDOList.DataSource;
+
+            if (dt.Columns.Contains(header_Selected))
+            {
+                // Get the type of the input DO
+                bool inputIsNonBilling = tool.IsNonBillingDO(doNo);
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    bool selected = bool.TryParse(row[header_Selected].ToString(), out selected) ? selected : false;
+
+                    if (selected)
+                    {
+                        // Check customer ID
+                        string custID = row[header_CustomerCode].ToString();
+                        if (custID != customerID)
+                        {
+                            MessageBox.Show("Only DO with same customer can be combined!");
+                            return false;
+                        }
+
+                        // Check DO type (regular vs non-billing)
+                        int rowDoNo = int.TryParse(row[header_DONo].ToString(), out rowDoNo) ? rowDoNo : 0;
+                        bool rowIsNonBilling = tool.IsNonBillingDO(rowDoNo);
+
+                        if (inputIsNonBilling != rowIsNonBilling)
+                        {
+                            // Different types detected
+                            MessageBox.Show("Regular DO cannot mix with Non-Billing DO!");
+                            return false;
+                        }
+                    }
+                }
+            }
+
+            return result;
         }
 
         private void dgvDOList_DataSourceChanged(object sender, EventArgs e)
