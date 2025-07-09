@@ -10738,8 +10738,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
 
-                    //ExportSBBInvoice_SingleFile();
-                    ExportSBBInvoice_SplitByCustomer();
+                    ExportSBBInvoice_SingleFile();
+                    //ExportSBBInvoice_SplitByCustomer();
 
                 }
 

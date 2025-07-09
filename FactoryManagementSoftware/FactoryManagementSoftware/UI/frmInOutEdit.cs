@@ -2218,6 +2218,18 @@ namespace FactoryManagementSoftware.UI
 
             try
             {
+                if (dgvEdit)
+                {
+                    MessageBox.Show("You are still editing.\n\n" +
+                          "Please finish editing first:\n" +
+                          "Click the yellow 'EDIT' button on the left panel to save\n" +
+                          "Then try transfer again.",
+                          "Still Editing",
+                          MessageBoxButtons.OK,
+                          MessageBoxIcon.Warning);
+                    return;
+                }
+
                 if (NegativeBalCheck())
                 {
                     Cursor = Cursors.WaitCursor; // change cursor to hourglass type
