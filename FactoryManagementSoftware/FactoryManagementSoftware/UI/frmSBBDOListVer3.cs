@@ -6068,7 +6068,7 @@ namespace FactoryManagementSoftware.UI
                     string folderName = DODate.Year.ToString() + DODate.Month.ToString("00");
                     string year = DODate.Year.ToString();
 
-                    path = @"\\ADMIN001\Admin Server\( OFFICE )\(1.DO)\" + year + @"\" + folderName;
+                    path = @"\\ADMIN001\Admin Server\( OFFICE )\(3.DELIVERY ORDER - DO)\" + year + @"\" + folderName;
                 }
 
                 Directory.CreateDirectory(path);
@@ -6338,6 +6338,10 @@ namespace FactoryManagementSoftware.UI
                                             else if (bag == 1)
                                             {
                                                 remark = bag + " BOX";
+                                            }
+                                            else
+                                            {
+                                                remark = "";
                                             }
 
                                             totalBag -= bag;
