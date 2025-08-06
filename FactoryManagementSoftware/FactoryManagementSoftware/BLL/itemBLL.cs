@@ -21,6 +21,7 @@ namespace FactoryManagementSoftware.BLL
         public string item_code { get; set; }
         public string packaging_code { get; set; }
         public string packaging_name { get; set; }
+        public decimal item_min_stock_level { get; set; }
 
         public string item_code_present { get; set; }
         public string mould_code { get; set; }

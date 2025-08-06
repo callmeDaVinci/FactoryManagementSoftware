@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSBB));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -140,10 +140,8 @@
             this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStockAlert = new System.Windows.Forms.Label();
             this.tlpStockAlert = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel9 = new System.Windows.Forms.TableLayoutPanel();
-            this.cmbStockLocation = new System.Windows.Forms.ComboBox();
-            this.tableLayoutPanel10 = new System.Windows.Forms.TableLayoutPanel();
-            this.label20 = new System.Windows.Forms.Label();
+            this.cbPackagings = new System.Windows.Forms.CheckBox();
+            this.cbMats = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
             this.cmbType = new System.Windows.Forms.ComboBox();
             this.tableLayoutPanel24 = new System.Windows.Forms.TableLayoutPanel();
@@ -152,6 +150,7 @@
             this.btnStockRefresh = new System.Windows.Forms.Button();
             this.btnStockCheck = new System.Windows.Forms.Button();
             this.btnCancelStockCheck = new System.Windows.Forms.Button();
+            this.cbPart = new System.Windows.Forms.CheckBox();
             this.dgvStockAlert = new System.Windows.Forms.DataGridView();
             this.guna2GradientPanel3 = new Guna.UI2.WinForms.Guna2GradientPanel();
             this.tableLayoutPanel31 = new System.Windows.Forms.TableLayoutPanel();
@@ -167,6 +166,7 @@
             this.cbMat = new System.Windows.Forms.CheckBox();
             this.cbParts = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblShortMinStockLevelAlert = new System.Windows.Forms.Label();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -201,8 +201,6 @@
             this.tableLayoutPanel32.SuspendLayout();
             this.tableLayoutPanel22.SuspendLayout();
             this.tlpStockAlert.SuspendLayout();
-            this.tableLayoutPanel9.SuspendLayout();
-            this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel25.SuspendLayout();
             this.tableLayoutPanel24.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvStockAlert)).BeginInit();
@@ -1879,18 +1877,23 @@
             // 
             // tlpStockAlert
             // 
-            this.tlpStockAlert.ColumnCount = 6;
+            this.tlpStockAlert.ColumnCount = 8;
             this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 184F));
-            this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 184F));
+            this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 59F));
+            this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 62F));
+            this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 148F));
             this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
             this.tlpStockAlert.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 121F));
-            this.tlpStockAlert.Controls.Add(this.tableLayoutPanel9, 2, 0);
+            this.tlpStockAlert.Controls.Add(this.lblShortMinStockLevelAlert, 5, 0);
+            this.tlpStockAlert.Controls.Add(this.cbPackagings, 4, 0);
+            this.tlpStockAlert.Controls.Add(this.cbMats, 3, 0);
             this.tlpStockAlert.Controls.Add(this.tableLayoutPanel25, 1, 0);
             this.tlpStockAlert.Controls.Add(this.btnStockRefresh, 0, 0);
-            this.tlpStockAlert.Controls.Add(this.btnStockCheck, 5, 0);
-            this.tlpStockAlert.Controls.Add(this.btnCancelStockCheck, 4, 0);
+            this.tlpStockAlert.Controls.Add(this.btnStockCheck, 7, 0);
+            this.tlpStockAlert.Controls.Add(this.btnCancelStockCheck, 6, 0);
+            this.tlpStockAlert.Controls.Add(this.cbPart, 2, 0);
             this.tlpStockAlert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tlpStockAlert.Location = new System.Drawing.Point(0, 25);
             this.tlpStockAlert.Margin = new System.Windows.Forms.Padding(0);
@@ -1900,61 +1903,33 @@
             this.tlpStockAlert.Size = new System.Drawing.Size(854, 76);
             this.tlpStockAlert.TabIndex = 179;
             // 
-            // tableLayoutPanel9
+            // cbPackagings
             // 
-            this.tableLayoutPanel9.ColumnCount = 1;
-            this.tableLayoutPanel9.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Controls.Add(this.cmbStockLocation, 0, 1);
-            this.tableLayoutPanel9.Controls.Add(this.tableLayoutPanel10, 0, 0);
-            this.tableLayoutPanel9.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel9.Location = new System.Drawing.Point(227, 3);
-            this.tableLayoutPanel9.Name = "tableLayoutPanel9";
-            this.tableLayoutPanel9.RowCount = 2;
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel9.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel9.Size = new System.Drawing.Size(178, 70);
-            this.tableLayoutPanel9.TabIndex = 182;
+            this.cbPackagings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbPackagings.AutoSize = true;
+            this.cbPackagings.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbPackagings.Location = new System.Drawing.Point(348, 42);
+            this.cbPackagings.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
+            this.cbPackagings.Name = "cbPackagings";
+            this.cbPackagings.Size = new System.Drawing.Size(142, 19);
+            this.cbPackagings.TabIndex = 185;
+            this.cbPackagings.Text = "Packaging / Sub Mat.";
+            this.cbPackagings.UseVisualStyleBackColor = true;
+            this.cbPackagings.CheckedChanged += new System.EventHandler(this.cbPackagings_CheckedChanged);
             // 
-            // cmbStockLocation
+            // cbMats
             // 
-            this.cmbStockLocation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.cmbStockLocation.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbStockLocation.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.cmbStockLocation.FormattingEnabled = true;
-            this.cmbStockLocation.Location = new System.Drawing.Point(10, 37);
-            this.cmbStockLocation.Margin = new System.Windows.Forms.Padding(10, 0, 0, 0);
-            this.cmbStockLocation.Name = "cmbStockLocation";
-            this.cmbStockLocation.Size = new System.Drawing.Size(168, 25);
-            this.cmbStockLocation.TabIndex = 179;
-            this.cmbStockLocation.SelectedIndexChanged += new System.EventHandler(this.cmbStockLocation_SelectedIndexChanged);
-            // 
-            // tableLayoutPanel10
-            // 
-            this.tableLayoutPanel10.ColumnCount = 1;
-            this.tableLayoutPanel10.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.Controls.Add(this.label20, 0, 0);
-            this.tableLayoutPanel10.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel10.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel10.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel10.Name = "tableLayoutPanel10";
-            this.tableLayoutPanel10.RowCount = 1;
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel10.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 37F));
-            this.tableLayoutPanel10.Size = new System.Drawing.Size(178, 37);
-            this.tableLayoutPanel10.TabIndex = 180;
-            // 
-            // label20
-            // 
-            this.label20.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label20.AutoSize = true;
-            this.label20.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label20.Location = new System.Drawing.Point(10, 13);
-            this.label20.Margin = new System.Windows.Forms.Padding(10, 0, 3, 5);
-            this.label20.Name = "label20";
-            this.label20.Size = new System.Drawing.Size(98, 19);
-            this.label20.TabIndex = 180;
-            this.label20.Text = "Stock Location";
+            this.cbMats.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbMats.AutoSize = true;
+            this.cbMats.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbMats.Location = new System.Drawing.Point(286, 42);
+            this.cbMats.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
+            this.cbMats.Name = "cbMats";
+            this.cbMats.Size = new System.Drawing.Size(53, 19);
+            this.cbMats.TabIndex = 184;
+            this.cbMats.Text = "Mat.";
+            this.cbMats.UseVisualStyleBackColor = true;
+            this.cbMats.CheckedChanged += new System.EventHandler(this.cbMats_CheckedChanged);
             // 
             // tableLayoutPanel25
             // 
@@ -2085,6 +2060,20 @@
             this.btnCancelStockCheck.Visible = false;
             this.btnCancelStockCheck.Click += new System.EventHandler(this.btnCancelStockCheck_Click);
             // 
+            // cbPart
+            // 
+            this.cbPart.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.cbPart.AutoSize = true;
+            this.cbPart.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbPart.Location = new System.Drawing.Point(227, 42);
+            this.cbPart.Margin = new System.Windows.Forms.Padding(3, 3, 3, 15);
+            this.cbPart.Name = "cbPart";
+            this.cbPart.Size = new System.Drawing.Size(50, 19);
+            this.cbPart.TabIndex = 182;
+            this.cbPart.Text = "Part";
+            this.cbPart.UseVisualStyleBackColor = true;
+            this.cbPart.CheckedChanged += new System.EventHandler(this.cbPart_CheckedChanged);
+            // 
             // dgvStockAlert
             // 
             this.dgvStockAlert.AllowUserToAddRows = false;
@@ -2096,14 +2085,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvStockAlert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(5, 106);
@@ -2116,10 +2105,12 @@
             this.dgvStockAlert.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvStockAlert.Size = new System.Drawing.Size(844, 241);
             this.dgvStockAlert.TabIndex = 178;
+            this.dgvStockAlert.CellBeginEdit += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dgvStockAlert_CellBeginEdit);
             this.dgvStockAlert.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellDoubleClick);
             this.dgvStockAlert.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellEndEdit);
             this.dgvStockAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvStockAlert_CellFormatting);
             this.dgvStockAlert.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockAlert_CellMouseClick);
+            this.dgvStockAlert.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockAlert_CellMouseDown);
             this.dgvStockAlert.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockAlert_EditingControlShowing);
             this.dgvStockAlert.Sorted += new System.EventHandler(this.dgvStockAlert_Sorted);
             // 
@@ -2190,14 +2181,14 @@
             this.dgvUsage.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvUsage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsage.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle10;
             this.dgvUsage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvUsage.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvUsage.Location = new System.Drawing.Point(5, 106);
@@ -2345,6 +2336,21 @@
             this.tableLayoutPanel17.TabIndex = 178;
             this.tableLayoutPanel17.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel17_Paint_1);
             // 
+            // lblShortMinStockLevelAlert
+            // 
+            this.lblShortMinStockLevelAlert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblShortMinStockLevelAlert.AutoSize = true;
+            this.lblShortMinStockLevelAlert.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblShortMinStockLevelAlert.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblShortMinStockLevelAlert.ForeColor = System.Drawing.Color.Red;
+            this.lblShortMinStockLevelAlert.Location = new System.Drawing.Point(496, 61);
+            this.lblShortMinStockLevelAlert.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.lblShortMinStockLevelAlert.Name = "lblShortMinStockLevelAlert";
+            this.lblShortMinStockLevelAlert.Size = new System.Drawing.Size(10, 15);
+            this.lblShortMinStockLevelAlert.TabIndex = 185;
+            this.lblShortMinStockLevelAlert.Text = ".";
+            this.lblShortMinStockLevelAlert.Click += new System.EventHandler(this.lblShortMinStockLevelAlert_Click);
+            // 
             // frmSBB
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -2405,9 +2411,7 @@
             this.tableLayoutPanel22.ResumeLayout(false);
             this.tableLayoutPanel22.PerformLayout();
             this.tlpStockAlert.ResumeLayout(false);
-            this.tableLayoutPanel9.ResumeLayout(false);
-            this.tableLayoutPanel10.ResumeLayout(false);
-            this.tableLayoutPanel10.PerformLayout();
+            this.tlpStockAlert.PerformLayout();
             this.tableLayoutPanel25.ResumeLayout(false);
             this.tableLayoutPanel24.ResumeLayout(false);
             this.tableLayoutPanel24.PerformLayout();
@@ -2532,10 +2536,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel29;
         private System.Windows.Forms.ComboBox cmbDataSource;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel9;
-        private System.Windows.Forms.ComboBox cmbStockLocation;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel10;
-        private System.Windows.Forms.Label label20;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel14;
         private System.Windows.Forms.Button btnCustomer;
         private Guna.UI2.WinForms.Guna2GradientPanel guna2GradientPanel1;
@@ -2563,5 +2563,9 @@
         private System.Windows.Forms.Label lblMonthlyDelivered;
         private System.Windows.Forms.Label lblORingDelivered;
         private System.Windows.Forms.Label lblDeliveredBalance;
+        private System.Windows.Forms.CheckBox cbPackagings;
+        private System.Windows.Forms.CheckBox cbMats;
+        private System.Windows.Forms.CheckBox cbPart;
+        private System.Windows.Forms.Label lblShortMinStockLevelAlert;
     }
 }

@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemUnit { get; } = "item_unit";
         public string ItemUnitToPCSRate { get; } = "unit_to_pcs_rate";
         public string ItemisRemoved { get; } = "isRemoved";
+        public string ItemMinStockLevel { get; } = "item_min_stock_level";
 
         public string ItemQuoTon { get; } = "item_quo_ton";
         public string ItemBestTon { get; } = "item_best_ton";
@@ -1884,6 +1885,54 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
      
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemMinStockLevelUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemMinStockLevel + "=@item_min_stock_level,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_min_stock_level", u.item_min_stock_level);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();

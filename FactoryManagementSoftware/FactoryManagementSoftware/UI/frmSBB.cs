@@ -142,6 +142,7 @@ namespace FactoryManagementSoftware.UI
         readonly string header_StdPacking_Bag = "PCS/BAG";
         readonly string header_StdPacking_Ctn = "PCS/CTN";
         readonly string header_StdPacking_String = "STD PACKING";
+        readonly string header_StockMinLvl = "Min Lvl";
 
         readonly string header_ActualStock_PCS = "PCS";
         readonly string header_ActualStock_BAG = "BAG";
@@ -355,6 +356,7 @@ namespace FactoryManagementSoftware.UI
 
             dt.Columns.Add(header_ItemCode, typeof(string));
             dt.Columns.Add(header_ItemName, typeof(string));
+            dt.Columns.Add(header_StockMinLvl, typeof(decimal));
 
             dt.Columns.Add(header_Stock, typeof(int));
             dt.Columns.Add(header_BalAfter, typeof(double));
@@ -420,7 +422,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.ColumnHeadersDefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
-            dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgv.Columns[header_ItemCode].Visible = false;
@@ -446,9 +448,10 @@ namespace FactoryManagementSoftware.UI
                 //dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
 
                 dgv.Columns[header_ItemName].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgv.Columns[header_ItemCode].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
-                
+                dgv.Columns[header_StockMinLvl].DefaultCellStyle.BackColor = Color.LightYellow;
 
                 dgv.Columns[header_Stock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[header_BalAfter].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -456,6 +459,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_StockDiff].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[header_BalAfterBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_BalAfterPcs].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[header_StockMinLvl].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
                 dgv.Columns[header_ActualStock].DefaultCellStyle.BackColor = SystemColors.Info;
 
@@ -509,6 +513,8 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+                    dgv.Columns[header_ActualStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
+
 
                 }
             }
@@ -567,25 +573,13 @@ namespace FactoryManagementSoftware.UI
             DataTable dt_ChildMat = NewStockAlertTable();
             DataTable dt_Packaging = NewStockAlertTable();
 
-            string stockLocation = cmbStockLocation.Text;
+            string stockLocation = "ALL";
 
-            if (string.IsNullOrEmpty(stockLocation))
-            {
-                //cmbStockLocation.Text = text.Factory_Semenyih;
-                //stockLocation = text.Factory_Semenyih; 
-                    cmbStockLocation.Text = "ALL";
-                stockLocation = "ALL";
-            }
 
             foreach (DataRow row in dt_Product.Rows)
             {
                 string itemCode = row[header_ItemCode].ToString();
 
-                if(itemCode == "CF20G")
-                {
-                    var checkpoint = 1;
-                }
-                
                 string parentCode = itemCode;
 
                 if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
@@ -608,7 +602,6 @@ namespace FactoryManagementSoftware.UI
                         string childCode = rowJoin[dalJoin.ChildCode].ToString();
                         string childName = rowJoin[dalJoin.ChildName].ToString();
 
-
                         if (childCode == "CF20G")
                         {
                             var checkpoint = 1;
@@ -620,6 +613,7 @@ namespace FactoryManagementSoftware.UI
                             string childMat = rowJoin[dalItem.ItemMaterial].ToString();
                             string childRecycle = rowJoin[dalItem.ItemRecycleMat].ToString();
                             string childColorMat = rowJoin[dalItem.ItemMBatch].ToString();
+
 
                             float childRawRatio = float.TryParse(rowJoin[dalItem.ItemRawRatio].ToString(), out childRawRatio) ? childRawRatio : 0;
                             float childRecycleRatio = float.TryParse(rowJoin[dalItem.ItemRecycleRatio].ToString(), out childRecycleRatio) ? childRecycleRatio : 0;
@@ -934,7 +928,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (dt_ChildMat != null && dt_ChildMat.Rows.Count > 0 && cbMat.Checked)
+            if (dt_ChildMat != null && dt_ChildMat.Rows.Count > 0)//&& cbMat.Checked
             {
                 foreach (DataRow row in dt_ChildMat.Rows)
                 {
@@ -951,7 +945,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (dt_Packaging != null && dt_Packaging.Rows.Count > 0 && cbPackaging.Checked)
+            if (dt_Packaging != null && dt_Packaging.Rows.Count > 0) //&& cbPackaging.Checked
             {
                 foreach (DataRow row in dt_Packaging.Rows)
                 {
@@ -1165,164 +1159,166 @@ namespace FactoryManagementSoftware.UI
             return stockQty;
         }
 
-        private void OLD_LoadStockAlert()
-        {
-            Cursor = Cursors.WaitCursor;
+        //private void OLD_LoadStockAlert()
+        //{
+        //    Cursor = Cursors.WaitCursor;
 
-            //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
+        //    //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
 
-            DataTable dt_FillAll = NewStockAlertTable();
+        //    DataTable dt_FillAll = NewStockAlertTable();
 
-            string stockLocation = cmbStockLocation.Text;
+        //    string stockLocation = "ALL";
 
-            if(string.IsNullOrEmpty(stockLocation))
-            {
-                //cmbStockLocation.Text = text.Factory_Semenyih;
-                //stockLocation = text.Factory_Semenyih;
+        //    //Load SBB GOODS FILL ALL ALERT
+        //    foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
+        //    {
+        //        string itemCode = pendingRow[dalSBB.ItemCode].ToString();
+        //        string itemName = pendingRow[dalSBB.ItemName].ToString();
 
-                cmbStockLocation.Text = "ALL";
-                stockLocation = "ALL";
-            }
+        //        if(!string.IsNullOrEmpty(itemCode))
+        //        {
+        //            int itemStock = int.TryParse(pendingRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
 
-            //Load SBB GOODS FILL ALL ALERT
-            foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
-            {
-                string itemCode = pendingRow[dalSBB.ItemCode].ToString();
-                string itemName = pendingRow[dalSBB.ItemName].ToString();
-
-                if(!string.IsNullOrEmpty(itemCode))
-                {
-                    int itemStock = int.TryParse(pendingRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
-
-                    if (stockLocation != "ALL")
-                    {
-                        itemStock = (int)loadStockList(itemCode, stockLocation);
-                    }
+        //            if (stockLocation != "ALL")
+        //            {
+        //                itemStock = (int)loadStockList(itemCode, stockLocation);
+        //            }
 
 
-                    int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
-                    int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
-                    int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
+        //            int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
+        //            int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
+        //            int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
 
-                    int pendingQty = itemPOQty - itemDeliveredQty;
+        //            int pendingQty = itemPOQty - itemDeliveredQty;
 
-                    DataRow newRow;
-                    bool itemFound = false;
+        //            DataRow newRow;
+        //            bool itemFound = false;
 
-                    if (dt_PendingPOSelect != null && dt_PendingPOSelect.Rows.Count > 0)
-                    {
-                        foreach (DataRow fillAllRow in dt_FillAll.Rows)
-                        {
-                            if (itemCode == fillAllRow[header_ItemCode].ToString())
-                            {
-                                itemFound = true;
+        //            if (dt_PendingPOSelect != null && dt_PendingPOSelect.Rows.Count > 0)
+        //            {
+        //                foreach (DataRow fillAllRow in dt_FillAll.Rows)
+        //                {
+        //                    if (itemCode == fillAllRow[header_ItemCode].ToString())
+        //                    {
+        //                        itemFound = true;
 
-                                int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
+        //                        int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
 
-                                fillAllRow[header_BalAfter] = itemBal - pendingQty;
+        //                        fillAllRow[header_BalAfter] = itemBal - pendingQty;
 
-                                fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
-                                fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
+        //                        fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
+        //                        fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
 
-                                break;
-                            }
-                        }
+        //                        break;
+        //                    }
+        //                }
 
-                    }
+        //            }
 
-                    if (!itemFound)
-                    {
-                        newRow = dt_FillAll.NewRow();
+        //            if (!itemFound)
+        //            {
+        //                newRow = dt_FillAll.NewRow();
 
-                        newRow[header_ItemCode] = itemCode;
-                        newRow[header_ItemName] = itemName;
-                        newRow[header_BalAfter] = itemStock - pendingQty;
-                        newRow[header_QtyPerBag] = itemPerBag;
+        //                newRow[header_ItemCode] = itemCode;
+        //                newRow[header_ItemName] = itemName;
+        //                newRow[header_BalAfter] = itemStock - pendingQty;
+        //                newRow[header_QtyPerBag] = itemPerBag;
 
-                        if(itemPerBag == 0)
-                        {
-                            itemPerBag = 1;
-                        }
-                        newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
-                        newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
+        //                if(itemPerBag == 0)
+        //                {
+        //                    itemPerBag = 1;
+        //                }
+        //                newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
+        //                newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
 
-                        dt_FillAll.Rows.Add(newRow);
-                    }
+        //                dt_FillAll.Rows.Add(newRow);
+        //            }
 
-                }
-            }
+        //        }
+        //    }
 
-            if (cmbType.Text == Type_Part)
-            {
-                dt_FillAll = NEWLoadMatPartList(dt_FillAll);
-            }
+        //    if (cmbType.Text == Type_Part)
+        //    {
+        //        dt_FillAll = NEWLoadMatPartList(dt_FillAll);
+        //    }
 
-            //dt_FillAll.DefaultView.Sort = header_BalAfter + " ASC";
-            //dt_FillAll = dt_FillAll.DefaultView.ToTable();
+        //    //dt_FillAll.DefaultView.Sort = header_BalAfter + " ASC";
+        //    //dt_FillAll = dt_FillAll.DefaultView.ToTable();
 
 
-            List<DataRow> toDelete = new List<DataRow>();
+        //    List<DataRow> toDelete = new List<DataRow>();
            
-            foreach (DataRow row in dt_FillAll.Rows)
-            {
-                string itemCode = row[header_ItemCode].ToString();
-                int bal = int.TryParse(row[header_BalAfter].ToString(), out int i) ? i : 0;
+        //    foreach (DataRow row in dt_FillAll.Rows)
+        //    {
+        //        string itemCode = row[header_ItemCode].ToString();
+        //        int bal = int.TryParse(row[header_BalAfter].ToString(), out int i) ? i : 0;
 
-                if(string.IsNullOrEmpty(row[header_ItemName].ToString()))
-                {
-                    toDelete.Add(row);
-                }
-                else if(bal < 0)
-                {
-                    row[header_ProDaysNeeded] = tool.GetProductionDayNeeded(dt_Item, itemCode, bal * -1);
-                }
+        //        if(string.IsNullOrEmpty(row[header_ItemName].ToString()))
+        //        {
+        //            toDelete.Add(row);
+        //        }
+        //        else if(bal < 0)
+        //        {
+        //            row[header_ProDaysNeeded] = tool.GetProductionDayNeeded(dt_Item, itemCode, bal * -1);
+        //        }
 
-            }
+        //    }
 
-            foreach (DataRow dr in toDelete)
-            {
-                dt_FillAll.Rows.Remove(dr);
-            }
-
-
-            dt_FillAll.AcceptChanges();
-
-            DataView dv = dt_FillAll.DefaultView;
-            dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+        //    foreach (DataRow dr in toDelete)
+        //    {
+        //        dt_FillAll.Rows.Remove(dr);
+        //    }
 
 
-            dt_FillAll = dv.ToTable();
+        //    dt_FillAll.AcceptChanges();
 
-            RearrangeIndex(dt_FillAll);
+        //    DataView dv = dt_FillAll.DefaultView;
+        //    dv.Sort = header_BalAfter + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+        //    //dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
 
-            dgvStockAlert.DataSource = dt_FillAll;
+        //    dt_FillAll = dv.ToTable();
 
-            DgvUIEdit(dgvStockAlert);
+        //    RearrangeIndex(dt_FillAll);
 
-            dgvStockAlert.ClearSelection();
+        //    dgvStockAlert.DataSource = dt_FillAll;
+
+        //    DgvUIEdit(dgvStockAlert);
+
+        //    dgvStockAlert.ClearSelection();
 
 
-            Cursor = Cursors.Arrow;
-        }
+        //    Cursor = Cursors.Arrow;
+        //}
+
         planningDAL dalPlanning = new planningDAL();
+
+        DataTable DT_STOCK_ALERT_MASTER_LIST = null;
+
         private void LoadStockAlert()
         {
             Cursor = Cursors.WaitCursor;
+            STOCK_ALERT_DATA_LOADED = false;
+
+            DT_STOCK_ALERT_MASTER_LIST = null;
+
+            if (cmbType.Text == Type_Part)
+            {
+                cbPart.Checked = true;
+                cbPackagings.Checked = true;
+                cbMats.Checked = true;
+            }
+           else
+            {
+                cbPart.Checked = false;
+                cbPackagings.Checked = false;
+                cbMats.Checked = false;
+            }
 
             //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
 
             DataTable dt_FillAll = NewStockAlertTable();
 
-            string stockLocation = cmbStockLocation.Text;
-
-            if (string.IsNullOrEmpty(stockLocation))
-            {
-                //cmbStockLocation.Text = text.Factory_Semenyih;
-                //stockLocation = text.Factory_Semenyih;
-
-                cmbStockLocation.Text = "ALL";
-                stockLocation = "ALL";
-            }
+            string stockLocation = "ALL";
 
             //Load SBB GOODS FILL ALL ALERT
             foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
@@ -1439,6 +1435,9 @@ namespace FactoryManagementSoftware.UI
 
             DataTable DT_MACHINE_SCHEDULE = dalPlanning.SelectActivePlanning();
 
+            if (dt_Item == null || dt_Item.Rows.Count < 0)
+                dt_Item = dalItem.Select();
+
             foreach (DataRow row in dt_FillAll.Rows)
             {
                 string itemCode = row[header_ItemCode].ToString();
@@ -1454,7 +1453,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 row[header_Note] = GetProduceQty(itemCode, DT_MACHINE_SCHEDULE);
-
+                row[header_StockMinLvl] = GetMinStockLevel(itemCode, dt_Item);
             }
 
             foreach (DataRow dr in toDelete)
@@ -1465,8 +1464,17 @@ namespace FactoryManagementSoftware.UI
 
             dt_FillAll.AcceptChanges();
 
+            DT_STOCK_ALERT_MASTER_LIST = dt_FillAll;
+
+            if (cmbType.Text == Type_Part)
+            {
+                dt_FillAll = FilterItemType();
+
+            }
+
             DataView dv = dt_FillAll.DefaultView;
-            dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+            //dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+            dv.Sort = header_BalAfter + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
 
 
             dt_FillAll = dv.ToTable();
@@ -1476,13 +1484,59 @@ namespace FactoryManagementSoftware.UI
             dgvStockAlert.DataSource = dt_FillAll;
 
             DgvUIEdit(dgvStockAlert);
-
             dgvStockAlert.ClearSelection();
+            STOCK_ALERT_DATA_LOADED = true;
+            CheckStockLevels();
 
 
             Cursor = Cursors.Arrow;
         }
 
+        private DataTable FilterItemType()
+        {
+            DataTable FilteredTable = null;
+
+            if(DT_STOCK_ALERT_MASTER_LIST != null)
+            {
+                FilteredTable = DT_STOCK_ALERT_MASTER_LIST.Copy();
+                List<DataRow> toDelete = new List<DataRow>();
+
+                foreach (DataRow row in FilteredTable.Rows)
+                {
+                    string itemType = row[header_ItemType].ToString();
+
+                    if (!cbMats.Checked && itemType == "98")
+                    {
+                        toDelete.Add(row);
+                    }
+
+                    if (!cbPackagings.Checked && itemType == "97")
+                    {
+                        toDelete.Add(row);
+                    }
+
+                    if (!cbPart.Checked && itemType != "97" && itemType != "98")
+                    {
+                        toDelete.Add(row);
+                    }
+                }
+
+                foreach (DataRow dr in toDelete)
+                {
+                    FilteredTable.Rows.Remove(dr);
+                }
+
+
+                FilteredTable.AcceptChanges();
+            }
+            //else
+            //{
+            //    LoadStockAlert();
+            //}
+
+            return FilteredTable;
+
+        }
         //private Tuple<int, int, string> GetProduceQty(string ItemCode, DataTable dt_MacSechedule)
         //{
         //    int totalTarget = 0, totalProduced = 0;
@@ -1568,7 +1622,23 @@ namespace FactoryManagementSoftware.UI
 
             return note;
         }
+        private decimal GetMinStockLevel(string ItemCode, DataTable dt_Item)
+        {
+            decimal MinStockLevel = 0m;
 
+            foreach (DataRow row in dt_Item.Rows)
+            {
+                string itemCode = row[dalItem.ItemCode].ToString();
+
+                if (itemCode == ItemCode)
+                {
+                    return decimal.TryParse(row[dalItem.ItemMinStockLevel].ToString(), out decimal parsedValue) ? parsedValue : 0m;
+                }
+
+            }
+
+            return MinStockLevel;
+        }
 
         private Tuple<int, int, int> GetDeliveredQty(DataTable dt_SppCustomer, DataTable dt_Trf, int month_1, int month_2, int month_3, string itemCode)
         {
@@ -2236,7 +2306,7 @@ namespace FactoryManagementSoftware.UI
             dtpDate1.Value = DateTime.Now;
 
             LoadTypeCMB(cmbType);
-            LoadStockLocationCMB(cmbStockLocation);
+            //LoadStockLocationCMB(cmbStockLocation);
 
             RefreshPage();
 
@@ -4395,6 +4465,14 @@ namespace FactoryManagementSoftware.UI
                     cbInPcsUnit.Enabled = true;
 
                     btnStockCheck.Enabled = false;
+
+                    cbPart.Checked = false;
+                    cbPackagings.Checked = false;
+                    cbMats.Checked = false;
+
+                    cbPart.Visible = false;
+                    cbPackagings.Visible = false;
+                    cbMats.Visible = false;
                 }
                 else
                 {
@@ -4404,6 +4482,14 @@ namespace FactoryManagementSoftware.UI
                     cbInBagUnit.Visible = false;
 
                     btnStockCheck.Enabled = true;
+
+                    cbPart.Checked = true;
+                    cbPackagings.Checked = true;
+                    cbMats.Checked = true;
+
+                    cbPart.Visible = true;
+                    cbPackagings.Visible = true;
+                    cbMats.Visible = true;
 
                 }
                 //LoadStockAlert();
@@ -4421,7 +4507,6 @@ namespace FactoryManagementSoftware.UI
                 tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
                 dgv.Columns[header_ItemName].Frozen = true;
-                cmbStockLocation.Enabled = false;
                 stockCheckMode = true;
 
                 btnCancelStockCheck.Visible = true;
@@ -4458,7 +4543,6 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                cmbStockLocation.Enabled = true;
                 dgv.Columns[header_ItemName].Frozen = false;
                 tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 40f);
                 tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 184f);
@@ -4513,14 +4597,7 @@ namespace FactoryManagementSoftware.UI
                 StockCheckUIMode(true);
             else
             {
-                string stockLocation = cmbStockLocation.Text;
-
-                if(string.IsNullOrEmpty(stockLocation))
-                {
-                    stockLocation = text.Factory_Semenyih;
-                    cmbStockLocation.Text = stockLocation;
-
-                }
+                string stockLocation = text.Factory_Semenyih;
 
                 if(stockLocation != "ALL")
                 {
@@ -4545,6 +4622,7 @@ namespace FactoryManagementSoftware.UI
 
         private void button10_Click_1(object sender, EventArgs e)
         {
+
             LoadStockAlert();
         }
 
@@ -4574,7 +4652,7 @@ namespace FactoryManagementSoftware.UI
                 int col = e.ColumnIndex;
                 int row = e.RowIndex;
 
-                if (dgv.Columns[col].Name == header_ActualStock)
+                if (dgv.Columns[col].Name == header_ActualStock || dgv.Columns[col].Name == header_StockMinLvl)
                 {
                     dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
                     dgv.Rows[row].Cells[col].Selected = true;
@@ -4588,45 +4666,171 @@ namespace FactoryManagementSoftware.UI
                 }
             }
         }
-
+        private object originalCellValue; // Add this as class-level variable
         private void dgvStockAlert_CellEndEdit(object sender, DataGridViewCellEventArgs e)
         {
             //compare old value with new value
             DataGridView dgv = dgvStockAlert;
-
             int rowIndex = e.RowIndex;
             int colIndex = e.ColumnIndex;
-
             int actualStock = int.TryParse(dgv.Rows[rowIndex].Cells[colIndex].Value.ToString(), out actualStock) ? actualStock : 0;
             int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value.ToString(), out systemStock) ? systemStock : 0;
 
             if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_ActualStock))
             {
                 int stockDiff = actualStock - systemStock;
-
                 dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
-
                 if (stockDiff > 0)
                 {
                     dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Blue;
-
                     btnStockCheck.Enabled = true;
                 }
                 else if (stockDiff < 0)
                 {
                     dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Red;
                     btnStockCheck.Enabled = true;
-
                 }
                 else
                 {
                     dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Black;
-
                     btnStockCheck.Enabled = StockDiffExist();
                 }
             }
+
+            if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_StockMinLvl))
+            {
+                // Get item details
+                string itemCode = dgv.Rows[rowIndex].Cells[header_ItemCode].Value?.ToString() ?? "";
+                string itemName = dgv.Rows[rowIndex].Cells[header_ItemName].Value?.ToString() ?? "";
+                string newMinLevelStr = dgv.Rows[rowIndex].Cells[colIndex].Value?.ToString() ?? "";
+                string oldMinLevel = originalCellValue?.ToString() ?? "";
+
+                // Parse as decimal for comparison
+                decimal newMinLevel = decimal.TryParse(newMinLevelStr, out decimal parsedMinLevel) ? parsedMinLevel : 0m;
+                decimal oldMinLevelDecimal = decimal.TryParse(oldMinLevel, out decimal parsedOldLevel) ? parsedOldLevel : 0m;
+
+                // Only show confirmation if values are different
+                if (newMinLevel != oldMinLevelDecimal)
+                {
+                    // Ask for confirmation with old and new values
+                    string message = $"Do you want to save the stock minimum level change?\n\n" +
+                                    $"Item Code: {itemCode}\n" +
+                                    $"Item Name: {itemName}\n" +
+                                    $"Old Min Level: {oldMinLevel}\n" +
+                                    $"New Min Level: {newMinLevel:F2}";
+
+                    DialogResult confirmResult = MessageBox.Show(
+                        message,
+                        "Confirm Min Level Update",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (confirmResult == DialogResult.Yes)
+                    {
+                        // Call the correct method for stock min level update
+                        bool success = UpdateStockMinLevel(itemCode, newMinLevel);
+
+                        if (success)
+                        {
+                            MessageBox.Show("Stock minimum level updated successfully!", "Success",
+                                          MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                            // Recheck stock levels after update
+                            CheckStockLevels();
+                        }
+                    }
+                    else
+                    {
+                        // User cancelled - revert to original value
+                        dgv.Rows[rowIndex].Cells[colIndex].Value = originalCellValue;
+                    }
+                }
+                // If values are the same, do nothing (no confirmation needed)
+            }
         }
 
+        private int currentLowStockIndex = -1;
+        private List<int> lowStockRowIndices = new List<int>();
+
+        private void CheckStockLevels(Color lowStockColor = default, Color normalColor = default)
+        {
+            // Set default colors if not provided
+            if (lowStockColor == default) lowStockColor = Color.Red;
+            if (normalColor == default) normalColor = Color.White;
+            int count = 0;
+            lowStockRowIndices.Clear();
+            currentLowStockIndex = -1;
+
+            foreach (DataGridViewRow row in dgvStockAlert.Rows)
+            {
+                if (row.IsNewRow) continue;
+
+                try
+                {
+                    decimal stock = decimal.TryParse(row.Cells[header_Stock].Value?.ToString(), out decimal parsedStock)
+                        ? parsedStock : 0m;
+
+                    decimal minStockLevel = decimal.TryParse(row.Cells[header_StockMinLvl].Value?.ToString(), out decimal parsedMinLevel)
+                        ? parsedMinLevel : 0m;
+
+                    if (stock <= minStockLevel && minStockLevel > 0) // Only check if min level is set
+                    {
+                        row.Cells[header_Stock].Style.BackColor = lowStockColor;
+                        row.Cells[header_Stock].Style.ForeColor = Color.White;
+                        lowStockRowIndices.Add(row.Index);
+                        count++;
+                    }
+                    else
+                    {
+                        row.Cells[header_Stock].Style.BackColor = normalColor;
+                        row.Cells[header_Stock].Style.ForeColor = Color.Black;
+                    }
+                }
+                catch
+                {
+                    // Reset to normal on error
+                    row.Cells[header_Stock].Style.BackColor = normalColor;
+                    row.Cells[header_Stock].Style.ForeColor = Color.Black;
+                }
+            }
+
+            string message = "";
+
+            if (count > 0)
+            {
+                message = $"{count} items below min level - Restock needed";
+            }
+
+            lblShortMinStockLevelAlert.Text = message;
+          
+        }
+        private bool UpdateStockMinLevel(string itemCode, decimal newMinLevel)
+        {
+            bool result = false;
+            try
+            {
+                // Assuming you have a similar structure for stock updates
+                uItem.item_code = itemCode;
+                uItem.item_min_stock_level = newMinLevel; // decimal value
+                uItem.item_updtd_date = DateTime.Now;
+                uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                // Call appropriate DAL method for stock update
+                result = dalItem.ItemMinStockLevelUpdate(uItem); // You'll need this method
+
+                if (!result)
+                {
+                    MessageBox.Show("Failed to update stock minimum level");
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error updating stock min level: {ex.Message}");
+            }
+
+            return result;
+        }
 
         private bool StockDiffExist()
         {
@@ -4678,6 +4882,13 @@ namespace FactoryManagementSoftware.UI
                 int rowIndex = dgv.CurrentCell.RowIndex;
 
                 if (dgv.Columns[colIndex].Name.Contains(header_ActualStock) && stockCheckMode) //Desired Column
+                {
+                    if (e.Control is TextBox tb)
+                    {
+                        tb.KeyPress += new KeyPressEventHandler(Column1_KeyPress);
+                    }
+                }
+                else if (dgv.Columns[colIndex].Name.Contains(header_StockMinLvl)) //Desired Column
                 {
                     if (e.Control is TextBox tb)
                     {
@@ -4780,6 +4991,8 @@ namespace FactoryManagementSoftware.UI
 
             dgvStockAlert.ClearSelection();
             dgvUsage.ClearSelection();
+
+            CheckStockLevels();
         }
 
         private void cbParts_CheckedChanged(object sender, EventArgs e)
@@ -5010,7 +5223,7 @@ namespace FactoryManagementSoftware.UI
         {
             if(Loaded)
             {
-                string stockLocation = cmbStockLocation.Text;
+                string stockLocation = "ALL";
 
                 if (stockLocation.Equals("ALL"))
                 {
@@ -5023,15 +5236,7 @@ namespace FactoryManagementSoftware.UI
 
 
                 header_Stock = "STOCK ";
-                if (string.IsNullOrEmpty(stockLocation))
-                {
-                    stockLocation = text.Factory_Semenyih;
-                    cmbStockLocation.Text = text.Factory_Semenyih;
-
-                    stockLocation = "ALL";
-                    cmbStockLocation.Text = "ALL";
-
-                }
+                
 
                 header_Stock += stockLocation + " (PCS / KG)";
 
@@ -5058,6 +5263,134 @@ namespace FactoryManagementSoftware.UI
         private void guna2GradientPanel5_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private bool STOCK_ALERT_DATA_LOADED = false;
+
+        private void ApplyItemTypeFilter()
+        {
+            if(STOCK_ALERT_DATA_LOADED)
+            {
+                DataTable dt_FillAll = FilterItemType();
+
+                if(dt_FillAll != null)
+                {
+                    DataView dv = dt_FillAll.DefaultView;
+                    //dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+                    dv.Sort = header_BalAfter + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+
+                    dt_FillAll = dv.ToTable();
+
+                    RearrangeIndex(dt_FillAll);
+
+                    dgvStockAlert.DataSource = dt_FillAll;
+
+                    DgvUIEdit(dgvStockAlert);
+
+                    dgvStockAlert.ClearSelection();
+                }
+             
+            }
+          
+        }
+        private void cbPart_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplyItemTypeFilter();
+        }
+
+        private void cbMats_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplyItemTypeFilter();
+
+        }
+
+        private void cbPackagings_CheckedChanged(object sender, EventArgs e)
+        {
+            ApplyItemTypeFilter();
+        }
+
+        private void dgvStockAlert_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+
+            if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+            {
+                DataGridView dgv = dgvStockAlert;
+
+                // Get the column index of your target column
+                int stockMinLvlColumnIndex = dgv.Columns[header_StockMinLvl].Index;
+
+                if (e.ColumnIndex == stockMinLvlColumnIndex)
+                {
+                    // Switch to cell selection mode and enable editing
+                    dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
+                    dgv.ReadOnly = false;
+                    dgv.EditMode = DataGridViewEditMode.EditOnKeystrokeOrF2;
+
+                    // Make only this column editable
+                    for (int i = 0; i < dgv.Columns.Count; i++)
+                    {
+                        dgv.Columns[i].ReadOnly = (i != stockMinLvlColumnIndex);
+                    }
+
+                    // Optional: Start editing immediately
+                    dgv.CurrentCell = dgv[e.ColumnIndex, e.RowIndex];
+                    dgv.BeginEdit(true);
+                }
+                else
+                {
+                    // Switch to full row selection and make readonly
+                    dgv.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+                    dgv.ReadOnly = true;
+                    dgv.EditMode = DataGridViewEditMode.EditProgrammatically;
+
+                    // End any current editing
+                    dgv.EndEdit();
+                }
+            }
+        }
+
+        private void dgvStockAlert_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            int stockMinLvlColumnIndex = dgvStockAlert.Columns[header_StockMinLvl].Index;
+
+            if (e.ColumnIndex != stockMinLvlColumnIndex)
+            {
+                e.Cancel = true;
+            }
+            else
+            {
+                // Store original value for comparison
+                originalCellValue = dgvStockAlert[e.ColumnIndex, e.RowIndex].Value;
+            }
+        }
+
+        private void lblShortMinStockLevelAlert_Click(object sender, EventArgs e)
+        {
+            if (lowStockRowIndices.Count == 0)
+                return;
+
+            // Move to next low stock row
+            currentLowStockIndex++;
+
+            // Loop back to first if we've reached the end
+            if (currentLowStockIndex >= lowStockRowIndices.Count)
+            {
+                currentLowStockIndex = 0;
+            }
+
+            // Get the row index to navigate to
+            int targetRowIndex = lowStockRowIndices[currentLowStockIndex];
+
+            // Navigate to the row
+            dgvStockAlert.ClearSelection();
+            dgvStockAlert.Rows[targetRowIndex].Selected = true;
+            dgvStockAlert.CurrentCell = dgvStockAlert.Rows[targetRowIndex].Cells[header_ItemName]; // Focus on item name column
+
+            // Scroll to make sure the row is visible
+            dgvStockAlert.FirstDisplayedScrollingRowIndex = targetRowIndex;
+
+            // Update label to show current position
+            lblShortMinStockLevelAlert.Text = $"⚠️ {lowStockRowIndices.Count} items below minimum level ({currentLowStockIndex + 1}/{lowStockRowIndices.Count})";
         }
     }
 }
