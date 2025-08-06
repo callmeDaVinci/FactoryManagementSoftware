@@ -133,7 +133,14 @@ namespace FactoryManagementSoftware.UI
                                 uSBB.Production_PW_shot = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? i : 0;
                                 uSBB.Production_RW_shot = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out  i) ? i : 0;
 
-                                int itemStock = int.TryParse(row[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
+                                if (itemCode == "CF25B")
+                                {
+                                    var checkpoint = 1;
+                                }
+                                //148202.03125
+                                string stockString = row[dalItem.ItemStock].ToString();
+                                int itemStock = decimal.TryParse(row[dalItem.ItemStock].ToString(), out decimal stockValue) ? (int)stockValue : 0;
+
                                 uSBB.Production_cavity = int.TryParse(row[dalItem.ItemCavity].ToString(), out  k) ? k : 0;
                                 uSBB.Production_ct_sec = int.TryParse(row[dalItem.ItemProCTTo].ToString(), out k) ? k : 0;
 

@@ -1257,7 +1257,7 @@ namespace FactoryManagementSoftware.UI
                     frmLoading.ShowLoadingScreen();
                     frmMachineSchedule frm = new frmMachineSchedule
                     {
-                        MdiParent = this,
+                        //MdiParent = this,
                         StartPosition = FormStartPosition.CenterScreen,
                         WindowState = FormWindowState.Maximized
                     };
@@ -1280,7 +1280,7 @@ namespace FactoryManagementSoftware.UI
                     frmLoading.ShowLoadingScreen();
                     frmMachineScheduleVer2 frm = new frmMachineScheduleVer2
                     {
-                        MdiParent = this,
+                        //MdiParent = this,
                         StartPosition = FormStartPosition.CenterScreen,
                         WindowState = FormWindowState.Maximized
                     };

@@ -1909,7 +1909,8 @@ namespace FactoryManagementSoftware.UI
                         string childCode = rowJoin[dalJoin.ChildCode].ToString();
                         string childName = rowJoin[dalJoin.ChildName].ToString();
 
-                        int readyStock = int.TryParse(rowJoin[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
+                        int readyStock = decimal.TryParse(rowJoin[dalItem.ItemStock].ToString(), out decimal stockValue) ? (int)stockValue : 0;
+
                         int joinQty = int.TryParse(rowJoin[dalJoin.JoinQty].ToString(), out joinQty) ? joinQty : 0;
                         int joinMax = int.TryParse(rowJoin[dalJoin.JoinMax].ToString(), out joinMax) ? joinMax : 0;
                         int joinMin = int.TryParse(rowJoin[dalJoin.JoinMin].ToString(), out joinMin) ? joinMin : 0;

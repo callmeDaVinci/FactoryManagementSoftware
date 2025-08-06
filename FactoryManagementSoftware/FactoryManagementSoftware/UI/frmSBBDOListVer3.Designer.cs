@@ -37,10 +37,10 @@
             this.tlpFilter = new System.Windows.Forms.TableLayoutPanel();
             this.gbAdvanceSettings = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
-            this.cbInvoiceSortByCustomer = new System.Windows.Forms.CheckBox();
             this.cbInvoiceMode = new System.Windows.Forms.CheckBox();
-            this.cbCustomerSummaryList = new System.Windows.Forms.CheckBox();
             this.cbProductSummary = new System.Windows.Forms.CheckBox();
+            this.cbCustomerSummaryList = new System.Windows.Forms.CheckBox();
+            this.cbInvoiceSortByCustomer = new System.Windows.Forms.CheckBox();
             this.btnFilterApply = new Guna.UI.WinForms.GunaGradientButton();
             this.gunaGroupBox4 = new Guna.UI.WinForms.GunaGroupBox();
             this.tableLayoutPanel13 = new System.Windows.Forms.TableLayoutPanel();
@@ -193,10 +193,10 @@
             // 
             this.tableLayoutPanel7.ColumnCount = 1;
             this.tableLayoutPanel7.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel7.Controls.Add(this.cbInvoiceSortByCustomer, 0, 1);
             this.tableLayoutPanel7.Controls.Add(this.cbInvoiceMode, 0, 0);
-            this.tableLayoutPanel7.Controls.Add(this.cbCustomerSummaryList, 0, 2);
             this.tableLayoutPanel7.Controls.Add(this.cbProductSummary, 0, 4);
+            this.tableLayoutPanel7.Controls.Add(this.cbCustomerSummaryList, 0, 3);
+            this.tableLayoutPanel7.Controls.Add(this.cbInvoiceSortByCustomer, 0, 1);
             this.tableLayoutPanel7.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel7.Location = new System.Drawing.Point(3, 33);
             this.tableLayoutPanel7.Name = "tableLayoutPanel7";
@@ -206,23 +206,9 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel7.Size = new System.Drawing.Size(188, 178);
             this.tableLayoutPanel7.TabIndex = 258;
-            // 
-            // cbInvoiceSortByCustomer
-            // 
-            this.cbInvoiceSortByCustomer.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbInvoiceSortByCustomer.AutoSize = true;
-            this.cbInvoiceSortByCustomer.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbInvoiceSortByCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbInvoiceSortByCustomer.Location = new System.Drawing.Point(10, 43);
-            this.cbInvoiceSortByCustomer.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbInvoiceSortByCustomer.Name = "cbInvoiceSortByCustomer";
-            this.cbInvoiceSortByCustomer.Size = new System.Drawing.Size(131, 21);
-            this.cbInvoiceSortByCustomer.TabIndex = 240;
-            this.cbInvoiceSortByCustomer.Text = "Sort By Customer";
-            this.cbInvoiceSortByCustomer.UseVisualStyleBackColor = true;
-            this.cbInvoiceSortByCustomer.Visible = false;
             // 
             // cbInvoiceMode
             // 
@@ -239,21 +225,6 @@
             this.cbInvoiceMode.UseVisualStyleBackColor = true;
             this.cbInvoiceMode.CheckedChanged += new System.EventHandler(this.cbInvoiceMode_CheckedChanged);
             // 
-            // cbCustomerSummaryList
-            // 
-            this.cbCustomerSummaryList.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.cbCustomerSummaryList.AutoSize = true;
-            this.cbCustomerSummaryList.Font = new System.Drawing.Font("Segoe UI", 7.8F);
-            this.cbCustomerSummaryList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.cbCustomerSummaryList.Location = new System.Drawing.Point(10, 79);
-            this.cbCustomerSummaryList.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
-            this.cbCustomerSummaryList.Name = "cbCustomerSummaryList";
-            this.cbCustomerSummaryList.Size = new System.Drawing.Size(160, 21);
-            this.cbCustomerSummaryList.TabIndex = 241;
-            this.cbCustomerSummaryList.Text = "Customer Report Only";
-            this.cbCustomerSummaryList.UseVisualStyleBackColor = true;
-            this.cbCustomerSummaryList.Visible = false;
-            // 
             // cbProductSummary
             // 
             this.cbProductSummary.Anchor = System.Windows.Forms.AnchorStyles.Left;
@@ -268,6 +239,36 @@
             this.cbProductSummary.Text = "Product Report Only";
             this.cbProductSummary.UseVisualStyleBackColor = true;
             this.cbProductSummary.Visible = false;
+            // 
+            // cbCustomerSummaryList
+            // 
+            this.cbCustomerSummaryList.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbCustomerSummaryList.AutoSize = true;
+            this.cbCustomerSummaryList.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbCustomerSummaryList.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbCustomerSummaryList.Location = new System.Drawing.Point(10, 115);
+            this.cbCustomerSummaryList.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbCustomerSummaryList.Name = "cbCustomerSummaryList";
+            this.cbCustomerSummaryList.Size = new System.Drawing.Size(160, 21);
+            this.cbCustomerSummaryList.TabIndex = 241;
+            this.cbCustomerSummaryList.Text = "Customer Report Only";
+            this.cbCustomerSummaryList.UseVisualStyleBackColor = true;
+            this.cbCustomerSummaryList.Visible = false;
+            // 
+            // cbInvoiceSortByCustomer
+            // 
+            this.cbInvoiceSortByCustomer.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.cbInvoiceSortByCustomer.AutoSize = true;
+            this.cbInvoiceSortByCustomer.Font = new System.Drawing.Font("Segoe UI", 7.8F);
+            this.cbInvoiceSortByCustomer.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.cbInvoiceSortByCustomer.Location = new System.Drawing.Point(10, 43);
+            this.cbInvoiceSortByCustomer.Margin = new System.Windows.Forms.Padding(10, 3, 3, 3);
+            this.cbInvoiceSortByCustomer.Name = "cbInvoiceSortByCustomer";
+            this.cbInvoiceSortByCustomer.Size = new System.Drawing.Size(131, 21);
+            this.cbInvoiceSortByCustomer.TabIndex = 240;
+            this.cbInvoiceSortByCustomer.Text = "Sort By Customer";
+            this.cbInvoiceSortByCustomer.UseVisualStyleBackColor = true;
+            this.cbInvoiceSortByCustomer.Visible = false;
             // 
             // btnFilterApply
             // 

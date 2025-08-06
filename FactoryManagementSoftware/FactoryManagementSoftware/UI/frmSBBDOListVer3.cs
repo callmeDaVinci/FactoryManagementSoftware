@@ -3983,8 +3983,12 @@ namespace FactoryManagementSoftware.UI
         string areaDeliveryLine4 = "i11:o11";
         string areaDeliveryLine5 = "i12:o12";
         string areaDeliveryTel = "i13:o13";
-        string areaTotalAmountText = "a38:p38";
-        string areaTotalAmount = "u38:w38";
+        string areaSubTotalAmountText = "a38:p38";
+        string areaSSTText = "q39:t39";
+        string areaTotalAmountText = "q40:t40";
+        string areaTotalAmount = "u40:w40";
+        string areaSubTotalAmount = "u38:w38";
+        string areaSSTAmount = "u39:w39";
 
         string areaDONo = "q8:s8";
         string areaDate = "q9:s9";
@@ -4402,7 +4406,13 @@ namespace FactoryManagementSoftware.UI
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
             DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
 
-            DOFormat = xlWorkSheet.get_Range("U17:W38").Cells;
+            DOFormat = xlWorkSheet.get_Range("U17:W37").Cells;
+            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
+            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            DOFormat = xlWorkSheet.get_Range("U38:W40").Cells;
             DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
             DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
             DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
@@ -4569,45 +4579,77 @@ namespace FactoryManagementSoftware.UI
             #endregion
             //^^2111ms
             #region Sign And Chop
-            ExcelRowHeight(xlWorkSheet, "a38:w38", 22.2);
-            //DOFormat = xlWorkSheet.get_Range(areaSafetySign).Cells;
-            //DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
-            //DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
-            //DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
-            //DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
+
+            //Sub Total
+            ExcelRowHeight(xlWorkSheet, "a38:w38", 19.2);
 
             DOFormat = xlWorkSheet.get_Range("Q38:T38").Cells;
-            DOFormat.Borders[XlBordersIndex.xlEdgeLeft].Color = BorderColor;
-            DOFormat.Borders[XlBordersIndex.xlEdgeRight].Color = BorderColor;
-            DOFormat.Borders[XlBordersIndex.xlEdgeTop].Color = BorderColor;
-            DOFormat.Borders[XlBordersIndex.xlEdgeBottom].Color = BorderColor;
             DOFormat.Merge();
-            DOFormat.Value = "TOTAL (RM)";
-            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignCenter;
+            DOFormat.Value = "RM";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 11;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.WrapText = true;
+
+            DOFormat = xlWorkSheet.get_Range("u38:w38").Cells;
+            DOFormat.Merge();
+            DOFormat.NumberFormat = "@";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
             DOFormat.Font.Size = 11;
             DOFormat.Font.Name = "Cambria";
 
-            DOFormat = xlWorkSheet.get_Range(areaTotalAmountText).Cells;
-            DOFormat.Merge();
+            //SST
+            ExcelRowHeight(xlWorkSheet, "a39:w39", 19.2);
 
-            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            DOFormat = xlWorkSheet.get_Range("Q39:T39").Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "SST@5%";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
             DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            DOFormat.Font.Size = 8;
+            DOFormat.Font.Size = 11;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.WrapText = true;
+
+            DOFormat = xlWorkSheet.get_Range("u39:w39").Cells;
+            DOFormat.Merge();
+            DOFormat.NumberFormat = "@";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 11;
+            DOFormat.Font.Name = "Cambria";
+
+            //TOTAL Amount DUE
+            ExcelRowHeight(xlWorkSheet, "a40:w40", 19.2);
+           
+            DOFormat = xlWorkSheet.get_Range("Q40:T40").Cells;
+            DOFormat.Merge();
+            DOFormat.Value = "AMOUNT DUE:";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 11;
+            DOFormat.Font.Name = "Cambria";
+            DOFormat.WrapText = true;
+
+            DOFormat = xlWorkSheet.get_Range("u40:w40").Cells;
+            DOFormat.Merge();
+            DOFormat.NumberFormat = "@";
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
+            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
+            DOFormat.Font.Size = 11;
+            DOFormat.Font.Name = "Cambria";
+
+            //amount text
+            DOFormat = xlWorkSheet.get_Range("a38:p38").Cells;
+            DOFormat.Merge();
+            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
+            DOFormat.Font.Size = 7;
             DOFormat.Font.Name = "Cambria";
             DOFormat.WrapText = true;
 
 
-            DOFormat = xlWorkSheet.get_Range(areaTotalAmount).Cells;
-            DOFormat.Merge();
-            DOFormat.NumberFormat = "@";
-
-            DOFormat.HorizontalAlignment = XlHAlign.xlHAlignRight;
-            DOFormat.VerticalAlignment = XlVAlign.xlVAlignCenter;
-            DOFormat.Font.Size = 11;
-
-            DOFormat.Font.Name = "Cambria";
-
+            //NOTES
             DOFormat = xlWorkSheet.get_Range("a40:a40").Cells;
             DOFormat.Value = "Notes:";
             DOFormat.HorizontalAlignment = XlHAlign.xlHAlignLeft;
@@ -7566,7 +7608,7 @@ namespace FactoryManagementSoftware.UI
 
                                         //total amount
                                         totalAmount += Math.Round(netAmount, 2);
-                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(totalAmount));
+                                        InsertToSheet(xlWorkSheet, areaSubTotalAmountText, ConvertAmountToWords(totalAmount));
                                         InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
 
                                         #endregion
@@ -7882,7 +7924,7 @@ namespace FactoryManagementSoftware.UI
             poColStart = "b";
             poColEnd = ":d";
 
-            areaTotalAmountText = "a38:p38";
+            areaSubTotalAmountText = "a38:p38";
             areaTotalAmount = "u38:w38";
             #endregion
 
@@ -8240,7 +8282,7 @@ namespace FactoryManagementSoftware.UI
                             // Add total amount only to the last page
                             if (p == pageNo)
                             {
-                                InsertToSheet(currentSheet, areaTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
+                                InsertToSheet(currentSheet, areaSubTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
                                 InsertToSheet(currentSheet, areaTotalAmount, totalAmount.ToString("N2"));
                             }
 
@@ -8642,6 +8684,7 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet = xlWorkBook.Sheets.Add(After: xlWorkBook.Sheets[xlWorkBook.Sheets.Count]);
                             }
                             sheetNo++;
+
                             xlWorkSheet.Name = "INV_" + DONoString;
 
                             var printers = System.Drawing.Printing.PrinterSettings.InstalledPrinters;
@@ -8662,18 +8705,6 @@ namespace FactoryManagementSoftware.UI
                             xlexcel.PrintCommunication = true;
                             xlexcel.Calculation = XlCalculation.xlCalculationAutomatic;
                           
-
-                            //if(PONo == Text_MultiPOCode)
-                            //{
-                            //    CopyFormat(initialSheet_MultiPO, xlWorkSheet);
-                            //}
-                            //else
-                            //{
-                            //    CopyFormat(initialSheet_SinglePO, xlWorkSheet);
-                            //}
-
-                            //InitialInvoiceFormat_LOGO(xlWorkSheet);
-
                             InitialInvoiceFormat(xlWorkSheet, PONo == Text_MultiPOCode ? true : false);//2194ms
 
                             InsertToSheet(xlWorkSheet, areaPageData, pageNo + " of " + pageNo);
@@ -8710,6 +8741,8 @@ namespace FactoryManagementSoftware.UI
                             int indexNo = 1;
                             string previousPO = "";
 
+                            decimal subTotal = 0;
+                            decimal SST = 0;
                             decimal totalAmount = 0;
 
                             #endregion
@@ -9079,10 +9112,26 @@ namespace FactoryManagementSoftware.UI
                                         RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
                                         InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
-                                        //total amount
-                                        totalAmount += netAmount;
+                                        //sub amount
+                                        subTotal += netAmount;
 
-                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
+                                        //DateTime cutoffDate = new DateTime(2025, 6, 30); // 30 June 2025
+
+                                        if (!DONoString.Contains("NB2025"))
+                                        {
+                                            SST = subTotal * 0.05m;
+                                        }
+                                        else
+                                        {
+                                            SST = 0;
+                                        }
+
+                                        totalAmount = SST + subTotal;
+
+
+                                        InsertToSheet(xlWorkSheet, "a38:a38", ConvertAmountToWords(Math.Round(totalAmount, 2)));
+                                        InsertToSheet(xlWorkSheet, areaSubTotalAmount, subTotal.ToString("N2"));
+                                        InsertToSheet(xlWorkSheet, areaSSTAmount, SST.ToString("N2"));
                                         InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
 
                                         #endregion
@@ -9289,7 +9338,7 @@ namespace FactoryManagementSoftware.UI
             poColStart = "b";
             poColEnd = ":d";
 
-            areaTotalAmountText = "a38:p38";
+            areaSubTotalAmountText = "a38:p38";
             areaTotalAmount = "u38:w38";
             #endregion
 
@@ -9674,7 +9723,7 @@ namespace FactoryManagementSoftware.UI
                                     InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
                                     totalAmount += netAmount;
-                                    InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
+                                    InsertToSheet(xlWorkSheet, areaSubTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
                                     InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
                                     #endregion
                                 }
@@ -10504,7 +10553,7 @@ namespace FactoryManagementSoftware.UI
                                         //total amount
                                         totalAmount += netAmount;
 
-                                        InsertToSheet(xlWorkSheet, areaTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
+                                        InsertToSheet(xlWorkSheet, areaSubTotalAmountText, ConvertAmountToWords(Math.Round(totalAmount, 2)));
                                         InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
 
                                         #endregion
@@ -10725,7 +10774,6 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenExportSettings()
         {
-
             if (cbInvoiceMode.Checked || ISSUE_E_INVOICE_MODE)
             {
                 ISSUE_E_INVOICE_MODE = false;
@@ -10997,11 +11045,11 @@ namespace FactoryManagementSoftware.UI
             cbCustomerSummaryList.Checked = false;
 
             cbInvoiceSortByCustomer.Visible = cbInvoiceMode.Checked;
-            //cbCustomerSummaryList.Visible = cbInvoiceMode.Checked;
 
             if (!cbInvoiceMode.Checked)
             {
                 lblSubList.Text = text_DOItemList;
+
 
                 cbInProgress.Enabled = true;
                 cbRemoved.Enabled = true;
@@ -11129,6 +11177,11 @@ namespace FactoryManagementSoftware.UI
                     e.FormattingApplied = true;
                 }
             }
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

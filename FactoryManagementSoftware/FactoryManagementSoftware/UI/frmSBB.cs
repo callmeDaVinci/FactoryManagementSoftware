@@ -17,6 +17,7 @@ using System.Data.OleDb;
 using Org.BouncyCastle.Asn1.Pkcs;
 using System.Xml.Linq;
 using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using static Guna.UI2.Native.WinApi;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -365,6 +366,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_ProduceTarget, typeof(int));
             dt.Columns.Add(header_ProDaysNeeded, typeof(float));
             dt.Columns.Add(header_Status, typeof(string));
+            dt.Columns.Add(header_Note, typeof(string));
 
             dt.Columns.Add(header_StdPacking_Bag, typeof(int));
             dt.Columns.Add(header_StdPacking_Ctn, typeof(int));
@@ -476,11 +478,14 @@ namespace FactoryManagementSoftware.UI
                         dgv.Columns[header_BalAfterBag].Visible = false;
                         dgv.Columns[header_BalAfterPcs].Visible = false;
                         dgv.Columns[header_ProDaysNeeded].Visible = true;
+                        dgv.Columns[header_Note].Visible = true;
                     }
                     else if (cmbType.Text == Type_Product)
                     {
                         dgv.Columns[header_Stock].Visible = false;
                         dgv.Columns[header_ProDaysNeeded].Visible = false;
+                        dgv.Columns[header_Note].Visible = false;
+
                         if (cbInBagUnit.Checked)
                         {
 
@@ -502,6 +507,9 @@ namespace FactoryManagementSoftware.UI
 
 
                     dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+                    dgv.Columns[header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
                 }
             }
 
@@ -580,7 +588,7 @@ namespace FactoryManagementSoftware.UI
                 
                 string parentCode = itemCode;
 
-                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9")
+                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
                 {
                     parentCode = GetChildCode(dt_JoinSelectWithChildCat, row[header_ItemCode].ToString());
                 }
@@ -1157,7 +1165,7 @@ namespace FactoryManagementSoftware.UI
             return stockQty;
         }
 
-        private void LoadStockAlert()
+        private void OLD_LoadStockAlert()
         {
             Cursor = Cursors.WaitCursor;
 
@@ -1296,6 +1304,271 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.Arrow;
         }
+        planningDAL dalPlanning = new planningDAL();
+        private void LoadStockAlert()
+        {
+            Cursor = Cursors.WaitCursor;
+
+            //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
+
+            DataTable dt_FillAll = NewStockAlertTable();
+
+            string stockLocation = cmbStockLocation.Text;
+
+            if (string.IsNullOrEmpty(stockLocation))
+            {
+                //cmbStockLocation.Text = text.Factory_Semenyih;
+                //stockLocation = text.Factory_Semenyih;
+
+                cmbStockLocation.Text = "ALL";
+                stockLocation = "ALL";
+            }
+
+            //Load SBB GOODS FILL ALL ALERT
+            foreach (DataRow pendingRow in dt_PendingPOSelect.Rows)
+            {
+                string itemCode = pendingRow[dalSBB.ItemCode].ToString();
+                string itemName = pendingRow[dalSBB.ItemName].ToString();
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    int itemStock = int.TryParse(pendingRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
+
+                    if (stockLocation != "ALL")
+                    {
+                        itemStock = (int)loadStockList(itemCode, stockLocation);
+                    }
+
+
+                    int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
+                    int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
+                    int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
+
+                    int pendingQty = itemPOQty - itemDeliveredQty;
+
+                    DataRow newRow;
+                    bool itemFound = false;
+
+                    if (dt_PendingPOSelect != null && dt_PendingPOSelect.Rows.Count > 0)
+                    {
+                        foreach (DataRow fillAllRow in dt_FillAll.Rows)
+                        {
+                            if (itemCode == fillAllRow[header_ItemCode].ToString())
+                            {
+                                itemFound = true;
+
+                                int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
+
+                                fillAllRow[header_BalAfter] = itemBal - pendingQty;
+
+                                fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
+                                fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
+
+                                break;
+                            }
+                        }
+
+                    }
+
+                    if (!itemFound)
+                    {
+                        newRow = dt_FillAll.NewRow();
+
+                        newRow[header_ItemCode] = itemCode;
+                        newRow[header_ItemName] = itemName;
+                        newRow[header_BalAfter] = itemStock - pendingQty;
+                        newRow[header_QtyPerBag] = itemPerBag;
+
+                        if (itemPerBag == 0)
+                        {
+                            itemPerBag = 1;
+                        }
+                        newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
+                        newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
+
+                        dt_FillAll.Rows.Add(newRow);
+                    }
+
+                }
+            }
+
+            //dt_SBBCustSearchWithTypeAndSize
+            //to add no order product
+            foreach (DataRow SBBRow in dt_SBBCustSearchWithTypeAndSize.Rows)
+            {
+                string SBBItemCode = SBBRow[dalItem.ItemCode].ToString();
+                bool itemFound = false;
+
+                foreach (DataRow fillAllRow in dt_FillAll.Rows)
+                {
+                    string itemCode = fillAllRow[header_ItemCode].ToString();
+
+                    if(itemCode == SBBItemCode)
+                    {
+                        itemFound = true;
+                        break;
+                    }
+                    
+                }
+
+                if (!itemFound)
+                {
+                    DataRow newRow = dt_FillAll.NewRow();
+                    newRow[header_ItemCode] = SBBItemCode;
+                    newRow[header_ItemName] = SBBRow[dalItem.ItemName].ToString();
+
+                    int itemStock = int.TryParse(SBBRow[dalItem.ItemStock].ToString(), out itemStock) ? itemStock : 0;
+
+                    newRow[header_BalAfter] = itemStock;
+
+                    dt_FillAll.Rows.Add(newRow);
+                }
+
+            }
+
+            if (cmbType.Text == Type_Part)
+            {
+                dt_FillAll = NEWLoadMatPartList(dt_FillAll);
+            }
+
+            //dt_FillAll.DefaultView.Sort = header_BalAfter + " ASC";
+            //dt_FillAll = dt_FillAll.DefaultView.ToTable();
+
+
+            List<DataRow> toDelete = new List<DataRow>();
+
+            DataTable DT_MACHINE_SCHEDULE = dalPlanning.SelectActivePlanning();
+
+            foreach (DataRow row in dt_FillAll.Rows)
+            {
+                string itemCode = row[header_ItemCode].ToString();
+                int bal = int.TryParse(row[header_BalAfter].ToString(), out int i) ? i : 0;
+
+                if (string.IsNullOrEmpty(row[header_ItemName].ToString()))
+                {
+                    toDelete.Add(row);
+                }
+                else if (bal < 0)
+                {
+                    row[header_ProDaysNeeded] = tool.GetProductionDayNeeded(dt_Item, itemCode, bal * -1);
+                }
+
+                row[header_Note] = GetProduceQty(itemCode, DT_MACHINE_SCHEDULE);
+
+            }
+
+            foreach (DataRow dr in toDelete)
+            {
+                dt_FillAll.Rows.Remove(dr);
+            }
+
+
+            dt_FillAll.AcceptChanges();
+
+            DataView dv = dt_FillAll.DefaultView;
+            dv.Sort = header_ItemCategory + " ASC," + header_ItemType + " ASC," + header_ItemName + " ASC";
+
+
+            dt_FillAll = dv.ToTable();
+
+            RearrangeIndex(dt_FillAll);
+
+            dgvStockAlert.DataSource = dt_FillAll;
+
+            DgvUIEdit(dgvStockAlert);
+
+            dgvStockAlert.ClearSelection();
+
+
+            Cursor = Cursors.Arrow;
+        }
+
+        //private Tuple<int, int, string> GetProduceQty(string ItemCode, DataTable dt_MacSechedule)
+        //{
+        //    int totalTarget = 0, totalProduced = 0;
+        //    string mac = "Mac:";
+
+        //    // Use a list to store rows to remove (can't modify collection while iterating)
+        //    List<DataRow> rowsToRemove = new List<DataRow>();
+
+        //    foreach (DataRow row in dt_MacSechedule.Rows)
+        //    {
+        //        string itemCode = row[dalPlanning.partCode].ToString();
+        //        if (itemCode == ItemCode)
+        //        {
+        //            string status = row[dalPlanning.planStatus].ToString();
+
+        //            if (status != text.planning_status_draft)
+        //            {
+        //                totalTarget += int.TryParse(row[dalPlanning.targetQty].ToString(), out int x) ? x : 0;
+        //                totalProduced += int.TryParse(row[dalPlanning.planProduced].ToString(), out int y) ? y : 0;
+
+        //                mac += row[dalPlanning.machineName].ToString() + ";";
+
+        //            }
+
+        //            // Mark this row for removal
+        //            rowsToRemove.Add(row);
+        //        }
+                  
+        //    }
+
+        //    // Remove all matching rows
+        //    foreach (DataRow rowToRemove in rowsToRemove)
+        //    {
+        //        dt_MacSechedule.Rows.Remove(rowToRemove);
+        //    }
+
+        //    return Tuple.Create(totalTarget, totalProduced, mac);
+        //}
+
+        private string GetProduceQty(string ItemCode, DataTable dt_MacSechedule)
+        {
+            int totalTarget = 0, totalProduced = 0;
+            string mac = "Mac:";
+            string note = "";
+
+            // Use a list to store rows to remove (can't modify collection while iterating)
+            List<DataRow> rowsToRemove = new List<DataRow>();
+
+            foreach (DataRow row in dt_MacSechedule.Rows)
+            {
+                string itemCode = row[dalPlanning.partCode].ToString();
+                if (itemCode == ItemCode)
+                {
+                    string status = row[dalPlanning.planStatus].ToString();
+
+                    totalTarget = int.TryParse(row[dalPlanning.targetQty].ToString(), out int x) ? x : 0;
+                    totalProduced = int.TryParse(row[dalPlanning.planProduced].ToString(), out int y) ? y : 0;
+
+                    mac = row[dalPlanning.machineName].ToString();
+
+                    if (status == text.planning_status_draft)
+                    {
+                        note += "[(DRAFT)" + mac + ": " + totalProduced.ToString("N0") + "/" + totalTarget.ToString("N0") + "] ";
+
+                    }
+                    else
+                    {
+                        note += "[" + mac + ": " + totalProduced.ToString("N0") + "/" + totalTarget.ToString("N0") + "] ";
+
+                    }
+
+                    // Mark this row for removal
+                    rowsToRemove.Add(row);
+                }
+
+            }
+
+            // Remove all matching rows
+            foreach (DataRow rowToRemove in rowsToRemove)
+            {
+                dt_MacSechedule.Rows.Remove(rowToRemove);
+            }
+
+            return note;
+        }
+
 
         private Tuple<int, int, int> GetDeliveredQty(DataTable dt_SppCustomer, DataTable dt_Trf, int month_1, int month_2, int month_3, string itemCode)
         {

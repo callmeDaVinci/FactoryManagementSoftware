@@ -1607,6 +1607,7 @@ namespace FactoryManagementSoftware.UI
             string test2 = parentItemCode[7].ToString();
             string oriFactoryName = factoryName;
 
+            //SBB Product
             if (parentItemCode.Substring(0, 3) == text.Inspection_Pass && cmbTrfFromCategory.Text.Equals(text.Assembly))
             {
                 //EQUAL ITEM ONLY
@@ -2599,6 +2600,7 @@ namespace FactoryManagementSoftware.UI
             string trfQty = txtTrfQty.Text;
             string note = "";
 
+            //SBB Product
             if (cmbTrfItemCode.Text.Length > 3 && cmbTrfItemCode.Text.Substring(0, 3) == text.Inspection_Pass)
             {
                 if (unit == text.Unit_Bag)
@@ -2684,6 +2686,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
+            //SBB Product Assembly In
             else if ((trfFromCat.Equals(text.Assembly) || trfFromCat.Equals(text.Inspection)) && cmbTrfToCategory.Text.Equals(text.Factory))
             {
                 if (trfFromCat.Equals(text.Inspection))
