@@ -4506,6 +4506,10 @@ namespace FactoryManagementSoftware.UI
             {
                 tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 0f);
                 tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpStockAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpStockAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 0f);
+                tlpStockAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 0f);
+
                 dgv.Columns[header_ItemName].Frozen = true;
                 stockCheckMode = true;
 
@@ -4520,6 +4524,10 @@ namespace FactoryManagementSoftware.UI
                 cbInPcsUnit.Visible = false;
                 cbInBagUnit.Visible = false;
 
+                dgv.Columns[header_StockMinLvl].Visible = false;
+                dgv.Columns[header_Note].Visible = false;
+
+
                 dgv.Columns[header_BalAfter].Visible = false;
                 dgv.Columns[header_BalAfterBag].Visible = false;
                 dgv.Columns[header_BalAfterPcs].Visible = false;
@@ -4527,7 +4535,13 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ProDaysNeeded].Visible = false;
 
                 dgv.Columns[header_ActualStock].Visible = true;
+                dgv.Columns[header_ActualStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+                dgv.Columns[header_ActualStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
                 dgv.Columns[header_StockDiff].Visible = true;
+                dgv.Columns[header_StockDiff].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+
+                dgv.Columns[header_ActualStock].Visible = true;
 
                 dgv.Columns[header_StdPacking_Bag].Visible = false;
                 dgv.Columns[header_StdPacking_Ctn].Visible = false;
@@ -4546,6 +4560,11 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ItemName].Frozen = false;
                 tlpStockAlert.ColumnStyles[0] = new ColumnStyle(SizeType.Absolute, 40f);
                 tlpStockAlert.ColumnStyles[1] = new ColumnStyle(SizeType.Absolute, 184f);
+
+                tlpStockAlert.ColumnStyles[2] = new ColumnStyle(SizeType.Absolute, 59f);
+                tlpStockAlert.ColumnStyles[3] = new ColumnStyle(SizeType.Absolute, 62f);
+                tlpStockAlert.ColumnStyles[4] = new ColumnStyle(SizeType.Absolute, 148f);
+
                 dgv.Columns[header_ActualStock].Visible = false;
                 dgv.Columns[header_StockDiff].Visible = false;
 
@@ -4557,6 +4576,8 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ActualStock_CTN].Visible = false;
 
                 dgv.Columns[header_BalAfter].Visible = true;
+                dgv.Columns[header_StockMinLvl].Visible = true;
+                dgv.Columns[header_Note].Visible = true;
 
                 dgv.Columns[header_ProDaysNeeded].Visible = true;
 
@@ -4697,7 +4718,7 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_StockMinLvl))
+            else if (rowIndex > -1 && dgv.Columns[colIndex].Name.Contains(header_StockMinLvl))
             {
                 // Get item details
                 string itemCode = dgv.Rows[rowIndex].Cells[header_ItemCode].Value?.ToString() ?? "";
@@ -5318,8 +5339,10 @@ namespace FactoryManagementSoftware.UI
 
                 // Get the column index of your target column
                 int stockMinLvlColumnIndex = dgv.Columns[header_StockMinLvl].Index;
+                int stockActualStockColumnIndex = dgv.Columns[header_ActualStock].Index;
 
-                if (e.ColumnIndex == stockMinLvlColumnIndex)
+
+                if (e.ColumnIndex == stockMinLvlColumnIndex || e.ColumnIndex == stockActualStockColumnIndex)
                 {
                     // Switch to cell selection mode and enable editing
                     dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
@@ -5329,7 +5352,7 @@ namespace FactoryManagementSoftware.UI
                     // Make only this column editable
                     for (int i = 0; i < dgv.Columns.Count; i++)
                     {
-                        dgv.Columns[i].ReadOnly = (i != stockMinLvlColumnIndex);
+                        dgv.Columns[i].ReadOnly = (i != e.ColumnIndex);
                     }
 
                     // Optional: Start editing immediately
@@ -5352,8 +5375,9 @@ namespace FactoryManagementSoftware.UI
         private void dgvStockAlert_CellBeginEdit(object sender, DataGridViewCellCancelEventArgs e)
         {
             int stockMinLvlColumnIndex = dgvStockAlert.Columns[header_StockMinLvl].Index;
+            int stockActualStockIndex = dgvStockAlert.Columns[header_ActualStock].Index;
 
-            if (e.ColumnIndex != stockMinLvlColumnIndex)
+            if (e.ColumnIndex != stockMinLvlColumnIndex && e.ColumnIndex != stockActualStockIndex)
             {
                 e.Cancel = true;
             }

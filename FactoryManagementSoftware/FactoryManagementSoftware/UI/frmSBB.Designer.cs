@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSBB));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -140,6 +140,7 @@
             this.tableLayoutPanel22 = new System.Windows.Forms.TableLayoutPanel();
             this.lblStockAlert = new System.Windows.Forms.Label();
             this.tlpStockAlert = new System.Windows.Forms.TableLayoutPanel();
+            this.lblShortMinStockLevelAlert = new System.Windows.Forms.Label();
             this.cbPackagings = new System.Windows.Forms.CheckBox();
             this.cbMats = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel25 = new System.Windows.Forms.TableLayoutPanel();
@@ -166,7 +167,6 @@
             this.cbMat = new System.Windows.Forms.CheckBox();
             this.cbParts = new System.Windows.Forms.CheckBox();
             this.tableLayoutPanel17 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblShortMinStockLevelAlert = new System.Windows.Forms.Label();
             this.tableLayoutPanel8.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel14.SuspendLayout();
@@ -1903,6 +1903,21 @@
             this.tlpStockAlert.Size = new System.Drawing.Size(854, 76);
             this.tlpStockAlert.TabIndex = 179;
             // 
+            // lblShortMinStockLevelAlert
+            // 
+            this.lblShortMinStockLevelAlert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblShortMinStockLevelAlert.AutoSize = true;
+            this.lblShortMinStockLevelAlert.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblShortMinStockLevelAlert.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
+            this.lblShortMinStockLevelAlert.ForeColor = System.Drawing.Color.Red;
+            this.lblShortMinStockLevelAlert.Location = new System.Drawing.Point(496, 61);
+            this.lblShortMinStockLevelAlert.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
+            this.lblShortMinStockLevelAlert.Name = "lblShortMinStockLevelAlert";
+            this.lblShortMinStockLevelAlert.Size = new System.Drawing.Size(10, 15);
+            this.lblShortMinStockLevelAlert.TabIndex = 185;
+            this.lblShortMinStockLevelAlert.Text = ".";
+            this.lblShortMinStockLevelAlert.Click += new System.EventHandler(this.lblShortMinStockLevelAlert_Click);
+            // 
             // cbPackagings
             // 
             this.cbPackagings.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
@@ -2085,14 +2100,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle9.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle9.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle9.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle3.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle3.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle3;
             this.dgvStockAlert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(5, 106);
@@ -2181,14 +2196,14 @@
             this.dgvUsage.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvUsage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsage.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle10.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle10.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle10.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle10.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle4;
             this.dgvUsage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvUsage.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvUsage.Location = new System.Drawing.Point(5, 106);
@@ -2335,21 +2350,6 @@
             this.tableLayoutPanel17.Size = new System.Drawing.Size(1671, 721);
             this.tableLayoutPanel17.TabIndex = 178;
             this.tableLayoutPanel17.Paint += new System.Windows.Forms.PaintEventHandler(this.tableLayoutPanel17_Paint_1);
-            // 
-            // lblShortMinStockLevelAlert
-            // 
-            this.lblShortMinStockLevelAlert.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.lblShortMinStockLevelAlert.AutoSize = true;
-            this.lblShortMinStockLevelAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblShortMinStockLevelAlert.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Bold);
-            this.lblShortMinStockLevelAlert.ForeColor = System.Drawing.Color.Red;
-            this.lblShortMinStockLevelAlert.Location = new System.Drawing.Point(496, 61);
-            this.lblShortMinStockLevelAlert.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
-            this.lblShortMinStockLevelAlert.Name = "lblShortMinStockLevelAlert";
-            this.lblShortMinStockLevelAlert.Size = new System.Drawing.Size(10, 15);
-            this.lblShortMinStockLevelAlert.TabIndex = 185;
-            this.lblShortMinStockLevelAlert.Text = ".";
-            this.lblShortMinStockLevelAlert.Click += new System.EventHandler(this.lblShortMinStockLevelAlert_Click);
             // 
             // frmSBB
             // 
