@@ -1605,7 +1605,11 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT 
                                tbl_item.item_code,
                                tbl_item.item_name,
-                               tbl_item.item_qty,
+                               tbl_item.item_qty,                               
+                                tbl_item.type_tbl_code,
+                                tbl_item.category_tbl_code,
+                                tbl_item.size_tbl_code_1,
+                                tbl_item.size_tbl_code_2,
                                tbl_spp_po.po_qty,
                                tbl_spp_po.delivered_qty,
                                tbl_spp_stdpacking.qty_per_bag,

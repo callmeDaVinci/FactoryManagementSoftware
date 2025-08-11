@@ -622,7 +622,7 @@ namespace FactoryManagementSoftware.UI
             if (!SBBFormOpen)
             {
                 frmLoading.ShowLoadingScreen();
-                frmSBB frm = new frmSBB();
+                frmSBBVer2 frm = new frmSBBVer2();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -632,9 +632,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+                if (Application.OpenForms.OfType<frmSBBVer2>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+                    Application.OpenForms.OfType<frmSBBVer2>().First().BringToFront();
                 }
             }
 
@@ -1393,7 +1393,7 @@ namespace FactoryManagementSoftware.UI
             if (!SBBFormOpen)
             {
                 //frmLoading.ShowLoadingScreen();
-                frmSBB frm = new frmSBB();
+                frmSBBVer2 frm = new frmSBBVer2();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
@@ -1403,9 +1403,9 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                if (Application.OpenForms.OfType<frmSBB>().Count() == 1)
+                if (Application.OpenForms.OfType<frmSBBVer2>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmSBB>().First().BringToFront();
+                    Application.OpenForms.OfType<frmSBBVer2>().First().BringToFront();
                 }
 
                 //frmLoading.ShowLoadingScreen();

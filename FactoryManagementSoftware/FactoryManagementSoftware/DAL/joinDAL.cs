@@ -161,6 +161,7 @@ namespace FactoryManagementSoftware.DAL
                 tbl_item.item_name as parent_name ,
                 tbl_join.join_child_code as child_code ,
                 a.item_name as child_name , a.item_material as item_material , a.item_recycle as item_recycle , a.item_mb as item_mb , a.item_cat as child_cat,
+                a.size_tbl_code_1,a.size_tbl_code_2,
                 join_qty, join_max, join_min, join_added_date, join_added_by,
                 join_updated_date,join_updated_by ,a.item_pro_pw_shot,a.item_pro_rw_shot,a.item_capacity,a.raw_ratio,a.recycle_ratio,a.item_mb_rate,
                 a.item_part_weight,a.item_runner_weight,a.item_wastage_allowed,a.item_qty,a.type_tbl_code,a.category_tbl_code
