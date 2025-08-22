@@ -176,8 +176,8 @@ namespace FactoryManagementSoftware.UI
 
                 if (fromSBBDeliveredPage)
                 {
-                    frmSBB.MonthlyDateStart = start;
-                    frmSBB.MonthlyDateEnd = end;
+                    frmSBBVer2.MonthlyDateStart = start;
+                    frmSBBVer2.MonthlyDateEnd = end;
                 }
             }
 

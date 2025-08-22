@@ -28,6 +28,8 @@ namespace FactoryManagementSoftware.BLL
         public float bal2 { get; set; }
         public float bal3 { get; set; }
         public float bal4 { get; set; }
+        public string prodinfo { get; set; }
+        public string purchaseinfo { get; set; }
         public float forecast1 { get; set; }
         public float forecast2 { get; set; }
         public float forecast3 { get; set; }

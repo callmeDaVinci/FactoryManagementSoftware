@@ -15,20 +15,16 @@ using Font = System.Drawing.Font;
 using Excel = Microsoft.Office.Interop.Excel;
 using System.Reflection;
 using System.Collections.Generic;
-using static Accord.Math.FourierTransform;
-using Syncfusion.XlsIO.Parser.Biff_Records;
-using System.Xml.Linq;
-using Microsoft.Office.Interop.Word;
+
 using Range = Microsoft.Office.Interop.Excel.Range;
 using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
 using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
 using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
 using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
-using Syncfusion.XlsIO.Implementation.XmlSerialization;
-using System.Runtime.CompilerServices;
-using System.Threading;
+
 using System.Configuration;
-using iTextSharp.text.pdf;
+
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -161,6 +157,8 @@ namespace FactoryManagementSoftware.UI
         string headerBal2 = "BAL";
         string headerBal3 = "BAL";
         string headerBal4 = "BAL";
+        string headerProdInfo = "Prod. Info";
+        string headerPurchaseInfo = "Purchase Info";
 
         readonly string headerQuoTon = "QUO TON";
         readonly string headerProTon = "PRO TON";
@@ -367,6 +365,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(headerBal3, typeof(float));
 
             dt.Columns.Add(headerItemRemark, typeof(string));
+            dt.Columns.Add(headerProdInfo, typeof(string));
+            dt.Columns.Add(headerPurchaseInfo, typeof(string));
 
             return dt;
         }
@@ -410,6 +410,8 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[headerPartCode].Frozen = true;
                 dgv.Columns[text.Header_ColorMatCode].Visible = false;
+                dgv.Columns[headerProdInfo].Visible = false;
+                dgv.Columns[headerPurchaseInfo].Visible = false;
 
                 dgv.Columns[headerBal1].HeaderCell.Style.BackColor = Color.LightYellow;
                 dgv.Columns[headerBal1].DefaultCellStyle.BackColor = Color.LightYellow;
@@ -1962,7 +1964,7 @@ namespace FactoryManagementSoftware.UI
             return Tuple.Create(estimateOrder, NonActiveItem, deliveredQtyThisMonth);
         }
 
-        private Tuple<int, int> GetProduceQty(string _ItemCode, DataTable dt_MacSechedule)
+        private Tuple<int, int,string> GetProduceQty(string _ItemCode, DataTable dt_MacSechedule)
         {
             int toProduce = 0, produced = 0;
            
@@ -1972,7 +1974,7 @@ namespace FactoryManagementSoftware.UI
             DateTime now = DateTime.Now;
             var start = new DateTime(now.Year, now.Month, 1);
             var end = start.AddMonths(1).AddDays(-1);
-
+            string prodInfo = "";
             bool itemFound = false;
 
            //DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '"+ _ItemCode + "'");
@@ -1985,6 +1987,8 @@ namespace FactoryManagementSoftware.UI
                 {
                     itemFound = true;
                     DateTime produceStart = DateTime.TryParse(row[dalPlanning.productionStartDate].ToString(), out produceStart) ? produceStart : DateTime.MaxValue;
+                    DateTime produceEnd = DateTime.TryParse(row[dalPlanning.productionEndDate].ToString(), out produceEnd) ? produceEnd : DateTime.MaxValue;
+                    string macName = row[dalPlanning.machineName].ToString();
 
                     string status = row[dalPlanning.planStatus].ToString();
 
@@ -2008,8 +2012,9 @@ namespace FactoryManagementSoftware.UI
                     {
                         toProduce += ToProduceQty;
                         produced += producedQty;
-
+                        prodInfo += "[(" + status + ") " + macName + ": " + produceStart.ToString("dd/MM") + "-" + produceEnd.ToString("dd/MM") + "]";
                     }
+
                 }
 
                 else if (itemFound)
@@ -2020,7 +2025,7 @@ namespace FactoryManagementSoftware.UI
             }
 
 
-            return Tuple.Create(toProduce, produced);
+            return Tuple.Create(toProduce, produced, prodInfo);
         }
 
         private string GetMachineHistory(string _ItemCode)
@@ -2311,6 +2316,36 @@ namespace FactoryManagementSoftware.UI
             return TotalStock;
         }
 
+        ordDAL dalOrd = new ordDAL();
+
+        DataTable DT_PURCAHSE_ORDER_RECORD;
+        private string loadOrderRecord(DataTable dt, string itemCode)
+        {
+            string PurcahsedInfo = "";
+
+            foreach (DataRow ord in dt.Rows)
+            {
+                string ordStatus = ord["ord_status"].ToString();
+                string OrderItemCode = ord["ord_item_code"].ToString();
+
+                int orderID = Convert.ToInt32(ord["ord_id"].ToString());
+
+                if (orderID >= 1 && OrderItemCode == itemCode)
+                {
+                    string requiredDate = DateTime.TryParse(ord["ord_required_date"].ToString(), out DateTime targetDate) ? targetDate.ToString("dd/MM/yyyy") : DateTime.MaxValue.ToString("dd/MM/yyyy");
+
+                    string orderReceived = ord["ord_received"].ToString();
+                    string orderQty =  ord["ord_qty"].ToString();
+                    string unit = ord["ord_unit"].ToString();
+
+                    PurcahsedInfo += "[(" + orderID + ")" + ordStatus + "_" + requiredDate + ": " + orderReceived + "/ " + orderQty + "] ";
+
+                }
+            }
+
+            return PurcahsedInfo;
+        }
+
         private DataTable FullDetailForecastData()
         {
             #region Setting
@@ -2324,6 +2359,8 @@ namespace FactoryManagementSoftware.UI
             btnRefresh.Enabled = false;
             btnExcel.Enabled = false;
             btnExcelAll.Enabled = false;
+
+            DT_PURCAHSE_ORDER_RECORD = dalOrd.RequestingOrPendingOrderSelect();
 
             DataGridView dgv = dgvForecastReport;
 
@@ -2432,6 +2469,9 @@ namespace FactoryManagementSoftware.UI
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
+                        uData.prodinfo = result.Item3;
+
+                        uData.purchaseinfo = loadOrderRecord(DT_PURCAHSE_ORDER_RECORD, uData.part_code);
 
                         #region Balance Calculation
 
@@ -2495,6 +2535,11 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[headerProduced] = uData.Produced;
                         }
+
+                       
+
+                        dt_Row[headerProdInfo] = uData.prodinfo;
+                        dt_Row[headerPurchaseInfo] = uData.purchaseinfo;
 
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
@@ -2594,6 +2639,8 @@ namespace FactoryManagementSoftware.UI
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
+                        uData.prodinfo = result.Item3;
+                        uData.purchaseinfo = loadOrderRecord(DT_PURCAHSE_ORDER_RECORD, uData.part_code);
 
                         #region Balance Calculation
 
@@ -2658,6 +2705,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[headerProduced] = uData.Produced;
                         }
+
+                        dt_Row[headerProdInfo] = uData.prodinfo;
+                        dt_Row[headerPurchaseInfo] = uData.purchaseinfo;
 
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
@@ -3017,7 +3067,9 @@ namespace FactoryManagementSoftware.UI
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
-                    
+                        uData.prodinfo = result.Item3;
+                        uData.purchaseinfo = loadOrderRecord(DT_PURCAHSE_ORDER_RECORD, uData.part_code);
+
                         var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
                         uData.forecast1 = forecastData.Item1;
                         uData.forecast2 = forecastData.Item2;
@@ -3109,6 +3161,9 @@ namespace FactoryManagementSoftware.UI
                             dt_Row[headerProduced] = uData.Produced;
                         }
 
+                        dt_Row[headerProdInfo] = uData.prodinfo;
+                        dt_Row[headerPurchaseInfo] = uData.purchaseinfo;
+
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
                         dt_Row[headerType] = typeSingle;
@@ -3185,6 +3240,8 @@ namespace FactoryManagementSoftware.UI
                         var result = GetProduceQty(uData.part_code, DT_MACHINE_SCHEDULE);
                         uData.toProduce = result.Item1;
                         uData.Produced = result.Item2;
+                        uData.prodinfo = result.Item3;
+                        uData.purchaseinfo = loadOrderRecord(DT_PURCAHSE_ORDER_RECORD, uData.part_code);
 
                         var forecastData = GetThreeMonthsForecastQty(dt_ItemForecast, uData.part_code, 1, 2, 3);
                         uData.forecast1 = forecastData.Item1;
@@ -3269,6 +3326,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[headerProduced] = uData.Produced;
                         }
+
+                        dt_Row[headerProdInfo] = uData.prodinfo;
+                        dt_Row[headerPurchaseInfo] = uData.purchaseinfo;
 
                         dt_Row[headerItemRemark] = uData.item_remark;
                         dt_Row[headerIndex] = uData.index;
@@ -4596,6 +4656,8 @@ namespace FactoryManagementSoftware.UI
                         var result = GetProduceQty(uChildData.part_code, DT_MACHINE_SCHEDULE);
                         uChildData.toProduce = result.Item1;
                         uChildData.Produced = result.Item2;
+                        uChildData.prodinfo = result.Item3;
+                        uChildData.purchaseinfo = loadOrderRecord(DT_PURCAHSE_ORDER_RECORD, uChildData.part_code);
 
                         if (uChildData.toProduce > 0)
                         {
@@ -4606,6 +4668,9 @@ namespace FactoryManagementSoftware.UI
                         {
                             dt_Row[headerProduced] = uChildData.Produced;
                         }
+
+                        dt_Row[headerProdInfo] = uChildData.prodinfo;
+                        dt_Row[headerPurchaseInfo] = uChildData.purchaseinfo;
 
                         dt_Row[headerItemRemark] = uChildData.item_remark;
 
@@ -6547,6 +6612,8 @@ namespace FactoryManagementSoftware.UI
                 int colIndex = dgv.CurrentCell.ColumnIndex;
 
                 string currentHeader = dgv.Columns[colIndex].Name;
+                string prodINfo = dgv.Rows[rowIndex].Cells[headerProdInfo].Value.ToString();
+                string purchaseINfo = dgv.Rows[rowIndex].Cells[headerPurchaseInfo].Value.ToString();
 
                 try
                 {
@@ -6568,6 +6635,19 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(text.ProductionHistory).Name = text.ProductionHistory;
                         my_menu.Items.Add(text.ForecastRecord).Name = text.ForecastRecord;
                         my_menu.Items.Add(text.JobPlanning).Name = text.JobPlanning;
+
+                        if(!string.IsNullOrEmpty(prodINfo))
+                        {
+                            my_menu.Items.Add("").Name = "";
+                            my_menu.Items.Add(prodINfo).Name = prodINfo;
+                        }
+
+                        if (!string.IsNullOrEmpty(purchaseINfo))
+                        {
+                            my_menu.Items.Add("").Name = "";
+                            my_menu.Items.Add(purchaseINfo).Name = purchaseINfo;
+                        }
+
                         //my_menu.Items.Add(text.StockLocation).Name = text.StockLocation;
 
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);

@@ -1204,7 +1204,8 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT  
                             tbl_trf_hist.trf_result,
                             tbl_trf_hist.trf_hist_item_code,
-                            tbl_trf_hist.trf_hist_qty,
+                            tbl_trf_hist.trf_hist_qty,                            
+                            tbl_trf_hist.trf_hist_unit,
                             tbl_trf_hist.trf_hist_from,
                             tbl_trf_hist.trf_hist_to
                             FROM tbl_trf_hist 

@@ -368,7 +368,7 @@ namespace FactoryManagementSoftware.UI
                             {
                                 txtPcsPerPacket.Text = row[dalSBBData.QtyPerPacket].ToString();
                                 txtPcsPerBag.Text = row[dalSBBData.QtyPerBag].ToString();
-                                txtPcsPerContainer.Text = row[dalSBBData.QtyPerContainer].ToString();
+                                txtPcsPerContainer.Text = row[dalSBBData.QtyPerWhiteContainer].ToString();
 
 
                             }

@@ -2055,6 +2055,43 @@ namespace FactoryManagementSoftware.Module
             return ProDaysNeeded;
         }
 
+        public int GetDailyProductionCapacity(DataTable dt_Item, string itemCode, int hrsPerDay)
+        {
+            int dailyCapacity = 0;
+
+            if (dt_Item != null && dt_Item.Rows.Count > 0 && !string.IsNullOrEmpty(itemCode))
+            {
+                foreach (DataRow row in dt_Item.Rows)
+                {
+                    if (row[dalItem.ItemCode].ToString().Equals(itemCode))
+                    {
+                        int Production_cavity = int.TryParse(row[dalItem.ItemCavity].ToString(), out int k) ? k : 0;
+                        int Production_ct_sec = int.TryParse(row[dalItem.ItemProCTTo].ToString(), out k) ? k : 0;
+
+                        if (Production_ct_sec == 0)
+                        {
+                            Production_ct_sec = int.TryParse(row[dalItem.ItemQuoCT].ToString(), out k) ? k : 0;
+                        }
+
+                        if (Production_cavity > 0 && Production_ct_sec > 0)
+                        {
+                            int secondsPerDay = hrsPerDay * 3600;
+
+                            // Calculate shots per day (24 hours = 86400 seconds)
+                            int shotsPerDay = secondsPerDay / Production_ct_sec;
+
+                            // Calculate pieces per day
+                            dailyCapacity = shotsPerDay * Production_cavity;
+                        }
+
+                        break;
+                    }
+                }
+            }
+
+            return dailyCapacity;
+        }
+
         public float GetProductionDayNeeded(SBBDataBLL uSBB)
         {
             float ProductionDaysNeeded = 0;
@@ -2377,7 +2414,7 @@ namespace FactoryManagementSoftware.Module
                 {
                     qtyPerBag = int.TryParse(row[dalSBB.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
                     qtyPerPacket = int.TryParse(row[dalSBB.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
-                    qtyPerContainer = int.TryParse(row[dalSBB.QtyPerContainer].ToString(), out qtyPerContainer) ? qtyPerContainer : 0;
+                    qtyPerContainer = int.TryParse(row[dalSBB.QtyPerWhiteContainer].ToString(), out qtyPerContainer) ? qtyPerContainer : 0;
                     tableCode = int.TryParse(row[dalSBB.TableCode].ToString(), out tableCode) ? tableCode : 0;
 
                     break;

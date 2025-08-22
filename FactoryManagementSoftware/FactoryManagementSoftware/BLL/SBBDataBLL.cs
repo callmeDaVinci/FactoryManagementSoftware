@@ -64,6 +64,9 @@ namespace FactoryManagementSoftware.BLL
         public int Ton_number { get; set; }
 
         //stdPacking table
+
+        public int Qty_Per_Blue_Container { get; set; }
+        public int Qty_Per_Yellow_Container { get; set; }
         public int Qty_Per_Container { get; set; }
         public int Qty_Per_Bag { get; set; }
         public int Qty_Per_Packet { get; set; }

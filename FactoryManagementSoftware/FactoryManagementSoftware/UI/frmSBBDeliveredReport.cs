@@ -487,7 +487,7 @@ namespace FactoryManagementSoftware.UI
         {
             ShowOrHideFilter();
             Loaded = true;
-
+            InitializeCustomerLabels();
             DatePeriodSet();
         }
 
@@ -1783,6 +1783,13 @@ namespace FactoryManagementSoftware.UI
 
            
                 dgv.ClearSelection();
+                RefreshCustomerLabels();
+                if (cbSortByCustomer.Checked)
+                {
+                    UpdateCustomerRowIndices();
+                    currentCustomerIndex = 0;
+                }
+
                 frmLoading.CloseForm();
             }
         }
@@ -3444,6 +3451,16 @@ namespace FactoryManagementSoftware.UI
             {
                 cbSortByCustomer.Checked = true;
             }
+
+            btnPrevious.Visible = cbSortByCustomer.Checked;
+            btnNext.Visible = cbSortByCustomer.Checked;
+
+            lblCust1.Visible = cbSortByCustomer.Checked;
+            lblCust2.Visible = cbSortByCustomer.Checked;
+            lblCust3.Visible = cbSortByCustomer.Checked;
+            lblCust4.Visible = cbSortByCustomer.Checked;
+            lblCust5.Visible = cbSortByCustomer.Checked;
+
         }
 
         private void dgvList_ColumnAdded(object sender, DataGridViewColumnEventArgs e)
@@ -3495,6 +3512,365 @@ namespace FactoryManagementSoftware.UI
             {
                 cb1to31.Checked = true;
             }
+        }
+
+        private int currentCustomerIndex = 0;
+        private List<int> customerRowIndices = new List<int>();
+
+        private void btnPrevious_Click(object sender, EventArgs e)
+        {
+            if (cbSortByCustomer.Checked && dgvList.DataSource != null)
+            {
+                UpdateCustomerRowIndices();
+
+                if (customerRowIndices.Count == 0)
+                    return;
+
+                // Move to previous customer
+                currentCustomerIndex--;
+
+                // Loop back to last if we've reached the beginning
+                if (currentCustomerIndex < 0)
+                {
+                    currentCustomerIndex = customerRowIndices.Count - 1;
+                }
+
+                NavigateToCustomer();
+            }
+        }
+
+        private void btnNext_Click(object sender, EventArgs e)
+        {
+            if (cbSortByCustomer.Checked && dgvList.DataSource != null)
+            {
+                UpdateCustomerRowIndices();
+
+                if (customerRowIndices.Count == 0)
+                    return;
+
+                // Move to next customer
+                currentCustomerIndex++;
+
+                // Loop back to first if we've reached the end
+                if (currentCustomerIndex >= customerRowIndices.Count)
+                {
+                    currentCustomerIndex = 0;
+                }
+
+                NavigateToCustomer();
+            }
+        }
+
+        private void UpdateCustomerRowIndices()
+        {
+            customerRowIndices.Clear();
+            DataTable dt = (DataTable)dgvList.DataSource;
+
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            string previousCustomer = null;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string customerID = dt.Rows[i][header_CustID].ToString();
+                string customerName = dt.Rows[i][header_CustShortName].ToString();
+
+                // Skip empty rows (dividers)
+                if (string.IsNullOrEmpty(customerID) || string.IsNullOrEmpty(customerName))
+                    continue;
+
+                string currentCustomer = customerID + customerName;
+
+                if (previousCustomer == null || previousCustomer != currentCustomer)
+                {
+                    customerRowIndices.Add(i);
+                    previousCustomer = currentCustomer;
+                }
+            }
+        }
+
+        private void NavigateToCustomer()
+        {
+            if (customerRowIndices.Count == 0)
+                return;
+
+            // Get the row index to navigate to
+            int targetRowIndex = customerRowIndices[currentCustomerIndex];
+
+            // Navigate to the row
+            dgvList.ClearSelection();
+            dgvList.Rows[targetRowIndex].Selected = true;
+            dgvList.CurrentCell = dgvList.Rows[targetRowIndex].Cells[header_CustShortName]; // Focus on customer name column
+
+            // Scroll to make sure the row is visible
+            dgvList.FirstDisplayedScrollingRowIndex = targetRowIndex;
+
+            // Update button text or status to show current position (optional)
+            DataTable dt = (DataTable)dgvList.DataSource;
+            string customerName = dt.Rows[targetRowIndex][header_CustShortName].ToString();
+
+            // You can update a label or button text to show current customer info
+            // lblCustomerInfo.Text = $"Customer: {customerName} ({currentCustomerIndex + 1}/{customerRowIndices.Count})";
+        }
+
+        // Class-level variables
+        private ContextMenuStrip customerContextMenu;
+        private Label clickedLabel;
+        private Dictionary<string, int> availableCustomers = new Dictionary<string, int>(); // Key: "CustomerID|CustomerName", Value: FirstRowIndex
+
+        // Initialize the context menu (call this in form constructor or load)
+        private void InitializeCustomerLabels()
+        {
+            customerContextMenu = new ContextMenuStrip();
+
+            // Setup event handlers for all customer labels
+            lblCust1.MouseClick += CustomerLabel_MouseClick;
+            lblCust2.MouseClick += CustomerLabel_MouseClick;
+            lblCust3.MouseClick += CustomerLabel_MouseClick;
+            lblCust4.MouseClick += CustomerLabel_MouseClick;
+            lblCust5.MouseClick += CustomerLabel_MouseClick;
+
+            // Set initial text
+            ResetCustomerLabels();
+        }
+
+        private void ResetCustomerLabels()
+        {
+            lblCust1.Text = "Customer 1";
+            lblCust2.Text = "Customer 2";
+            lblCust3.Text = "Customer 3";
+            lblCust4.Text = "Customer 4";
+            lblCust5.Text = "Customer 5";
+
+            lblCust1.Tag = null;
+            lblCust2.Tag = null;
+            lblCust3.Tag = null;
+            lblCust4.Tag = null;
+            lblCust5.Tag = null;
+        }
+
+        private void CustomerLabel_MouseClick(object sender, MouseEventArgs e)
+        {
+            Label label = sender as Label;
+            clickedLabel = label;
+
+            if (e.Button == MouseButtons.Right)
+            {
+                // Right click - show customer list
+                ShowCustomerContextMenu(label, e.Location);
+            }
+            else if (e.Button == MouseButtons.Left)
+            {
+                // Left click - navigate to customer
+                NavigateToCustomerFromLabel(label);
+            }
+        }
+
+        private void ShowCustomerContextMenu(Label label, Point location)
+        {
+            if (dgvList.DataSource == null)
+            {
+                MessageBox.Show("Please load data first.");
+                return;
+            }
+
+            // Build customer list from current data
+            BuildAvailableCustomersList();
+
+            if (availableCustomers.Count == 0)
+            {
+                MessageBox.Show("No customers found in current data.");
+                return;
+            }
+
+            // Clear previous menu items
+            customerContextMenu.Items.Clear();
+
+            // Add customers to context menu (sorted by customer name)
+            var sortedCustomers = availableCustomers.OrderBy(kvp => GetCustomerNameFromKey(kvp.Key));
+
+            foreach (var customer in sortedCustomers)
+            {
+                string[] parts = customer.Key.Split('|');
+                string customerID = parts[0];
+                string customerName = parts[1];
+
+                ToolStripMenuItem item = new ToolStripMenuItem();
+                //item.Text = $"{customerName} (ID: {customerID})";
+                item.Text = customerName;
+                item.Tag = customer.Key; // Store the key
+                item.Click += CustomerMenuItem_Click;
+                customerContextMenu.Items.Add(item);
+            }
+
+            // Add separator and clear option
+            customerContextMenu.Items.Add(new ToolStripSeparator());
+            ToolStripMenuItem clearItem = new ToolStripMenuItem("Clear");
+            clearItem.Click += (s, e) => ClearCustomerLabel(clickedLabel);
+            customerContextMenu.Items.Add(clearItem);
+
+            // Show context menu
+            customerContextMenu.Show(label, location);
+        }
+
+        private string GetCustomerNameFromKey(string key)
+        {
+            string[] parts = key.Split('|');
+            return parts.Length > 1 ? parts[1] : "";
+        }
+
+        private void CustomerMenuItem_Click(object sender, EventArgs e)
+        {
+            ToolStripMenuItem item = sender as ToolStripMenuItem;
+            string customerKey = item.Tag as string;
+
+            if (!string.IsNullOrEmpty(customerKey) && clickedLabel != null)
+            {
+                string[] parts = customerKey.Split('|');
+                string customerName = parts[1];
+
+                // Update label text and store customer key
+                clickedLabel.Text = customerName;
+                clickedLabel.Tag = customerKey;
+                clickedLabel.ForeColor = Color.Blue; // Visual indication it's assigned
+            }
+        }
+
+        private void NavigateToCustomerFromLabel(Label label)
+        {
+            string customerKey = label.Tag as string;
+
+            if (string.IsNullOrEmpty(customerKey))
+            {
+                MessageBox.Show("No customer assigned to this label. Right-click to select a customer.");
+                return;
+            }
+
+            if (dgvList.DataSource == null)
+            {
+                MessageBox.Show("No data loaded.");
+                return;
+            }
+
+            // Parse customer info from key
+            string[] parts = customerKey.Split('|');
+            string customerID = parts[0];
+            string customerName = parts[1];
+
+            // Find the current first row for this customer (in case data was reloaded)
+            int targetRow = FindCustomerRow(customerID, customerName);
+
+            if (targetRow != -1)
+            {
+                NavigateToRow(targetRow);
+            }
+            else
+            {
+                MessageBox.Show($"Customer '{customerName}' not found in current data.\n\n" +
+                 "This can happen when:\n" +
+                 "• Data has been reloaded with different filters\n" +
+                 "• Customer has no records in the current date range\n\n" +
+                 "To fix this:\n" +
+                 "• Right-click on this label to select a new customer\n" +
+                 "• Or use 'Clear' option to reset the label",
+                 "Customer Not Found", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void BuildAvailableCustomersList()
+        {
+            availableCustomers.Clear();
+            DataTable dt = (DataTable)dgvList.DataSource;
+
+            if (dt == null || dt.Rows.Count == 0)
+                return;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string custID = dt.Rows[i][header_CustID].ToString();
+                string custName = dt.Rows[i][header_CustShortName].ToString();
+
+                // Skip empty rows (dividers)
+                if (string.IsNullOrEmpty(custID) || string.IsNullOrEmpty(custName))
+                    continue;
+
+                string customerKey = custID + "|" + custName;
+
+                // Only add if not already exists (first occurrence)
+                if (!availableCustomers.ContainsKey(customerKey))
+                {
+                    availableCustomers.Add(customerKey, i);
+                }
+            }
+        }
+
+        private int FindCustomerRow(string customerID, string customerName)
+        {
+            DataTable dt = (DataTable)dgvList.DataSource;
+
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                string custID = dt.Rows[i][header_CustID].ToString();
+                string custName = dt.Rows[i][header_CustShortName].ToString();
+
+                if (custID == customerID && custName == customerName)
+                {
+                    return i;
+                }
+            }
+
+            return -1;
+        }
+
+        private void ClearCustomerLabel(Label label)
+        {
+            if (label == lblCust1) label.Text = "Customer 1";
+            else if (label == lblCust2) label.Text = "Customer 2";
+            else if (label == lblCust3) label.Text = "Customer 3";
+            else if (label == lblCust4) label.Text = "Customer 4";
+            else if (label == lblCust5) label.Text = "Customer 5";
+
+            label.Tag = null;
+            label.ForeColor = Color.Black; // Reset color
+        }
+
+        // Call this after loading data to refresh customer assignments
+        private void RefreshCustomerLabels()
+        {
+            Label[] labels = { lblCust1, lblCust2, lblCust3, lblCust4, lblCust5 };
+
+            foreach (Label label in labels)
+            {
+                string customerKey = label.Tag as string;
+                if (!string.IsNullOrEmpty(customerKey))
+                {
+                    string[] parts = customerKey.Split('|');
+                    string customerID = parts[0];
+                    string customerName = parts[1];
+
+                    // Check if customer still exists in current data
+                    if (FindCustomerRow(customerID, customerName) == -1)
+                    {
+                        // Customer not found, clear the label
+                        ClearCustomerLabel(label);
+                    }
+                }
+            }
+        }
+
+        private void NavigateToRow(int rowIndex)
+        {
+            if (rowIndex < 0 || rowIndex >= dgvList.Rows.Count)
+                return;
+
+            // Navigate to the row
+            dgvList.ClearSelection();
+            dgvList.Rows[rowIndex].Selected = true;
+            dgvList.CurrentCell = dgvList.Rows[rowIndex].Cells[header_CustShortName];
+
+            // Scroll to make sure the row is visible
+            dgvList.FirstDisplayedScrollingRowIndex = rowIndex;
         }
     }
 }

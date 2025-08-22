@@ -67,7 +67,9 @@ namespace FactoryManagementSoftware.DAL
         public string ColorName { get; } = "color_name";
 
         //Std Packing table
-        public string QtyPerContainer { get; } = "qty_per_container";
+        public string QtyPerWhiteContainer { get; } = "qty_per_container";
+        public string QtyPerBlueContainer { get; } = "qty_per_blue_container";
+        public string QtyPerYellowContainer { get; } = "qty_per_yellow_container";
         public string QtyPerBag { get; } = "qty_per_bag";
         public string QtyPerPacket { get; } = "qty_per_packet";
         public string MaxLevel { get; } = "max_level";
@@ -1530,6 +1532,119 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        // SIMPLE VERSION - Only tbl_spp_po table, no joins
+        public DataTable SBBPagePendingPOSelect_Simple()
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                // Simple query - only from tbl_spp_po table
+                String sql = @"SELECT 
+                       tbl_spp_po.tbl_code,
+                       tbl_spp_po.po_code,
+                       tbl_spp_po.item_code,
+                       tbl_spp_po.customer_tbl_code,
+                       tbl_spp_po.po_qty,
+                       tbl_spp_po.delivered_qty,
+                       tbl_spp_po.po_date,
+                       tbl_spp_po.po_remarks,
+                       tbl_spp_po.isRemoved,
+                       tbl_spp_po.isDelivered,
+                       (tbl_spp_po.po_qty - tbl_spp_po.delivered_qty) AS pending_qty
+                       FROM tbl_spp_po WITH(NOLOCK)
+                       WHERE (tbl_spp_po.isRemoved IS NULL OR tbl_spp_po.isRemoved = @false) 
+                         AND tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                       ORDER BY tbl_spp_po.po_date DESC, tbl_spp_po.item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                cmd.CommandTimeout = 30; // 30 seconds should be plenty
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable SBBPagePendingPOSelect_Top5000()
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                String sql = @"SELECT TOP 5000
+                       tbl_spp_po.tbl_code,
+                       tbl_spp_po.po_code,
+                       tbl_spp_po.item_code,
+                       tbl_spp_po.customer_tbl_code,
+                       tbl_spp_po.po_qty,
+                       tbl_spp_po.delivered_qty,
+                       tbl_spp_po.po_date,
+                       tbl_spp_po.po_remarks,
+                       tbl_spp_po.isRemoved,
+                       tbl_spp_po.isDelivered,
+                       (tbl_spp_po.po_qty - tbl_spp_po.delivered_qty) AS pending_qty
+                       FROM tbl_spp_po WITH(NOLOCK)
+                       WHERE (tbl_spp_po.isRemoved IS NULL OR tbl_spp_po.isRemoved = @false) 
+                         AND tbl_spp_po.po_qty > tbl_spp_po.delivered_qty 
+                       ORDER BY tbl_spp_po.po_date DESC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                cmd.CommandTimeout = 60;
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return dt;
+        }
+
+        // SIMPLE VERSION WITH DATE FILTER (6 months ago to 1 month future)
+        public void TestDateAdd()
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            try
+            {
+                // Test if DATEADD works
+                String sql = "SELECT DATEADD(month, -6, GETDATE()) as six_months_ago";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                conn.Open();
+
+                object result = cmd.ExecuteScalar();
+                MessageBox.Show($"Six months ago: {result}");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"DATEADD Error: {ex.Message}");
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
         public DataTable PendingPOSelect()
         {
             //static methodd to connect database
@@ -1655,6 +1770,64 @@ namespace FactoryManagementSoftware.DAL
             finally
             {
                 //closing connection
+                conn.Close();
+            }
+            return dt;
+        }
+
+        // PERFECT SOLUTION: 6 months ago to 1 month future
+        public DataTable SBBPagePendingPOSelect_Custom()
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                // 6 months ago to 1 month in the future
+                DateTime sixMonthsAgo = DateTime.Now.AddMonths(-6);
+                DateTime oneMonthFuture = DateTime.Now.AddMonths(1);
+
+                String sql = @"SELECT 
+                       i.item_code,
+                       i.item_name,
+                       i.item_qty,                               
+                       i.type_tbl_code,
+                       i.category_tbl_code,
+                       i.size_tbl_code_1,
+                       i.size_tbl_code_2,
+                       po.po_qty,
+                       po.delivered_qty,
+                       sp.qty_per_bag,
+                       po.po_date
+                       FROM tbl_spp_po po WITH(NOLOCK)
+                       INNER JOIN tbl_item i WITH(NOLOCK) ON po.item_code = i.item_code
+                       INNER JOIN tbl_spp_customer c WITH(NOLOCK) ON po.customer_tbl_code = c.tbl_code 
+                       INNER JOIN tbl_spp_type t WITH(NOLOCK) ON i.type_tbl_code = t.tbl_code
+                       LEFT JOIN tbl_spp_size s1 WITH(NOLOCK) ON i.size_tbl_code_1 = s1.tbl_code
+                       LEFT JOIN tbl_spp_size s2 WITH(NOLOCK) ON i.size_tbl_code_2 = s2.tbl_code
+                       LEFT JOIN tbl_spp_stdpacking sp WITH(NOLOCK) ON i.item_code = sp.item_code
+                       WHERE po.po_qty > po.delivered_qty 
+                         AND po.po_date >= @sixMonthsAgo
+                         AND po.po_date <= @oneMonthFuture
+                         AND (po.isRemoved IS NULL OR po.isRemoved = @false)
+                       ORDER BY po.po_date DESC, po.item_code ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                cmd.Parameters.AddWithValue("@sixMonthsAgo", sixMonthsAgo);
+                cmd.Parameters.AddWithValue("@oneMonthFuture", oneMonthFuture);
+                cmd.CommandTimeout = 60;
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
                 conn.Close();
             }
             return dt;
@@ -2175,6 +2348,174 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        // 1. IMMEDIATE FIX: Optimized Query with better JOIN order and WHERE conditions
+        public DataTable SBBPageDOWithTrfInfoSelect_Optimized(string start, string end)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+            try
+            {
+                // OPTIMIZED SQL - Filter early, better JOIN order
+                String sql = @"SELECT  
+                     do.do_no,
+                     do.isRemoved,
+                     do.isDelivered,
+                     do.to_delivery_qty,
+                     do.trf_tbl_code,
+                     th.trf_hist_trf_date,
+                     th.trf_hist_qty,
+                     th.trf_result,
+                     po.customer_tbl_code,
+                     c.short_name,
+                     sp.qty_per_packet,
+                     sp.qty_per_bag
+                     FROM tbl_trf_hist th WITH(NOLOCK)
+                     INNER JOIN tbl_spp_do do WITH(NOLOCK) ON do.trf_tbl_code = th.trf_hist_id
+                     INNER JOIN tbl_spp_po po WITH(NOLOCK) ON do.po_tbl_code = po.tbl_code 
+                     INNER JOIN tbl_spp_customer c WITH(NOLOCK) ON po.customer_tbl_code = c.tbl_code 
+                     INNER JOIN tbl_item i WITH(NOLOCK) ON po.item_code = i.item_code
+                     INNER JOIN tbl_spp_size sz WITH(NOLOCK) ON i.size_tbl_code_1 = sz.tbl_code
+                     INNER JOIN tbl_spp_type ty WITH(NOLOCK) ON i.type_tbl_code = ty.tbl_code
+                     LEFT JOIN tbl_spp_stdpacking sp WITH(NOLOCK) ON i.item_code = sp.item_code
+                     WHERE th.trf_hist_trf_date BETWEEN @start AND @end
+                        AND do.do_no > 0
+                        AND (do.isDelivered IS NULL OR do.isDelivered = @false)
+                     ORDER BY i.item_code, c.tbl_code, th.trf_hist_trf_date";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@false", false);
+                cmd.Parameters.AddWithValue("@start", start);
+                cmd.Parameters.AddWithValue("@end", end);
+
+                // Add timeout for large queries
+                cmd.CommandTimeout = 120; // 2 minutes
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return dt;
+        }
+
+        public DataTable TrfInfoSelectSimple(DateTime start, DateTime endInclusive)
+        {
+            // endExclusive = next day at 00:00; guarantees full-day coverage
+            var endExclusive = endInclusive.Date.AddDays(1);
+
+            var dt = new DataTable();
+
+            const string sql = @"
+        SELECT trf_hist_trf_date,
+                             trf_hist_qty,
+                             trf_result
+        FROM dbo.tbl_trf_hist  
+        WHERE trf_hist_trf_date >= @start
+          AND trf_hist_trf_date <  @endExclusive
+        ORDER BY trf_hist_trf_date ASC;";
+
+            using (var conn = new SqlConnection(myconnstrng))
+            using (var cmd = new SqlCommand(sql, conn))
+            {
+                // Prefer DateTime2 for precision; match your column type if different
+                var pStart = cmd.Parameters.Add("@start", SqlDbType.DateTime2);
+                pStart.Value = start;
+
+                var pEndEx = cmd.Parameters.Add("@endExclusive", SqlDbType.DateTime2);
+                pEndEx.Value = endExclusive;
+
+                using (var adapter = new SqlDataAdapter(cmd))
+                {
+                    conn.Open();
+                    adapter.Fill(dt);
+                }
+            }
+            return dt;
+        }
+
+        public DataTable NEWSBBPageDOWithTrfInfoSelect(string start, string end)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string sql = @"
+            SELECT  
+                tbl_spp_do.do_no,
+                tbl_spp_do.isRemoved,
+                tbl_spp_do.isDelivered,
+                tbl_spp_do.to_delivery_qty,
+                tbl_spp_do.trf_tbl_code,
+                tbl_trf_hist.trf_hist_trf_date,
+                tbl_trf_hist.trf_hist_qty,
+                tbl_trf_hist.trf_result,
+                tbl_spp_po.customer_tbl_code,
+                tbl_spp_customer.short_name,
+                tbl_spp_stdpacking.qty_per_packet,
+                tbl_spp_stdpacking.qty_per_bag
+            FROM tbl_spp_do 
+            INNER JOIN tbl_spp_po
+                ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
+            INNER JOIN tbl_trf_hist
+                ON tbl_spp_do.trf_tbl_code = tbl_trf_hist.trf_hist_id 
+            INNER JOIN tbl_spp_customer 
+                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
+            INNER JOIN tbl_item
+                ON tbl_spp_po.item_code = tbl_item.item_code
+            INNER JOIN tbl_spp_size
+                ON tbl_item.size_tbl_code_1 = tbl_spp_size.tbl_code
+            INNER JOIN tbl_spp_type
+                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
+            LEFT JOIN tbl_spp_stdpacking -- was FULL JOIN
+                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
+            WHERE 
+                (
+                    tbl_trf_hist.trf_hist_trf_date >= @start
+                    AND tbl_trf_hist.trf_hist_trf_date < @endExclusive
+                )
+                OR 
+                (
+                    tbl_spp_do.isDelivered IS NULL 
+                    OR tbl_spp_do.isDelivered = @false
+                )
+                AND tbl_spp_do.do_no > 0
+            ORDER BY 
+                tbl_item.item_code ASC,
+                tbl_spp_customer.tbl_code ASC,  
+                tbl_trf_hist.trf_hist_trf_date ASC";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add("@false", SqlDbType.Bit).Value = false;
+                cmd.Parameters.Add("@start", SqlDbType.DateTime).Value = DateTime.Parse(start);
+                cmd.Parameters.Add("@endExclusive", SqlDbType.DateTime).Value = DateTime.Parse(end).AddDays(1);
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
+
+
         public DataTable SBBPageDOWithTrfInfoSelect(string start, string end)
         {
             //static methodd to connect database
@@ -2196,7 +2537,8 @@ namespace FactoryManagementSoftware.DAL
                              tbl_spp_po.customer_tbl_code,
                              tbl_spp_customer.short_name,
                              tbl_spp_stdpacking.qty_per_packet,
-                             tbl_spp_stdpacking.qty_per_bag
+                             tbl_spp_stdpacking.qty_per_bag,                             
+                             tbl_item.item_code
                              FROM tbl_spp_do 
                              INNER JOIN tbl_spp_po
                              ON tbl_spp_do.po_tbl_code = tbl_spp_po.tbl_code 
@@ -2277,10 +2619,12 @@ namespace FactoryManagementSoftware.DAL
                              AND @end 
                              ORDER BY tbl_item.item_code ASC,tbl_spp_customer.tbl_code ASC,  tbl_trf_hist.trf_hist_trf_date ASC";
 
-                //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
-                //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
-                //for executing command
-                SqlCommand cmd = new SqlCommand(sql, conn);
+
+             
+                    //INNER JOIN tbl_production_meter_reading  ON tbl_production_record.sheet_id = tbl_production_meter_reading.sheet_id
+                    //ORDER BY tbl_plan.machine_id ASC, tbl_plan.production_start_date ASC, tbl_plan.production_End_date ASC, tbl_production_record.sheet_id ASC
+                    //for executing command
+                    SqlCommand cmd = new SqlCommand(sql, conn);
                 cmd.Parameters.AddWithValue("@false", false);
                 cmd.Parameters.AddWithValue("@start", start);
                 cmd.Parameters.AddWithValue("@end", end);
@@ -3405,7 +3749,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"INSERT INTO tbl_spp_stdpacking 
                             (" + ItemCode + ","
-                            + QtyPerContainer + ","
+                            + QtyPerWhiteContainer + ","
                             + QtyPerPacket + ","
                              + QtyPerBag + ","
                                + MaxLevel + ","
@@ -3469,7 +3813,7 @@ namespace FactoryManagementSoftware.DAL
                             (" + ItemCode + ","
                             + QtyPerPacket + ","
                             + QtyPerBag + ","
-                             + QtyPerContainer + ","
+                             + QtyPerWhiteContainer + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ") VALUES" +
                             "(@Item_code," +
@@ -4130,6 +4474,135 @@ namespace FactoryManagementSoftware.DAL
         #endregion
 
         #region Update data in Database
+
+        public bool UpsertStdPackingContainers(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            try
+            {
+                // First, check if the item_code exists
+                String checkSql = "SELECT COUNT(*) FROM tbl_spp_stdpacking WHERE item_code = @Item_code";
+                SqlCommand checkCmd = new SqlCommand(checkSql, conn);
+                checkCmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+
+                conn.Open();
+                int count = (int)checkCmd.ExecuteScalar();
+                conn.Close();
+
+                if (count > 0)
+                {
+                    // Record exists - UPDATE
+                    isSuccess = UpdateStdPackingContainers(u);
+                }
+                else
+                {
+                    // Record doesn't exist - INSERT
+                    isSuccess = InsertStdPackingContainers(u);
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                if (conn.State == System.Data.ConnectionState.Open)
+                    conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool InsertStdPackingContainers(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            try
+            {
+                String sql = @"INSERT INTO tbl_spp_stdpacking 
+                      (item_code, qty_per_packet, qty_per_bag, qty_per_container, 
+                       qty_per_blue_container, qty_per_yellow_container, max_level, 
+                       updated_date, updated_by, isRemoved, note) 
+                      VALUES 
+                      (@Item_code, @Qty_Per_Packet, @Qty_Per_Bag, @Qty_Per_Container,
+                       @Qty_Per_Blue_Container, @Qty_Per_Yellow_Container, @Max_Level,
+                       @Updated_Date, @Updated_By, @IsRemoved, @Note)";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+                cmd.Parameters.AddWithValue("@Qty_Per_Packet", u.Qty_Per_Packet);
+                cmd.Parameters.AddWithValue("@Qty_Per_Bag", u.Qty_Per_Bag);
+                cmd.Parameters.AddWithValue("@Qty_Per_Container", u.Qty_Per_Container); // White
+                cmd.Parameters.AddWithValue("@Qty_Per_Blue_Container", u.Qty_Per_Blue_Container);
+                cmd.Parameters.AddWithValue("@Qty_Per_Yellow_Container", u.Qty_Per_Yellow_Container);
+                cmd.Parameters.AddWithValue("@Max_Level", u.Max_Lvl);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+                cmd.Parameters.AddWithValue("@IsRemoved", u.IsRemoved);
+                cmd.Parameters.AddWithValue("@Note", u.Note ?? "");
+
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+
+                if (rows > 0)
+                {
+                    isSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool UpdateStdPackingContainers(SBBDataBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            try
+            {
+                String sql = @"UPDATE tbl_spp_stdpacking SET 
+                      qty_per_container = @Qty_Per_Container,
+                      qty_per_blue_container = @Qty_Per_Blue_Container,
+                      qty_per_yellow_container = @Qty_Per_Yellow_Container,
+                      updated_date = @Updated_Date,
+                      updated_by = @Updated_By
+                      WHERE item_code = @Item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("@Qty_Per_Container", u.Qty_Per_Container); // White container
+                cmd.Parameters.AddWithValue("@Qty_Per_Blue_Container", u.Qty_Per_Blue_Container);
+                cmd.Parameters.AddWithValue("@Qty_Per_Yellow_Container", u.Qty_Per_Yellow_Container);
+                cmd.Parameters.AddWithValue("@Updated_Date", u.Updated_Date);
+                cmd.Parameters.AddWithValue("@Updated_By", u.Updated_By);
+                cmd.Parameters.AddWithValue("@Item_code", u.Item_code);
+
+                conn.Open();
+                int rows = cmd.ExecuteNonQuery();
+
+                if (rows > 0)
+                {
+                    isSuccess = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToTextAndMessageToUser(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
 
         public bool MouldUpdate(SBBDataBLL u)
         {
@@ -5098,7 +5571,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_stdpacking 
                             SET "
-                            + QtyPerContainer + "=@qty_per_container,"
+                            + QtyPerWhiteContainer + "=@qty_per_container,"
                             + QtyPerPacket + "=@Qty_Per_Packet,"
                             + QtyPerBag + "=@qty_per_bag,"
                             + IsRemoved + "=@IsRemoved,"
@@ -5153,7 +5626,7 @@ namespace FactoryManagementSoftware.DAL
             {
                 String sql = @"UPDATE tbl_spp_stdpacking 
                             SET "
-                            + QtyPerContainer + "=@Qty_Per_Container,"
+                            + QtyPerWhiteContainer + "=@Qty_Per_Container,"
                             + QtyPerPacket + "=@Qty_Per_Packet,"
                             + QtyPerBag + "=@Qty_Per_Bag,"
                             + MaxLevel + "=@Max_Lvl,"

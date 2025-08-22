@@ -138,6 +138,34 @@ namespace FactoryManagementSoftware.UI
             TrfSuccess = false;
         }
 
+
+        private bool LIST_TRANSFER_MODE = false;
+        private string TRANSFER_FROM;
+        private string TRANSFER_TO;
+        private DataTable DT_LIST_TRANSFER;
+        private DateTime TRANSFER_DATE;
+
+        public frmInOutEdit(DataTable dt, string stockTrfFrom, string stockTrfTo, DateTime trfDate)
+        {
+            InitializeComponent();
+
+            TRANSFER_FROM = stockTrfFrom;
+            TRANSFER_TO = stockTrfTo;
+            TRANSFER_DATE = trfDate;
+
+            myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
+            //#############################################################################################################################################
+            //dtpTrfDate.Value = date;
+            dtpTrfDate.Value = DateTime.Today.AddDays(-1);
+            //dtpTrfDate.Value = DateTime.Today.AddDays(-30);
+
+            createDGV();
+            DT_LIST_TRANSFER = dt.Copy();
+            LIST_TRANSFER_MODE = true;
+            TrfSuccess = false;
+        }
+
+
         //CALL FROM mat list
         public frmInOutEdit(DataTable dt, int test)
         {
@@ -727,6 +755,10 @@ namespace FactoryManagementSoftware.UI
             else if (callFromStockCheckList)
             {
                 StockAdjustToDGV(dt_StockTallyList);
+            }
+            else if (LIST_TRANSFER_MODE)
+            {
+                StockListTransfer(DT_LIST_TRANSFER);
             }
             else if (callForStockTally)
             {
@@ -3216,6 +3248,7 @@ namespace FactoryManagementSoftware.UI
                     index = n + 1;
                     string itemCode = row[header_ItemCode].ToString();
                     string itemName = row[header_ItemName].ToString();
+                    string remark = row[text.Header_Remark].ToString();
                     string itemCat = text.Cat_Part;
 
 
@@ -3253,7 +3286,7 @@ namespace FactoryManagementSoftware.UI
 
 
                     dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
-                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK TALLY ADJUST]";
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK TALLY ADJUST]" + remark;
                 }
 
 
@@ -3307,6 +3340,7 @@ namespace FactoryManagementSoftware.UI
                     string itemCode = row[text.Header_ItemCode].ToString();
                     string itemName = row[text.Header_ItemName].ToString();
                     string facName = row[text.Header_Fac].ToString();
+                    string remark = row[text.Header_Remark].ToString();
 
                     //check if fac. name exist
                     facName = CheckIfFactoryExist(dt_Fac, facName);
@@ -3344,7 +3378,72 @@ namespace FactoryManagementSoftware.UI
 
 
                     dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
-                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK COUNT TALLY]";
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK COUNT TALLY]" + remark;
+                }
+
+
+
+            }
+            dgv.ClearSelection();
+
+        }
+
+        private void StockListTransfer(DataTable dt)
+        {
+            DataGridView dgv = dgvTransfer;
+            DataTable dt_ItemInfo = dalItem.Select();
+            DataTable dt_Fac = dalFac.SelectASC();
+
+            int n;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                int TransferQty = int.TryParse(row[text.Header_Transfer_Qty].ToString(), out TransferQty) ? TransferQty : 0;
+
+                if (TransferQty > 0)
+                {
+                    n = dgv.Rows.Add();
+                    index = n + 1;
+                    string itemCode = row["CODE"].ToString();
+                    string itemName = row["NAME"].ToString();
+                    string remark = row[text.Header_Remark].ToString();
+
+                    string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo, itemCode); 
+
+                    dgv.Rows[n].Cells[IndexColumnName].Value = index;
+
+                    dgv.Rows[n].Cells[DateColumnName].Value = TRANSFER_DATE.ToShortDateString();
+                    dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                    dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                    dgv.Rows[n].Cells[NameColumnName].Value = itemName;
+
+                    if(TRANSFER_FROM.Equals("Other"))
+                    {
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = TRANSFER_FROM;
+                        dgv.Rows[n].Cells[FromColumnName].Value = "";
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells[FromCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[FromColumnName].Value = TRANSFER_FROM;
+                    }
+
+                    if (TRANSFER_TO.Equals("Other"))
+                    {
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = TRANSFER_TO;
+                        dgv.Rows[n].Cells[ToColumnName].Value = "";
+                    }
+                    else
+                    {
+                        dgv.Rows[n].Cells[ToCatColumnName].Value = text.Factory;
+                        dgv.Rows[n].Cells[ToColumnName].Value = TRANSFER_TO;
+                    }
+
+                    dgv.Rows[n].Cells[QtyColumnName].Value = TransferQty;
+
+
+                    dgv.Rows[n].Cells[UnitColumnName].Value = text.Unit_Piece;
+                    dgv.Rows[n].Cells[NoteColumnName].Value ="[SBB:" + remark + "]";
                 }
 
 
