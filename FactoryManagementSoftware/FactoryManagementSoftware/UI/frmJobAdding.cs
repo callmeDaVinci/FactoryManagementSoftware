@@ -834,7 +834,7 @@ namespace FactoryManagementSoftware.UI
                             colorRate *= 100;
                         }
 
-                        colorRate = decimal.Round(colorRate, 0);
+                        colorRate = decimal.Round(colorRate, 2);
 
                         lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                         COLOR_MAT_CODE = colorMaterial;
@@ -906,7 +906,7 @@ namespace FactoryManagementSoftware.UI
                         colorRate *= 100;
                     }
 
-                    colorRate = decimal.Round(colorRate, 0);
+                    colorRate = decimal.Round(colorRate, 2);
 
                     lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                     COLOR_MAT_CODE = colorMaterial;
@@ -970,7 +970,8 @@ namespace FactoryManagementSoftware.UI
                         colorRate *= 100;
                     }
 
-                    colorRate = decimal.Round(colorRate, 0);
+                    colorRate = decimal.Round(colorRate, 2);
+                    string colorRatestr = row[dalItem.ItemMBRate].ToString();
 
                     lblColorMatDescription.Text = tool.getItemNameFromDataTable(DT_ITEM, colorMaterial);
                     COLOR_MAT_CODE = colorMaterial;
