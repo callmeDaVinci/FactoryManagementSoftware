@@ -1354,7 +1354,7 @@ namespace FactoryManagementSoftware.DAL
                                ON tbl_item.type_tbl_code = tbl_spp_type.tbl_code
                                LEFT JOIN tbl_spp_stdpacking
                                ON tbl_item.item_code = tbl_spp_stdpacking.item_code
-                               WHERE tbl_spp_po.po_date >= DATEADD(month, -2, GETDATE())
+                               WHERE tbl_spp_po.po_date >= DATEADD(month, -4, GETDATE())
                                ORDER BY tbl_spp_po.po_code ASC, tbl_spp_po.item_code ASC";
 
                 //INNER JOIN tbl_spp_customer
@@ -1702,7 +1702,7 @@ namespace FactoryManagementSoftware.DAL
             }
             return dt;
         }
-
+          
         public DataTable SBBPagePendingPOSelect()
         {
             //static methodd to connect database

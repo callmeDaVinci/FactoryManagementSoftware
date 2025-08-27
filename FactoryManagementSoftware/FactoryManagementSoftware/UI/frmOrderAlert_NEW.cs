@@ -692,9 +692,11 @@ namespace FactoryManagementSoftware.UI
                         string stock = row[text.Header_ReadyStock].ToString();
                         string itemCode = row[text.Header_PartCode].ToString();
 
+                        
+
                         if (matType == Material_Type && stock != "-1")
                         {
-                            if (cbZeroCostOnly.Checked && itemCode == "XTW4+10EEJ")
+                            if (cbZeroCostOnly.Checked && (itemCode == "XTW4+10EEJ" || itemCode == "A38K1900 " || itemCode == "V44KBW4000" || itemCode == "C84KXQ000"))
                             {
                                 
                             }
@@ -3741,13 +3743,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         my_menu.Items.Add("Receive").Name = "Receive";
 
-                        if (userPermission >= MainDashboard.ACTION_LVL_TWO)
+                        if (userPermission >= MainDashboard.ACTION_LVL_FIVE)
                         {
                             my_menu.Items.Add("Edit").Name = "Edit";
                             my_menu.Items.Add("Complete").Name = "Complete";
+                            my_menu.Items.Add("Cancel").Name = "Cancel";
+
                         }
                         my_menu.Items.Add("Follow Up/ Action").Name = "Follow Up/ Action";
-                        my_menu.Items.Add("Cancel").Name = "Cancel";
                     }
                     else if (result.Equals(status_Received))
                     {

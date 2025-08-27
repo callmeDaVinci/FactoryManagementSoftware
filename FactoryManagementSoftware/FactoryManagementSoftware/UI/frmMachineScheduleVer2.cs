@@ -60,6 +60,25 @@ namespace FactoryManagementSoftware.UI
             ItemProductionHistoryChecking = true;
         }
 
+        private int LOADING_MODE = 0;// 0 = DEFAULT
+        private string LOADING_KEY_VALUE = "";
+        public frmMachineScheduleVer2( int loadingMode, string keyValue)
+        {
+            //Loading Mode
+            // 1 = itemcode searching
+            // 2 = Job No searching
+
+            InitializeComponent();
+            InitializeData();
+
+            tool.DoubleBuffered(dgvMacSchedule, true);
+            HideFilter(filterHide);
+
+            LOADING_MODE = loadingMode;
+            LOADING_KEY_VALUE = keyValue;
+
+        }
+
         public frmMachineScheduleVer2(bool _fromDailyJobRecord)
         {
 
@@ -297,6 +316,8 @@ namespace FactoryManagementSoftware.UI
            // dgv.Columns[text.Header_ColorRate].Visible = false;
             dgv.Columns[text.Header_FamilyWithJobNo].Visible = false;
 
+            dgv.Columns[text.Header_Fac].Visible = false;
+
 
             Color normalColor = Color.Black;
 
@@ -344,7 +365,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[text.Header_Remark].MinimumWidth = 100;
             dgv.Columns[text.Header_Job_Purpose].MinimumWidth = 120;
-            dgv.Columns[text.Header_Fac].MinimumWidth = 70;
+            //dgv.Columns[text.Header_Fac].MinimumWidth = 70;
             dgv.Columns[text.Header_Mac].MinimumWidth = 60;
 
 
@@ -1750,6 +1771,8 @@ namespace FactoryManagementSoftware.UI
 
             New_LoadMacSchedule();
 
+           
+
             if (fromDailyRecord)
             {
                 dgvMacSchedule.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -1758,11 +1781,32 @@ namespace FactoryManagementSoftware.UI
             else
             {
                 dgvMacSchedule.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            }
 
+            if (LOADING_MODE == 2 && !string.IsNullOrEmpty(LOADING_KEY_VALUE))
+            {
+                ScrollToJobNumber(LOADING_KEY_VALUE);
             }
 
 
+        }
+        public void ScrollToJobNumber(string jobNumber)
+        {
+            if (dgvMacSchedule?.Rows.Count > 0 && dgvMacSchedule.Columns.Contains(text.Header_JobNo))
+            {
+                for (int i = 0; i < dgvMacSchedule.Rows.Count; i++)
+                {
+                    string currentJobNo = dgvMacSchedule.Rows[i].Cells[text.Header_JobNo].Value?.ToString();
 
+                    if (currentJobNo == jobNumber)
+                    {
+                        dgvMacSchedule.FirstDisplayedScrollingRowIndex = i;
+                        dgvMacSchedule.ClearSelection();
+                        dgvMacSchedule.Rows[i].Cells[text.Header_JobNo].Selected = true;
+                        break;
+                    }
+                }
+            }
         }
 
         #endregion

@@ -499,7 +499,7 @@ namespace FactoryManagementSoftware.UI
                    
                     float balance = float.TryParse(row[monthbalanceheader].ToString(), out balance)? balance : 0;
 
-                    if (!string.IsNullOrEmpty(matType) && matType  != text.Cat_Part && stock != "-1" && itemCode != "XTW4+10EEJ" && balance < 0)
+                    if (!string.IsNullOrEmpty(matType) && matType  != text.Cat_Part && stock != "-1" && itemCode != "XTW4+10EEJ" && itemCode != "A38K1900 " && itemCode != "V44KBW4000" && itemCode != "C84KXQ000" && balance < 0)
                     {
                         dt_MaterialList.ImportRow(row);
 

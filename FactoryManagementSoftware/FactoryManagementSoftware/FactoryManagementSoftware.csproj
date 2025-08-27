@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>679</ApplicationRevision>
+    <ApplicationRevision>681</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -262,6 +262,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmStockCountManagementVer3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockCountManagementVer3.Designer.cs">
+      <DependentUpon>frmStockCountManagementVer3.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmInOutReport_ver2.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -273,6 +279,12 @@
     </Compile>
     <Compile Include="UI\frmSBBVer2.Designer.cs">
       <DependentUpon>frmSBBVer2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmStockCountManagementVer2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmStockCountManagementVer2.Designer.cs">
+      <DependentUpon>frmStockCountManagementVer2.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\frmZeroCost.cs">
       <SubType>Form</SubType>
@@ -1282,11 +1294,17 @@
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockCountManagementVer3.resx">
+      <DependentUpon>frmStockCountManagementVer3.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="UI\frmInOutReport_ver2.resx">
       <DependentUpon>frmInOutReport_ver2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmSBBVer2.resx">
       <DependentUpon>frmSBBVer2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmStockCountManagementVer2.resx">
+      <DependentUpon>frmStockCountManagementVer2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmZeroCost.resx">
       <DependentUpon>frmZeroCost.cs</DependentUpon>

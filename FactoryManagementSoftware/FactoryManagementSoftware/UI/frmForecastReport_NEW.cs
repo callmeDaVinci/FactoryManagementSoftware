@@ -1974,7 +1974,7 @@ namespace FactoryManagementSoftware.UI
             DateTime now = DateTime.Now;
             var start = new DateTime(now.Year, now.Month, 1);
             var end = start.AddMonths(1).AddDays(-1);
-            string prodInfo = "";
+            string prodInfo = "Prod. Info: ";
             bool itemFound = false;
 
            //DataRow[] rowSchedule = dt_MacSechedule.Select(dalPlanning.partCode + " = '"+ _ItemCode + "'");
@@ -1989,6 +1989,7 @@ namespace FactoryManagementSoftware.UI
                     DateTime produceStart = DateTime.TryParse(row[dalPlanning.productionStartDate].ToString(), out produceStart) ? produceStart : DateTime.MaxValue;
                     DateTime produceEnd = DateTime.TryParse(row[dalPlanning.productionEndDate].ToString(), out produceEnd) ? produceEnd : DateTime.MaxValue;
                     string macName = row[dalPlanning.machineName].ToString();
+                    string jobNo = row[dalPlanning.jobNo].ToString();
 
                     string status = row[dalPlanning.planStatus].ToString();
 
@@ -2012,7 +2013,7 @@ namespace FactoryManagementSoftware.UI
                     {
                         toProduce += ToProduceQty;
                         produced += producedQty;
-                        prodInfo += "[(" + status + ") " + macName + ": " + produceStart.ToString("dd/MM") + "-" + produceEnd.ToString("dd/MM") + "]";
+                        prodInfo += "[(" + status + "_" + jobNo+ ") " + macName + ": " + produceStart.ToString("dd/MM") + "-" + produceEnd.ToString("dd/MM") + "]\n";
                     }
 
                 }
@@ -6615,6 +6616,8 @@ namespace FactoryManagementSoftware.UI
                 string prodINfo = dgv.Rows[rowIndex].Cells[headerProdInfo].Value.ToString();
                 string purchaseINfo = dgv.Rows[rowIndex].Cells[headerPurchaseInfo].Value.ToString();
 
+                string repeatedRowReference = dgv.Rows[rowIndex].Cells[headerRowReference].Value.ToString();
+
                 try
                 {
                     if(currentHeader == headerReadyStock)
@@ -6648,6 +6651,21 @@ namespace FactoryManagementSoftware.UI
                             my_menu.Items.Add(purchaseINfo).Name = purchaseINfo;
                         }
 
+                        if (!string.IsNullOrEmpty(repeatedRowReference))
+                        {
+                            List<string> parentProducts = GetParentProductsFromReferences(dgv, repeatedRowReference);
+                            if (parentProducts.Count > 0)
+                            {
+                                my_menu.Items.Add("").Name = ""; // Separator
+                                my_menu.Items.Add("--- Parent Products Using This Child Part ---").Enabled = false;
+
+                                foreach (string parentInfo in parentProducts)
+                                {
+                                    my_menu.Items.Add(parentInfo).Name = parentInfo;
+                                }
+                            }
+                        }
+
                         //my_menu.Items.Add(text.StockLocation).Name = text.StockLocation;
 
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
@@ -6666,6 +6684,82 @@ namespace FactoryManagementSoftware.UI
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        // NEW METHOD: Parse repeated row references and find parent products
+        private List<string> GetParentProductsFromReferences(DataGridView dgv, string repeatedRowReference)
+        {
+            List<string> parentProducts = new List<string>();
+
+            try
+            {
+                // Parse the reference string like "(45) (58.22) (59.22)"
+                var matches = System.Text.RegularExpressions.Regex.Matches(repeatedRowReference, @"\(([^)]+)\)");
+
+                foreach (System.Text.RegularExpressions.Match match in matches)
+                {
+                    string reference = match.Groups[1].Value;
+
+                    // Check if it's a decimal (contains a dot)
+                    if (reference.Contains("."))
+                    {
+                        // Extract the integer part (before the decimal point)
+                        string[] parts = reference.Split('.');
+                        if (parts.Length > 0 && int.TryParse(parts[0], out int parentIndex))
+                        {
+                            // Find the row with this index in the DataGridView
+                            string parentProductInfo = FindParentProductByIndex(dgv, parentIndex);
+                            if (!string.IsNullOrEmpty(parentProductInfo) && !parentProducts.Contains(parentProductInfo))
+                            {
+                                parentProducts.Add(parentProductInfo);
+                            }
+                        }
+                    }
+                    // Skip integer references like "45" as they are direct delivery products
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log error if needed, but don't show to user
+                System.Diagnostics.Debug.WriteLine($"Error parsing repeated row reference: {ex.Message}");
+            }
+
+            return parentProducts;
+        }
+
+        // NEW METHOD: Find parent product by index
+        private string FindParentProductByIndex(DataGridView dgv, int targetIndex)
+        {
+            try
+            {
+                foreach (DataGridViewRow row in dgv.Rows)
+                {
+                    // Get the index from the first column (assuming it's the index column)
+                    if (row.Cells[0].Value != null)
+                    {
+                        string indexValue = row.Cells[headerIndex].Value.ToString();
+
+                        // Check if this row's index matches our target
+                        if (int.TryParse(indexValue, out int currentIndex) && currentIndex == targetIndex)
+                        {
+                            // Get the part name and part code for this parent product
+                            string partName = row.Cells[headerPartName]?.Value?.ToString() ?? "";
+                            string partCode = row.Cells[headerPartCode]?.Value?.ToString() ?? "";
+
+                            if (!string.IsNullOrEmpty(partName) || !string.IsNullOrEmpty(partCode))
+                            {
+                                return $"Parent: {partName} ({partCode})";
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error finding parent product by index: {ex.Message}");
+            }
+
+            return string.Empty;
         }
 
         private void ShowStockLocation(string itemCode)
@@ -6798,11 +6892,148 @@ namespace FactoryManagementSoftware.UI
             {
                 ShowStockLocation(itemCode);
             }
+            else if (itemClicked.StartsWith("Parent:"))
+            {
+                HandleParentProductClick(itemClicked);
+            }
+            else if (itemClicked.StartsWith("Prod. Info:"))
+            {
+                int startIndex = itemClicked.IndexOf("_") + 1;
+                int endIndex = itemClicked.IndexOf(")", startIndex);
+                OpenMachineScedule(itemClicked.Substring(startIndex, endIndex - startIndex));
+            }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
             dgv.ResumeLayout();
         }
 
+        private void OpenMachineScedule(string JobNo)
+        {
+            frmLoading.ShowLoadingScreen();
+            frmMachineScheduleVer2 frm = new frmMachineScheduleVer2(2, JobNo)
+            {
+                //MdiParent = this,
+                StartPosition = FormStartPosition.CenterScreen,
+                WindowState = FormWindowState.Maximized
+            };
+            frm.Show();
+            MainDashboard.NEWProductionFormOpen = true;
+            frmLoading.CloseForm();
+        }
+
+        private void HandleParentProductClick(string parentInfo)
+        {
+            try
+            {
+                // Extract name and code from the parent info string
+                // Format: "Parent: CURVE WAND SET (V0KPBW100)"
+                string[] parts = parentInfo.Split('(');
+                if (parts.Length >= 2)
+                {
+                    string nameWithPrefix = parts[0].Trim(); // "Parent: CURVE WAND SET "
+                    string name = nameWithPrefix.Replace("Parent:", "").Trim(); // "CURVE WAND SET"
+                    string codeWithBracket = parts[1].Trim(); // "V0KPBW100)"
+                    string code = codeWithBracket.Replace(")", "").Trim(); // "V0KPBW100"
+
+                    // Create custom dialog with Code/Name buttons
+                    Form customDialog = new Form()
+                    {
+                        Width = 400,
+                        Height = 230,  // Increased height for better spacing
+                        FormBorderStyle = FormBorderStyle.FixedDialog,
+                        Text = "Copy Parent Product Info",
+                        StartPosition = FormStartPosition.CenterScreen,
+                        MaximizeBox = false,
+                        MinimizeBox = false,
+                        BackColor = SystemColors.Control
+                    };
+
+                    System.Windows.Forms.Label textLabel = new System.Windows.Forms.Label()
+                    {
+                        Left = 20,
+                        Top = 20,
+                        Width = 350,
+                        Height = 80,  // Increased height for text
+                        Text = $"What would you like to copy to clipboard?\n\nName: {name}\nCode: {code}",
+                        Font = new Font("Segoe UI", 9),
+                        TextAlign = ContentAlignment.TopLeft
+                    };
+
+                    System.Windows.Forms.Button codeButton = new System.Windows.Forms.Button()
+                    {
+                        Text = "Code",
+                        Left = 70,     // Adjusted position
+                        Width = 90,    // Slightly wider
+                        Height = 35,   // Taller button
+                        Top = 120,     // Moved down
+                        DialogResult = DialogResult.Yes,
+                        Font = new Font("Segoe UI", 9),
+                        FlatStyle = FlatStyle.Standard,
+                        UseVisualStyleBackColor = true
+                    };
+
+                    System.Windows.Forms.Button nameButton = new System.Windows.Forms.Button()
+                    {
+                        Text = "Name",
+                        Left = 170,    // Centered
+                        Width = 90,    // Slightly wider
+                        Height = 35,   // Taller button
+                        Top = 120,     // Moved down
+                        DialogResult = DialogResult.No,
+                        Font = new Font("Segoe UI", 9),
+                        FlatStyle = FlatStyle.Standard,
+                        UseVisualStyleBackColor = true
+                    };
+
+                    System.Windows.Forms.Button cancelButton = new System.Windows.Forms.Button()
+                    {
+                        Text = "Cancel",
+                        Left = 270,    // Adjusted position
+                        Width = 90,    // Slightly wider
+                        Height = 35,   // Taller button
+                        Top = 120,     // Moved down
+                        DialogResult = DialogResult.Cancel,
+                        Font = new Font("Segoe UI", 9),
+                        FlatStyle = FlatStyle.Standard,
+                        UseVisualStyleBackColor = true
+                    };
+
+                    customDialog.Controls.Add(textLabel);
+                    customDialog.Controls.Add(codeButton);
+                    customDialog.Controls.Add(nameButton);
+                    customDialog.Controls.Add(cancelButton);
+
+                    DialogResult result = customDialog.ShowDialog();
+
+                    string copiedText = "";
+
+                    if (result == DialogResult.Yes) // Code button
+                    {
+                        // Copy code
+                        Clipboard.SetText(code);
+                        copiedText = $"'{code}' copied to clipboard!";
+                    }
+                    else if (result == DialogResult.No) // Name button
+                    {
+                        // Copy name
+                        Clipboard.SetText(name);
+                        copiedText = $"'{name}' copied to clipboard!";
+                    }
+                    // If Cancel, do nothing
+
+                    if (!string.IsNullOrEmpty(copiedText))
+                    {
+                        MessageBox.Show(copiedText, "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+
+                    customDialog.Dispose(); // Clean up
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error processing parent product info: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
         private string GetItemCode(string input)
         {
             //int lastOpenParenthesis = input.LastIndexOf('(');
