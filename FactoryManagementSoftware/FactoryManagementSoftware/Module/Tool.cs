@@ -1049,7 +1049,7 @@ namespace FactoryManagementSoftware.Module
                     }
                     else if (Material.Equals(colorMat))
                     {
-                        matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out i) ? i : 0;
+                          matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out i) ? i : 0;
 
 
                         float toProduceQty = ableProduce - ProducedQty;

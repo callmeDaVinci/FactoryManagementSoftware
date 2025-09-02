@@ -93,6 +93,7 @@ namespace FactoryManagementSoftware.DAL
         //customer table
         public string FullName { get; } = "full_name";
         public string ShortName { get; } = "short_name";
+        public string DebtorCode { get; } = "debtor_code";
         public string RegistrationNo { get; } = "registration_no";
         public string Address1 { get; } = "address_1";
         public string Address2 { get; } = "address_2";

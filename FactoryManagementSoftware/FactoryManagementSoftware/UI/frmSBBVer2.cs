@@ -4917,6 +4917,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_Qty_White].Visible = true;
                 dgv.Columns[header_Qty_Blue].Visible = true;
                 dgv.Columns[header_Qty_Yellow].Visible = true;
+                dgv.Columns[header_Balance].Visible = true;
 
                 dgv.Columns[header_StockMinLvl].Visible = false;
                 dgv.Columns[header_Note].Visible = false;
@@ -4977,6 +4978,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_StdPacking_BLue].Visible = false;
                 dgv.Columns[header_StdPacking_Yellow].Visible = false;
                 dgv.Columns[header_Qty_Yellow].Visible = false;
+                dgv.Columns[header_Balance].Visible = false;
 
                 dgv.Columns[header_ActualStock].Visible = false;
                 dgv.Columns[header_StockDiff].Visible = false;

@@ -88,6 +88,7 @@ namespace FactoryManagementSoftware.BLL
         //customer table
         public string Full_Name { get; set; }
         public string Short_Name { get; set; }
+        public string Debtor_Code { get; set; }
         public string Registration_No { get; set; }
         public string Address_1 { get; set; }
         public string Address_2 { get; set; }

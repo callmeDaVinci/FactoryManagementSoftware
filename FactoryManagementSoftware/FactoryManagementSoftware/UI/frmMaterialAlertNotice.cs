@@ -617,13 +617,15 @@ namespace FactoryManagementSoftware.UI
 
                     foreach (DataRow item in dt_Item.Rows)
                     {
-                        if(childCode == item[dalItem.ItemCode].ToString())
+                        string itemCode = item[dalItem.ItemCode].ToString();
+
+
+                        if (childCode == itemCode && itemCode != "A38K1900 " && itemCode != "V44KBW4000" && itemCode != "C84KXQ000" && itemCode != "XTW4+10EEJ")
                         {
                             #region add child to table
 
                             DataRow newRow = DT_PRODUCT_FORECAST_SUMMARY.NewRow();
 
-                            string itemCode = item[dalItem.ItemCode].ToString();
                             string itemName = item[dalItem.ItemName].ToString();
                             string itemType = item[dalItem.ItemCat].ToString();
                             float Child_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Child_Stock) ? Child_Stock : 0;
