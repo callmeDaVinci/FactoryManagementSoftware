@@ -9395,7 +9395,19 @@ namespace FactoryManagementSoftware.UI
 
         private void OpenExportSettings()
         {
-            if (cbInvoiceMode.Checked || ISSUE_E_INVOICE_MODE)
+            if (GENERATE_AUTOCOUNT_IMPORT_LIST)
+            {
+                GENERATE_AUTOCOUNT_IMPORT_LIST = false;
+
+                ExportAutoCountImportFile();
+                Cursor = Cursors.Arrow;
+
+                DOListUI();
+
+                DATA_LOADED = false;
+
+            }
+            else if (cbInvoiceMode.Checked || ISSUE_E_INVOICE_MODE)
             {
                 ISSUE_E_INVOICE_MODE = false;
 
@@ -9416,18 +9428,6 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-                Cursor = Cursors.Arrow;
-
-                DOListUI();
-
-                DATA_LOADED = false;
-
-            }
-            else if (GENERATE_AUTOCOUNT_IMPORT_LIST)
-            {
-                GENERATE_AUTOCOUNT_IMPORT_LIST = false;
-
-                ExportAutoCountImportFile();
                 Cursor = Cursors.Arrow;
 
                 DOListUI();
@@ -10059,8 +10059,8 @@ namespace FactoryManagementSoftware.UI
                 frmLoading.CloseForm();
 
                 MessageBox.Show($"AutoCount import file exported successfully!\n" +
-                               $"File: {fileName}\n" +
-                               $"Location: {exportPath}\n" +
+                               $"File: {fileName}\n\n" +
+                               $"Location: {exportPath}\n\n" +
                                $"Records: {dt_AutoCountData.Rows.Count}");
             }
             catch (Exception ex)
