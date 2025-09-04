@@ -969,7 +969,7 @@
             this.label14.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label14.Location = new System.Drawing.Point(28, 46);
             this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(21, 15);
+            this.label14.Size = new System.Drawing.Size(22, 15);
             this.label14.TabIndex = 150;
             this.label14.Text = "TO";
             // 
@@ -1043,7 +1043,7 @@
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label7.Location = new System.Drawing.Point(27, 47);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(21, 15);
+            this.label7.Size = new System.Drawing.Size(22, 15);
             this.label7.TabIndex = 150;
             this.label7.Text = "TO";
             // 
@@ -1145,7 +1145,7 @@
             this.cbSpecialTypeColorMode.Location = new System.Drawing.Point(307, 55);
             this.cbSpecialTypeColorMode.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSpecialTypeColorMode.Name = "cbSpecialTypeColorMode";
-            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(142, 19);
+            this.cbSpecialTypeColorMode.Size = new System.Drawing.Size(143, 19);
             this.cbSpecialTypeColorMode.TabIndex = 169;
             this.cbSpecialTypeColorMode.Text = "Special Type Coloring";
             this.cbSpecialTypeColorMode.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1216,7 +1216,7 @@
             this.cbIncludeTerminated.Location = new System.Drawing.Point(11, 25);
             this.cbIncludeTerminated.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbIncludeTerminated.Name = "cbIncludeTerminated";
-            this.cbIncludeTerminated.Size = new System.Drawing.Size(115, 19);
+            this.cbIncludeTerminated.Size = new System.Drawing.Size(116, 19);
             this.cbIncludeTerminated.TabIndex = 165;
             this.cbIncludeTerminated.Text = "Terminated Item";
             this.cbIncludeTerminated.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1405,7 +1405,7 @@
             this.cbSortByToDOType.Location = new System.Drawing.Point(14, 25);
             this.cbSortByToDOType.Margin = new System.Windows.Forms.Padding(2, 2, 2, 7);
             this.cbSortByToDOType.Name = "cbSortByToDOType";
-            this.cbSortByToDOType.Size = new System.Drawing.Size(128, 19);
+            this.cbSortByToDOType.Size = new System.Drawing.Size(130, 19);
             this.cbSortByToDOType.TabIndex = 166;
             this.cbSortByToDOType.Text = "Sort By To DO Type";
             this.cbSortByToDOType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -1464,7 +1464,7 @@
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label6.Location = new System.Drawing.Point(23, 70);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(21, 15);
+            this.label6.Size = new System.Drawing.Size(22, 15);
             this.label6.TabIndex = 150;
             this.label6.Text = "TO";
             // 
@@ -1541,7 +1541,7 @@
             this.label2.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label2.Location = new System.Drawing.Point(9, 28);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(51, 15);
+            this.label2.Size = new System.Drawing.Size(52, 15);
             this.label2.TabIndex = 146;
             this.label2.Text = "SORT BY";
             // 
@@ -1576,7 +1576,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label3.Location = new System.Drawing.Point(10, 110);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(73, 15);
+            this.label3.Size = new System.Drawing.Size(74, 15);
             this.label3.TabIndex = 150;
             this.label3.Text = "ALERT LEVEL";
             // 

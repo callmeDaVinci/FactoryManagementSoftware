@@ -262,6 +262,12 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="UI\frmOEMStockCount.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmOEMStockCount.Designer.cs">
+      <DependentUpon>frmOEMStockCount.cs</DependentUpon>
+    </Compile>
     <Compile Include="UI\frmStockCountManagementVer3.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -1293,6 +1299,9 @@
     </Compile>
     <EmbeddedResource Include="CustomTextBox.resx">
       <DependentUpon>CustomTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmOEMStockCount.resx">
+      <DependentUpon>frmOEMStockCount.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="UI\frmStockCountManagementVer3.resx">
       <DependentUpon>frmStockCountManagementVer3.cs</DependentUpon>

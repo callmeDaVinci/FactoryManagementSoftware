@@ -1766,9 +1766,7 @@ namespace FactoryManagementSoftware.UI
                 int colIndex = dgv.CurrentCell.ColumnIndex;
 
                 string currentHeader = dgv.Columns[colIndex].Name;
-                string prodINfo = dgv.Rows[rowIndex].Cells[headerProdInfo].Value.ToString();
-                string purchaseINfo = dgv.Rows[rowIndex].Cells[headerPurchaseInfo].Value.ToString();
-
+               
                 try
                 {
                     if(currentHeader == headerReadyStock)
@@ -1790,19 +1788,9 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(text.ForecastRecord).Name = text.ForecastRecord;
                         my_menu.Items.Add(text.JobPlanning).Name = text.JobPlanning;
 
-                        if(!string.IsNullOrEmpty(prodINfo))
-                        {
-                            my_menu.Items.Add("").Name = "";
-                            my_menu.Items.Add(prodINfo).Name = prodINfo;
-                        }
+                     
 
-                        if (!string.IsNullOrEmpty(purchaseINfo))
-                        {
-                            my_menu.Items.Add("").Name = "";
-                            my_menu.Items.Add(purchaseINfo).Name = purchaseINfo;
-                        }
-
-                        //my_menu.Items.Add(text.StockLocation).Name = text.StockLocation;
+                      
 
                         my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
 
