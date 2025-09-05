@@ -514,7 +514,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmOUG_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.OUGFormOpen = false;
+            MainDashboard.OEMItemFormOpen = false;
         }
 
         private void button1_Click(object sender, EventArgs e)

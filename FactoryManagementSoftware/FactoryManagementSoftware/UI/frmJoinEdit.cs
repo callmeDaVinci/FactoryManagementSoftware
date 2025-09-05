@@ -26,7 +26,17 @@ namespace FactoryManagementSoftware.UI
             uJoin = u;
             loadItemCategoryData();
 
-            LoadJoinData(u.join_parent_code, u.join_child_code);
+            if(u.join_max > 0)
+            {
+                LoadJoinData(u.join_parent_code, u.join_child_code, u.join_max);
+
+            }
+            else
+            {
+                LoadJoinData(u.join_parent_code, u.join_child_code);
+
+            }
+
             //cmbParentName.Text = tool.getItemName(u.join_parent_code);
             //cmbParentCode.Text = u.join_parent_code;
 
@@ -203,6 +213,60 @@ namespace FactoryManagementSoftware.UI
            
         }
 
+        private void LoadJoinData(string ParentCode, string ChildCode, int qty)
+        {
+            string ParentName = tool.getItemName(ParentCode);
+            string ChildName = tool.getItemName(ChildCode);
+
+            bool Code_Inspection = !string.IsNullOrEmpty(ParentName);
+            Code_Inspection &= !string.IsNullOrEmpty(ChildName);
+            Code_Inspection &= ParentCode != ChildCode;
+
+            DataTable dt_Join = dalJoin.existCheck(ParentCode, ChildCode);
+
+            if (dt_Join.Rows.Count <= 0 || !Code_Inspection)
+            {
+                MessageBox.Show("Item code invalid or Join Data not found.");
+            }
+            else
+            {
+                foreach (DataRow row in dt_Join.Rows)
+                {
+                    cmbParentName.Text = ParentName;
+                    cmbParentCode.Text = ParentCode;
+
+                    cmbChildCat.Text = dalItem.getCatName(ChildCode);
+                    cmbChildName.Text = ChildName;
+
+                    LoadChidCodeCMB();
+                    cmbChildCode.Text = ChildCode;
+
+                    txtChildQty.Text = row[dalJoin.JoinQty].ToString();
+                    txtMax.Text = qty.ToString();
+                    txtMin.Text = row[dalJoin.JoinMin].ToString();
+
+                    if (!string.IsNullOrEmpty(ParentCode))
+                    {
+                        cmbParentCat.Enabled = false;
+                        cmbParentName.Enabled = false;
+                        cmbParentCode.Enabled = false;
+                    }
+
+                    if (!string.IsNullOrEmpty(ChildCode))
+                    {
+                        cmbChildCat.Enabled = false;
+                        cmbChildName.Enabled = false;
+                        cmbChildCode.Enabled = false;
+
+                        cmbChildName.DropDownStyle = ComboBoxStyle.DropDownList;
+                    }
+
+                    cbMainCarton.Checked = bool.TryParse(row[dalJoin.JoinMainCarton].ToString(), out bool cbChecked) ? cbChecked : false;
+                    cbStockOut.Checked = bool.TryParse(row[dalJoin.JoinStockOut].ToString(), out cbChecked) ? cbChecked : false;
+                }
+            }
+
+        }
         private void LoadJoinData(joinBLL joinInfo)
         {
             string ParentName = joinInfo.join_parent_name;

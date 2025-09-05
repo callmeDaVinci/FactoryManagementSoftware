@@ -2487,24 +2487,21 @@ namespace FactoryManagementSoftware.UI
                 cmbTrfFrom.DataSource = null;
             }
 
-            if(MainDashboard.myconnstrng.Equals(text.DB_Semenyih))
+            if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains(text.Factory_SMY_AssemblyLine)))
             {
-                if (cmbTrfFromCategory.Text.Equals(text.Assembly) && cmbTrfTo.Text.Equals(text.Factory_Semenyih) && cmbTrfTo.Items.Cast<string>().Any(item => item.Contains(text.Factory_SMY_AssemblyLine)))
-                {
-                    //cbFromBina.Checked = false;
-                    //cbFromBina.Visible = true;
-                    cbChildPartOutFromAssemblyLine.Checked = true;
-                    cbChildPartOutFromAssemblyLine.Visible = true;
-                }
-                else
-                {
-                    //cbFromBina.Checked = false;
-                    //cbFromBina.Visible = false;
-                    cbChildPartOutFromAssemblyLine.Checked = false;
-                    cbChildPartOutFromAssemblyLine.Visible = false;
-                }
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = true;
+                cbChildPartOutFromAssemblyLine.Checked = true;
+                cbChildPartOutFromAssemblyLine.Visible = true;
             }
-           
+            else
+            {
+                //cbFromBina.Checked = false;
+                //cbFromBina.Visible = false;
+                cbChildPartOutFromAssemblyLine.Checked = false;
+                cbChildPartOutFromAssemblyLine.Visible = false;
+            }
+
 
         }
 
@@ -3249,16 +3246,16 @@ namespace FactoryManagementSoftware.UI
                     string itemCode = row[header_ItemCode].ToString();
                     string itemName = row[header_ItemName].ToString();
                     string remark = row[text.Header_Remark].ToString();
-                    string itemCat = text.Cat_Part;
+                    string itemCat = tool.getItemCatFromDataTable(dt_ItemInfo,itemCode);
 
 
 
                     dgv.Rows[n].Cells[IndexColumnName].Value = index;
 
                     dgv.Rows[n].Cells[DateColumnName].Value = DateTime.Today.ToShortDateString();
-                    dgv.Rows[n].Cells[CatColumnName].Value = text.Cat_Part;
-                    dgv.Rows[n].Cells[CodeColumnName].Value = row[header_ItemCode].ToString();
-                    dgv.Rows[n].Cells[NameColumnName].Value = row[header_ItemName].ToString();
+                    dgv.Rows[n].Cells[CatColumnName].Value = itemCat;
+                    dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
+                    dgv.Rows[n].Cells[NameColumnName].Value = itemName;
 
 
 

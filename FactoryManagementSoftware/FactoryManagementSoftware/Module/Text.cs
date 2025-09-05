@@ -400,6 +400,7 @@ H/P: 012 - 733 0617 Email: general@safetyplastics.com.my / Sales Dept.: sales@sa
         public string Header_PartCodeWithParent { get; } = "PART CODE_(PARENT)";
         public string Header_PartCode { get; } = "PART CODE";
         public string Header_ItemCode { get; } = "ITEM CODE";
+        public string Header_Code { get; } = "CODE";
         public string Header_ItemCode_Present { get; } = "ITEM CODE PRESENT";
         public string Header_MouldCode { get; } = "Mould Code";
         public string Header_MouldSelection { get; } = "Mould Selection";
@@ -407,6 +408,7 @@ H/P: 012 - 733 0617 Email: general@safetyplastics.com.my / Sales Dept.: sales@sa
         public string Header_Selection { get; } = "Selection";
         public string Header_MouldDescription{ get; } = "Mould Description";
         public string Header_ItemName { get; } = "ITEM NAME";
+        public string Header_Name { get; } = "NAME";
         public string Header_CountedQty { get; } = "COUNTED QTY";
         public string Header_SystemQty { get; } = "SYSTEM QTY";
         public string Header_Difference{ get; } = "DIFFERENCE";

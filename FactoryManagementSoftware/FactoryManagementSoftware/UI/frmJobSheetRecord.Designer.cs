@@ -91,6 +91,11 @@
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblActualRejectQty = new System.Windows.Forms.TextBox();
+            this.lblActualRejectPercentage = new System.Windows.Forms.Label();
+            this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label14 = new System.Windows.Forms.Label();
             this.txtNote = new System.Windows.Forms.TextBox();
@@ -114,11 +119,7 @@
             this.label13 = new System.Windows.Forms.Label();
             this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel12 = new System.Windows.Forms.TableLayoutPanel();
-            this.label16 = new System.Windows.Forms.Label();
-            this.tableLayoutPanel19 = new System.Windows.Forms.TableLayoutPanel();
-            this.tableLayoutPanel20 = new System.Windows.Forms.TableLayoutPanel();
-            this.lblActualRejectQty = new System.Windows.Forms.TextBox();
-            this.lblActualRejectPercentage = new System.Windows.Forms.Label();
+            this.tableLayoutPanel21 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.errorProvider3)).BeginInit();
@@ -140,6 +141,8 @@
             this.tableLayoutPanel5.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
+            this.tableLayoutPanel19.SuspendLayout();
+            this.tableLayoutPanel20.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
             this.tableLayoutPanel8.SuspendLayout();
@@ -151,8 +154,7 @@
             this.tableLayoutPanel15.SuspendLayout();
             this.tableLayoutPanel11.SuspendLayout();
             this.tableLayoutPanel12.SuspendLayout();
-            this.tableLayoutPanel19.SuspendLayout();
-            this.tableLayoutPanel20.SuspendLayout();
+            this.tableLayoutPanel21.SuspendLayout();
             this.SuspendLayout();
             // 
             // errorProvider1
@@ -947,11 +949,11 @@
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel6.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 15F));
+            this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel21, 9, 2);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel19, 7, 2);
             this.tableLayoutPanel6.Controls.Add(this.label16, 7, 1);
             this.tableLayoutPanel6.Controls.Add(this.label15, 4, 2);
             this.tableLayoutPanel6.Controls.Add(this.label14, 2, 2);
-            this.tableLayoutPanel6.Controls.Add(this.txtNote, 9, 2);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel10, 9, 1);
             this.tableLayoutPanel6.Controls.Add(this.tableLayoutPanel7, 1, 2);
             this.tableLayoutPanel6.Controls.Add(this.lblFullCarton, 1, 1);
@@ -970,6 +972,82 @@
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel6.Size = new System.Drawing.Size(1252, 213);
             this.tableLayoutPanel6.TabIndex = 329;
+            // 
+            // tableLayoutPanel19
+            // 
+            this.tableLayoutPanel19.ColumnCount = 1;
+            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Controls.Add(this.tableLayoutPanel20, 0, 0);
+            this.tableLayoutPanel19.Controls.Add(this.lblActualRejectPercentage, 0, 1);
+            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel19.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+                | System.Drawing.FontStyle.Underline))));
+            this.tableLayoutPanel19.Location = new System.Drawing.Point(522, 40);
+            this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
+            this.tableLayoutPanel19.RowCount = 2;
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel19.Size = new System.Drawing.Size(164, 163);
+            this.tableLayoutPanel19.TabIndex = 335;
+            // 
+            // tableLayoutPanel20
+            // 
+            this.tableLayoutPanel20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
+            this.tableLayoutPanel20.ColumnCount = 1;
+            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.Controls.Add(this.lblActualRejectQty, 0, 0);
+            this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 3);
+            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
+            this.tableLayoutPanel20.RowCount = 1;
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
+            this.tableLayoutPanel20.Size = new System.Drawing.Size(158, 94);
+            this.tableLayoutPanel20.TabIndex = 335;
+            // 
+            // lblActualRejectQty
+            // 
+            this.lblActualRejectQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblActualRejectQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
+            this.lblActualRejectQty.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lblActualRejectQty.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblActualRejectQty.Location = new System.Drawing.Point(3, 27);
+            this.lblActualRejectQty.Name = "lblActualRejectQty";
+            this.lblActualRejectQty.Size = new System.Drawing.Size(152, 40);
+            this.lblActualRejectQty.TabIndex = 12;
+            this.lblActualRejectQty.Text = "0";
+            this.lblActualRejectQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            this.lblActualRejectQty.TextChanged += new System.EventHandler(this.lblActualRejectQty_TextChanged);
+            this.lblActualRejectQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
+            // 
+            // lblActualRejectPercentage
+            // 
+            this.lblActualRejectPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblActualRejectPercentage.AutoSize = true;
+            this.lblActualRejectPercentage.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblActualRejectPercentage.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblActualRejectPercentage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblActualRejectPercentage.Location = new System.Drawing.Point(131, 103);
+            this.lblActualRejectPercentage.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.lblActualRejectPercentage.Name = "lblActualRejectPercentage";
+            this.lblActualRejectPercentage.Size = new System.Drawing.Size(30, 15);
+            this.lblActualRejectPercentage.TabIndex = 321;
+            this.lblActualRejectPercentage.Text = "0 % ";
+            // 
+            // label16
+            // 
+            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.label16.AutoSize = true;
+            this.label16.BackColor = System.Drawing.Color.Transparent;
+            this.label16.Font = new System.Drawing.Font("Segoe UI", 8F);
+            this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.label16.Location = new System.Drawing.Point(525, 20);
+            this.label16.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(119, 19);
+            this.label16.TabIndex = 335;
+            this.label16.Text = "Actual Reject (pcs)";
             // 
             // label15
             // 
@@ -1002,10 +1080,10 @@
             this.txtNote.BackColor = System.Drawing.Color.White;
             this.txtNote.Dock = System.Windows.Forms.DockStyle.Fill;
             this.txtNote.Font = new System.Drawing.Font("Segoe UI", 12F);
-            this.txtNote.Location = new System.Drawing.Point(699, 43);
+            this.txtNote.Location = new System.Drawing.Point(3, 3);
             this.txtNote.Multiline = true;
             this.txtNote.Name = "txtNote";
-            this.txtNote.Size = new System.Drawing.Size(535, 157);
+            this.txtNote.Size = new System.Drawing.Size(535, 94);
             this.txtNote.TabIndex = 14;
             this.txtNote.TextChanged += new System.EventHandler(this.txtNote_TextChanged);
             // 
@@ -1389,81 +1467,22 @@
             this.tableLayoutPanel12.Size = new System.Drawing.Size(1382, 753);
             this.tableLayoutPanel12.TabIndex = 334;
             // 
-            // label16
+            // tableLayoutPanel21
             // 
-            this.label16.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label16.AutoSize = true;
-            this.label16.BackColor = System.Drawing.Color.Transparent;
-            this.label16.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.label16.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
-            this.label16.Location = new System.Drawing.Point(525, 20);
-            this.label16.Margin = new System.Windows.Forms.Padding(3, 3, 3, 1);
-            this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(119, 19);
-            this.label16.TabIndex = 335;
-            this.label16.Text = "Actual Reject (pcs)";
-            // 
-            // tableLayoutPanel19
-            // 
-            this.tableLayoutPanel19.ColumnCount = 1;
-            this.tableLayoutPanel19.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Controls.Add(this.tableLayoutPanel20, 0, 0);
-            this.tableLayoutPanel19.Controls.Add(this.lblActualRejectPercentage, 0, 1);
-            this.tableLayoutPanel19.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel19.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
+            this.tableLayoutPanel21.ColumnCount = 1;
+            this.tableLayoutPanel21.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel21.Controls.Add(this.txtNote, 0, 0);
+            this.tableLayoutPanel21.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel21.Font = new System.Drawing.Font("Segoe UI", 7F, ((System.Drawing.FontStyle)(((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic) 
                 | System.Drawing.FontStyle.Underline))));
-            this.tableLayoutPanel19.Location = new System.Drawing.Point(522, 40);
-            this.tableLayoutPanel19.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel19.Name = "tableLayoutPanel19";
-            this.tableLayoutPanel19.RowCount = 2;
-            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
-            this.tableLayoutPanel19.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel19.Size = new System.Drawing.Size(164, 163);
-            this.tableLayoutPanel19.TabIndex = 335;
-            // 
-            // tableLayoutPanel20
-            // 
-            this.tableLayoutPanel20.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
-            this.tableLayoutPanel20.ColumnCount = 1;
-            this.tableLayoutPanel20.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel20.Controls.Add(this.lblActualRejectQty, 0, 0);
-            this.tableLayoutPanel20.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel20.Location = new System.Drawing.Point(3, 3);
-            this.tableLayoutPanel20.Name = "tableLayoutPanel20";
-            this.tableLayoutPanel20.RowCount = 1;
-            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel20.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 94F));
-            this.tableLayoutPanel20.Size = new System.Drawing.Size(158, 94);
-            this.tableLayoutPanel20.TabIndex = 335;
-            // 
-            // lblActualRejectQty
-            // 
-            this.lblActualRejectQty.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblActualRejectQty.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(159)))));
-            this.lblActualRejectQty.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this.lblActualRejectQty.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblActualRejectQty.Location = new System.Drawing.Point(3, 27);
-            this.lblActualRejectQty.Name = "lblActualRejectQty";
-            this.lblActualRejectQty.Size = new System.Drawing.Size(152, 40);
-            this.lblActualRejectQty.TabIndex = 12;
-            this.lblActualRejectQty.Text = "0";
-            this.lblActualRejectQty.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.lblActualRejectQty.TextChanged += new System.EventHandler(this.lblActualRejectQty_TextChanged);
-            this.lblActualRejectQty.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OnlyNumeric_KeyPress);
-            // 
-            // lblActualRejectPercentage
-            // 
-            this.lblActualRejectPercentage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblActualRejectPercentage.AutoSize = true;
-            this.lblActualRejectPercentage.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.lblActualRejectPercentage.Font = new System.Drawing.Font("Segoe UI Semibold", 7.2F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblActualRejectPercentage.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblActualRejectPercentage.Location = new System.Drawing.Point(131, 103);
-            this.lblActualRejectPercentage.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.lblActualRejectPercentage.Name = "lblActualRejectPercentage";
-            this.lblActualRejectPercentage.Size = new System.Drawing.Size(30, 15);
-            this.lblActualRejectPercentage.TabIndex = 321;
-            this.lblActualRejectPercentage.Text = "0 % ";
+            this.tableLayoutPanel21.Location = new System.Drawing.Point(696, 40);
+            this.tableLayoutPanel21.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel21.Name = "tableLayoutPanel21";
+            this.tableLayoutPanel21.RowCount = 2;
+            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 100F));
+            this.tableLayoutPanel21.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel21.Size = new System.Drawing.Size(541, 163);
+            this.tableLayoutPanel21.TabIndex = 336;
             // 
             // frmJobSheetRecord
             // 
@@ -1512,6 +1531,10 @@
             this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel6.ResumeLayout(false);
             this.tableLayoutPanel6.PerformLayout();
+            this.tableLayoutPanel19.ResumeLayout(false);
+            this.tableLayoutPanel19.PerformLayout();
+            this.tableLayoutPanel20.ResumeLayout(false);
+            this.tableLayoutPanel20.PerformLayout();
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
@@ -1530,10 +1553,8 @@
             this.tableLayoutPanel15.PerformLayout();
             this.tableLayoutPanel11.ResumeLayout(false);
             this.tableLayoutPanel12.ResumeLayout(false);
-            this.tableLayoutPanel19.ResumeLayout(false);
-            this.tableLayoutPanel19.PerformLayout();
-            this.tableLayoutPanel20.ResumeLayout(false);
-            this.tableLayoutPanel20.PerformLayout();
+            this.tableLayoutPanel21.ResumeLayout(false);
+            this.tableLayoutPanel21.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1629,5 +1650,6 @@
         private System.Windows.Forms.TextBox lblActualRejectQty;
         private System.Windows.Forms.Label lblActualRejectPercentage;
         private System.Windows.Forms.Label label16;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel21;
     }
 }

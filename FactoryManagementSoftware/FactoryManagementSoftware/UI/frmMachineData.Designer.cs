@@ -70,6 +70,7 @@
             this.dgvMac.Name = "dgvMac";
             this.dgvMac.ReadOnly = true;
             this.dgvMac.RowHeadersVisible = false;
+            this.dgvMac.RowHeadersWidth = 51;
             this.dgvMac.RowTemplate.Height = 40;
             this.dgvMac.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvMac.Size = new System.Drawing.Size(1065, 762);
@@ -80,9 +81,9 @@
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(3, 1);
+            this.label1.Location = new System.Drawing.Point(3, 3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(48, 19);
+            this.label1.Size = new System.Drawing.Size(45, 17);
             this.label1.TabIndex = 109;
             this.label1.Text = "NAME";
             // 
@@ -109,9 +110,9 @@
             // 
             this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(3, 81);
+            this.label2.Location = new System.Drawing.Point(3, 83);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 19);
+            this.label2.Size = new System.Drawing.Size(34, 17);
             this.label2.TabIndex = 111;
             this.label2.Text = "TON";
             // 
@@ -129,9 +130,9 @@
             // 
             this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(3, 161);
+            this.label3.Location = new System.Drawing.Point(3, 163);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(76, 19);
+            this.label3.Size = new System.Drawing.Size(69, 17);
             this.label3.TabIndex = 114;
             this.label3.Text = "LOCATION";
             // 

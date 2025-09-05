@@ -41,7 +41,7 @@ namespace FactoryManagementSoftware.UI
         static public bool NewDailyJobSheetFormOpenVer3 = false;
         static public bool ProductionReportFormOpen = false;
         static public bool SBBFormOpen = false;
-        static public bool OUGFormOpen = false;
+        static public bool OEMItemFormOpen = false;
         static public bool SBBDeliveredFormOpen = false;
         static public bool OUGPOFormOpen = false;
         static public bool NewItemListFormOpen = false;
@@ -83,6 +83,7 @@ namespace FactoryManagementSoftware.UI
             if (userPermission >= ACTION_LVL_FIVE)
             {
                 sBBToolStripMenuItem.Visible = true;
+                OEMItemToolStripMenuItem.Visible = true;
             }
 
             if (userPermission >= ACTION_LVL_FOUR)
@@ -107,8 +108,14 @@ namespace FactoryManagementSoftware.UI
                 adminToolStripMenuItem.Visible = false;
                 orderToolStripMenuItem1.Visible = true;
                 macScheduleToolStripMenuItem.Visible = true;
+                OEMItemToolStripMenuItem.Visible = false;
             }
 
+            if(USER_ID == 24)
+            {
+                OEMItemToolStripMenuItem.Visible = true;
+
+            }
 
             myconnstrng = ConfigurationManager.ConnectionStrings["connstrng"].ConnectionString;
 
@@ -1777,24 +1784,22 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        private void oUGToolStripMenuItem_Click(object sender, EventArgs e)
+        private void OEMItemToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (!OUGFormOpen)
+            if (!OEMItemFormOpen)
             {
-                //frmLoading.ShowLoadingScreen();
-                frmOUG frm = new frmOUG();
+                frmOEMStockCount frm = new frmOEMStockCount();
                 frm.MdiParent = this;
                 frm.StartPosition = FormStartPosition.CenterScreen;
                 frm.WindowState = FormWindowState.Maximized;
                 frm.Show();
-                OUGFormOpen = true;
-                //frmLoading.CloseForm();
+                OEMItemFormOpen = true;
             }
             else
             {
-                if (Application.OpenForms.OfType<frmOUG>().Count() == 1)
+                if (Application.OpenForms.OfType<frmOEMStockCount>().Count() == 1)
                 {
-                    Application.OpenForms.OfType<frmOUG>().First().BringToFront();
+                    Application.OpenForms.OfType<frmOEMStockCount>().First().BringToFront();
                 }
             }
         }

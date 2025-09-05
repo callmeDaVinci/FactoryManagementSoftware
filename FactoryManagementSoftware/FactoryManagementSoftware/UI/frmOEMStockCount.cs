@@ -96,8 +96,8 @@ namespace FactoryManagementSoftware.UI
 
         private string textRowFound = " row(s) found";
 
-        private string textSearchFilter = "SEARCH FILTER";
-        private string textHideFilter = "HIDE FILTER";
+        private string textSearchFilter = "Search Filter";
+        private string textHideFilter = "Hide Filter";
 
 
         readonly string headerParentColor = "SPECIAL TYPE";
@@ -109,21 +109,20 @@ namespace FactoryManagementSoftware.UI
         readonly string headerRowReference = "Repeated Row";
 
         readonly string headerItemType = "Item Type";
-        readonly string headerPartName = "Description";
-        readonly string headerPartCode = "Code";
         
         readonly string headerReadyStock = "Ready Stock";
 
         readonly string headerStdPackingString = "Std. Packing";
-        readonly string headerStdPacking_Type = "Std. Packing Type";
+        readonly string headerStdPacking_TypeCode = "Std. Packing Type";
+        readonly string headerStdPacking_TypeName = "Std. Packing Type Name";
         readonly string headerStdPacking_Qty = "Std. Packing Qty";
 
         readonly string headerFullPackingQty = "Full Packing Qty";
         readonly string headerBalance = "Balance (pcs)";
         readonly string headerTotalAcutalStock = "Total Actual Stock";
-        readonly string headerStockDiff = "Stock Diff.";
-        readonly string headerRemark = "Remark";
+        readonly string headerStockDiff = "STOCK DIFF.";
 
+        private bool TALLY_MODE = false;
 
         readonly Color AssemblyColor = Color.Blue;
         readonly Color InsertMouldingColor = Color.Green;
@@ -209,7 +208,7 @@ namespace FactoryManagementSoftware.UI
         #endregion
 
         #region UI Design
-        private DataTable NewForecastReportTable()
+        private DataTable NewOEMItemList()
         {
            
             DataTable dt = new DataTable();
@@ -227,19 +226,22 @@ namespace FactoryManagementSoftware.UI
             }
 
             dt.Columns.Add(headerParentColor, typeof(string));
-            dt.Columns.Add(headerPartName, typeof(string));
-            dt.Columns.Add(headerPartCode, typeof(string));
+            dt.Columns.Add(text.Header_Name, typeof(string));
+            dt.Columns.Add(text.Header_Code, typeof(string));
 
             dt.Columns.Add(headerReadyStock, typeof(decimal));
             dt.Columns.Add(headerStdPackingString, typeof(string));
-            dt.Columns.Add(headerStdPacking_Type, typeof(string));
+            dt.Columns.Add(headerStdPacking_TypeCode, typeof(string));
+
             dt.Columns.Add(headerStdPacking_Qty, typeof(int));
+            dt.Columns.Add(headerStdPacking_TypeName, typeof(string));
+
             dt.Columns.Add(headerFullPackingQty, typeof(int));
             dt.Columns.Add(headerBalance, typeof(decimal));
             dt.Columns.Add(headerTotalAcutalStock, typeof(decimal));
             dt.Columns.Add(headerStockDiff, typeof(decimal));
 
-            dt.Columns.Add(headerRemark, typeof(string));
+            dt.Columns.Add(text.Header_Remark, typeof(string));
 
             return dt;
         }
@@ -261,7 +263,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Columns[text.Header_Customer].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Bold);
                 }
 
-                dgv.Columns[headerPartCode].Frozen = true;
+                dgv.Columns[text.Header_Code].Frozen = true;
 
                 // Configure stock check mode (always on)
                 dgv.ReadOnly = false;
@@ -269,14 +271,15 @@ namespace FactoryManagementSoftware.UI
                 dgv.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
                 // Show stock check columns
-                dgv.Columns[headerStdPacking_Type].Visible = false;  // Keep hidden
+                dgv.Columns[headerStdPacking_TypeCode].Visible = false;  // Keep hidden
+                //dgv.Columns[headerStdPacking_TypeName].Visible = false;  // Keep hidden
                 dgv.Columns[headerStdPackingString].Visible = false;  // Keep hidden
                 dgv.Columns[headerStdPacking_Qty].Visible = true;
                 dgv.Columns[headerFullPackingQty].Visible = true;
                 dgv.Columns[headerBalance].Visible = true;
                 dgv.Columns[headerTotalAcutalStock].Visible = true;
                 dgv.Columns[headerStockDiff].Visible = true;
-                dgv.Columns[headerRemark].Visible = true;
+                dgv.Columns[text.Header_Remark].Visible = true;
 
                 // Make only specific columns editable
                 foreach (DataGridViewColumn col in dgv.Columns)
@@ -284,7 +287,7 @@ namespace FactoryManagementSoftware.UI
                     if (col.Name == headerStdPacking_Qty ||
                         col.Name == headerFullPackingQty ||
                         col.Name == headerBalance ||
-                        col.Name == headerRemark)
+                        col.Name == text.Header_Remark)
                     {
                         col.ReadOnly = false;
                     }
@@ -332,8 +335,8 @@ namespace FactoryManagementSoftware.UI
                 
 
                 dgv.Columns[headerRowReference].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
-                dgv.Columns[headerPartCode].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
-                dgv.Columns[headerPartName].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
+                dgv.Columns[text.Header_Code].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+                dgv.Columns[text.Header_Name].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
                 dgv.Columns[headerRowReference].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
 
 
@@ -379,23 +382,23 @@ namespace FactoryManagementSoftware.UI
                     {
                         if (parentColor.Equals(AssemblyMarking))
                         {
-                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = AssemblyColor;
-                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.ForeColor = AssemblyColor;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.Font = _ParentFont;
                         }
                         else if (parentColor.Equals(InsertMoldingMarking))
                         {
-                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InsertMouldingColor;
-                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.ForeColor = InsertMouldingColor;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.Font = _ParentFont;
                         }
                         else if (parentColor.Equals(AssemblyAfterProductionMarking))
                         {
-                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = ProductionAndAssemblyColor;
-                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.ForeColor = ProductionAndAssemblyColor;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.Font = _ParentFont;
                         }
                         else if (parentColor.Equals(InspectionMarking))
                         {
-                            dgv.Rows[i].Cells[headerPartName].Style.ForeColor = InspectionColor;
-                            dgv.Rows[i].Cells[headerPartName].Style.Font = _ParentFont;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.ForeColor = InspectionColor;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.Font = _ParentFont;
                         }
                     }
                  
@@ -404,16 +407,16 @@ namespace FactoryManagementSoftware.UI
                     {
                         if (balType.Equals(balType_Total))
                         {
-                            dgv.Rows[i].Cells[headerPartName].Style.BackColor = Color.FromName(backColor);
-                            dgv.Rows[i].Cells[headerPartCode].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[text.Header_Name].Style.BackColor = Color.FromName(backColor);
+                            dgv.Rows[i].Cells[text.Header_Code].Style.BackColor = Color.FromName(backColor);
                           
                         }
                         else
                         {
                             Color repeatedRow = Color.LightGray;
 
-                            dgv.Rows[i].Cells[headerPartName].Style.BackColor = repeatedRow;
-                            dgv.Rows[i].Cells[headerPartCode].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[text.Header_Name].Style.BackColor = repeatedRow;
+                            dgv.Rows[i].Cells[text.Header_Code].Style.BackColor = repeatedRow;
 
                         }
                     }
@@ -435,9 +438,9 @@ namespace FactoryManagementSoftware.UI
                 e.CellStyle.Font = new Font("Segoe UI", 15F, FontStyle.Bold);
             }
 
-            if (dgv.Columns[col].Name == headerPartCode)
+            if (dgv.Columns[col].Name == text.Header_Code)
             {
-                string partCode = dgv.Rows[row].Cells[headerPartCode].Value.ToString();
+                string partCode = dgv.Rows[row].Cells[text.Header_Code].Value.ToString();
 
                 if (string.IsNullOrEmpty(partCode))
                 {
@@ -465,7 +468,7 @@ namespace FactoryManagementSoftware.UI
 
             if (text == textSearchFilter)
             {
-                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 120f);
+                tlpOEMItemStockCount.RowStyles[2] = new RowStyle(SizeType.Absolute, 120f);
 
                 dgvOEMItemStockCountList.ResumeLayout();
 
@@ -473,7 +476,7 @@ namespace FactoryManagementSoftware.UI
             }
             else if (text == textHideFilter)
             {
-                tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+                tlpOEMItemStockCount.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
 
                 dgvOEMItemStockCountList.ResumeLayout();
 
@@ -485,26 +488,79 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string previousCustomerSelection = "";
+        private bool allowCustomerChange = true;
+
         private void cmbCustomer_SelectedIndexChanged(object sender, EventArgs e)
         {
             string cust = cmbCustomer.Text;
-            custChanging = true;
-            dgvOEMItemStockCountList.DataSource = null;
 
-            txtItemSearch.Text = "Search";
-            txtItemSearch.ForeColor = SystemColors.GrayText;
-            ItemSearchUIReset();
-
-            if (cmbCustomer.SelectedIndex != -1)
+            // Check for unsaved tally before allowing change
+            if (TALLY_MODE && cust!= previousCustomerSelection)
             {
-                LoadItemPurchaseByCustomer();
-            }
+                DialogResult result = MessageBox.Show(
+                    "You have stock differences that haven't been tallied.\n\n" +
+                    "Do you want to change customer without performing stock tally?",
+                    "Unsaved Stock Differences",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
 
-            custChanging = false;
+                if (result == DialogResult.No)
+                {
+                    // Restore previous selection without triggering events
+                    allowCustomerChange = false;
+                    cmbCustomer.Text = previousCustomerSelection;
+                    allowCustomerChange = true;
+                    return;
+                }
+            }
+            
+            if(allowCustomerChange)
+            {
+                // Store current selection for potential rollback
+                previousCustomerSelection = cust;
+
+                custChanging = true;
+                dgvOEMItemStockCountList.DataSource = null;
+
+                txtItemSearch.Text = "Search";
+                txtItemSearch.ForeColor = SystemColors.GrayText;
+                ItemSearchUIReset();
+
+                if (cmbCustomer.SelectedIndex != -1)
+                {
+                    LoadItemPurchaseByCustomer();
+                }
+
+                custChanging = false;
+
+                // Reset tally mode when customer changes
+                TALLY_MODE = false;
+                btnTallyAll.Visible = false;
+            }
+                
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            if (TALLY_MODE)
+            {
+                DialogResult result = MessageBox.Show(
+                    "You have stock differences that haven't been tallied.\n\n" +
+                    "Do you want to leave without performing stock tally?",
+                    "Unsaved Stock Differences",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                {
+                    return;
+                }
+            }
+
+            TALLY_MODE = false;
+            btnTallyAll.Visible = false;
+
             dgvOEMItemStockCountList.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
             DT_ITEM = dalItem.Select();
@@ -515,7 +571,7 @@ namespace FactoryManagementSoftware.UI
             }
             else
             {
-                FullForecastReport();
+                LoadOEMItemList();
 
                 if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
                 {
@@ -555,10 +611,10 @@ namespace FactoryManagementSoftware.UI
                 if (dgv_List != null && !string.IsNullOrEmpty(Searching_Text))
                     foreach (DataRow row in dgv_List.Rows)
                     {
-                        //dt_Row[headerPartCode] = uData.part_code;
-                        //dt_Row[headerPartName] = uData.part_name;
-                        string itemCode = row[headerPartCode].ToString().ToUpper();
-                        string itemName = row[headerPartName].ToString().ToUpper();
+                        //dt_Row[text.Header_Code] = uData.part_code;
+                        //dt_Row[text.Header_Name] = uData.part_name;
+                        string itemCode = row[text.Header_Code].ToString().ToUpper();
+                        string itemName = row[text.Header_Name].ToString().ToUpper();
 
                         if (itemCode.ToUpper().Contains(Searching_Text) || itemName.ToUpper().Contains(Searching_Text))
                         {
@@ -621,8 +677,8 @@ namespace FactoryManagementSoftware.UI
 
                     dgvOEMItemStockCountList.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
 
-                    dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
-                    dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
+                    dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code].Selected = true;
+                    dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code];
 
 
                     btnPreviousSearchResult.Enabled = true;
@@ -639,8 +695,8 @@ namespace FactoryManagementSoftware.UI
             if(CURRENT_ROW_JUMP != -1)
             {
                 dgvOEMItemStockCountList.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
-                dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
-                dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
+                dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code].Selected = true;
+                dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code];
 
             }
         }
@@ -656,8 +712,8 @@ namespace FactoryManagementSoftware.UI
                     {
                         CURRENT_ROW_JUMP = Row_Index_Found[i];
                         dgvOEMItemStockCountList.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
-                        dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
-                        dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
+                        dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code].Selected = true;
+                        dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code];
 
                         //check if first row
                         btnPreviousSearchResult.Enabled = !(CURRENT_ROW_JUMP == first);
@@ -675,22 +731,20 @@ namespace FactoryManagementSoftware.UI
             if (CURRENT_ROW_JUMP != -1)
             {
                 dgvOEMItemStockCountList.FirstDisplayedScrollingRowIndex = FindParentIndex(CURRENT_ROW_JUMP);
-                dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode].Selected = true;
-                dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[headerPartCode];
+                dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code].Selected = true;
+                dgvOEMItemStockCountList.CurrentCell = dgvOEMItemStockCountList.Rows[CURRENT_ROW_JUMP].Cells[text.Header_Code];
             }
         }
 
-        private void FullForecastReport()
+        private void LoadOEMItemList()
         {
-
             frmLoading.ShowLoadingScreen();
 
             DataGridView dgv = dgvOEMItemStockCountList;
 
-            DT_FORECAST_REPORT = FullDetailForecastData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
-
-            dgv.DataSource = DT_FORECAST_REPORT;
-
+            DT_FORECAST_REPORT = OEMItemData();//9562ms-->3464ms (16/3) -> 2537ms (17/3)
+           
+            dgv.DataSource = LoadStdPackingData(DT_FORECAST_REPORT);
 
             if (dgv.DataSource != null)
             {
@@ -719,6 +773,121 @@ namespace FactoryManagementSoftware.UI
             }
 
             frmLoading.CloseForm();
+        }
+
+        private DataTable LoadStdPackingData(DataTable dt_StockInfo)
+        {
+            DataTable dt_StdPacking = DT_JOIN.Copy();
+
+            if(dt_StdPacking.Rows.Count == 0)
+            {
+                DT_JOIN = dalJoin.Select();
+                dt_StdPacking = DT_JOIN.Copy();
+            }
+
+            foreach (DataRow row in dt_StockInfo.Rows)
+            {
+                string itemCode = row[text.Header_Code].ToString();
+
+                foreach (DataRow stdPackingRow in dt_StdPacking.Rows)
+                {
+                    string itemCode_stdPacking = stdPackingRow[dalJoin.JoinParent].ToString();
+                    bool mainCarton = bool.TryParse(stdPackingRow[dalJoin.JoinMainCarton].ToString(), out bool x)? x : false;
+
+                    if (itemCode == itemCode_stdPacking && mainCarton)
+                    {
+                        int stdQty = int.TryParse(stdPackingRow[dalJoin.JoinMax].ToString(), out int y) ? y : 0;
+                        string packingType = stdPackingRow[dalJoin.JoinChild].ToString();
+                        string packingDescription = tool.getItemNameFromDataTable(DT_ITEM, packingType);
+
+                        row[headerStdPacking_Qty] = stdQty;
+                        row[headerStdPacking_TypeCode] = packingType;
+                        row[headerStdPacking_TypeName] = packingDescription;
+
+                        string StdPackingRemark = stdQty > 0 ? stdQty + "/"+ packingDescription + "; " : "";
+                        row[headerStdPackingString] = StdPackingRemark;
+
+                        break;
+                    }
+                }
+            }
+
+            return dt_StockInfo;
+        }
+
+        private DataTable LoadStdPackingData(string ItemSearching)
+        {
+            DT_JOIN = dalJoin.Select();
+            DataTable dt_StdPacking = DT_JOIN.Copy();
+            DataTable dt_StockInfo = (DataTable)dgvOEMItemStockCountList.DataSource;
+            
+            if (DT_ITEM.Rows.Count == 0)
+            {
+                DT_ITEM = dalItem.Select();
+            }
+
+            foreach (DataRow row in dt_StockInfo.Rows)
+            {
+                string itemCode = row[text.Header_Code].ToString();
+
+                foreach (DataRow stdPackingRow in dt_StdPacking.Rows)
+                {
+                    string itemCode_stdPacking = stdPackingRow[dalJoin.ParentCode].ToString();
+                    bool mainCarton = bool.TryParse(stdPackingRow[dalJoin.JoinMainCarton].ToString(), out bool x) ? x : false;
+
+                    if (itemCode == itemCode_stdPacking && mainCarton && ItemSearching == itemCode)
+                    {
+                        int stdQty = int.TryParse(stdPackingRow[dalJoin.JoinMax].ToString(), out int y) ? y : 0;
+                        string packingType = stdPackingRow[dalJoin.ChildCode].ToString();
+                        string packingDescription = tool.getItemNameFromDataTable(DT_ITEM, packingType);
+
+                        row[headerFullPackingQty] = stdQty;
+                        row[headerStdPacking_TypeCode] = packingType;
+                        row[headerStdPacking_TypeName] = packingDescription;
+
+                        string StdPackingRemark = stdQty > 0 ? stdQty + "/" + packingDescription + "; " : "";
+                        row[headerStdPackingString] = StdPackingRemark;
+
+                        break;
+                    }
+                }
+            }
+
+            return dt_StockInfo;
+        }
+
+        joinBLL uJoin = new joinBLL();
+        private void UpdateStdPackingString(DataGridView dgv, int rowIndex)
+        {
+            //try
+            //{
+            //    int stdQty = int.TryParse(dgv.Rows[rowIndex].Cells[headerStdPacking_Qty].Value?.ToString(), out int x) ? x : 0;
+            //    string Parent = int.TryParse(dgv.Rows[rowIndex].Cells[headerStdPacking_Qty].Value?.ToString(), out int x) ? x : 0;
+            //    int stdQty = int.TryParse(dgv.Rows[rowIndex].Cells[headerStdPacking_Qty].Value?.ToString(), out int x) ? x : 0;
+
+
+            //    uJoin.join_child_code = dgv.Rows[rowIndex].Cells[text.Header_ChildCode].Value.ToString();
+
+            //    if (CURRENT_MORE_INFO_SHOWING_ITEMCODE != null && CURRENT_MORE_INFO_SHOWING_ITEMCODE == CURRENT_SELECTED_ITEMCODE && !string.IsNullOrEmpty(uJoin.join_child_code))
+            //    {
+            //        uJoin.join_parent_code = CURRENT_MORE_INFO_SHOWING_ITEMCODE;
+
+            //        frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+            //        frm.StartPosition = FormStartPosition.CenterScreen;
+            //        frm.ShowDialog();//Item Edit
+
+            //        if (frmJoinEdit.DATA_UPDATED)
+            //            LoadGroupInfo();
+            //    }
+            //    else
+            //    {
+            //        MessageBox.Show("ITEM CODE INVALID!");
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"Error updating std packing string: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            //}
         }
 
         private void ShowDetailForecastReport()
@@ -794,8 +963,8 @@ namespace FactoryManagementSoftware.UI
        
             dgvOEMItemStockCountList.SuspendLayout();
 
-            tlpForecastReport.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-            tlpForecastReport.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
+            tlpOEMItemStockCount.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
+            //tlpOEMItemStockCount.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
 
             dgvOEMItemStockCountList.ResumeLayout();
 
@@ -1018,17 +1187,15 @@ namespace FactoryManagementSoftware.UI
         }
 
 
-        private DataTable FullDetailForecastData()
+        private DataTable OEMItemData()
         {
             #region Setting
 
             Cursor = Cursors.WaitCursor;
 
-            lblForecastType.Text = ReportType_Full;
 
-            btnFullReport.Enabled = false;
+            btnLoad.Enabled = false;
             btnExcel.Enabled = false;
-            btnExcelAll.Enabled = false;
 
             DataGridView dgv = dgvOEMItemStockCountList;
 
@@ -1036,7 +1203,7 @@ namespace FactoryManagementSoftware.UI
            
             dgvOEMItemStockCountList.DataSource = null;
 
-            DataTable dt_Data = NewForecastReportTable();
+            DataTable dt_Data = NewOEMItemList();
 
             DataRow dt_Row;
 
@@ -1055,7 +1222,7 @@ namespace FactoryManagementSoftware.UI
 
             dt_TrfHist = RemoveOtherFromTransferRecord(dt_TrfHist);
 
-            DataTable DT_PMMA_DATE = dalPmmaDate.Select();
+            //DataTable DT_PMMA_DATE = dalPmmaDate.Select();
             
             int index = 1;
 
@@ -1110,8 +1277,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerBalType] = balType_Unique;
                         dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
                     
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[text.Header_Code] = uData.part_code;
+                        dt_Row[text.Header_Name] = uData.part_name;
 
                         decimal readyStockDecimal = Math.Round((decimal)uData.ready_stock, 2);
                         dt_Row[headerReadyStock] = readyStockDecimal % 1 == 0 ? (decimal)(int)readyStockDecimal : readyStockDecimal;
@@ -1175,8 +1342,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerType] = typeParent;
                         dt_Row[headerBalType] = balType_Unique;
                     
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[text.Header_Code] = uData.part_code;
+                        dt_Row[text.Header_Name] = uData.part_name;
 
                         decimal readyStockDecimal = Math.Round((decimal)uData.ready_stock, 2);
                         dt_Row[headerReadyStock] = readyStockDecimal % 1 == 0 ? (decimal)(int)readyStockDecimal : readyStockDecimal;
@@ -1228,9 +1395,8 @@ namespace FactoryManagementSoftware.UI
                 dtMasterData = null;
             }
 
-            btnFullReport.Enabled = true;
+            btnLoad.Enabled = true;
             btnExcel.Enabled = true;
-            btnExcelAll.Enabled = true;
 
             Cursor = Cursors.Arrow;
 
@@ -1250,7 +1416,7 @@ namespace FactoryManagementSoftware.UI
                 string rowReference = "(" + dt.Rows[i][headerIndex].ToString() + ")";
                 int repeatedCount = 1;
 
-                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                string firstItem = dt.Rows[i][text.Header_Code].ToString();
                
                 string firstParentColor = dt.Rows[i][headerParentColor].ToString();
 
@@ -1260,7 +1426,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     for (int j = i + 1; j < dt.Rows.Count; j++)
                     {
-                        string nextItem = dt.Rows[j][headerPartCode].ToString();
+                        string nextItem = dt.Rows[j][text.Header_Code].ToString();
                         string index = dt.Rows[j][headerIndex].ToString();
 
                         if (nextItem.Equals(firstItem))
@@ -1311,12 +1477,10 @@ namespace FactoryManagementSoftware.UI
 
             Cursor = Cursors.WaitCursor;
 
-            lblForecastType.Text = ReportType_Full;
 
-            btnFullReport.Enabled = false;
+            btnLoad.Enabled = false;
          
             btnExcel.Enabled = false;
-            btnExcelAll.Enabled = false;
 
             DataGridView dgv = dgvOEMItemStockCountList;
 
@@ -1328,7 +1492,7 @@ namespace FactoryManagementSoftware.UI
 
 
             string customer = cmbCustomer.Text;
-            DataTable dt_Data = NewForecastReportTable();
+            DataTable dt_Data = NewOEMItemList();
 
             #endregion
 
@@ -1429,8 +1593,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerBalType] = balType_Unique;
                         dt_Row[headerItemType] = row[dalItem.ItemCat].ToString();
                     
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[text.Header_Code] = uData.part_code;
+                        dt_Row[text.Header_Name] = uData.part_name;
 
                         decimal readyStockDecimal = Math.Round((decimal)uData.ready_stock, 2);
                         dt_Row[headerReadyStock] = readyStockDecimal % 1 == 0 ? (decimal)(int)readyStockDecimal : readyStockDecimal;
@@ -1490,8 +1654,8 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[headerType] = typeParent;
                         dt_Row[headerBalType] = balType_Unique;
                        
-                        dt_Row[headerPartCode] = uData.part_code;
-                        dt_Row[headerPartName] = uData.part_name;
+                        dt_Row[text.Header_Code] = uData.part_code;
+                        dt_Row[text.Header_Name] = uData.part_name;
                      
 
                     
@@ -1550,9 +1714,8 @@ namespace FactoryManagementSoftware.UI
 
           
             
-            btnFullReport.Enabled = true;
+            btnLoad.Enabled = true;
             btnExcel.Enabled = true;
-            btnExcelAll.Enabled = true;
 
             Cursor = Cursors.Arrow;
 
@@ -1585,7 +1748,7 @@ namespace FactoryManagementSoftware.UI
         //            double sortingTarget_1 = double.TryParse(dt.Rows[i][keywords].ToString(), out sortingTarget_1) ? sortingTarget_1 : 0;
         //            string itemType_1 = dt.Rows[i][headerType].ToString();
 
-        //            string itemCode = dt.Rows[i][headerPartCode].ToString();
+        //            string itemCode = dt.Rows[i][text.Header_Code].ToString();
 
         //            //if(itemCode.Equals("V96LAR000"))
         //            //{
@@ -1724,7 +1887,7 @@ namespace FactoryManagementSoftware.UI
         //    //remove last row if it is empty
         //    if (dt_Copy.Rows.Count > 0)
         //    {
-        //        string itemCode = dt_Copy.Rows[dt_Copy.Rows.Count - 1][headerPartCode].ToString();
+        //        string itemCode = dt_Copy.Rows[dt_Copy.Rows.Count - 1][text.Header_Code].ToString();
 
         //        if (string.IsNullOrEmpty(itemCode))
         //        {
@@ -1753,8 +1916,8 @@ namespace FactoryManagementSoftware.UI
 
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
-                    string itemName = dt.Rows[i][headerPartName].ToString();
-                    string itemCode = dt.Rows[i][headerPartCode].ToString();
+                    string itemName = dt.Rows[i][text.Header_Name].ToString();
+                    string itemCode = dt.Rows[i][text.Header_Code].ToString();
                     string itemType = dt.Rows[i][headerType].ToString();
 
                     bool itemMatch = itemName.Contains(keywords.ToUpper()) || itemCode.Contains(keywords.ToUpper());
@@ -1840,7 +2003,7 @@ namespace FactoryManagementSoftware.UI
 
             if (dt_Copy.Rows.Count > 0)
             {
-                string itemCode = dt_Copy.Rows[dt_Copy.Rows.Count - 1][headerPartCode].ToString();
+                string itemCode = dt_Copy.Rows[dt_Copy.Rows.Count - 1][text.Header_Code].ToString();
 
                 if (string.IsNullOrEmpty(itemCode))
                 {
@@ -1857,14 +2020,14 @@ namespace FactoryManagementSoftware.UI
         {
             for (int i = 0; i < dt.Rows.Count - 1; i++)
             {
-                string firstItem = dt.Rows[i][headerPartCode].ToString();
+                string firstItem = dt.Rows[i][text.Header_Code].ToString();
                 string rowReference = dt.Rows[i][headerRowReference].ToString();
 
                 if (!string.IsNullOrEmpty(firstItem))
                 {
                     for (int j = i + 1; j < dt.Rows.Count; j++)
                     {
-                        string nextItem = dt.Rows[j][headerPartCode].ToString();
+                        string nextItem = dt.Rows[j][text.Header_Code].ToString();
 
                         if (firstItem.Equals(nextItem))
                         {
@@ -1948,8 +2111,8 @@ namespace FactoryManagementSoftware.UI
                        
                         dt_Row[headerBalType] = balType_Unique;
                         dt_Row[headerItemType] = row_Item[dalItem.ItemCat].ToString();
-                        dt_Row[headerPartCode] = uChildData.part_code;
-                        dt_Row[headerPartName] = CountZeros(subIndex.ToString()) + uChildData.part_name;
+                        dt_Row[text.Header_Code] = uChildData.part_code;
+                        dt_Row[text.Header_Name] = CountZeros(subIndex.ToString()) + uChildData.part_name;
                       
 
                         decimal readyStockDecimal = Math.Round((decimal)uChildData.ready_stock, 2);
@@ -2195,7 +2358,7 @@ namespace FactoryManagementSoftware.UI
 
                         btnExcel.Enabled = false;
 
-                        btnFullReport.Enabled = false;
+                        btnLoad.Enabled = false;
 
                         SaveFileDialog sfd = new SaveFileDialog();
                         string path = @"D:\StockAssistant\Document\OEM ITEM LIST";
@@ -2285,8 +2448,8 @@ namespace FactoryManagementSoftware.UI
                                 xlWorkSheet.Cells[1, customerIndex + 1].ColumnWidth = 10;
                             }
 
-                            int nameIndex = dgv.Columns[headerPartName].Index;
-                            int codeIndex = dgv.Columns[headerPartCode].Index;
+                            int nameIndex = dgv.Columns[text.Header_Name].Index;
+                            int codeIndex = dgv.Columns[text.Header_Code].Index;
 
                             int stockIndex = dgv.Columns[headerReadyStock].Index;
                        
@@ -2312,7 +2475,7 @@ namespace FactoryManagementSoftware.UI
 
                           
 
-                                string itemCode = dgv.Rows[i].Cells[headerPartCode].Value.ToString();
+                                string itemCode = dgv.Rows[i].Cells[text.Header_Code].Value.ToString();
 
                                 //color empty space
                                 if (string.IsNullOrEmpty(itemCode))
@@ -2401,7 +2564,7 @@ namespace FactoryManagementSoftware.UI
                       
 
                         btnExcel.Enabled = true;
-                        btnFullReport.Enabled = true;
+                        btnLoad.Enabled = true;
 
 
                         Cursor = Cursors.Arrow; // change cursor to normal type
@@ -2517,7 +2680,7 @@ namespace FactoryManagementSoftware.UI
 
                 string cust = cmbCustomer.Text;
 
-                DataTable dt = NewForecastReportTable();
+                DataTable dt = NewOEMItemList();
 
                 if (dgvOEMItemStockCountList.DataSource != null)
                 {
@@ -2595,8 +2758,8 @@ namespace FactoryManagementSoftware.UI
                     int Index = dgv.Columns[headerIndex].Index;
                 
 
-                    int nameIndex = dgv.Columns[headerPartName].Index;
-                    int codeIndex = dgv.Columns[headerPartCode].Index;
+                    int nameIndex = dgv.Columns[text.Header_Name].Index;
+                    int codeIndex = dgv.Columns[text.Header_Code].Index;
 
                     int stockIndex = dgv.Columns[headerReadyStock].Index;
                  
@@ -2626,7 +2789,7 @@ namespace FactoryManagementSoftware.UI
                         rangeIndex.Cells.HorizontalAlignment = XlVAlign.xlVAlignCenter;
                        
 
-                        string itemCode = dgv.Rows[j].Cells[headerPartCode].Value.ToString();
+                        string itemCode = dgv.Rows[j].Cells[text.Header_Code].Value.ToString();
 
                         //color empty space
                         if (string.IsNullOrEmpty(itemCode))
@@ -2692,7 +2855,7 @@ namespace FactoryManagementSoftware.UI
 
         private void frmForecastReport_NEW_FormClosed(object sender, FormClosedEventArgs e)
         {
-            MainDashboard.forecastReportInputFormOpen = false;
+            MainDashboard.OEMItemFormOpen = false;
         }
 
         private void frmForecastReport_NEW_KeyDown(object sender, KeyEventArgs e)
@@ -2803,7 +2966,7 @@ namespace FactoryManagementSoftware.UI
                 {
                     if(currentHeader == headerReadyStock)
                     {
-                        ShowStockLocation(dgv.Rows[rowIndex].Cells[headerPartCode].Value.ToString());
+                        ShowStockLocation(dgv.Rows[rowIndex].Cells[text.Header_Code].Value.ToString());
                     }
                     else
                     {
@@ -2896,8 +3059,8 @@ namespace FactoryManagementSoftware.UI
                         if (int.TryParse(indexValue, out int currentIndex) && currentIndex == targetIndex)
                         {
                             // Get the part name and part code for this parent product
-                            string partName = row.Cells[headerPartName]?.Value?.ToString() ?? "";
-                            string partCode = row.Cells[headerPartCode]?.Value?.ToString() ?? "";
+                            string partName = row.Cells[text.Header_Name]?.Value?.ToString() ?? "";
+                            string partCode = row.Cells[text.Header_Code]?.Value?.ToString() ?? "";
 
                             if (!string.IsNullOrEmpty(partName) || !string.IsNullOrEmpty(partCode))
                             {
@@ -2977,7 +3140,7 @@ namespace FactoryManagementSoftware.UI
 
             string itemClicked = e.ClickedItem.Name.ToString();
 
-            string itemCode = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[headerPartCode].Value.ToString();
+            string itemCode = dgv.Rows[dgv.CurrentCell.RowIndex].Cells[text.Header_Code].Value.ToString();
             string customer = cmbCustomer.Text;
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -3135,7 +3298,7 @@ namespace FactoryManagementSoftware.UI
             ItemSearchUIReset();
 
             lblSearchClear.Visible = false;
-            btnFullReport.Focus();
+            btnLoad.Focus();
         }
 
 
@@ -3157,7 +3320,7 @@ namespace FactoryManagementSoftware.UI
 
             DataGridView dgv = dgvOEMItemStockCountList;
             string columnName = dgv.Columns[e.ColumnIndex].Name;
-            string itemCode = dgv.Rows[e.RowIndex].Cells[headerPartCode].Value?.ToString();
+            string itemCode = dgv.Rows[e.RowIndex].Cells[text.Header_Code].Value?.ToString();
 
             if (string.IsNullOrEmpty(itemCode)) return;
 
@@ -3166,7 +3329,7 @@ namespace FactoryManagementSoftware.UI
                 if (columnName == headerStdPacking_Qty ||
                     columnName == headerFullPackingQty ||
                     columnName == headerBalance ||
-                    columnName == headerRemark)
+                    columnName == text.Header_Remark)
                 {
                     // Mark as changed
                     hasStockChanges = true;
@@ -3185,7 +3348,7 @@ namespace FactoryManagementSoftware.UI
                     // Recalculate for all duplicate rows
                     foreach (DataGridViewRow row in dgv.Rows)
                     {
-                        string rowItemCode = row.Cells[headerPartCode].Value?.ToString();
+                        string rowItemCode = row.Cells[text.Header_Code].Value?.ToString();
                         if (rowItemCode == itemCode && row.Index != e.RowIndex)
                         {
                             CalculateTotalActualStock(row.Index);
@@ -3197,6 +3360,39 @@ namespace FactoryManagementSoftware.UI
                     if (updatedCount > 0)
                     {
                         ShowBriefMessage($"Updated {updatedCount + 1} items", 1500);
+                    }
+
+                    if (columnName == headerStdPacking_Qty)
+                    {
+
+                        DialogResult result = MessageBox.Show(
+                  "Do you want to update Std. Packing data?",
+                  "Unsaved Std. Packing Data",
+                  MessageBoxButtons.YesNo,
+                  MessageBoxIcon.Warning);
+
+                        if (result == DialogResult.Yes)
+                        {
+                            uJoin.join_parent_code = dgv.Rows[e.RowIndex].Cells[text.Header_Code].Value?.ToString();
+                            uJoin.join_child_code = dgv.Rows[e.RowIndex].Cells[headerStdPacking_TypeCode].Value?.ToString();
+                            uJoin.join_max = int.TryParse(dgv.Rows[e.RowIndex].Cells[headerStdPacking_Qty].Value?.ToString(), out int i) ? i : 0;
+
+                            if (!string.IsNullOrEmpty(uJoin.join_child_code))
+                            {
+                                frmJoinEdit frm = new frmJoinEdit(uJoin, true);
+                                frm.StartPosition = FormStartPosition.CenterScreen;
+                                frm.ShowDialog();
+
+                                if (frmJoinEdit.DATA_UPDATED)
+                                    LoadStdPackingData(uJoin.join_parent_code);
+                            }
+                            else
+                            {
+                                MessageBox.Show("Packing Type INVALID!");
+                            }
+                        }
+
+                        
                     }
                 }
             }
@@ -3216,7 +3412,7 @@ namespace FactoryManagementSoftware.UI
             {
                 if (row.Index == excludeRowIndex) continue; // Skip the row being edited
 
-                string rowItemCode = row.Cells[headerPartCode].Value?.ToString();
+                string rowItemCode = row.Cells[text.Header_Code].Value?.ToString();
                 if (rowItemCode == itemCode)
                 {
                     // Update the same column for duplicate items
@@ -3350,6 +3546,13 @@ namespace FactoryManagementSoftware.UI
                 // Calculate difference (Actual - System)
                 decimal stockDiff = actualStock - systemStock;
 
+                TALLY_MODE = stockDiff != 0 ? true : TALLY_MODE;
+
+                if(TALLY_MODE)
+                {
+                    btnTallyAll.Visible = true;
+                }
+
                 // Format and set value
                 stockDiff = Math.Round(stockDiff, 2);
                 if (stockDiff % 1 == 0)
@@ -3412,14 +3615,14 @@ namespace FactoryManagementSoftware.UI
 
                 foreach (DataGridViewRow row in dgvOEMItemStockCountList.Rows)
                 {
-                    string itemCode = row.Cells[headerPartCode].Value?.ToString();
+                    string itemCode = row.Cells[text.Header_Code].Value?.ToString();
                     if (string.IsNullOrEmpty(itemCode) || !changedItemCodes.Contains(itemCode)) continue;
 
                     var stdPackingQty = row.Cells[headerStdPacking_Qty].Value;
                     var fullPackingQty = row.Cells[headerFullPackingQty].Value;
                     var balance = row.Cells[headerBalance].Value;
                     var totalActualStock = row.Cells[headerTotalAcutalStock].Value;
-                    var remark = row.Cells[headerRemark].Value?.ToString();
+                    var remark = row.Cells[text.Header_Remark].Value?.ToString();
 
                     // TODO: Implement database update logic here
                     // Example:
@@ -3444,7 +3647,128 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
-        
+        private void frmOEMStockCount_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (TALLY_MODE)
+            {
+                DialogResult result = MessageBox.Show(
+                    "You have stock differences that haven't been tallied.\n\n" +
+                    "Do you want to leave without performing stock tally?",
+                    "Unsaved Stock Differences",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Warning);
+
+                if (result == DialogResult.No)
+                {
+                    e.Cancel = true; // Prevent closing
+                }
+            }
+        }
+
+        private DataTable RemoveDuplicateItemsKeepWithDifferences(DataTable inputTable)
+        {
+            DataTable resultTable = inputTable.Clone(); // Create table with same structure
+            Dictionary<string, DataRow> itemTracker = new Dictionary<string, DataRow>();
+
+            foreach (DataRow row in inputTable.Rows)
+            {
+                string itemCode = row[text.Header_Code]?.ToString();
+
+                if (string.IsNullOrEmpty(itemCode))
+                {
+                    // Keep rows with empty item codes as-is
+                    resultTable.ImportRow(row);
+                    continue;
+                }
+
+                // Check if this item has differences
+                bool hasDifference = false;
+                var diffValue = row[headerStockDiff];
+
+                if (diffValue != null && diffValue != DBNull.Value)
+                {
+                    if (decimal.TryParse(diffValue.ToString(), out decimal diff) && diff != 0)
+                    {
+                        hasDifference = true;
+                    }
+                }
+
+                if (itemTracker.ContainsKey(itemCode))
+                {
+                    // Item already exists - only keep this one if it has differences
+                    if (hasDifference)
+                    {
+                        // Check if the existing row has differences
+                        var existingRow = itemTracker[itemCode];
+                        var existingDiffValue = existingRow[headerStockDiff];
+                        bool existingHasDiff = false;
+
+                        if (existingDiffValue != null && existingDiffValue != DBNull.Value)
+                        {
+                            if (decimal.TryParse(existingDiffValue.ToString(), out decimal existingDiff) && existingDiff != 0)
+                            {
+                                existingHasDiff = true;
+                            }
+                        }
+
+                        if (!existingHasDiff)
+                        {
+                            // Replace existing row (without differences) with current row (with differences)
+                            DataRow[] rowsToRemove = resultTable.Select($"{text.Header_Code} = '{itemCode}'");
+                            foreach (DataRow rowToRemove in rowsToRemove)
+                            {
+                                resultTable.Rows.Remove(rowToRemove);
+                            }
+                            resultTable.ImportRow(row);
+                            itemTracker[itemCode] = row;
+                        }
+                        // If existing row already has differences, keep it and skip current row
+                    }
+                    // If current row has no differences, skip it (keep existing)
+                }
+                else
+                {
+                    // First occurrence of this item - always keep it
+                    resultTable.ImportRow(row);
+                    itemTracker[itemCode] = row;
+                }
+            }
+
+            resultTable.AcceptChanges();
+            return resultTable;
+        }
+
+        private void btnTallyAll_Click(object sender, EventArgs e)
+        {
+            string stockLocation = text.Factory_Semenyih;
+            DataTable dt = (DataTable)dgvOEMItemStockCountList.DataSource;
+
+            frmInOutEdit frm = new frmInOutEdit(RemoveDuplicateItemsKeepWithDifferences(dt), true, true, stockLocation);
+            frm.StartPosition = FormStartPosition.CenterScreen;
+            frm.ShowDialog();//Item Edit
+
+            if (frmInOutEdit.TrfSuccess)
+            {
+                LoadItemPurchaseByCustomer();
+
+                TALLY_MODE = false;
+                btnTallyAll.Visible = false;
+
+                dgvOEMItemStockCountList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+
+                if (cmbCustomer.SelectedIndex == -1)
+                {
+                    MessageBox.Show("Please select a customer.");
+                }
+                LoadOEMItemList();
+
+                if (!(txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText))
+                {
+                    lblSearchClear.Visible = true;
+                    ItemSearch();
+                }
+            }
+        }
     }
 
 }

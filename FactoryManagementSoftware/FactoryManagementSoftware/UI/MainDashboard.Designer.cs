@@ -62,7 +62,7 @@
             this.pOToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.usernameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.fORECASTREPORTToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.oUGToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.OEMItemToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -90,7 +90,7 @@
             this.pOToolStripMenuItem,
             this.usernameToolStripMenuItem,
             this.fORECASTREPORTToolStripMenuItem1,
-            this.oUGToolStripMenuItem});
+            this.OEMItemToolStripMenuItem});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -302,42 +302,42 @@
             // stockReportToolStripMenuItem
             // 
             this.stockReportToolStripMenuItem.Name = "stockReportToolStripMenuItem";
-            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.stockReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.stockReportToolStripMenuItem.Text = "Stock Report";
             this.stockReportToolStripMenuItem.Click += new System.EventHandler(this.stockReportToolStripMenuItem_Click);
             // 
             // deliveryReportToolStripMenuItem
             // 
             this.deliveryReportToolStripMenuItem.Name = "deliveryReportToolStripMenuItem";
-            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.deliveryReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.deliveryReportToolStripMenuItem.Text = "In Out Report";
             this.deliveryReportToolStripMenuItem.Click += new System.EventHandler(this.inOutReportToolStripMenuItem_Click);
             // 
             // forecastReportToolStripMenuItem
             // 
             this.forecastReportToolStripMenuItem.Name = "forecastReportToolStripMenuItem";
-            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.forecastReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.forecastReportToolStripMenuItem.Text = "Forecast Report";
             this.forecastReportToolStripMenuItem.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
             // materialUsedReportToolStripMenuItem
             // 
             this.materialUsedReportToolStripMenuItem.Name = "materialUsedReportToolStripMenuItem";
-            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.materialUsedReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.materialUsedReportToolStripMenuItem.Text = "Material Used Report";
             this.materialUsedReportToolStripMenuItem.Click += new System.EventHandler(this.materialUsedReportToolStripMenuItem_Click);
             // 
             // productionReportToolStripMenuItem
             // 
             this.productionReportToolStripMenuItem.Name = "productionReportToolStripMenuItem";
-            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.productionReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.productionReportToolStripMenuItem.Text = "Production Report";
             this.productionReportToolStripMenuItem.Click += new System.EventHandler(this.productionReportToolStripMenuItem_Click);
             // 
             // sBBDeliveredReportToolStripMenuItem
             // 
             this.sBBDeliveredReportToolStripMenuItem.Name = "sBBDeliveredReportToolStripMenuItem";
-            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.sBBDeliveredReportToolStripMenuItem.Size = new System.Drawing.Size(222, 26);
             this.sBBDeliveredReportToolStripMenuItem.Text = "SBB Delivered Report";
             this.sBBDeliveredReportToolStripMenuItem.Click += new System.EventHandler(this.sBBDeliveredReportToolStripMenuItem_Click);
             // 
@@ -368,12 +368,12 @@
             this.fORECASTREPORTToolStripMenuItem1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.fORECASTREPORTToolStripMenuItem1.Click += new System.EventHandler(this.forecastReportToolStripMenuItem_Click);
             // 
-            // oUGToolStripMenuItem
+            // OEMItemToolStripMenuItem
             // 
-            this.oUGToolStripMenuItem.Name = "oUGToolStripMenuItem";
-            this.oUGToolStripMenuItem.Size = new System.Drawing.Size(54, 24);
-            this.oUGToolStripMenuItem.Text = "OUG";
-            this.oUGToolStripMenuItem.Click += new System.EventHandler(this.oUGToolStripMenuItem_Click);
+            this.OEMItemToolStripMenuItem.Name = "OEMItemToolStripMenuItem";
+            this.OEMItemToolStripMenuItem.Size = new System.Drawing.Size(94, 24);
+            this.OEMItemToolStripMenuItem.Text = "OEM_ITEM";
+            this.OEMItemToolStripMenuItem.Click += new System.EventHandler(this.OEMItemToolStripMenuItem_Click);
             // 
             // statusStrip
             // 
@@ -469,7 +469,7 @@
         private System.Windows.Forms.ToolStripMenuItem usernameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem fORECASTREPORTToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem supplierToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem oUGToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem OEMItemToolStripMenuItem;
     }
 }
 
