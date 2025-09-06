@@ -28,6 +28,7 @@ namespace FactoryManagementSoftware.BLL
         public int max_output_qty { get; set; }
         public int total_reject { get; set; }
         public int total_actual_reject { get; set; }
+        public bool stock_out_rejected_sub_mat { get; set; }
         public double actual_reject_percentage { get; set; }
         public double reject_percentage { get; set; }
         public DateTime updated_date { get; set; }

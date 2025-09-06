@@ -38,7 +38,9 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmMachineScheduleVer2());
 
-            //Application.Run(new frmOEMStockCount());
+            //Application.Run(new frmProductionRecordVer3());
+
+            //Application.Run(new frmInOutVer2());
 
             //Application.Run(new MainDashboard(1));
 

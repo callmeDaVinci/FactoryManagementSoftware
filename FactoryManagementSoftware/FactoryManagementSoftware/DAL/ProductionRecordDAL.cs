@@ -29,6 +29,7 @@ namespace FactoryManagementSoftware.DAL
         public string MaxOutputQty { get; } = "max_qty";
         public string TotalReject { get; } = "total_reject";
         public string TotalActualReject { get; } = "total_actual_reject";
+        public string StockOutRejectedSubMat { get; } = "stock_out_rejected_sub_mat";
         public string RejectPercentage { get; } = "reject_percentage";
         public string UpdatedDate { get; } = "updated_date";
         public string UpdatedBy { get; } = "updated_by";
@@ -731,6 +732,7 @@ namespace FactoryManagementSoftware.DAL
                             + MaxOutputQty + ","
                             + TotalReject + ","
                             + TotalActualReject + ","
+                            + StockOutRejectedSubMat + ","
                             + UpdatedDate + ","
                             + UpdatedBy + ","
                             + Active + ","
@@ -739,6 +741,7 @@ namespace FactoryManagementSoftware.DAL
                             + directIn + ","
                              + directOut + ","
                             + ParentCode + ","
+                            + ParentQty + ","
                             + Note + ") VALUES" +
                             "(@plan_id," +
                             "@production_date," +
@@ -759,6 +762,7 @@ namespace FactoryManagementSoftware.DAL
                             "@max_qty," +
                             "@total_reject," +
                             "@total_actual_reject," +
+                            "@stock_out_rejected_sub_mat," +
                             "@updated_date," +
                              "@updated_by," +
                             "@active," +
@@ -767,6 +771,7 @@ namespace FactoryManagementSoftware.DAL
                               "@directIn," +
                                "@directOut," +
                                 "@parent_code," +
+                                "@parent_qty," +
                             "@note)";
 
                 SqlCommand cmd = new SqlCommand(sql, conn);
@@ -790,12 +795,14 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@max_qty", u.max_output_qty);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
+                cmd.Parameters.AddWithValue("@stock_out_rejected_sub_mat", u.stock_out_rejected_sub_mat);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
                 cmd.Parameters.AddWithValue("@active", u.active);
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@parent_qty", u.parent_qty);
                 cmd.Parameters.AddWithValue("@note", u.note);
                 cmd.Parameters.AddWithValue("@directIn", u.directIn);
                 cmd.Parameters.AddWithValue("@directOut", u.directOut);
@@ -1212,10 +1219,12 @@ namespace FactoryManagementSoftware.DAL
                             + MaxOutputQty + "=@max_qty,"
                             + TotalReject + "=@total_reject,"
                             + TotalActualReject + "=@total_actual_reject,"
+                            + StockOutRejectedSubMat + "=@stock_out_rejected_sub_mat,"
                             + Active + "=@active,"
                             + PackagingCode + "=@packaging_code,"
                             + PackagingQty + "=@packaging_qty,"
                             + ParentCode + "=@parent_code,"
+                            + ParentQty + "=@parent_qty,"
                             + Note + "=@note,"
                             + directIn + "=@directIn,"
                              + directOut + "=@directOut,"
@@ -1245,12 +1254,14 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@max_qty", u.max_output_qty);
                 cmd.Parameters.AddWithValue("@total_reject", u.total_reject);
                 cmd.Parameters.AddWithValue("@total_actual_reject", u.total_actual_reject);
+                cmd.Parameters.AddWithValue("@stock_out_rejected_sub_mat", u.stock_out_rejected_sub_mat);
                 cmd.Parameters.AddWithValue("@updated_date", u.updated_date);
                 cmd.Parameters.AddWithValue("@updated_by", u.updated_by);
                 cmd.Parameters.AddWithValue("@active", u.active);
                 cmd.Parameters.AddWithValue("@packaging_code", u.packaging_code);
                 cmd.Parameters.AddWithValue("@packaging_qty", u.packaging_qty);
                 cmd.Parameters.AddWithValue("@parent_code", u.parent_code);
+                cmd.Parameters.AddWithValue("@parent_qty", u.parent_qty);
                 cmd.Parameters.AddWithValue("@note", u.note);
                 cmd.Parameters.AddWithValue("@directIn", u.directIn);
                 cmd.Parameters.AddWithValue("@directOut", u.directOut);

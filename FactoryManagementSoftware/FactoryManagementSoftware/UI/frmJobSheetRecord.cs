@@ -14,7 +14,7 @@ namespace FactoryManagementSoftware.UI
         public frmJobSheetRecord()
         {
             InitializeComponent();
-
+            DT_PARENT = null;
             dt_ItemInfo = dalItem.Select();
             dt_JoinInfo = dalJoin.SelectAll();
             dt_Mac = dalMac.Select();
@@ -23,7 +23,7 @@ namespace FactoryManagementSoftware.UI
         public frmJobSheetRecord(DataTable dt_JobList, int jobListRowIndex, DataTable dt_JobRecordHistory)
         {
             InitializeComponent();
-
+            DT_PARENT = null;
             DT_JOB_LIST = dt_JobList;
             JOB_LIST_SELECTED_ROW_INDEX = jobListRowIndex;
 
@@ -41,6 +41,7 @@ namespace FactoryManagementSoftware.UI
         public frmJobSheetRecord(DataTable dt_JobList, int jobListRowIndex, DataTable dt_JobRecordHistory, int jobRecordRowIndex)
         {
             //Load Existing Job Sheet Record
+            DT_PARENT = null;
 
             InitializeComponent();
 
@@ -64,6 +65,7 @@ namespace FactoryManagementSoftware.UI
 
         private int JOB_LIST_SELECTED_ROW_INDEX = -1;
         private int JOB_RECORD_SELECTED_ROW_INDEX = -1;
+        private DataTable DT_PARENT;
 
         Text text = new Text();
         Tool tool = new Tool();
@@ -224,6 +226,19 @@ namespace FactoryManagementSoftware.UI
                 colorMaterial = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorMat].ToString();
 
 
+                RAW_MAT_CODE_1 = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_1].ToString();
+                RAW_MAT_CODE_2 = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_2].ToString();
+
+                RAW_MAT_RATIO_1 = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_1_Ratio].ToString(), out float y) ? y : 0;
+                RAW_MAT_RATIO_2 = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_2_Ratio].ToString(), out  y) ? y : 0;
+
+                COLOR_MAT_CODE = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorMatCode].ToString();
+                COLOR_MAT_RATE = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorRate].ToString(), out float x)? x : 0;
+
+
+
+                COLOR_MAT_CODE = colorMaterial;
+
 
                 if (latestProductionDate == DateTime.MinValue)
                 {
@@ -282,6 +297,8 @@ namespace FactoryManagementSoftware.UI
 
         private int ORIGINAL_TOTAL_STOCK_IN_QTY = -1;
 
+        private string SELECTED_MACHINE_SIDE_PARENT_CODE = "";
+        private string SELECTED_MACHINE_SIDE_PARENT_QTY = "";
         private void LoadJobSheet()
         {
             //btnSave.Visible = false;
@@ -308,6 +325,10 @@ namespace FactoryManagementSoftware.UI
             string timeEnd = "";
             string actualRejectQty = "";
 
+            int parentQty = 0;
+            bool StockOutRejectedSubMat = false;
+
+
             DateTime ProductionDate = DateTime.MinValue;
 
             if (DT_JOB_RECORD?.Rows.Count > 0 && JOB_RECORD_SELECTED_ROW_INDEX > -1 && JOB_RECORD_SELECTED_ROW_INDEX <= DT_JOB_RECORD.Rows.Count - 1)
@@ -332,6 +353,20 @@ namespace FactoryManagementSoftware.UI
                 timeStart = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_TimeStart].ToString();
                 timeEnd = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_TimeEnd].ToString();
                 actualRejectQty = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_QtyReject].ToString();
+
+                SELECTED_MACHINE_SIDE_PARENT_CODE = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_ParentCode].ToString();
+                StockOutRejectedSubMat = bool.TryParse(DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_OutRejectedSubMat].ToString(), out StockOutRejectedSubMat) ? StockOutRejectedSubMat : false;
+                SELECTED_MACHINE_SIDE_PARENT_QTY = DT_JOB_RECORD.Rows[JOB_RECORD_SELECTED_ROW_INDEX][text.Header_ParentQty].ToString();
+
+                RAW_MAT_CODE_1 = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_1].ToString();
+                RAW_MAT_CODE_2 = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_2].ToString();
+
+                RAW_MAT_RATIO_1 = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_1_Ratio].ToString(), out float y) ? y : 0;
+                RAW_MAT_RATIO_2 = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_RawMat_2_Ratio].ToString(), out y) ? y : 0;
+
+                COLOR_MAT_CODE = DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorMatCode].ToString();
+                COLOR_MAT_RATE = float.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ColorRate].ToString(), out float x) ? x : 0;
+
             }
 
             if (DT_JOB_LIST?.Rows.Count > 0 && JOB_LIST_SELECTED_ROW_INDEX > -1 && JOB_LIST_SELECTED_ROW_INDEX <= DT_JOB_LIST.Rows.Count - 1)
@@ -343,6 +378,10 @@ namespace FactoryManagementSoftware.UI
 
                 CYCLE_TIME = int.TryParse(DT_JOB_LIST.Rows[JOB_LIST_SELECTED_ROW_INDEX][text.Header_ProCT].ToString(), out CYCLE_TIME) ? CYCLE_TIME : 0;
             }
+
+            cbStockOutRejectedSubPart.Checked = StockOutRejectedSubMat;
+
+            
 
             SHEET_ID = sheetID;
             txtSheetID.Text = sheetID;
@@ -357,7 +396,7 @@ namespace FactoryManagementSoftware.UI
 
             txtStockInPcsQty.Text = balanceStockIn;
             lblActualRejectQty.Text = actualRejectQty;
-
+            
             dtpProDate.Value = ProductionDate.Date;
             OLD_PRO_DATE = ProductionDate.Date;
 
@@ -370,6 +409,8 @@ namespace FactoryManagementSoftware.UI
                 cbNight.Checked = true;
               
             }
+
+
 
             LoadCartonData(FullBox,QtyPerBox,balanceStockIn);
 
@@ -1197,6 +1238,16 @@ namespace FactoryManagementSoftware.UI
                 int actualRejectQty = int.TryParse(lblActualRejectQty.Text, out actualRejectQty) ? actualRejectQty : 0;
 
 
+
+                string parentCode = "";
+                int parentQty = int.TryParse(txtMacSideAssembledQty.Text, out parentQty) ? parentQty : 0;
+
+                if (cbMacSideAssembly.Checked)
+                {
+                    DataRowView selectedRow = (DataRowView)cmbParentList.SelectedItem;
+                    parentCode = selectedRow["Code"].ToString();
+                }
+
                 string note = txtNote.Text;
 
                 uProRecord.active = true;
@@ -1215,7 +1266,9 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.meter_end = meterEnd;
                 uProRecord.note = note;
                 uProRecord.directIn = balPieceStockIn;
-                uProRecord.parent_code = "";
+                uProRecord.parent_code = parentCode;
+                uProRecord.parent_qty = parentQty;
+
                 uProRecord.production_operator = txtOperator.Text;
 
                 int userID = MainDashboard.USER_ID;
@@ -1224,6 +1277,8 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.total_stocked_in = TotalStockIn;
                 uProRecord.max_output_qty = maxOutputQty;
                 uProRecord.total_actual_reject = actualRejectQty;
+                uProRecord.stock_out_rejected_sub_mat = cbStockOutRejectedSubPart.Checked;
+
                 uProRecord.updated_date = updateTime;
                 uProRecord.updated_by = userID;
 
@@ -1396,13 +1451,46 @@ namespace FactoryManagementSoftware.UI
             return false;
         }
 
-        private string RAW_MAT_CODE = "";
+        private string RAW_MAT_CODE_1 = "";
+        private string RAW_MAT_CODE_2 = "";
+
+        private float RAW_MAT_RATIO_1 = 0;
+        private float RAW_MAT_RATIO_2 = 0;
+
         private string COLOR_MAT_CODE = "";
         private float COLOR_MAT_RATE = 0;
         private float PW_PER_SHOT = 0;
         private float RW_PER_SHOT = 0;
 
-    
+
+        private void LoadProInfo()
+        {
+
+            //RAW_MAT_CODE = "";
+            //COLOR_MAT_CODE = "";
+            //COLOR_MAT_RATE = 0;
+            PW_PER_SHOT = 0;
+            RW_PER_SHOT = 0;
+
+            string partName = ITEM_NAME;
+            string partCode = ITEM_CODE;
+            string jobNo = JOB_NO;
+
+            foreach (DataRow row in dt_ItemInfo.Rows)
+            {
+                if (row[dalItem.ItemCode].ToString().Equals(partCode))
+                {
+                    float pwPerShot = float.TryParse(row[dalItem.ItemProPWShot].ToString(), out float i) ? i : 0;
+                    float rwPerShot = float.TryParse(row[dalItem.ItemProRWShot].ToString(), out float k) ? k : 0;
+
+                    PW_PER_SHOT = pwPerShot;
+                    RW_PER_SHOT = rwPerShot;
+
+                    return;
+                }
+            }
+        }
+
         private void NewSaveAndStock()
         {
             bool OKToProcess = true;
@@ -1428,6 +1516,8 @@ namespace FactoryManagementSoftware.UI
                 //check if one or multi packaging box
 
                 int totalStockIn = int.TryParse(txtTotalStockInQty.Text, out totalStockIn) ? totalStockIn : 0;
+                int totalParentStockIn = int.TryParse(txtMacSideAssembledQty.Text, out totalParentStockIn) ? totalParentStockIn : 0;
+                int totalActualReject = int.TryParse(lblActualRejectQty.Text, out totalActualReject) ? totalActualReject : 0;
 
                 int directStockIn = int.TryParse(txtStockInPcsQty.Text, out directStockIn) ? directStockIn : 0;
 
@@ -1438,9 +1528,94 @@ namespace FactoryManagementSoftware.UI
 
                 int totalShot = int.TryParse(txtTotalShot.Text, out totalShot) ? totalShot : 0;
                 int fullBoxQty = int.TryParse(txtFullBoxQty.Text, out fullBoxQty) ? fullBoxQty : 0;
+                string parentCode = "";
+
+                if (!string.IsNullOrEmpty(cmbParentList.Text) && cbMacSideAssembly.Checked && totalParentStockIn > 0)
+                {
+                    DataRowView selectedRow = (DataRowView)cmbParentList.SelectedItem;
+                    parentCode = selectedRow["Code"].ToString();
+
+                    dt_Row = dt.NewRow();
+                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                    dt_Row[header_ItemCode] = parentCode;
+                    dt_Row[header_Cat] = text.Cat_Part;
+
+                    dt_Row[header_From] = text.Assembly;
+                    dt_Row[header_To] = factory;
+
+                    dt_Row[header_Qty] = totalParentStockIn;
+                    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                    if (cbMorning.Checked)
+                    {
+                        dt_Row[header_Shift] = "M";
+                    }
+                    else if (cbNight.Checked)
+                    {
+                        dt_Row[header_Shift] = "N";
+                    }
+
+                    dt.Rows.Add(dt_Row);
+                }
+
+                if(cbStockOutRejectedSubPart.Checked)
+                {
+                    if(DT_CHILD?.Rows.Count > 0)
+                    {
+                        //stock out sub mat or sub part
+
+                        dt.Columns.Add("Child");
+                        dt.Columns.Add("Code");
+                        dt.Columns.Add("Name");
+                        dt.Columns.Add("JoinQty");
+                        dt.Columns.Add("JoinMax");
+
+                        foreach (DataRow row in DT_CHILD.Rows)
+                        {
+                            string childCode = row["Code"].ToString();
+                            string childName = row["Name"].ToString();
+                            string childCat = tool.getItemCatFromDataTable(dt_ItemInfo, childCode);
+
+                            int joinQty = int.TryParse(row["JoinQty"].ToString(), out int x) ? x : 0;
+                            int joinMax = int.TryParse(row["JoinMax"].ToString(), out x) ? x : 0;
+
+                            int childStockOutQty = 0;
+
+                            if (joinQty > 0 && joinMax > 0 && totalActualReject > 0)
+                            {
+                                childStockOutQty = totalActualReject * joinMax / joinQty;
+                            }
 
 
-                if(totalStockIn > 0)
+                            if(childStockOutQty > 0)
+                            {
+                                dt_Row = dt.NewRow();
+                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                dt_Row[header_ItemCode] = childCode;
+                                dt_Row[header_Cat] = childCat;
+
+                                dt_Row[header_From] = factory;
+                                dt_Row[header_To] = "Reject";
+
+                                dt_Row[header_Qty] = childStockOutQty;
+                                dt_Row[text.Header_JobNo] = JOB_NO;
+
+                                if (cbMorning.Checked)
+                                {
+                                    dt_Row[header_Shift] = "M";
+                                }
+                                else if (cbNight.Checked)
+                                {
+                                    dt_Row[header_Shift] = "N";
+                                }
+
+                                dt.Rows.Add(dt_Row);
+                            }
+                        }
+                    }
+                }
+
+                if (totalStockIn > 0)
                 {
                     if (DT_CARTON != null && DT_CARTON.Rows.Count >= 2)
                     {
@@ -1559,7 +1734,7 @@ namespace FactoryManagementSoftware.UI
                         if (directStockIn > 0)
                         {
                             //dt_Row = dt.NewRow();
-                            //dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            //dt_Row[header_ProDate] = dtpPr    -oDate.Value.ToString("ddMMMMyy");
                             //dt_Row[header_ItemCode] = StockInItemCode;
                             //dt_Row[header_Cat] = text.Cat_Part;
 
@@ -1598,6 +1773,11 @@ namespace FactoryManagementSoftware.UI
 
                         if (totalShot > 0)
                         {
+                            LoadProInfo();
+
+                            COLOR_MAT_RATE =  COLOR_MAT_RATE / 100;
+
+
                             float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
                             float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
 
@@ -1606,34 +1786,73 @@ namespace FactoryManagementSoftware.UI
                             float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
                             color_Material_Used_kg = (float)Math.Round(color_Material_Used_kg, 2);
 
-                            if (!string.IsNullOrEmpty(RAW_MAT_CODE) && SearchItem(dt_ItemInfo, RAW_MAT_CODE, dalItem.ItemCode))
+                            if ( raw_Material_Used_kg > 0)
                             {
-                                dt_Row = dt.NewRow();
-                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                                dt_Row[header_ItemCode] = RAW_MAT_CODE;
-                                dt_Row[header_Cat] = text.Cat_RawMat;
+                                float raw_1_Used_kg = 0;
+                                float raw_2_Used_kg = 0;
 
-                                dt_Row[header_From] = factory;
-                                dt_Row[header_To] = text.Production;
-
-
-                                dt_Row[header_Qty] = raw_Material_Used_kg;
-
-                                dt_Row[text.Header_JobNo] = JOB_NO;
-
-                                if (cbMorning.Checked)
+                                if (!string.IsNullOrEmpty(RAW_MAT_CODE_1) && RAW_MAT_RATIO_1 > 0)
                                 {
-                                    dt_Row[header_Shift] = "M";
-                                }
-                                else if (cbNight.Checked)
-                                {
-                                    dt_Row[header_Shift] = "N";
+                                    dt_Row = dt.NewRow();
+                                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                    dt_Row[header_ItemCode] = RAW_MAT_CODE_1;
+                                    dt_Row[header_Cat] = text.Cat_RawMat;
+
+                                    dt_Row[header_From] = factory;
+                                    dt_Row[header_To] = text.Production;
+
+                                    raw_1_Used_kg = raw_Material_Used_kg * RAW_MAT_RATIO_1 / 100;
+
+                                    raw_1_Used_kg = (float)Math.Round(raw_1_Used_kg, 2);
+
+                                    dt_Row[header_Qty] = raw_1_Used_kg;
+
+                                    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                                    if (cbMorning.Checked)
+                                    {
+                                        dt_Row[header_Shift] = "M";
+                                    }
+                                    else if (cbNight.Checked)
+                                    {
+                                        dt_Row[header_Shift] = "N";
+                                    }
+
+                                    dt.Rows.Add(dt_Row);
                                 }
 
-                                dt.Rows.Add(dt_Row);
+                                if (!string.IsNullOrEmpty(RAW_MAT_CODE_2) && RAW_MAT_RATIO_2 > 0)
+                                {
+                                    dt_Row = dt.NewRow();
+                                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                                    dt_Row[header_ItemCode] = RAW_MAT_CODE_2;
+                                    dt_Row[header_Cat] = text.Cat_RawMat;
+
+                                    dt_Row[header_From] = factory;
+                                    dt_Row[header_To] = text.Production;
+
+                                    raw_2_Used_kg = raw_Material_Used_kg - raw_1_Used_kg;
+
+                                    raw_2_Used_kg = (float)Math.Round(raw_2_Used_kg, 2);
+
+                                    dt_Row[header_Qty] = raw_2_Used_kg;
+
+                                    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                                    if (cbMorning.Checked)
+                                    {
+                                        dt_Row[header_Shift] = "M";
+                                    }
+                                    else if (cbNight.Checked)
+                                    {
+                                        dt_Row[header_Shift] = "N";
+                                    }
+
+                                    dt.Rows.Add(dt_Row);
+                                }
                             }
 
-                            if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && SearchItem(dt_ItemInfo, COLOR_MAT_CODE, dalItem.ItemCode))
+                            if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && COLOR_MAT_RATE > 0)
                             {
                                 dt_Row = dt.NewRow();
                                 dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
@@ -1916,6 +2135,11 @@ namespace FactoryManagementSoftware.UI
         private void txtTotalStockInQty_TextChanged(object sender, EventArgs e)
         {
             DATA_EDITED = true;
+
+            if (!string.IsNullOrEmpty(cmbParentList.Text) && cbMacSideAssembly.Checked)
+            {
+                txtMacSideAssembledQty.Text = txtTotalStockInQty.Text;
+            }
         }
 
         private void label8_Click(object sender, EventArgs e)
@@ -2071,6 +2295,29 @@ namespace FactoryManagementSoftware.UI
             {
                 ORIGINAL_TOTAL_STOCK_IN_QTY = int.TryParse(txtTotalStockInQty.Text, out int i) ? i : 0;
             }
+
+            if (!string.IsNullOrEmpty(SELECTED_MACHINE_SIDE_PARENT_CODE))
+            {
+                cbMacSideAssembly.Checked = true;
+
+                LoadParentList(ITEM_CODE);
+
+
+                txtMacSideAssembledQty.Text = SELECTED_MACHINE_SIDE_PARENT_QTY;
+            }
+
+            lblSubPartList.Visible = cbStockOutRejectedSubPart.Checked;
+
+            if (cbStockOutRejectedSubPart.Checked)
+            {
+                int totalActualReject = int.TryParse(lblActualRejectQty.Text, out totalActualReject) ? totalActualReject : 0;
+
+                if (totalActualReject > 0)
+                {
+                    DT_CHILD = GetChildList(ITEM_CODE);
+                }
+               
+            }
         }
 
         private void txtRawMatLotNo_TextChanged(object sender, EventArgs e)
@@ -2118,6 +2365,181 @@ namespace FactoryManagementSoftware.UI
             }
 
             totalStockUpdate();
+        }
+
+        private void cbMacSideAssembly_CheckedChanged(object sender, EventArgs e)
+        {
+            txtMacSideAssembledQty.Visible = cbMacSideAssembly.Checked;
+            cmbParentList.Visible = cbMacSideAssembly.Checked;
+            lblMacSideAssembledQty.Visible = cbMacSideAssembly.Checked;
+
+            if(cbMacSideAssembly.Checked)
+            {
+                LoadParentList(ITEM_CODE);
+
+                if(!string.IsNullOrEmpty(SELECTED_MACHINE_SIDE_PARENT_CODE))
+                {
+                    cmbParentList.Text = SELECTED_MACHINE_SIDE_PARENT_CODE;
+                }
+            }
+        }
+
+        private void cbStockOutRejectedSubPart_CheckedChanged(object sender, EventArgs e)
+        {
+            if(FORM_LOADED)
+            {
+                lblSubPartList.Visible = cbStockOutRejectedSubPart.Checked;
+
+                if (cbStockOutRejectedSubPart.Checked)
+                {
+                    int totalActualReject = int.TryParse(lblActualRejectQty.Text, out totalActualReject) ? totalActualReject : 0;
+
+                    if (totalActualReject > 0)
+                    {
+                        DT_CHILD = GetChildList(ITEM_CODE);
+                    }
+                    
+                }
+            }
+            
+        }
+
+
+        private void LoadParentList(string itemCode)
+        {
+
+            if (DT_PARENT?.Rows.Count > 0)
+            {
+                return;
+            }
+            
+            DT_PARENT = GetParentList(itemCode);
+
+            if (DT_PARENT.Rows.Count > 0)
+            {
+                DT_PARENT.DefaultView.Sort = "Parent ASC";
+
+                cmbParentList.DataSource = DT_PARENT;
+                cmbParentList.DisplayMember = "Parent";
+                cmbParentList.SelectedIndex = -1;
+
+                if(!string.IsNullOrEmpty(SELECTED_MACHINE_SIDE_PARENT_CODE))
+                {
+                    cmbParentList.Text = tool.getItemNameFromDataTable(dt_ItemInfo, SELECTED_MACHINE_SIDE_PARENT_CODE) + " (" + SELECTED_MACHINE_SIDE_PARENT_CODE + ")";
+                }
+            }
+
+            else
+            {
+                cmbParentList.Enabled = false;
+                MessageBox.Show("No Parent Item Found!");
+            }
+        }
+
+        private DataTable GetParentList(string itemCode)
+        {
+            DataTable dtJoin = dalJoin.loadParentList(itemCode);
+            DataTable dt = new DataTable();
+
+            if (dtJoin.Rows.Count > 0)
+            {
+                cmbParentList.Enabled = true;
+
+                dt.Columns.Add("Parent");
+                dt.Columns.Add("Code");
+                dt.Columns.Add("Name");
+
+                foreach (DataRow row in dtJoin.Rows)
+                {
+                    bool duplicate = false;
+                    string parentCode = row[dalJoin.JoinParent].ToString();
+                    string parentName = tool.getItemNameFromDataTable(dt_ItemInfo,parentCode);
+
+                    DataTable dt_GrandParentList = GetParentList(parentCode);
+
+                    if (dt_GrandParentList.Rows.Count > 0)
+                    {
+                        dt.Merge(dt_GrandParentList);
+                    }
+
+                    if (dt.Rows.Count > 0)
+                    {
+                        foreach (DataRow row2 in dt.Rows)
+                        {
+                            string list_ParentCode = row2["Parent"].ToString();
+
+                            if (list_ParentCode == parentCode)
+                            {
+                                duplicate = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (!duplicate)
+                    {
+                        dt.Rows.Add(parentName+" ("+parentCode+")",parentCode, parentName);
+                    }
+                }
+            }
+
+            return dt;
+        }
+
+
+        private DataTable DT_CHILD;
+
+        private DataTable GetChildList(string itemCode)
+        {
+            DataTable dtJoin = dalJoin.loadChildList(itemCode);
+            DataTable dt = new DataTable();
+            string childList = "";
+
+            if (dtJoin.Rows.Count > 0)
+            {
+                dt.Columns.Add("Child");
+                dt.Columns.Add("Code");
+                dt.Columns.Add("Name");
+                dt.Columns.Add("JoinQty");
+                dt.Columns.Add("JoinMax");
+
+                foreach (DataRow row in dtJoin.Rows)
+                {
+                    string childCode = row[dalJoin.JoinChild].ToString();
+                    string childName = tool.getItemNameFromDataTable(dt_ItemInfo, childCode);
+                    string childCat = tool.getItemCatFromDataTable(dt_ItemInfo, childCode);
+
+                    int joinQty = int.TryParse(row[dalJoin.JoinQty].ToString(), out int x)? x : 0;
+                    int joinMax = int.TryParse(row[dalJoin.JoinMax].ToString(), out  x)? x : 0;
+
+                    if (childCat == text.Cat_Part || childCat == text.Cat_SubMat)
+                    {
+                        dt.Rows.Add(childName + " (" + childCode + ")", childCode, childName, joinQty, joinMax);
+
+                        childList += childName + " (" + childCode + "); ";
+                    }
+                }
+            }
+            else
+            {
+                childList = "No Child Mats/ Parts found !";
+                cbStockOutRejectedSubPart.Checked = false;
+            }
+
+            
+            lblSubPartList.Text = childList;
+
+            return dt;
+        }
+
+        private void cmbParentList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string parentCode = cmbParentList.Text;
+
+            if(!string.IsNullOrEmpty(parentCode) && cbMacSideAssembly.Checked)
+            {
+                txtMacSideAssembledQty.Text = txtTotalStockInQty.Text;
+            }
         }
     }
 }

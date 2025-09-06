@@ -138,6 +138,16 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ItemCode, typeof(string)); 
             dt.Columns.Add(text.Header_RawMat_String, typeof(string)); 
             dt.Columns.Add(text.Header_ColorMat, typeof(string));
+
+            dt.Columns.Add(text.Header_RawMat_1, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_1_Ratio, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_2, typeof(string));
+            dt.Columns.Add(text.Header_RawMat_2_Ratio, typeof(string));
+            dt.Columns.Add(text.Header_ColorMatCode, typeof(string));
+            dt.Columns.Add(text.Header_ColorRate, typeof(string));
+
+
+
             return dt;
         }
 
@@ -174,6 +184,13 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_StockIn_Container, typeof(int));
             dt.Columns.Add(text.Header_Qty_Per_Container, typeof(int));
             dt.Columns.Add(text.Header_JobNo, typeof(string));
+
+            dt.Columns.Add(text.Header_OutRejectedSubMat, typeof(bool));
+            dt.Columns.Add(text.Header_ParentCode, typeof(string));
+            dt.Columns.Add(text.Header_ParentQty, typeof(int));
+
+
+
             //dt.Columns.Add(header_ProducedQty, typeof(double));
             //dt.Columns.Add(header_TotalProduced, typeof(double));
             //dt.Columns.Add(text.Header_TotalStockIn, typeof(double));
@@ -214,6 +231,12 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_RawMat_String].Visible = false;
             dgv.Columns[text.Header_ColorMat].Visible = false;
 
+            dgv.Columns[text.Header_RawMat_1].Visible = false;
+            dgv.Columns[text.Header_RawMat_2].Visible = false;
+            dgv.Columns[text.Header_RawMat_1_Ratio].Visible = false;
+            dgv.Columns[text.Header_RawMat_2_Ratio].Visible = false;
+            dgv.Columns[text.Header_ColorRate].Visible = false;
+            dgv.Columns[text.Header_ColorMatCode].Visible = false;
 
         }
 
@@ -479,10 +502,26 @@ namespace FactoryManagementSoftware.UI
                         rawMix = rawMat_1;
                     }
 
+
+                    dt_Row[text.Header_RawMat_1] = rawMat_1;
+                    dt_Row[text.Header_RawMat_1_Ratio] = rawMat_1_ratio;
+                    dt_Row[text.Header_RawMat_2] = rawMat_2;
+                    dt_Row[text.Header_RawMat_2_Ratio] = rawMat_2_ratio;
+
                     string colorMatCode = row[dalPlan.colorMaterialCode].ToString();
                     string colorMatName = tool.getItemNameFromDataTable(DT_ITEM_INFO, colorMatCode);
+                    string colorMatRatio = row[dalPlan.colorMaterialUsage].ToString();
 
-                    colorMatName = string.IsNullOrEmpty(colorMatName) ? colorMatCode : colorMatName;
+                    dt_Row[text.Header_ColorMatCode] = colorMatCode;
+
+                    if (string.IsNullOrEmpty(colorMatName))
+                    {
+                        colorMatName = colorMatCode;
+                        colorMatRatio = "";
+                    }
+                    dt_Row[text.Header_ColorRate] = colorMatRatio;
+
+
 
                     string itemName = row[dalItem.ItemName].ToString();
                     string itemCode = row[dalItem.ItemCode].ToString();
@@ -784,6 +823,7 @@ namespace FactoryManagementSoftware.UI
                         
                         totalActualRejectQty += actualRejectQty;
 
+                        int parentQty = int.TryParse(row[dalProRecord.ParentQty].ToString(), out parentQty) ? parentQty : 0;
 
                         string jobNote = row[dalProRecord.Note].ToString();
                         dt_Row[text.Header_SheetID] = row[dalProRecord.SheetID].ToString();
@@ -796,6 +836,10 @@ namespace FactoryManagementSoftware.UI
                         dt_Row[text.Header_IdealHourlyShot] = idealHourlyShot;
                         dt_Row[text.Header_AvgHourlyShot] = avgHourlyShot;
                         dt_Row[text.Header_EfficiencyRate] = efficiencyRate;
+
+                        dt_Row[text.Header_OutRejectedSubMat] = row[dalProRecord.StockOutRejectedSubMat];
+                        dt_Row[text.Header_ParentCode] = row[dalProRecord.ParentCode];
+                        dt_Row[text.Header_ParentQty] = parentQty;
 
                         totalAvgShot += avgHourlyShot;
                         totalIdealShot += idealHourlyShot;
