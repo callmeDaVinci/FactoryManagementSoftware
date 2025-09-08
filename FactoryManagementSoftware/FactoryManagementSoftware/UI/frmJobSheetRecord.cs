@@ -1532,33 +1532,7 @@ namespace FactoryManagementSoftware.UI
                 int fullBoxQty = int.TryParse(txtFullBoxQty.Text, out fullBoxQty) ? fullBoxQty : 0;
                 string parentCode = "";
 
-                if (!string.IsNullOrEmpty(cmbParentList.Text) && cbMacSideAssembly.Checked && totalParentStockIn > 0)
-                {
-                    DataRowView selectedRow = (DataRowView)cmbParentList.SelectedItem;
-                    parentCode = selectedRow["Code"].ToString();
-
-                    dt_Row = dt.NewRow();
-                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                    dt_Row[header_ItemCode] = parentCode;
-                    dt_Row[header_Cat] = text.Cat_Part;
-
-                    dt_Row[header_From] = text.Assembly;
-                    dt_Row[header_To] = factory;
-
-                    dt_Row[header_Qty] = totalParentStockIn;
-                    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                    if (cbMorning.Checked)
-                    {
-                        dt_Row[header_Shift] = "M";
-                    }
-                    else if (cbNight.Checked)
-                    {
-                        dt_Row[header_Shift] = "N";
-                    }
-
-                    dt.Rows.Add(dt_Row);
-                }
+              
 
                 if(cbStockOutRejectedSubPart.Checked)
                 {
@@ -1773,121 +1747,154 @@ namespace FactoryManagementSoftware.UI
                             //dt.Rows.Add(dt_Row);
                         }
 
-                        if (totalShot > 0)
+
+                    }
+                }
+
+                if (totalShot > 0)
+                {
+                    LoadProInfo();
+
+                    COLOR_MAT_RATE = COLOR_MAT_RATE / 100;
+
+
+                    float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
+                    float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
+
+                    float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
+
+                    float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
+                    color_Material_Used_kg = (float)Math.Round(color_Material_Used_kg, 2);
+
+                    if (raw_Material_Used_kg > 0)
+                    {
+                        float raw_1_Used_kg = 0;
+                        float raw_2_Used_kg = 0;
+
+                        if (!string.IsNullOrEmpty(RAW_MAT_CODE_1) && RAW_MAT_RATIO_1 > 0)
                         {
-                            LoadProInfo();
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = RAW_MAT_CODE_1;
+                            dt_Row[header_Cat] = text.Cat_RawMat;
 
-                            COLOR_MAT_RATE =  COLOR_MAT_RATE / 100;
+                            dt_Row[header_From] = factory;
+                            dt_Row[header_To] = text.Production;
 
+                            raw_1_Used_kg = raw_Material_Used_kg * RAW_MAT_RATIO_1 / 100;
 
-                            float totalWeightPerShot = PW_PER_SHOT + RW_PER_SHOT;
-                            float totalweightProduced_kg = totalWeightPerShot * totalShot / 1000;
+                            raw_1_Used_kg = (float)Math.Round(raw_1_Used_kg, 2);
 
-                            float raw_Material_Used_kg = totalweightProduced_kg / (1 + COLOR_MAT_RATE);
+                            dt_Row[header_Qty] = raw_1_Used_kg;
 
-                            float color_Material_Used_kg = raw_Material_Used_kg * COLOR_MAT_RATE;
-                            color_Material_Used_kg = (float)Math.Round(color_Material_Used_kg, 2);
+                            dt_Row[text.Header_JobNo] = JOB_NO;
 
-                            if ( raw_Material_Used_kg > 0)
+                            if (cbMorning.Checked)
                             {
-                                float raw_1_Used_kg = 0;
-                                float raw_2_Used_kg = 0;
-
-                                if (!string.IsNullOrEmpty(RAW_MAT_CODE_1) && RAW_MAT_RATIO_1 > 0)
-                                {
-                                    dt_Row = dt.NewRow();
-                                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                                    dt_Row[header_ItemCode] = RAW_MAT_CODE_1;
-                                    dt_Row[header_Cat] = text.Cat_RawMat;
-
-                                    dt_Row[header_From] = factory;
-                                    dt_Row[header_To] = text.Production;
-
-                                    raw_1_Used_kg = raw_Material_Used_kg * RAW_MAT_RATIO_1 / 100;
-
-                                    raw_1_Used_kg = (float)Math.Round(raw_1_Used_kg, 2);
-
-                                    dt_Row[header_Qty] = raw_1_Used_kg;
-
-                                    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                                    if (cbMorning.Checked)
-                                    {
-                                        dt_Row[header_Shift] = "M";
-                                    }
-                                    else if (cbNight.Checked)
-                                    {
-                                        dt_Row[header_Shift] = "N";
-                                    }
-
-                                    dt.Rows.Add(dt_Row);
-                                }
-
-                                if (!string.IsNullOrEmpty(RAW_MAT_CODE_2) && RAW_MAT_RATIO_2 > 0)
-                                {
-                                    dt_Row = dt.NewRow();
-                                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-                                    dt_Row[header_ItemCode] = RAW_MAT_CODE_2;
-                                    dt_Row[header_Cat] = text.Cat_RawMat;
-
-                                    dt_Row[header_From] = factory;
-                                    dt_Row[header_To] = text.Production;
-
-                                    raw_2_Used_kg = raw_Material_Used_kg - raw_1_Used_kg;
-
-                                    raw_2_Used_kg = (float)Math.Round(raw_2_Used_kg, 2);
-
-                                    dt_Row[header_Qty] = raw_2_Used_kg;
-
-                                    dt_Row[text.Header_JobNo] = JOB_NO;
-
-                                    if (cbMorning.Checked)
-                                    {
-                                        dt_Row[header_Shift] = "M";
-                                    }
-                                    else if (cbNight.Checked)
-                                    {
-                                        dt_Row[header_Shift] = "N";
-                                    }
-
-                                    dt.Rows.Add(dt_Row);
-                                }
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
                             }
 
-                            if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && COLOR_MAT_RATE > 0)
+                            dt.Rows.Add(dt_Row);
+                        }
+
+                        if (!string.IsNullOrEmpty(RAW_MAT_CODE_2) && RAW_MAT_RATIO_2 > 0)
+                        {
+                            dt_Row = dt.NewRow();
+                            dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                            dt_Row[header_ItemCode] = RAW_MAT_CODE_2;
+                            dt_Row[header_Cat] = text.Cat_RawMat;
+
+                            dt_Row[header_From] = factory;
+                            dt_Row[header_To] = text.Production;
+
+                            raw_2_Used_kg = raw_Material_Used_kg - raw_1_Used_kg;
+
+                            raw_2_Used_kg = (float)Math.Round(raw_2_Used_kg, 2);
+
+                            dt_Row[header_Qty] = raw_2_Used_kg;
+
+                            dt_Row[text.Header_JobNo] = JOB_NO;
+
+                            if (cbMorning.Checked)
                             {
-                                dt_Row = dt.NewRow();
-                                dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
-
-                                dt_Row[header_ItemCode] = COLOR_MAT_CODE;
-
-                                dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
-
-                                dt_Row[header_From] = factory;
-                                dt_Row[header_To] = text.Production;
-
-
-                                dt_Row[header_Qty] = color_Material_Used_kg;
-
-                                dt_Row[text.Header_JobNo] = JOB_NO;
-
-                                if (cbMorning.Checked)
-                                {
-                                    dt_Row[header_Shift] = "M";
-                                }
-                                else if (cbNight.Checked)
-                                {
-                                    dt_Row[header_Shift] = "N";
-                                }
-
-                                dt.Rows.Add(dt_Row);
+                                dt_Row[header_Shift] = "M";
+                            }
+                            else if (cbNight.Checked)
+                            {
+                                dt_Row[header_Shift] = "N";
                             }
 
+                            dt.Rows.Add(dt_Row);
                         }
                     }
 
-                    #region process to in/out edit page
+                    if (!string.IsNullOrEmpty(COLOR_MAT_CODE) && COLOR_MAT_RATE > 0)
+                    {
+                        dt_Row = dt.NewRow();
+                        dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
 
+                        dt_Row[header_ItemCode] = COLOR_MAT_CODE;
+
+                        dt_Row[header_Cat] = tool.getCatNameFromDataTable(dt_ItemInfo, COLOR_MAT_CODE);
+
+                        dt_Row[header_From] = factory;
+                        dt_Row[header_To] = text.Production;
+
+
+                        dt_Row[header_Qty] = color_Material_Used_kg;
+
+                        dt_Row[text.Header_JobNo] = JOB_NO;
+
+                        if (cbMorning.Checked)
+                        {
+                            dt_Row[header_Shift] = "M";
+                        }
+                        else if (cbNight.Checked)
+                        {
+                            dt_Row[header_Shift] = "N";
+                        }
+
+                        dt.Rows.Add(dt_Row);
+                    }
+
+                }
+
+                if (!string.IsNullOrEmpty(cmbParentList.Text) && cbMacSideAssembly.Checked && totalParentStockIn > 0)
+                {
+                    DataRowView selectedRow = (DataRowView)cmbParentList.SelectedItem;
+                    parentCode = selectedRow["Code"].ToString();
+
+                    dt_Row = dt.NewRow();
+                    dt_Row[header_ProDate] = dtpProDate.Value.ToString("ddMMMMyy");
+                    dt_Row[header_ItemCode] = parentCode;
+                    dt_Row[header_Cat] = text.Cat_Part;
+
+                    dt_Row[header_From] = text.Assembly;
+                    dt_Row[header_To] = factory;
+
+                    dt_Row[header_Qty] = totalParentStockIn;
+                    dt_Row[text.Header_JobNo] = JOB_NO;
+
+                    if (cbMorning.Checked)
+                    {
+                        dt_Row[header_Shift] = "M";
+                    }
+                    else if (cbNight.Checked)
+                    {
+                        dt_Row[header_Shift] = "N";
+                    }
+
+                    dt.Rows.Add(dt_Row);
+                }
+
+                #region process to in/out edit page
+
+                if (dt?.Rows.Count > 0)
+                {
                     frmInOutEdit frm = new frmInOutEdit(dt, true);
                     frm.StartPosition = FormStartPosition.CenterScreen;
                     frm.WindowState = FormWindowState.Normal;
@@ -1901,13 +1908,14 @@ namespace FactoryManagementSoftware.UI
                     {
                         Close();
                     }
-
-                    #endregion
                 }
                 else
                 {
                     MessageBox.Show("no stock update needed.");
                 }
+
+
+                #endregion
             }
         }
 

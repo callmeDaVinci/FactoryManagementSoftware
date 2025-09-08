@@ -1238,8 +1238,11 @@ namespace FactoryManagementSoftware.UI
 
                                 if (facStock - transferQty < 0)
                                 {
-                                    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                    dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                    if (!NegativeBalCheck())
+                                    {
+                                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                        dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                    }
                                 }
                             }
 
@@ -1379,8 +1382,12 @@ namespace FactoryManagementSoftware.UI
 
                                     if (facStock - transferQty < 0)
                                     {
-                                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                        dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                        if (!NegativeBalCheck())
+                                        {
+                                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                            dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                                        }
+                                            
                                     }
                                 }
 
@@ -1501,8 +1508,12 @@ namespace FactoryManagementSoftware.UI
 
             if (facStock - transferQty < 0)
             {
-                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                if (!NegativeBalCheck())
+                {
+                    dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                }
+                    
             }
         }
 
@@ -1762,10 +1773,14 @@ namespace FactoryManagementSoftware.UI
 
                         if (facStock - transferQty < 0)
                         {
-                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                            dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                            if (!NegativeBalCheck())
+                            {
+                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
+                            }
+                            
                         }
-                        else
+                            else
                         {
                             dgv.Rows[n].Cells[NoteColumnName].Value = "";
                         }
@@ -1866,8 +1881,11 @@ namespace FactoryManagementSoftware.UI
 
                         if (facStock - transferQty < 0)
                         {
-                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                            dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                            if (!NegativeBalCheck())
+                            {
+                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                                dgv.Rows[n].Cells[NoteColumnName].Value = note + "AFTER BAL=" + (facStock - transferQty);
+                            }
                         }
                         else
                         {
@@ -2992,9 +3010,13 @@ namespace FactoryManagementSoftware.UI
 
                     if (facStock - transferQty < 0 && from != to && stockOut)
                     {
-                        //#############################################################################################################################################
-                        dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                        dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString("0.##") + ")";
+                        if(!NegativeBalCheck())
+                        {
+                            //#############################################################################################################################################
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value += " (AFTER BAL:" + (facStock - transferQty).ToString("0.##") + ")";
+                        }
+                       
                     }
                 }
 
