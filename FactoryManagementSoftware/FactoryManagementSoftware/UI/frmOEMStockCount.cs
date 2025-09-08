@@ -56,7 +56,6 @@ namespace FactoryManagementSoftware.UI
             }
 
             cmbCustomer.SelectedIndex = 0;
-            InitializeFilterData();
         }
 
         #region variable declare
@@ -561,9 +560,9 @@ namespace FactoryManagementSoftware.UI
             TALLY_MODE = false;
             btnTallyAll.Visible = false;
 
-            dgvOEMItemStockCountList.SelectionMode = DataGridViewSelectionMode.CellSelect;
+            ReloadDBandResetUI();
 
-            DT_ITEM = dalItem.Select();
+            dgvOEMItemStockCountList.SelectionMode = DataGridViewSelectionMode.CellSelect;
 
             if (cmbCustomer.SelectedIndex == -1)
             {
@@ -946,60 +945,44 @@ namespace FactoryManagementSoftware.UI
 
         #region Loading Data
 
-        private void frmForecastReport_NEW_Load(object sender, EventArgs e)
+        private void ReloadDBandResetUI()
         {
+            loaded = false;
 
             DT_MACHINE_SCHEDULE = dalPlanning.SelectCompletedOrRunningPlan();
             DT_PMMA_DATE = dalPmmaDate.Select();
             DT_JOIN = dalJoin.SelectAllWithChildCat();
-         
+            DT_ITEM = dalItem.Select();
+
             //default all customer item list setting
             DataTable dt_Item_Cust = dalItemCust.SelectAllExcludedOTHER();
+
 
             //filter out terminated item
             if (!cbIncludeTerminated.Checked && DT_ITEM_CUST != null)
                 dt_Item_Cust = RemoveTerminatedItem(dt_Item_Cust);
 
-       
+
             dgvOEMItemStockCountList.SuspendLayout();
 
             tlpOEMItemStockCount.RowStyles[2] = new RowStyle(SizeType.Absolute, 0f);
-            //tlpOEMItemStockCount.RowStyles[3] = new RowStyle(SizeType.Absolute, 0f);
 
             dgvOEMItemStockCountList.ResumeLayout();
 
             btnFilter.Text = textSearchFilter;
 
             cmbCustomer.Focus();
-            loaded = true;
 
             string cust = cmbCustomer.Text;
-            custChanging = true;
 
-            
             custChanging = false;
 
         }
-
-
-
-        private void InitializeFilterData()
+        private void frmForecastReport_NEW_Load(object sender, EventArgs e)
         {
-            loaded = false;
-
-            LoadSortByComboBoxData();
-
-            loaded = true;
+            //ReloadDBandResetUI();
         }
 
-        private void LoadSortByComboBoxData()
-        {
-           
-           
-        }
-
-        
-    
 
         private Tuple<int,bool, double> EstimateNextOrderAndCheckIfStillActive(DataTable DT_PMMA_DATE, DataTable dt_trfToCustomer, string _ItemCode, string _Customer)
         {

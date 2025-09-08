@@ -626,24 +626,24 @@ namespace FactoryManagementSoftware.UI
 
             #region Page preload
 
-            //if (!SBBFormOpen)
-            //{
-            //    frmLoading.ShowLoadingScreen();
-            //    frmSBBVer2 frm = new frmSBBVer2();
-            //    frm.MdiParent = this;
-            //    frm.StartPosition = FormStartPosition.CenterScreen;
-            //    frm.WindowState = FormWindowState.Maximized;
-            //    frm.Show();
-            //    SBBFormOpen = true;
-            //    frmLoading.CloseForm();
-            //}
-            //else
-            //{
-            //    if (Application.OpenForms.OfType<frmSBBVer2>().Count() == 1)
-            //    {
-            //        Application.OpenForms.OfType<frmSBBVer2>().First().BringToFront();
-            //    }
-            //}
+            if (!SBBFormOpen)
+            {
+                frmLoading.ShowLoadingScreen();
+                frmSBBVer2 frm = new frmSBBVer2();
+                frm.MdiParent = this;
+                frm.StartPosition = FormStartPosition.CenterScreen;
+                frm.WindowState = FormWindowState.Maximized;
+                frm.Show();
+                SBBFormOpen = true;
+                frmLoading.CloseForm();
+            }
+            else
+            {
+                if (Application.OpenForms.OfType<frmSBBVer2>().Count() == 1)
+                {
+                    Application.OpenForms.OfType<frmSBBVer2>().First().BringToFront();
+                }
+            }
 
             if (MainDashboard.USER_ID == 10) //|| MainDashboard.USER_ID == 1
             {
