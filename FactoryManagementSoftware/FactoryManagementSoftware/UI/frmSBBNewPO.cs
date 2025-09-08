@@ -1295,7 +1295,7 @@ namespace FactoryManagementSoftware.UI
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            if(Validation() && cbTotalPrice.Checked)
+            if(Validation() && PRICE_CHECKED)
             {
                 //get customer table code
                 int customer_tbl_code = 0;
@@ -1492,7 +1492,7 @@ namespace FactoryManagementSoftware.UI
                     MessageBox.Show("P/O code error(-1), please try again.");
                 }
             }
-            else if(!cbTotalPrice.Checked)
+            else if(!PRICE_CHECKED)
             {
                 MessageBox.Show("Please check the total price.");
             }
@@ -2371,13 +2371,25 @@ namespace FactoryManagementSoftware.UI
                
             }
 
+            decimal SST = 0;
+
+            if(cbAddSST.Checked)
+            {
+                SST = totalPrice * 0.05m;
+            }
+
+            totalPrice += SST;
+
             totalPrice = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero);
 
+
             btnTotalPrice.Text = "RM " + totalPrice;
-            cbTotalPrice.Checked = false;
+
+            PRICE_CHECKED =  false;
 
         }
 
+        
         private void BigSprayJetPriceSetBaseOnQty()
         {
             DataTable dt = (DataTable)dgvPOItemList.DataSource;
@@ -2668,16 +2680,9 @@ namespace FactoryManagementSoftware.UI
             GetItemCodeAndStock();
         }
 
-        private void cbTotalPrice_CheckedChanged(object sender, EventArgs e)
+        private void cbAddSST_CheckedChanged(object sender, EventArgs e)
         {
-            if(cbTotalPrice.Checked)
-            {
-                btnTotalPrice.BackColor = Color.FromArgb(0, 184, 148);
-            }
-            else
-            {
-                btnTotalPrice.BackColor = Color.FromArgb(253, 203, 110);
-            }
+            UpdateTotalPrice();
         }
 
         private void btnAdd_MouseClick(object sender, MouseEventArgs e)
@@ -2696,17 +2701,23 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private bool PRICE_CHECKED = false;
+
         private void btnTotalPrice_Click(object sender, EventArgs e)
         {
-            if(cbTotalPrice.Checked)
+
+            if (!PRICE_CHECKED)
             {
-                cbTotalPrice.Checked = false;
+                btnTotalPrice.BackColor = Color.FromArgb(0, 184, 148);
+                PRICE_CHECKED = true;
             }
             else
             {
-                cbTotalPrice.Checked = true;
+                btnTotalPrice.BackColor = Color.FromArgb(253, 203, 110);
+                PRICE_CHECKED = false;
+
             }
-            
+
         }
 
         private void label4_Click(object sender, EventArgs e)

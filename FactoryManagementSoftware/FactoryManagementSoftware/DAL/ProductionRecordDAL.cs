@@ -39,7 +39,6 @@ namespace FactoryManagementSoftware.DAL
         public string PackagingMax { get; } = "packaging_max";
         public string PackagingStockOut { get; } = "packaging_stock_out";
 
-
         public string ParentQty { get; } = "parent_qty";
 
         public string DefectRemark { get; } = "defect_remark";
@@ -725,6 +724,7 @@ namespace FactoryManagementSoftware.DAL
                             + ColorMatLotNo + ","
                             + MeterStart + ","
                             + MeterEnd + ","
+                            + ProCavity + ","
                             + LastShiftBalance + ","
                             + CurrentShiftBalance + ","
                             + FullBox + ","
@@ -755,6 +755,7 @@ namespace FactoryManagementSoftware.DAL
                             "@color_mat_lot_no," +
                             "@meter_start," +
                             "@meter_end," +
+                            "@production_cavity," +
                             "@last_shift_balance," +
                             "@current_shift_balance," +
                             "@full_box," +
@@ -788,6 +789,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
                 cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
                 cmd.Parameters.AddWithValue("@meter_end", u.meter_end);
+                cmd.Parameters.AddWithValue("@production_cavity", u.production_cavity);
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);
@@ -1212,6 +1214,7 @@ namespace FactoryManagementSoftware.DAL
                             + ColorMatLotNo + "=@color_mat_lot_no,"
                             + MeterStart + "=@meter_start,"
                             + MeterEnd + "=@meter_end,"
+                            + ProCavity + "=@production_cavity,"
                             + LastShiftBalance + "=@last_shift_balance,"
                             + CurrentShiftBalance + "=@current_shift_balance,"
                             + FullBox + "=@full_box,"
@@ -1247,6 +1250,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@color_mat_lot_no", u.color_mat_lot_no);
                 cmd.Parameters.AddWithValue("@meter_start", u.meter_start);
                 cmd.Parameters.AddWithValue("@meter_end", u.meter_end);
+                cmd.Parameters.AddWithValue("@production_cavity", u.production_cavity);
                 cmd.Parameters.AddWithValue("@last_shift_balance", u.last_shift_balance);
                 cmd.Parameters.AddWithValue("@current_shift_balance", u.current_shift_balance);
                 cmd.Parameters.AddWithValue("@full_box", u.full_box);

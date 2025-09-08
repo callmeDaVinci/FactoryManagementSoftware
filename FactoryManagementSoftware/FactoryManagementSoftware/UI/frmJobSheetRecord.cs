@@ -237,7 +237,7 @@ namespace FactoryManagementSoftware.UI
 
 
 
-                COLOR_MAT_CODE = colorMaterial;
+                //COLOR_MAT_CODE = colorMaterial;
 
 
                 if (latestProductionDate == DateTime.MinValue)
@@ -1236,6 +1236,7 @@ namespace FactoryManagementSoftware.UI
                 int TotalStockIn = int.TryParse(txtTotalStockInQty.Text, out TotalStockIn) ? TotalStockIn : 0;
                 int maxOutputQty = int.TryParse(lblMaxQty.Text, out maxOutputQty) ? maxOutputQty : 0;
                 int actualRejectQty = int.TryParse(lblActualRejectQty.Text, out actualRejectQty) ? actualRejectQty : 0;
+                int productionCavity = int.TryParse(txtCavity.Text, out productionCavity) ? productionCavity : 0;
 
 
 
@@ -1264,6 +1265,7 @@ namespace FactoryManagementSoftware.UI
                 uProRecord.color_mat_lot_no = txtColorMatLotNo.Text;
                 uProRecord.meter_start = meterStart;
                 uProRecord.meter_end = meterEnd;
+                uProRecord.production_cavity = productionCavity;
                 uProRecord.note = note;
                 uProRecord.directIn = balPieceStockIn;
                 uProRecord.parent_code = parentCode;

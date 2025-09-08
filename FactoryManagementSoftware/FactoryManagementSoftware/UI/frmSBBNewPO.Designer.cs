@@ -45,7 +45,7 @@
             this.btnMinusDiscountRate = new System.Windows.Forms.Button();
             this.btnTotalPrice = new System.Windows.Forms.Button();
             this.lblTotalPrice = new System.Windows.Forms.Label();
-            this.cbTotalPrice = new System.Windows.Forms.CheckBox();
+            this.cbAddSST = new System.Windows.Forms.CheckBox();
             this.btnAddDiscountRate = new System.Windows.Forms.Button();
             this.cbZeroPointOne = new System.Windows.Forms.CheckBox();
             this.dgvPOItemList = new System.Windows.Forms.DataGridView();
@@ -339,14 +339,14 @@
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 48F));
             this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 151F));
-            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+            this.tableLayoutPanel24.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 100F));
             this.tableLayoutPanel24.Controls.Add(this.cbDiscountRateAdjust, 5, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnResetDiscountRate, 2, 0);
             this.tableLayoutPanel24.Controls.Add(this.label3, 0, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnMinusDiscountRate, 3, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnTotalPrice, 7, 0);
             this.tableLayoutPanel24.Controls.Add(this.lblTotalPrice, 6, 0);
-            this.tableLayoutPanel24.Controls.Add(this.cbTotalPrice, 8, 0);
+            this.tableLayoutPanel24.Controls.Add(this.cbAddSST, 8, 0);
             this.tableLayoutPanel24.Controls.Add(this.btnAddDiscountRate, 1, 0);
             this.tableLayoutPanel24.Controls.Add(this.cbZeroPointOne, 4, 0);
             this.tableLayoutPanel24.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -423,7 +423,7 @@
             this.btnTotalPrice.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.btnTotalPrice.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnTotalPrice.ForeColor = System.Drawing.Color.Black;
-            this.btnTotalPrice.Location = new System.Drawing.Point(2080, 5);
+            this.btnTotalPrice.Location = new System.Drawing.Point(2020, 5);
             this.btnTotalPrice.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.btnTotalPrice.Name = "btnTotalPrice";
             this.btnTotalPrice.Size = new System.Drawing.Size(143, 30);
@@ -437,24 +437,27 @@
             this.lblTotalPrice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblTotalPrice.AutoSize = true;
             this.lblTotalPrice.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTotalPrice.Location = new System.Drawing.Point(2038, 5);
+            this.lblTotalPrice.Location = new System.Drawing.Point(1978, 5);
             this.lblTotalPrice.Margin = new System.Windows.Forms.Padding(2, 5, 2, 5);
             this.lblTotalPrice.Name = "lblTotalPrice";
             this.lblTotalPrice.Size = new System.Drawing.Size(36, 17);
             this.lblTotalPrice.TabIndex = 173;
             this.lblTotalPrice.Text = "Total";
             // 
-            // cbTotalPrice
+            // cbAddSST
             // 
-            this.cbTotalPrice.AutoSize = true;
-            this.cbTotalPrice.Location = new System.Drawing.Point(2232, 10);
-            this.cbTotalPrice.Margin = new System.Windows.Forms.Padding(5, 10, 3, 3);
-            this.cbTotalPrice.Name = "cbTotalPrice";
-            this.cbTotalPrice.Size = new System.Drawing.Size(18, 17);
-            this.cbTotalPrice.TabIndex = 174;
-            this.cbTotalPrice.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.cbTotalPrice.UseVisualStyleBackColor = true;
-            this.cbTotalPrice.CheckedChanged += new System.EventHandler(this.cbTotalPrice_CheckedChanged);
+            this.cbAddSST.AutoSize = true;
+            this.cbAddSST.Checked = true;
+            this.cbAddSST.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbAddSST.Location = new System.Drawing.Point(2172, 10);
+            this.cbAddSST.Margin = new System.Windows.Forms.Padding(5, 10, 3, 3);
+            this.cbAddSST.Name = "cbAddSST";
+            this.cbAddSST.Size = new System.Drawing.Size(87, 27);
+            this.cbAddSST.TabIndex = 174;
+            this.cbAddSST.Text = "5% SST";
+            this.cbAddSST.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.cbAddSST.UseVisualStyleBackColor = true;
+            this.cbAddSST.CheckedChanged += new System.EventHandler(this.cbAddSST_CheckedChanged);
             // 
             // btnAddDiscountRate
             // 
@@ -814,7 +817,7 @@
             this.lblTel.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTel.Location = new System.Drawing.Point(173, 10);
             this.lblTel.Name = "lblTel";
-            this.lblTel.Size = new System.Drawing.Size(36, 15);
+            this.lblTel.Size = new System.Drawing.Size(37, 15);
             this.lblTel.TabIndex = 205;
             this.lblTel.Text = "TEL. *";
             this.lblTel.Visible = false;
@@ -826,7 +829,7 @@
             this.lblCountry.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblCountry.Location = new System.Drawing.Point(3, 10);
             this.lblCountry.Name = "lblCountry";
-            this.lblCountry.Size = new System.Drawing.Size(66, 15);
+            this.lblCountry.Size = new System.Drawing.Size(67, 15);
             this.lblCountry.TabIndex = 14;
             this.lblCountry.Text = "COUNTRY*";
             // 
@@ -846,7 +849,7 @@
             this.lblShortName.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblShortName.Location = new System.Drawing.Point(339, 10);
             this.lblShortName.Name = "lblShortName";
-            this.lblShortName.Size = new System.Drawing.Size(85, 15);
+            this.lblShortName.Size = new System.Drawing.Size(86, 15);
             this.lblShortName.TabIndex = 206;
             this.lblShortName.Text = "SHORT NAME*";
             // 
@@ -916,7 +919,7 @@
             this.label6.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label6.Location = new System.Drawing.Point(3, 205);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(160, 15);
+            this.label6.Size = new System.Drawing.Size(161, 15);
             this.label6.TabIndex = 206;
             this.label6.Text = "ADDRESS LINE 3 (OPTIONAL)";
             this.label6.Click += new System.EventHandler(this.label6_Click);
@@ -951,7 +954,7 @@
             this.label4.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label4.Location = new System.Drawing.Point(3, 140);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(160, 15);
+            this.label4.Size = new System.Drawing.Size(161, 15);
             this.label4.TabIndex = 204;
             this.label4.Text = "ADDRESS LINE 2 (OPTIONAL)";
             this.label4.Click += new System.EventHandler(this.label4_Click);
@@ -1009,7 +1012,7 @@
             this.lblState.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblState.Location = new System.Drawing.Point(339, 205);
             this.lblState.Name = "lblState";
-            this.lblState.Size = new System.Drawing.Size(42, 15);
+            this.lblState.Size = new System.Drawing.Size(44, 15);
             this.lblState.TabIndex = 10;
             this.lblState.Text = "STATE*";
             // 
@@ -1031,7 +1034,7 @@
             this.lblCity.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblCity.Location = new System.Drawing.Point(339, 140);
             this.lblCity.Name = "lblCity";
-            this.lblCity.Size = new System.Drawing.Size(36, 15);
+            this.lblCity.Size = new System.Drawing.Size(37, 15);
             this.lblCity.TabIndex = 8;
             this.lblCity.Text = "CITY*";
             // 
@@ -1052,7 +1055,7 @@
             this.lblPostalCode.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblPostalCode.Location = new System.Drawing.Point(339, 75);
             this.lblPostalCode.Name = "lblPostalCode";
-            this.lblPostalCode.Size = new System.Drawing.Size(87, 15);
+            this.lblPostalCode.Size = new System.Drawing.Size(88, 15);
             this.lblPostalCode.TabIndex = 12;
             this.lblPostalCode.Text = "POSTAL CODE*";
             // 
@@ -1079,10 +1082,10 @@
             this.label7.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label7.ForeColor = System.Drawing.Color.Blue;
-            this.label7.Location = new System.Drawing.Point(288, 4);
+            this.label7.Location = new System.Drawing.Point(287, 4);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(30, 15);
+            this.label7.Size = new System.Drawing.Size(31, 15);
             this.label7.TabIndex = 203;
             this.label7.Text = "EDIT";
             this.label7.Visible = false;
@@ -1094,7 +1097,7 @@
             this.label8.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label8.Location = new System.Drawing.Point(3, 4);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(155, 15);
+            this.label8.Size = new System.Drawing.Size(158, 15);
             this.label8.TabIndex = 203;
             this.label8.Text = "TRANSPORTER  (OPTIONAL)";
             // 
@@ -1192,10 +1195,10 @@
             this.label1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 7.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Blue;
-            this.label1.Location = new System.Drawing.Point(232, 4);
+            this.label1.Location = new System.Drawing.Point(230, 4);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(93, 15);
+            this.label1.Size = new System.Drawing.Size(95, 15);
             this.label1.TabIndex = 173;
             this.label1.Text = "EDIT CUSTOMER";
             this.label1.Click += new System.EventHandler(this.AddNewCustomer_Click);
@@ -1208,7 +1211,7 @@
             this.lblCustomer.Location = new System.Drawing.Point(2, 4);
             this.lblCustomer.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblCustomer.Name = "lblCustomer";
-            this.lblCustomer.Size = new System.Drawing.Size(72, 15);
+            this.lblCustomer.Size = new System.Drawing.Size(73, 15);
             this.lblCustomer.TabIndex = 167;
             this.lblCustomer.Text = "CUSTOMER*";
             // 
@@ -1233,7 +1236,7 @@
             this.lblPODate.Location = new System.Drawing.Point(335, 10);
             this.lblPODate.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lblPODate.Name = "lblPODate";
-            this.lblPODate.Size = new System.Drawing.Size(93, 15);
+            this.lblPODate.Size = new System.Drawing.Size(94, 15);
             this.lblPODate.TabIndex = 170;
             this.lblPODate.Text = "RECEIVED DATE*";
             // 
@@ -2120,7 +2123,7 @@
         private System.Windows.Forms.Label lblTotalPrice;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel23;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel24;
-        private System.Windows.Forms.CheckBox cbTotalPrice;
+        private System.Windows.Forms.CheckBox cbAddSST;
         private System.Windows.Forms.Button btnTotalPrice;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.Label label4;

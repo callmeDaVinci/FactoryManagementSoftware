@@ -4448,65 +4448,68 @@ namespace FactoryManagementSoftware.UI
                 double dailyUsage = workingDays > 0 ? (double)totUsage / workingDays : 0;
                 int currentStock = int.TryParse(row[header_Stock].ToString(), out currentStock) ? currentStock : 0;
 
-                if(TOTAL_DAYS_IN_PERIOD < 30)
+
+                DateTime stockZeroDate = DateTime.Today;
+                DateTime startProdDate = DateTime.Today;
+
+                if (dailyUsage > 0)
                 {
-                    row[header_Est_Stock_Zero_Date] = "Period too short(<30)";
-                    row[header_Start_Prod_By_Date] = "Period too short(<30)";
+                    double daysUntilZero = currentStock / dailyUsage;
+                    stockZeroDate = CalculateWorkingDate(DateTime.Today, (int)Math.Ceiling(daysUntilZero), cbSundayisWorkday.Checked);
+                    startProdDate = CalculateWorkingDate(stockZeroDate, -prodLeadDays, cbSundayisWorkday.Checked);
                 }
-                else
+
+                if (IsMaterial(itemCat))
                 {
-                    DateTime stockZeroDate = DateTime.Today;
-                    DateTime startProdDate = DateTime.Today;
+                    if (itemCode.Contains("PD"))
+                    {
+                        var checkpoint = 1;
+                    }
+
+                    row[header_TotalProduction] = materialUsedforProductionInKG;
+                    row[header_TotalAssembly] = DBNull.Value;
+
+                    dailyUsage = workingDays > 0 ? (double)materialUsedforProductionInKG / workingDays : 0;
+
+                    row[header_DailyUsage] = Math.Round(dailyUsage, 1);
+                    row[header_MonthlyUsage] = Math.Round(dailyUsage, 1) * (cbSundayisWorkday.Checked ? 30 : 26);
 
                     if (dailyUsage > 0)
                     {
                         double daysUntilZero = currentStock / dailyUsage;
+
                         stockZeroDate = CalculateWorkingDate(DateTime.Today, (int)Math.Ceiling(daysUntilZero), cbSundayisWorkday.Checked);
-                        startProdDate = CalculateWorkingDate(stockZeroDate, -prodLeadDays, cbSundayisWorkday.Checked);
-                    }
 
-                    if(IsMaterial(itemCat))
-                    {
-                        if(itemCode.Contains("PD"))
-                        {
-                            var checkpoint = 1;
-                        }
-
-                        row[header_TotalProduction] = materialUsedforProductionInKG;
-                        row[header_TotalAssembly] = DBNull.Value;
-
-                        dailyUsage = workingDays > 0 ? (double)materialUsedforProductionInKG / workingDays : 0;
-
-                        row[header_DailyUsage] = Math.Round(dailyUsage, 1);
-                        row[header_MonthlyUsage] = Math.Round(dailyUsage, 1) * (cbSundayisWorkday.Checked ? 30 : 26);
-
-                        if (dailyUsage > 0)
-                        {
-                            double daysUntilZero = currentStock / dailyUsage;
-
-                            stockZeroDate = CalculateWorkingDate(DateTime.Today, (int)Math.Ceiling(daysUntilZero), cbSundayisWorkday.Checked);
-
-                            row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
-                        }
-                            
-                    }
-                    else
-                    {
-                        row[header_TotalProduction] = totPro;
-                        row[header_TotalAssembly] = totUsage;
-                        row[header_DailyUsage] = Math.Round(dailyUsage, 1);
-                        row[header_MonthlyUsage] = Math.Round(dailyUsage, 1) * (cbSundayisWorkday.Checked ? 30 : 26);
-
-                        // Add new columns using your header constants
                         row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
-
-                        if (itemCat == text.Cat_Part)
-                            row[header_Start_Prod_By_Date] = startProdDate.ToString("dd/MM/yyyy");
                     }
 
-                   
                 }
-               
+                else
+                {
+                    row[header_TotalProduction] = totPro;
+                    row[header_TotalAssembly] = totUsage;
+                    row[header_DailyUsage] = Math.Round(dailyUsage, 1);
+                    row[header_MonthlyUsage] = Math.Round(dailyUsage, 1) * (cbSundayisWorkday.Checked ? 30 : 26);
+
+                    // Add new columns using your header constants
+                    row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
+
+                    if (itemCat == text.Cat_Part)
+                        row[header_Start_Prod_By_Date] = startProdDate.ToString("dd/MM/yyyy");
+                }
+
+                //if(TOTAL_DAYS_IN_PERIOD < 30)
+                //{
+                //    row[header_Est_Stock_Zero_Date] = "Period too short(<30)";
+                //    row[header_Start_Prod_By_Date] = "Period too short(<30)";
+                //}
+                //else
+                //{
+
+
+
+                //}
+
             }
 
             btnStockInfoReload.Visible = false;

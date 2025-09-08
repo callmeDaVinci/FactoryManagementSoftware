@@ -170,6 +170,10 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_AvgHourlyShot, typeof(int));
             dt.Columns.Add(text.Header_EfficiencyRate, typeof(decimal));
             dt.Columns.Add(text.Header_StockIn_Remark, typeof(string));
+
+            dt.Columns.Add(text.Header_ParentCode, typeof(string));
+            dt.Columns.Add(text.Header_ParentQty, typeof(int));
+
             dt.Columns.Add(text.Header_RawMat_Lot_No, typeof(string));
             dt.Columns.Add(text.Header_ColorMat_Lot_No, typeof(string));
 
@@ -186,8 +190,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_JobNo, typeof(string));
 
             dt.Columns.Add(text.Header_OutRejectedSubMat, typeof(bool));
-            dt.Columns.Add(text.Header_ParentCode, typeof(string));
-            dt.Columns.Add(text.Header_ParentQty, typeof(int));
+           
 
 
 
@@ -256,6 +259,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_Cavity].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_RawMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[text.Header_ColorMat_Lot_No].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+            dgv.Columns[text.Header_ParentQty].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgv.Columns[text.Header_UpdatedDate].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Italic);
             dgv.Columns[text.Header_Shift].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Regular);
