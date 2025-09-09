@@ -300,7 +300,7 @@
             this.cbItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbItem.Location = new System.Drawing.Point(3, 8);
             this.cbItem.Name = "cbItem";
-            this.cbItem.Size = new System.Drawing.Size(55, 19);
+            this.cbItem.Size = new System.Drawing.Size(56, 19);
             this.cbItem.TabIndex = 116;
             this.cbItem.Text = "ITEM";
             this.cbItem.UseVisualStyleBackColor = true;
@@ -390,7 +390,7 @@
             this.label4.ForeColor = System.Drawing.Color.Black;
             this.label4.Location = new System.Drawing.Point(3, 17);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(52, 13);
+            this.label4.Size = new System.Drawing.Size(51, 13);
             this.label4.TabIndex = 115;
             this.label4.Text = "FACTORY";
             // 
@@ -474,7 +474,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 6.5F);
             this.label3.Location = new System.Drawing.Point(3, 17);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(21, 13);
+            this.label3.Size = new System.Drawing.Size(20, 13);
             this.label3.TabIndex = 117;
             this.label3.Text = "TO";
             // 
@@ -555,7 +555,7 @@
             this.cbCompleted.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbCompleted.Location = new System.Drawing.Point(3, 37);
             this.cbCompleted.Name = "cbCompleted";
-            this.cbCompleted.Size = new System.Drawing.Size(96, 19);
+            this.cbCompleted.Size = new System.Drawing.Size(97, 19);
             this.cbCompleted.TabIndex = 97;
             this.cbCompleted.Text = "COMPLETED";
             this.cbCompleted.UseVisualStyleBackColor = true;

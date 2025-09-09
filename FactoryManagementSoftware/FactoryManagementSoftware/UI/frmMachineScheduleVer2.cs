@@ -1,34 +1,35 @@
-﻿using System;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
-using FactoryManagementSoftware.BLL;
+﻿using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Microsoft.Office.Interop.Excel;
-using System.Threading;
-using DataTable = System.Data.DataTable;
-using Font = System.Drawing.Font;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Configuration;
-using System.Reflection;
-using Excel = Microsoft.Office.Interop.Excel;
-
-using TextBox = System.Windows.Forms.TextBox;
-using Task = System.Threading.Tasks.Task;
-using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
-using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
-using Range = Microsoft.Office.Interop.Excel.Range;
-using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
-using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Drawing;
 using System.Globalization;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using DataTable = System.Data.DataTable;
+using Excel = Microsoft.Office.Interop.Excel;
+using Font = System.Drawing.Font;
+using Label = System.Windows.Forms.Label;
 using Point = System.Drawing.Point;
+using Range = Microsoft.Office.Interop.Excel.Range;
 using Rectangle = System.Drawing.Rectangle;
+using Task = System.Threading.Tasks.Task;
+using TextBox = System.Windows.Forms.TextBox;
+using XlBorderWeight = Microsoft.Office.Interop.Excel.XlBorderWeight;
+using XlHAlign = Microsoft.Office.Interop.Excel.XlHAlign;
+using XlLineStyle = Microsoft.Office.Interop.Excel.XlLineStyle;
+using XlVAlign = Microsoft.Office.Interop.Excel.XlVAlign;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -176,6 +177,8 @@ namespace FactoryManagementSoftware.UI
         private DataTable DT_STOCKTAKE_RAWMAT;
         private DataTable DT_STOCKTAKE_COLORMAT;
 
+        private Form frmManualSummaryPopup;
+
         #endregion
 
         #region UI Setting
@@ -210,6 +213,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_DateStart, typeof(DateTime));
             dt.Columns.Add(text.Header_EstDateEnd, typeof(DateTime));
             dt.Columns.Add(text.Header_MouldCode, typeof(string));
+            dt.Columns.Add(text.Header_OperationType, typeof(string));
             dt.Columns.Add(text.Header_ItemNameAndCode, typeof(string));
             dt.Columns.Add(text.Header_TargetQty, typeof(int));
             dt.Columns.Add(text.Header_MaxOutput, typeof(int));
@@ -286,6 +290,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_Recycle_Qty].Visible = false;
             dgv.Columns[text.Header_FacID].Visible = false;
+            dgv.Columns[text.Header_MouldCode].Visible = false;
             dgv.Columns[text.Header_MacID].Visible = false;
             dgv.Columns[text.Header_Ori_DateStart].Visible = false;
             dgv.Columns[text.Header_Ori_EstDateEnd].Visible = false;
@@ -342,6 +347,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_RawMat_String].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
             dgv.Columns[text.Header_ColorMat].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
+            dgv.Columns[text.Header_OperationType].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
             dgv.Columns[text.Header_TargetQty].DefaultCellStyle.ForeColor = importantColor;
             dgv.Columns[text.Header_ProducedQty].DefaultCellStyle.ForeColor = Color.Green;
@@ -354,6 +360,7 @@ namespace FactoryManagementSoftware.UI
 
             dgv.Columns[text.Header_Job_Purpose].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
             dgv.Columns[text.Header_Remark].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
+            dgv.Columns[text.Header_OperationType].DefaultCellStyle.Font = new Font("Segoe UI", 7F, FontStyle.Italic);
 
             dgv.Columns[text.Header_Mac].DefaultCellStyle.Font = new Font("Segoe UI", 14F, FontStyle.Regular);
             dgv.Columns[text.Header_ItemNameAndCode].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Regular);
@@ -1407,6 +1414,7 @@ namespace FactoryManagementSoftware.UI
                     row_Schedule[text.Header_Mac] = machineName;
                     row_Schedule[text.Header_Ori_Machine_Name] = machineName;
                     row_Schedule[text.Header_MacID] = int.TryParse(machineID, out x) ? x : 0;
+                    row_Schedule[text.Header_OperationType] = row[dalPlanning.OperationType];
 
                     string itemName = row[dalItem.ItemName].ToString();
                     string itemCode = row[dalItem.ItemCode].ToString();
@@ -1577,6 +1585,8 @@ namespace FactoryManagementSoftware.UI
                 dgvUIEdit(dgvMacSchedule);//1066ms
                 MacScheduleListCellFormatting(dgvMacSchedule);//8546ms -> 2277ms
                 dgvMacSchedule.ClearSelection();
+
+                UpdateManualOperationsSummary();
             }
 
             frmLoading.CloseForm();
@@ -1771,7 +1781,6 @@ namespace FactoryManagementSoftware.UI
 
             New_LoadMacSchedule();
 
-           
 
             if (fromDailyRecord)
             {
@@ -1788,8 +1797,10 @@ namespace FactoryManagementSoftware.UI
                 ScrollToJobNumber(LOADING_KEY_VALUE);
             }
 
-
+            InitializeOperationTypeMenu();
         }
+
+
         public void ScrollToJobNumber(string jobNumber)
         {
             if (dgvMacSchedule?.Rows.Count > 0 && dgvMacSchedule.Columns.Contains(text.Header_JobNo))
@@ -4616,7 +4627,34 @@ namespace FactoryManagementSoftware.UI
         readonly private string SCHEDULE_ACTION_DRAFT = "Draft";
         readonly private string SCHEDULE_ACTION_DATE_EDIT = "Change Date";
 
-        private void dgvSchedule_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        private ToolStripMenuItem opTypeMenu;
+        private ToolStripMenuItem opAuto;
+        private ToolStripMenuItem opSemi;
+        private ToolStripMenuItem opManual;
+        private ToolStripMenuItem opClear;
+        private void InitializeOperationTypeMenu()
+        {
+            // Create Operation Type menu with sub items
+            opTypeMenu = new ToolStripMenuItem("Operation Type");
+            opAuto = new ToolStripMenuItem("Auto");
+            opSemi = new ToolStripMenuItem("Semi");
+            opManual = new ToolStripMenuItem("Manual");
+            opClear = new ToolStripMenuItem("(Clear)");
+
+            // Add click handlers
+            opAuto.Click += (s, args) => ChangeOperationType("Auto");
+            opSemi.Click += (s, args) => ChangeOperationType("Semi");
+            opManual.Click += (s, args) => ChangeOperationType("Manual");
+            opClear.Click += (s, args) => ChangeOperationType("");
+
+            // Add sub-items to parent menu
+            opTypeMenu.DropDownItems.Add(opAuto);
+            opTypeMenu.DropDownItems.Add(opSemi);
+            opTypeMenu.DropDownItems.Add(opManual);
+            opTypeMenu.DropDownItems.Add(opClear);
+        }
+
+        private void OlddgvSchedule_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
 
@@ -4696,6 +4734,7 @@ namespace FactoryManagementSoftware.UI
                     if (currentHeader.Equals(text.Header_RawMat_String) || currentHeader.Equals(text.Header_ColorMat))
                         my_menu.Items.Add(text.planning_Material_Summary).Name = text.planning_Material_Summary;
 
+
                     my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
                     contextMenuStrip1 = my_menu;
                     my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
@@ -4709,9 +4748,179 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void dgvSchedule_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int userPermission = dalUser.getPermissionLevel(MainDashboard.USER_ID);
+
+            //handle the row selection on right click
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && userPermission >= MainDashboard.ACTION_LVL_THREE)
+            {
+                // Create a new context menu for this right-click
+                ContextMenuStrip my_menu = new ContextMenuStrip();
+
+                dgvMacSchedule.CurrentCell = dgvMacSchedule.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                dgvMacSchedule.Rows[e.RowIndex].Selected = true;
+                dgvMacSchedule.Focus();
+
+                int rowIndex = dgvMacSchedule.CurrentCell.RowIndex;
+                int colIndex = dgvMacSchedule.CurrentCell.ColumnIndex;
+                string currentHeader = dgvMacSchedule.Columns[colIndex].Name;
+
+                try
+                {
+                    string result = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_Status].Value.ToString();
+
+                    // Add your existing status-based menu items
+                    if (result.Equals(text.planning_status_pending))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_DRAFT).Name = text.planning_status_draft;
+                        my_menu.Items.Add(SCHEDULE_ACTION_CANCEL).Name = text.planning_status_cancelled;
+                        my_menu.Items.Add(SCHEDULE_ACTION_COMPLETE).Name = text.planning_status_completed;
+                    }
+                    else if (result.Equals(text.planning_status_cancelled))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_DRAFT).Name = text.planning_status_draft;
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
+                    }
+                    else if (result.Equals(text.planning_status_running))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
+                        my_menu.Items.Add(SCHEDULE_ACTION_CANCEL).Name = text.planning_status_cancelled;
+                        my_menu.Items.Add(SCHEDULE_ACTION_COMPLETE).Name = text.planning_status_completed;
+                        my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
+                    }
+                    else if (result.Equals(text.planning_status_completed))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_RUN).Name = text.planning_status_running;
+                        my_menu.Items.Add(SCHEDULE_ACTION_PENDING).Name = text.planning_status_pending;
+                    }
+                    else if (result.Equals(text.planning_status_draft))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_PUBLISH).Name = text.planning_status_pending;
+                        my_menu.Items.Add(SCHEDULE_ACTION_CANCEL).Name = text.planning_status_cancelled;
+                        my_menu.Items.Add(SCHEDULE_ACTION_JOB_EDIT).Name = SCHEDULE_ACTION_JOB_EDIT;
+                    }
+                    else if (result.Equals(text.planning_status_idle))
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_ADD_JOB).Name = SCHEDULE_ACTION_ADD_JOB;
+                    }
+
+                    // Add date edit option
+                    if (result != text.planning_status_idle && result != text.planning_status_completed && result != text.planning_status_cancelled)
+                    {
+                        my_menu.Items.Add(SCHEDULE_ACTION_DATE_EDIT).Name = SCHEDULE_ACTION_DATE_EDIT;
+                    }
+
+                    // Add material summary option
+                    if (currentHeader.Equals(text.Header_RawMat_String) || currentHeader.Equals(text.Header_ColorMat))
+                    {
+                        my_menu.Items.Add(text.planning_Material_Summary).Name = text.planning_Material_Summary;
+                    }
+
+                    // *** NEW: Add Operation Type submenu to THIS context menu ***
+                    if (my_menu.Items.Count > 0)
+                    {
+                        my_menu.Items.Add(new ToolStripSeparator()); // Add separator
+                    }
+
+                    // Get current operation type and update checkmarks
+                    string currentOpType = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_OperationType].Value?.ToString();
+                    opAuto.Checked = (currentOpType == "Auto");
+                    opSemi.Checked = (currentOpType == "Semi");
+                    opManual.Checked = (currentOpType == "Manual");
+                    opClear.Checked = string.IsNullOrEmpty(currentOpType);
+
+                    // Add the Operation Type submenu to the current context menu
+                    my_menu.Items.Add(opTypeMenu);
+
+                    // Show the menu and attach event handler
+                    my_menu.Show(Cursor.Position.X, Cursor.Position.Y);
+                    contextMenuStrip1 = my_menu;
+                    my_menu.ItemClicked += new ToolStripItemClickedEventHandler(my_menu_ItemClicked);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        planningDAL dalPlan = new planningDAL();
+        PlanningBLL uPlan = new PlanningBLL();
+        private void ChangeOperationType(string newType)
+        {
+            if (dgvMacSchedule.CurrentRow == null) return;
 
 
+            int rowIndex = dgvMacSchedule.CurrentRow.Index;
+            string oldValue = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_OperationType].Value?.ToString();
+            string planID = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_JobNo].Value?.ToString();
+            string itemCode = dgvMacSchedule.Rows[rowIndex].Cells[text.Header_ItemCode].Value?.ToString();
 
+            // Only proceed if the value actually changed
+            if (oldValue == newType) return;
+
+            // Update the Operation Type column immediately (visual feedback)
+            dgvMacSchedule.Rows[rowIndex].Cells[text.Header_OperationType].Value = newType;
+            dgvMacSchedule.Refresh();
+
+            //update tbl_plan
+            uPlan.plan_id = Convert.ToInt32(planID);
+            uPlan.plan_operation_type = newType;
+
+            UpdateManualOperationsSummary();
+
+            if (!dalPlan.OperationTypeUpdate(uPlan))
+            {
+                MessageBox.Show("Failed to update operation type for Job No " + planID + "!");
+            }
+
+            DialogResult result = MessageBox.Show(
+                $"Update Operation Type to '{newType}' in database?",
+                "Confirm Update",
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question);
+
+            if (result == DialogResult.Yes)
+            {
+                bool updateSuccess = UpdateOperationTypeInDatabase(itemCode, newType);
+
+                if (!updateSuccess)
+                {
+                    MessageBox.Show("Failed to update database.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    MessageBox.Show($"Operation Type updated to '{newType}' successfully!", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            else
+            {
+                // User clicked No - revert the column value
+                //dgvMacSchedule.Rows[rowIndex].Cells[text.Header_OperationType].Value = oldValue;
+                dgvMacSchedule.Refresh();
+            }
+        }
+
+
+        itemBLL uItem = new itemBLL();
+
+        private bool UpdateOperationTypeInDatabase(string itemCode, string newOperationType)
+        {
+
+
+            uItem.item_code = itemCode;
+            uItem.item_pro_type = newOperationType;
+
+            uItem.item_updtd_date = DateTime.Now;
+            uItem.item_updtd_by = MainDashboard.USER_ID;
+
+
+           return  dalItem.ItemOperationTypeUpdate(uItem);
+
+        }
         #region Drag and Drop
 
         Rectangle dragBoxFromMouseDown;
@@ -5239,6 +5448,25 @@ namespace FactoryManagementSoftware.UI
                 }
 
             }
+
+            if (e.RowIndex >= 0 && dgvMacSchedule.Columns[e.ColumnIndex].Name == text.Header_OperationType)
+            {
+                string opType = e.Value?.ToString();
+                string jobno = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_JobNo].Value.ToString();
+
+                if(!string.IsNullOrEmpty(jobno))
+                {
+                    if (opType == "Manual")
+                    {
+                        e.CellStyle.BackColor = Color.LightSalmon;
+                    }
+                    else
+                    {
+                        e.CellStyle.BackColor = Color.White; // Reset to default
+                    }
+                }
+              
+            }
         }
 
 //         if (CLEAR_SELECTION_AFTER_DROP)
@@ -5631,6 +5859,284 @@ private void dgvMacSchedule_MouseClick(object sender, MouseEventArgs e)
             MainDashboard.MACHINE_SCHEDULE_SWITCH_TO_OLD_VERSION = true;
             MainDashboard.OpenOldVersionMachineSchedule();
             Close();
+        }
+
+        private void UpdateManualOperationsSummary()
+        {
+            try
+            {
+                if (dgvMacSchedule.DataSource == null)
+                {
+                    lblManualSummary.Text = "Manual Operations Summary: No data loaded ▼";
+                    return;
+                }
+
+                DateTime today = DateTime.Today;
+
+                // Calculate today's manual operations
+                var todayManual = GetManualOperationsForDate(today);
+                string todayText = todayManual.Count > 0 ?
+                    $"Today ({today:dd MMM}) : {todayManual.Count} Manual ( {string.Join(" , ", todayManual)} )" :
+                    $"Today ({today:dd MMM}) : 0 Manual";
+
+                // Calculate this week's total
+                DateTime startOfWeek = GetStartOfWeek(today);
+                DateTime endOfWeek = startOfWeek.AddDays(6);
+                var weeklyManual = GetUniqueManualOperationsForWeek(startOfWeek, endOfWeek);
+                string weeklyText = $"This Week: {weeklyManual.Count} Total";
+
+                lblManualSummary.Text = $"{todayText} | {weeklyText}";
+            }
+            catch (Exception ex)
+            {
+                lblManualSummary.Text = "Manual Operations Summary: Error loading data ▼";
+                // Optional: log error
+                // MessageBox.Show($"Error updating manual summary: {ex.Message}");
+            }
+        }
+
+        private List<string> GetManualOperationsForDate(DateTime date)
+        {
+            var manualOps = new Dictionary<string, int>();
+
+            if (dgvMacSchedule.DataSource is DataTable dt)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    try
+                    {
+                        // Check if operation type is Manual
+                        string opType = row[text.Header_OperationType]?.ToString();
+                        if (opType != "Manual") continue;
+
+                        // Check if job is not completed or cancelled
+                        string status = row[text.Header_Status]?.ToString();
+                        if (status == text.planning_status_completed || status == text.planning_status_cancelled)
+                            continue;
+
+                        // Check if this job runs on the specified date
+                        DateTime startDate = DateTime.TryParse(row[text.Header_DateStart]?.ToString(), out startDate) ? startDate.Date : DateTime.MinValue;
+                        DateTime endDate = DateTime.TryParse(row[text.Header_EstDateEnd]?.ToString(), out endDate) ? endDate.Date : DateTime.MaxValue;
+
+                        if (date >= startDate && date <= endDate)
+                        {
+                            string macId = row[text.Header_Mac]?.ToString();
+                            if (!string.IsNullOrEmpty(macId))
+                            {
+                                manualOps[macId] = manualOps.ContainsKey(macId) ? manualOps[macId] + 1 : 1;
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Skip invalid rows
+                        continue;
+                    }
+                }
+            }
+
+            // Format as "A1(2)", "B1" etc.
+            return manualOps.Select(kvp => kvp.Value == 1 ? kvp.Key : $"{kvp.Key}({kvp.Value})").ToList();
+        }
+
+        private List<string> GetUniqueManualOperationsForWeek(DateTime startOfWeek, DateTime endOfWeek)
+        {
+            var uniqueJobs = new HashSet<string>();
+
+            if (dgvMacSchedule.DataSource is DataTable dt)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    try
+                    {
+                        // Check if operation type is Manual
+                        string opType = row[text.Header_OperationType]?.ToString();
+                        if (opType != "Manual") continue;
+
+                        // Check if job is not completed or cancelled
+                        string status = row[text.Header_Status]?.ToString();
+                        if (status == text.planning_status_completed || status == text.planning_status_cancelled)
+                            continue;
+
+                        // Check if this job spans any part of the week
+                        DateTime startDate = DateTime.TryParse(row[text.Header_DateStart]?.ToString(), out startDate) ? startDate.Date : DateTime.MinValue;
+                        DateTime endDate = DateTime.TryParse(row[text.Header_EstDateEnd]?.ToString(), out endDate) ? endDate.Date : DateTime.MaxValue;
+
+                        // Job spans the week if: job_start <= week_end AND job_end >= week_start
+                        if (startDate <= endOfWeek && endDate >= startOfWeek)
+                        {
+                            string jobNo = row[text.Header_JobNo]?.ToString();
+                            if (!string.IsNullOrEmpty(jobNo))
+                            {
+                                uniqueJobs.Add(jobNo);
+                            }
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        // Skip invalid rows
+                        continue;
+                    }
+                }
+            }
+
+            return uniqueJobs.ToList();
+        }
+
+        private DateTime GetStartOfWeek(DateTime date)
+        {
+            // Monday as start of week
+            int diff = (7 + (date.DayOfWeek - DayOfWeek.Monday)) % 7;
+            return date.AddDays(-1 * diff).Date;
+        }
+
+        // 3. Add click event handler to your lblManualSummary (in designer or code)
+        // lblManualSummary.Click += LblManualSummary_Click;
+        private void LblManualSummary_Click(object sender, EventArgs e)
+        {
+            ShowManualOperationsPopup();
+        }
+
+        private void ShowManualOperationsPopup()
+        {
+            try
+            {
+                // Close existing popup if open
+                if (frmManualSummaryPopup != null && !frmManualSummaryPopup.IsDisposed)
+                {
+                    frmManualSummaryPopup.Close();
+                }
+
+                // Create popup form
+                frmManualSummaryPopup = new Form();
+                frmManualSummaryPopup.Text = "Manual Machine Daily Summary";
+                frmManualSummaryPopup.StartPosition = FormStartPosition.CenterParent;
+                frmManualSummaryPopup.FormBorderStyle = FormBorderStyle.FixedDialog;
+                frmManualSummaryPopup.MaximizeBox = false;
+                frmManualSummaryPopup.MinimizeBox = false;
+                frmManualSummaryPopup.BackColor = Color.White;
+                frmManualSummaryPopup.Size = new Size(450, 600);
+
+                // Create scrollable panel
+                Panel pnlContent = new Panel();
+                pnlContent.Dock = DockStyle.Fill;
+                pnlContent.AutoScroll = true;
+                pnlContent.BackColor = Color.White;
+                pnlContent.Padding = new Padding(20);
+
+                // Create content label
+                Label lblContent = new Label();
+                lblContent.Text = GenerateDailySummaryText();
+                lblContent.AutoSize = true;
+                lblContent.Font = new Font("Consolas", 9F); // Monospace font for better alignment
+                lblContent.ForeColor = Color.FromArgb(1, 33, 71);
+                lblContent.Location = new Point(0, 0);
+
+                pnlContent.Controls.Add(lblContent);
+                frmManualSummaryPopup.Controls.Add(pnlContent);
+
+                // Show popup
+                frmManualSummaryPopup.ShowDialog(this);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error showing manual operations popup: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private string GenerateDailySummaryText()
+        {
+            StringBuilder sb = new StringBuilder();
+            DateTime today = DateTime.Today;
+
+            // Current week
+            DateTime currentWeekStart = GetStartOfWeek(today);
+            DateTime currentWeekEnd = currentWeekStart.AddDays(6);
+
+            var currentWeekJobs = GetUniqueManualOperationsForWeek(currentWeekStart, currentWeekEnd);
+            sb.AppendLine("===============================================");
+            sb.AppendLine($"  CURRENT WEEK ({currentWeekStart:dd MMM} - {currentWeekEnd:dd MMM})");
+            sb.AppendLine($"  Total Manual Operations: {currentWeekJobs.Count}");
+            sb.AppendLine("===============================================");
+            sb.AppendLine();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime date = currentWeekStart.AddDays(i);
+                var dailyOps = GetManualOperationsForDate(date);
+                string dayName = date.ToString("ddd dd MMM");
+                string opsText = dailyOps.Count > 0 ? string.Join(", ", dailyOps) : "None";
+
+                if (date.Date == today)
+                {
+                    // Highlight today
+                    sb.AppendLine($"► {dayName,-12} : {dailyOps.Count} Manual  →  {opsText}");
+                }
+                else
+                {
+                    sb.AppendLine($"  {dayName,-12} : {dailyOps.Count} Manual  →  {opsText}");
+                }
+            }
+
+            sb.AppendLine();
+            sb.AppendLine();
+            //sb.AppendLine("-----------------------------------------------");
+
+            sb.AppendLine();
+
+            // Next week
+            DateTime nextWeekStart = currentWeekStart.AddDays(7);
+            DateTime nextWeekEnd = nextWeekStart.AddDays(6);
+
+            var nextWeekJobs = GetUniqueManualOperationsForWeek(nextWeekStart, nextWeekEnd);
+            sb.AppendLine("===============================================");
+            sb.AppendLine($"  NEXT WEEK ({nextWeekStart:dd MMM} - {nextWeekEnd:dd MMM})");
+            sb.AppendLine($"  Total Manual Operations: {nextWeekJobs.Count}");
+            sb.AppendLine("===============================================");
+            sb.AppendLine();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime date = nextWeekStart.AddDays(i);
+                var dailyOps = GetManualOperationsForDate(date);
+                string dayName = date.ToString("ddd dd MMM");
+                string opsText = dailyOps.Count > 0 ? string.Join(", ", dailyOps) : "None";
+
+                sb.AppendLine($"  {dayName,-12} : {dailyOps.Count} Manual  →  {opsText}");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine();
+            //sb.AppendLine("-----------------------------------------------");
+
+            sb.AppendLine();
+
+            // Week after next
+            DateTime thirdWeekStart = currentWeekStart.AddDays(14);
+            DateTime thirdWeekEnd = thirdWeekStart.AddDays(6);
+
+            var thirdWeekJobs = GetUniqueManualOperationsForWeek(thirdWeekStart, thirdWeekEnd);
+            sb.AppendLine("===============================================");
+            sb.AppendLine($"  WEEK AFTER NEXT ({thirdWeekStart:dd MMM} - {thirdWeekEnd:dd MMM})");
+            sb.AppendLine($"  Total Manual Operations: {thirdWeekJobs.Count}");
+            sb.AppendLine("===============================================");
+            sb.AppendLine();
+
+            for (int i = 0; i < 7; i++)
+            {
+                DateTime date = thirdWeekStart.AddDays(i);
+                var dailyOps = GetManualOperationsForDate(date);
+                string dayName = date.ToString("ddd dd MMM");
+                string opsText = dailyOps.Count > 0 ? string.Join(", ", dailyOps) : "None";
+
+                sb.AppendLine($"  {dayName,-12} : {dailyOps.Count} Manual  →  {opsText}");
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━");
+            sb.AppendLine();
+
+            return sb.ToString();
         }
     }
 }

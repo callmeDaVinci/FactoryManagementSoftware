@@ -37,6 +37,7 @@ namespace FactoryManagementSoftware.BLL
         public string material_recycle_use { get; set; }
         public string plan_mould_code { get; set; }
         public string plan_mould_ton { get; set; }
+        public string plan_operation_type { get; set; }
 
         public string recycle_material_qty_kg { get; set; }
         public string raw_material_qty { get; set; }

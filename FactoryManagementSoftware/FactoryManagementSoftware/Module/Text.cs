@@ -265,8 +265,17 @@ H/P: 012 - 733 0617 Email: general@safetyplastics.com.my / Sales Dept.: sales@sa
 
         #endregion
 
+        #region Injection Machine Operation
+
+        public string MachineOperation_Auto { get; } = "Auto";
+        public string MachineOperation_Semi { get; } = "Semi";
+        public string MachineOperation_Manual { get; } = "Manual";
+
+
+        #endregion
+
         #region Database String
-         //<add name = "connstrng" connectionString="SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock"/>
+        //<add name = "connstrng" connectionString="SERVER=DESKTOP-MFUKGH2;DATABASE=Factory;USER ID=stock;PASSWORD=stock"/>
 
         public string DB_Semenyih { get; } = "SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock";
         //SERVER=ADMIN001;DATABASE=Factory;USER ID=StockAdmin;PASSWORD=stock
@@ -517,6 +526,7 @@ H/P: 012 - 733 0617 Email: general@safetyplastics.com.my / Sales Dept.: sales@sa
         public string Header_MatCode { get; } = "MAT. CODE";
         public string Header_MatName { get; } = "MAT. NAME";
         public string Header_Color { get; } = "Color";
+        public string Header_OperationType { get; } = "Operation Type";
 
         public string Header_ColorMat_KG { get; } = "Color Mat. (KG)";
 

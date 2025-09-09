@@ -661,7 +661,7 @@ namespace FactoryManagementSoftware.UI
             }
 
             int userID = MainDashboard.USER_ID;
-            if (userID == 10 || userID == 21 || userID == 23) //|| MainDashboard.USER_ID == 1
+            if (userID == 10 || userID == 8 || userID == 24 || userID == 35 || userID == 1) //|| MainDashboard.USER_ID == 1
             {
                 frmMaterialAlertNotice frm2 = new frmMaterialAlertNotice();
                 //frm2.StartPosition = FormStartPosition.CenterScreen;

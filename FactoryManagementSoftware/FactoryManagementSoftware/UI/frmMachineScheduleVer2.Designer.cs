@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.dgvMacSchedule = new System.Windows.Forms.DataGridView();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -82,6 +82,9 @@
             this.lblTotalPlannedToUse = new System.Windows.Forms.Label();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
+            this.groupBox6 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel11 = new System.Windows.Forms.TableLayoutPanel();
+            this.lblManualSummary = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMacSchedule)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
@@ -100,6 +103,8 @@
             this.tlpMainSchedule.SuspendLayout();
             this.tableLayoutPanel10.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
+            this.groupBox6.SuspendLayout();
+            this.tableLayoutPanel11.SuspendLayout();
             this.SuspendLayout();
             // 
             // dgvMacSchedule
@@ -111,24 +116,24 @@
             this.dgvMacSchedule.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dgvMacSchedule.BackgroundColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
             this.dgvMacSchedule.CellBorderStyle = System.Windows.Forms.DataGridViewCellBorderStyle.SingleHorizontal;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvMacSchedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(1)))), ((int)(((byte)(33)))), ((int)(((byte)(71)))));
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvMacSchedule.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvMacSchedule.ColumnHeadersHeight = 50;
             this.dgvMacSchedule.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvMacSchedule.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvMacSchedule.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvMacSchedule.GridColor = System.Drawing.Color.Silver;
             this.dgvMacSchedule.Location = new System.Drawing.Point(2, 258);
@@ -653,7 +658,7 @@
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 140F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tlpButton.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 105F));
-            this.tlpButton.Controls.Add(this.lblSmallFontRow, 3, 0);
+            this.tlpButton.Controls.Add(this.groupBox6, 3, 0);
             this.tlpButton.Controls.Add(this.gunaGradientButton1, 2, 0);
             this.tlpButton.Controls.Add(this.btnExcel, 6, 0);
             this.tlpButton.Controls.Add(this.btnNewJob, 4, 0);
@@ -669,13 +674,12 @@
             // 
             // lblSmallFontRow
             // 
-            this.lblSmallFontRow.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.lblSmallFontRow.AutoSize = true;
             this.lblSmallFontRow.BackColor = System.Drawing.Color.Transparent;
             this.lblSmallFontRow.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblSmallFontRow.Font = new System.Drawing.Font("Segoe UI", 8F, System.Drawing.FontStyle.Underline);
             this.lblSmallFontRow.ForeColor = System.Drawing.Color.Blue;
-            this.lblSmallFontRow.Location = new System.Drawing.Point(302, 13);
+            this.lblSmallFontRow.Location = new System.Drawing.Point(74, 3);
             this.lblSmallFontRow.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
             this.lblSmallFontRow.Name = "lblSmallFontRow";
             this.lblSmallFontRow.Size = new System.Drawing.Size(104, 19);
@@ -813,10 +817,12 @@
             // 
             // tableLayoutPanel8
             // 
-            this.tableLayoutPanel8.ColumnCount = 2;
+            this.tableLayoutPanel8.ColumnCount = 3;
+            this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 72F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel8.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 255F));
-            this.tableLayoutPanel8.Controls.Add(this.btnFilterApply, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.lblSmallFontRow, 1, 0);
+            this.tableLayoutPanel8.Controls.Add(this.btnFilterApply, 2, 0);
             this.tableLayoutPanel8.Controls.Add(this.lblResetAll, 0, 0);
             this.tableLayoutPanel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel8.Location = new System.Drawing.Point(0, 166);
@@ -1029,6 +1035,49 @@
             this.tableLayoutPanel7.Size = new System.Drawing.Size(1313, 734);
             this.tableLayoutPanel7.TabIndex = 168;
             // 
+            // groupBox6
+            // 
+            this.groupBox6.Controls.Add(this.tableLayoutPanel11);
+            this.groupBox6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.groupBox6.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox6.Location = new System.Drawing.Point(305, 0);
+            this.groupBox6.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.groupBox6.Name = "groupBox6";
+            this.groupBox6.Padding = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.groupBox6.Size = new System.Drawing.Size(708, 46);
+            this.groupBox6.TabIndex = 169;
+            this.groupBox6.TabStop = false;
+            this.groupBox6.Text = "MANUAL OPERATION SUMMARY";
+            // 
+            // tableLayoutPanel11
+            // 
+            this.tableLayoutPanel11.ColumnCount = 1;
+            this.tableLayoutPanel11.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel11.Controls.Add(this.lblManualSummary, 0, 0);
+            this.tableLayoutPanel11.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel11.Location = new System.Drawing.Point(2, 17);
+            this.tableLayoutPanel11.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel11.Name = "tableLayoutPanel11";
+            this.tableLayoutPanel11.RowCount = 1;
+            this.tableLayoutPanel11.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel11.Size = new System.Drawing.Size(704, 26);
+            this.tableLayoutPanel11.TabIndex = 0;
+            // 
+            // lblManualSummary
+            // 
+            this.lblManualSummary.AutoSize = true;
+            this.lblManualSummary.BackColor = System.Drawing.Color.Transparent;
+            this.lblManualSummary.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.lblManualSummary.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblManualSummary.ForeColor = System.Drawing.Color.Blue;
+            this.lblManualSummary.Location = new System.Drawing.Point(2, 3);
+            this.lblManualSummary.Margin = new System.Windows.Forms.Padding(2, 3, 2, 3);
+            this.lblManualSummary.Name = "lblManualSummary";
+            this.lblManualSummary.Size = new System.Drawing.Size(396, 20);
+            this.lblManualSummary.TabIndex = 170;
+            this.lblManualSummary.Text = "Today (09 Sep) : 3 Manual ( A1(2) , B1 ) | This Week: 5 Total";
+            this.lblManualSummary.Click += new System.EventHandler(this.LblManualSummary_Click);
+            // 
             // frmMachineScheduleVer2
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
@@ -1062,7 +1111,6 @@
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel2.PerformLayout();
             this.tlpButton.ResumeLayout(false);
-            this.tlpButton.PerformLayout();
             this.tableLayoutPanel8.ResumeLayout(false);
             this.tableLayoutPanel8.PerformLayout();
             this.tlpMainSchedule.ResumeLayout(false);
@@ -1070,6 +1118,9 @@
             this.tableLayoutPanel10.ResumeLayout(false);
             this.tableLayoutPanel10.PerformLayout();
             this.tableLayoutPanel7.ResumeLayout(false);
+            this.groupBox6.ResumeLayout(false);
+            this.tableLayoutPanel11.ResumeLayout(false);
+            this.tableLayoutPanel11.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -1127,5 +1178,8 @@
         private Guna.UI.WinForms.GunaGradientButton gunaGradientButton1;
         private System.Windows.Forms.Label lblSmallFontRow;
         private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.GroupBox groupBox6;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel11;
+        private System.Windows.Forms.Label lblManualSummary;
     }
 }

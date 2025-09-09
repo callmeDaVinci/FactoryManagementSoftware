@@ -448,8 +448,8 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_DailyUsage, typeof(int));
             dt.Columns.Add(header_MonthlyUsage, typeof(int));
 
-            dt.Columns.Add(header_Est_Stock_Zero_Date, typeof(string));
-            dt.Columns.Add(header_Start_Prod_By_Date, typeof(string));
+            dt.Columns.Add(header_Est_Stock_Zero_Date, typeof(DateTime));
+            dt.Columns.Add(header_Start_Prod_By_Date, typeof(DateTime));
             dt.Columns.Add(header_MaxProdPerDay, typeof(int));
             
 
@@ -500,7 +500,7 @@ namespace FactoryManagementSoftware.UI
             dgv.ColumnHeadersDefaultCellStyle.ForeColor = Color.Gray;
             dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
-
+            dgv.Columns[header_BalAfter].DefaultCellStyle.Format = "0.###";
             dgv.Columns[header_ItemCode].Visible = false;
 
             if (dgv == dgvStockAlert)
@@ -4449,8 +4449,8 @@ namespace FactoryManagementSoftware.UI
                 int currentStock = int.TryParse(row[header_Stock].ToString(), out currentStock) ? currentStock : 0;
 
 
-                DateTime stockZeroDate = DateTime.Today;
-                DateTime startProdDate = DateTime.Today;
+                DateTime stockZeroDate = DateTime.MaxValue;
+                DateTime startProdDate = DateTime.MaxValue;
 
                 if (dailyUsage > 0)
                 {
@@ -4480,7 +4480,8 @@ namespace FactoryManagementSoftware.UI
 
                         stockZeroDate = CalculateWorkingDate(DateTime.Today, (int)Math.Ceiling(daysUntilZero), cbSundayisWorkday.Checked);
 
-                        row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
+                        //row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
+                        row[header_Est_Stock_Zero_Date] = stockZeroDate;
                     }
 
                 }
@@ -4492,10 +4493,16 @@ namespace FactoryManagementSoftware.UI
                     row[header_MonthlyUsage] = Math.Round(dailyUsage, 1) * (cbSundayisWorkday.Checked ? 30 : 26);
 
                     // Add new columns using your header constants
-                    row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
+                    //row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
+
+                    //row[header_Est_Stock_Zero_Date] = stockZeroDate;
+                    //if (itemCat == text.Cat_Part)
+                    //    row[header_Start_Prod_By_Date] = startProdDate.ToString("dd/MM/yyyy");
 
                     if (itemCat == text.Cat_Part)
-                        row[header_Start_Prod_By_Date] = startProdDate.ToString("dd/MM/yyyy");
+                        row[header_Start_Prod_By_Date] = startProdDate;
+                    else
+                        row[header_Start_Prod_By_Date] = DBNull.Value;
                 }
 
                 //if(TOTAL_DAYS_IN_PERIOD < 30)
@@ -4513,8 +4520,24 @@ namespace FactoryManagementSoftware.UI
             }
 
             btnStockInfoReload.Visible = false;
-
+            SetupDateColumnFormatting(dgvStockAlert);
             Cursor = Cursors.Arrow;
+        }
+
+        private void SetupDateColumnFormatting(DataGridView dgv)
+        {
+            // Set date format for display (Malaysian format: dd/MM/yyyy)
+            if (dgv.Columns.Contains(header_Est_Stock_Zero_Date))
+            {
+                dgv.Columns[header_Est_Stock_Zero_Date].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dgv.Columns[header_Est_Stock_Zero_Date].DefaultCellStyle.NullValue = "";
+            }
+
+            if (dgv.Columns.Contains(header_Start_Prod_By_Date))
+            {
+                dgv.Columns[header_Start_Prod_By_Date].DefaultCellStyle.Format = "dd/MM/yyyy";
+                dgv.Columns[header_Start_Prod_By_Date].DefaultCellStyle.NullValue = "";
+            }
         }
 
         // Helper method for working date calculation
@@ -6786,11 +6809,14 @@ namespace FactoryManagementSoftware.UI
                     int qtyBlueIndex = dgv.Columns[header_Qty_Blue].Index;
                     int qtyYellowIndex = dgv.Columns[header_Qty_Yellow].Index;
                     int balanceIndex = dgv.Columns[header_Balance].Index;
+                    int stdPackingBlueIndex = dgv.Columns[header_StdPacking_BLue].Index;
+                    int stdPackingWhiteIndex = dgv.Columns[header_StdPacking_White].Index;
+                    int stdPackingYellowIndex = dgv.Columns[header_StdPacking_Yellow].Index;
 
                     // Check if current cell is in an editable column
                     if (colIndex == qtyWhiteIndex ||
                         colIndex == qtyBlueIndex ||
-                        colIndex == qtyYellowIndex ||
+                        colIndex == qtyYellowIndex || colIndex == stdPackingBlueIndex || colIndex == stdPackingWhiteIndex || colIndex == stdPackingYellowIndex ||
                         colIndex == balanceIndex)
                     {
                         // Enable editing for editable columns
@@ -7279,6 +7305,135 @@ namespace FactoryManagementSoftware.UI
             CalculatePeriodDetails();
             btnStockInfoReload.Visible = true;
 
+        }
+
+        private void dgvStockAlert_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void dgvStockAlert_CellMouseDown_1(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
+            {
+                // Get item code from clicked row
+                string itemCode = dgvStockAlert.Rows[e.RowIndex].Cells[header_ItemCode].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    ShowMachineHistory(itemCode);
+                }
+            }
+        }
+
+        private void ShowMachineHistory(string itemCode)
+        {
+            try
+            {
+                // Get data from planning table
+                planningDAL dalPlanning = new planningDAL();
+                DataTable dt = dalPlanning.SelectCompletedOrRunningPlan();
+
+                // Collect history records and machines
+                var historyList = new List<(string machine, int jobNo, int produced, DateTime date)>();
+                var machineSet = new HashSet<string>();
+
+                foreach (DataRow row in dt.Rows)
+                {
+                    if (row[dalPlanning.partCode].ToString() == itemCode)
+                    {
+                        string macName = row[dalPlanning.machineName]?.ToString();
+                        int jobNo = int.TryParse(row[dalPlanning.jobNo]?.ToString(), out jobNo) ? jobNo : 0;
+                        int produced = int.TryParse(row[dalPlanning.planProduced]?.ToString(), out produced) ? produced : 0;
+                        DateTime date = DateTime.TryParse(row[dalPlanning.productionStartDate]?.ToString(), out date) ? date : DateTime.MinValue;
+
+                        if (!string.IsNullOrEmpty(macName))
+                        {
+                            historyList.Add((macName, jobNo, produced, date));
+                            machineSet.Add(macName);
+                        }
+                    }
+                }
+
+                // Show popup form
+                ShowProductionHistoryPopup(itemCode, historyList, machineSet);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error loading production history: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        // Add this new method for the popup:
+        private void ShowProductionHistoryPopup(string itemCode, List<(string machine, int jobNo, int produced, DateTime date)> historyList, HashSet<string> machineSet)
+        {
+            // Create popup form
+            Form frmHistory = new Form();
+            frmHistory.Text = "Production History";
+            frmHistory.StartPosition = FormStartPosition.CenterParent;
+            frmHistory.FormBorderStyle = FormBorderStyle.FixedDialog;
+            frmHistory.MaximizeBox = false;
+            frmHistory.MinimizeBox = false;
+            frmHistory.BackColor = Color.White;
+            frmHistory.Size = new Size(550, 500);
+
+            // Create scrollable panel
+            Panel pnlContent = new Panel();
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.AutoScroll = true;
+            pnlContent.BackColor = Color.White;
+            pnlContent.Padding = new Padding(20);
+            // Create content
+            string content = GenerateProductionHistoryText(itemCode, historyList, machineSet);
+
+            Label lblContent = new Label();
+            lblContent.Text = content;
+            lblContent.AutoSize = true;
+            lblContent.Font = new Font("Consolas", 9F); // Monospace font for alignment
+            lblContent.ForeColor = Color.FromArgb(1, 33, 71);
+            lblContent.Location = new Point(20, 10); // Move it 20px from left, 10px from top
+
+            pnlContent.Controls.Add(lblContent);
+            frmHistory.Controls.Add(pnlContent);
+
+            // Show popup
+            frmHistory.ShowDialog(this);
+        }
+
+        // Add this method to format the text:
+        private string GenerateProductionHistoryText(string itemCode, List<(string machine, int jobNo, int produced, DateTime date)> historyList, HashSet<string> machineSet)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("===============================================");
+            sb.AppendLine($"  PRODUCTION HISTORY - {itemCode}");
+            sb.AppendLine("===============================================");
+            sb.AppendLine();
+
+            if (historyList.Count == 0)
+            {
+                sb.AppendLine("No production history found for this item.");
+            }
+            else
+            {
+                // Show machines
+                var sortedMachines = machineSet.OrderBy(m => m).ToList();
+                sb.AppendLine($"MACHINES: {string.Join(", ", sortedMachines)}");
+                sb.AppendLine();
+                sb.AppendLine("RECORDS (Latest First):");
+                sb.AppendLine();
+
+                // Sort by date (latest first)
+                var sortedHistory = historyList.OrderByDescending(h => h.date).ToList();
+
+                foreach (var record in sortedHistory)
+                {
+                    string dateStr = record.date.ToString("dd/MM/yyyy");
+                    sb.AppendLine($"{record.machine,-4} | Job #{record.jobNo,-6} | {record.produced,8:N0} produced | {dateStr}");
+                }
+            }
+
+            return sb.ToString();
         }
     }
 }

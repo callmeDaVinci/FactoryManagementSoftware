@@ -174,10 +174,12 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_ParentCode, typeof(string));
             dt.Columns.Add(text.Header_ParentQty, typeof(int));
 
+            dt.Columns.Add(text.Header_QtyReject, typeof(int));
+            dt.Columns.Add(text.Header_OutRejectedSubMat, typeof(bool));
+
             dt.Columns.Add(text.Header_RawMat_Lot_No, typeof(string));
             dt.Columns.Add(text.Header_ColorMat_Lot_No, typeof(string));
 
-            dt.Columns.Add(text.Header_QtyReject, typeof(int));
 
             dt.Columns.Add(text.Header_Remark, typeof(string));
             dt.Columns.Add(text.Header_UpdatedDate, typeof(DateTime));
@@ -189,7 +191,6 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(text.Header_Qty_Per_Container, typeof(int));
             dt.Columns.Add(text.Header_JobNo, typeof(string));
 
-            dt.Columns.Add(text.Header_OutRejectedSubMat, typeof(bool));
            
 
 

@@ -31,6 +31,7 @@ namespace FactoryManagementSoftware.BLL
         public int item_quo_ton { get; set; } = 0;//quotation ton
         public int item_best_ton { get; set; } = 0;
         public int item_pro_ton { get; set; } = 0;//item_pro_ton
+        public string item_pro_type { get; set; } = "";
         public string item_mb { get; set; } = null;
         public int item_quo_ct { get; set; } = 0;
         public int item_pro_ct_from { get; set; } = 0;

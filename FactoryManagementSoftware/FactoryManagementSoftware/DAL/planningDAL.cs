@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using FactoryManagementSoftware.Module;
+using FactoryManagementSoftware.UI;
 
 namespace FactoryManagementSoftware.DAL
 {
@@ -47,6 +48,7 @@ namespace FactoryManagementSoftware.DAL
 
         public string targetQty { get; } = "target_qty";
         public string ableQty { get; } = "able_produce_qty";
+        public string OperationType { get; } = "operation_type";
         public string productionDay { get; } = "production_day";
         public string productionHour { get; } = "production_hour";
         public string productionHourPerDay { get; } = "production_hour_per_day";
@@ -338,6 +340,7 @@ namespace FactoryManagementSoftware.DAL
                             + planPW + ","
                             + planRW + ","
                             + planCavity + ","
+                            + OperationType + ","
                             + partCode + ","
                             + productionPurpose + ","
                             + materialCode + ","
@@ -369,6 +372,7 @@ namespace FactoryManagementSoftware.DAL
                             "@plan_pw," +
                             "@plan_rw," +
                             "@plan_cavity," +
+                            "@plan_operation_type," +
                             "@part_code," +
                             "@production_purpose," +
                             "@material_code," +
@@ -400,6 +404,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
                 cmd.Parameters.AddWithValue("@plan_ct", u.plan_ct);
+                cmd.Parameters.AddWithValue("@plan_operation_type", u.plan_operation_type);
                 cmd.Parameters.AddWithValue("@plan_pw", u.plan_pw);
                 cmd.Parameters.AddWithValue("@plan_rw", u.plan_rw);
                 cmd.Parameters.AddWithValue("@plan_cavity", u.plan_cavity);
@@ -474,6 +479,7 @@ namespace FactoryManagementSoftware.DAL
                             SET "
                               + targetQty + "=@production_target_qty,"
                               + ableQty + "=@production_able_produce_qty,"
+                              + OperationType + "=@plan_operation_type,"
                               + productionDay + "=@production_day,"
                               + productionHour + "=@production_hour,"
                               + productionHourPerDay + "=@production_hour_per_day,"
@@ -510,6 +516,7 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@plan_updated_date", u.plan_updated_date);
                 cmd.Parameters.AddWithValue("@plan_updated_by", u.plan_updated_by);
+                cmd.Parameters.AddWithValue("@plan_operation_type", u.plan_operation_type);
 
                 cmd.Parameters.AddWithValue("@plan_status", u.plan_status);
                 cmd.Parameters.AddWithValue("@plan_note", u.plan_note);
@@ -656,6 +663,49 @@ namespace FactoryManagementSoftware.DAL
 
                 cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
                 cmd.Parameters.AddWithValue("@plan_produced", u.plan_produced);
+
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool OperationTypeUpdate(PlanningBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_plan SET
+                                operation_type=@operation_type
+                                WHERE plan_id=@plan_id";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@plan_id", u.plan_id);
+                cmd.Parameters.AddWithValue("@operation_type", u.plan_operation_type);
 
                 conn.Open();
 

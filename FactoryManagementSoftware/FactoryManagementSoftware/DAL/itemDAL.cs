@@ -33,6 +33,7 @@ namespace FactoryManagementSoftware.DAL
         public string ItemQuoTon { get; } = "item_quo_ton";
         public string ItemBestTon { get; } = "item_best_ton";
         public string ItemProTon { get; } = "item_mc";
+        public string ItemProType { get; } = "mac_operation_type";
         public string ItemMBRate { get; } = "item_mb_rate";
         public string ColorFollowRaw { get; } = "raw_color";
         public string ColorFollowRecycle { get; } = "recycle_color";
@@ -1885,6 +1886,54 @@ namespace FactoryManagementSoftware.DAL
                 cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
                 cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
      
+                conn.Open();
+
+                int rows = cmd.ExecuteNonQuery();
+
+                //if the query is executed successfully then the rows' value = 0
+                if (rows > 0)
+                {
+                    //query successful
+                    isSuccess = true;
+                }
+                else
+                {
+                    //Query falled
+                    isSuccess = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool(); tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+            return isSuccess;
+        }
+
+        public bool ItemOperationTypeUpdate(itemBLL u)
+        {
+            bool isSuccess = false;
+            SqlConnection conn = new SqlConnection(myconnstrng);
+
+            try
+            {
+                String sql = @"UPDATE tbl_item 
+                            SET "
+                            + ItemProType + "=@item_pro_type,"
+                            + ItemUpdateDate + "=@item_updtd_date,"
+                            + ItemUpdateBy + "=@item_updtd_by" +
+                            " WHERE item_code=@item_code";
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+
+                cmd.Parameters.AddWithValue("@item_code", u.item_code);
+                cmd.Parameters.AddWithValue("@item_pro_type", u.item_pro_type);
+                cmd.Parameters.AddWithValue("@item_updtd_date", u.item_updtd_date);
+                cmd.Parameters.AddWithValue("@item_updtd_by", u.item_updtd_by);
+
                 conn.Open();
 
                 int rows = cmd.ExecuteNonQuery();

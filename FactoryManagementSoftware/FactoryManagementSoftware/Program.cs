@@ -40,7 +40,7 @@ namespace FactoryManagementSoftware
 
             //Application.Run(new frmProductionRecordVer3());
 
-            //Application.Run(new frmInOutVer2());
+            //Application.Run(new frmMaterialAlertNotice());
 
             //Application.Run(new MainDashboard(1));
 

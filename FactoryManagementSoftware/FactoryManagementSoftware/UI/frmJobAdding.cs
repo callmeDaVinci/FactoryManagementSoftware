@@ -1,13 +1,17 @@
-﻿using System;
+﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
+using Microsoft.Office.Interop.Word;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
-using FactoryManagementSoftware.BLL;
-using FactoryManagementSoftware.DAL;
-using FactoryManagementSoftware.Module;
+using DataTable = System.Data.DataTable;
+using Font = System.Drawing.Font;
+using Point = System.Drawing.Point;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -195,6 +199,21 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private void LoadOperationTypes()
+        {
+            // Clear existing items just in case
+            cmbOperationType.Items.Clear();
+
+            // Add operation types
+            cmbOperationType.Items.Add(text.MachineOperation_Auto);
+            cmbOperationType.Items.Add(text.MachineOperation_Semi);
+            cmbOperationType.Items.Add(text.MachineOperation_Manual);
+
+            // Set default selection (optional)
+            cmbOperationType.SelectedIndex = -1; // Auto by default
+        }
+
+
         private DataTable NewScheduleTable()
         {
             DataTable dt = new DataTable();
@@ -323,7 +342,7 @@ namespace FactoryManagementSoftware.UI
             DT_SUMMARY_RAW = null;
             DT_SUMMARY_STOCKCHECK = null;
             DT_SUMMARY_MAC_SCHEDULE = null;
-
+            LoadOperationTypes();
             loadHabitData();
         }
 
@@ -451,6 +470,7 @@ namespace FactoryManagementSoftware.UI
 
                 BLL_JOB_SUMMARY.plan_mould_code = lblMouldCode.Text;
                 BLL_JOB_SUMMARY.plan_mould_ton = lblMouldTon.Text;
+                BLL_JOB_SUMMARY.plan_operation_type = cmbOperationType.Text;
                 BLL_JOB_SUMMARY.plan_cavity = totalCavity.ToString();
                 BLL_JOB_SUMMARY.plan_ct = proCycleTime.ToString();
                 BLL_JOB_SUMMARY.plan_pw_shot = totalPWPerShot.ToString();
@@ -779,6 +799,7 @@ namespace FactoryManagementSoftware.UI
             COLOR_MAT_CODE = "";
 
             lblMouldTon.Text = "";
+            cmbOperationType.Text = "";
             lblMouldCode.Text = "";
             txtItemColor.Text = "";
             txtColorMatUsage.Text = "0";
@@ -2145,7 +2166,7 @@ namespace FactoryManagementSoftware.UI
 
             lblMouldCode.Text = "";
             lblMouldTon.Text = row[dalItem.ItemProTon].ToString();
-
+            cmbOperationType.Text = row[dalItem.ItemProType].ToString();
 
             return newRow;
         }
@@ -2958,6 +2979,8 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private bool PAGE_LOADED = false;
+
         private void frmPlanningNEWV2_Shown(object sender, EventArgs e)
         {
             //load item search page
@@ -2982,6 +3005,8 @@ namespace FactoryManagementSoftware.UI
             {
                 AddItem();
             }
+
+            PAGE_LOADED = true;
         }
 
         private void ItemListCellFormatting(DataGridView dgv)
@@ -6762,6 +6787,7 @@ namespace FactoryManagementSoftware.UI
                             //uItem.item_quo_ton = string.IsNullOrEmpty(txtQuoTon.Text) ? 0 : Convert.ToInt32(txtQuoTon.Text);
                             
                             uItem.item_pro_ton = ton;
+                            uItem.item_pro_type = cmbOperationType.Text;
                             uItem.item_cavity = cavity;
                             //uItem.item_quo_ct = string.IsNullOrEmpty(txtQuoCT.Text) ? 0 : Convert.ToInt32(txtQuoCT.Text);
                             uItem.item_pro_ct_to = cycleTime;
@@ -6957,6 +6983,55 @@ namespace FactoryManagementSoftware.UI
 
         private void btnCancel_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void UpdateOperationType()
+        {
+            string selectedType = cmbOperationType.SelectedItem.ToString();
+
+            DataTable dt_itemList = null;
+
+            if (dgvItemList?.Rows.Count > 0)
+            {
+                dt_itemList = (DataTable)dgvItemList.DataSource;
+            }
+
+            if (PAGE_LOADED && !string.IsNullOrEmpty(selectedType) && dt_itemList?.Rows.Count > 0)
+            {
+                // Confirm with user before updating
+                DialogResult messageResult = MessageBox.Show(
+                    "Do you want to update the operation type to the database?",
+                    "Confirm Update",
+                    MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question
+                );
+
+                if (messageResult == DialogResult.Yes)
+                {
+                    frmLoading.ShowLoadingScreen();
+
+                    foreach(DataRow row in dt_itemList.Rows)
+                    {
+                        string itemCode = row[text.Header_ItemCode].ToString();
+
+                        uItem.item_code = itemCode;
+                        uItem.item_pro_type = selectedType;
+
+                        uItem.item_updtd_date = DateTime.Now;
+                        uItem.item_updtd_by = MainDashboard.USER_ID;
+
+                        dalItem.ItemOperationTypeUpdate(uItem);
+                    }
+
+                    frmLoading.CloseForm();
+                }
+            }
+        }
+
+        private void cmbOperationType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateOperationType();
 
         }
     }
