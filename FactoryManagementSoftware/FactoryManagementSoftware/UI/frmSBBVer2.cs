@@ -4495,14 +4495,20 @@ namespace FactoryManagementSoftware.UI
                     // Add new columns using your header constants
                     //row[header_Est_Stock_Zero_Date] = stockZeroDate.ToString("dd/MM/yyyy");
 
-                    //row[header_Est_Stock_Zero_Date] = stockZeroDate;
+                    //
                     //if (itemCat == text.Cat_Part)
                     //    row[header_Start_Prod_By_Date] = startProdDate.ToString("dd/MM/yyyy");
 
                     if (itemCat == text.Cat_Part)
+                    {
                         row[header_Start_Prod_By_Date] = startProdDate;
+                        row[header_Est_Stock_Zero_Date] = stockZeroDate;
+                    }
                     else
+                    {
                         row[header_Start_Prod_By_Date] = DBNull.Value;
+                        row[header_Est_Stock_Zero_Date] = DBNull.Value;
+                    }
                 }
 
                 //if(TOTAL_DAYS_IN_PERIOD < 30)

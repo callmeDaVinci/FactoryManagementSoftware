@@ -1773,12 +1773,8 @@ namespace FactoryManagementSoftware.UI
 
                         if (facStock - transferQty < 0)
                         {
-                            if (!NegativeBalCheck())
-                            {
-                                dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
-                                dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
-                            }
-                            
+                            dgv.Rows[n].Cells[NoteColumnName].Style.ForeColor = Color.Red;
+                            dgv.Rows[n].Cells[NoteColumnName].Value = "AFTER BAL=" + (facStock - transferQty);
                         }
                             else
                         {

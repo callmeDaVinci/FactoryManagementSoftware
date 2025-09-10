@@ -205,6 +205,7 @@
             this.dgvItem.Size = new System.Drawing.Size(976, 241);
             this.dgvItem.TabIndex = 58;
             this.dgvItem.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellClick);
+            this.dgvItem.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvItem_CellContentClick);
             this.dgvItem.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvItem_CellFormatting);
             this.dgvItem.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvItem_CellMouseDown);
             this.dgvItem.SelectionChanged += new System.EventHandler(this.dgvItem_SelectionChanged);
@@ -409,7 +410,7 @@
             this.lblUpdatedTime.Location = new System.Drawing.Point(845, 34);
             this.lblUpdatedTime.Margin = new System.Windows.Forms.Padding(3);
             this.lblUpdatedTime.Name = "lblUpdatedTime";
-            this.lblUpdatedTime.Size = new System.Drawing.Size(125, 30);
+            this.lblUpdatedTime.Size = new System.Drawing.Size(127, 30);
             this.lblUpdatedTime.TabIndex = 83;
             this.lblUpdatedTime.Text = "SHOW DATA FOR THE PAST";
             this.lblUpdatedTime.Click += new System.EventHandler(this.lblUpdatedTime_Click);
