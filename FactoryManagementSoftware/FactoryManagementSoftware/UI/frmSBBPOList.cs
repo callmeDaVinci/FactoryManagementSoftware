@@ -451,11 +451,11 @@ namespace FactoryManagementSoftware.UI
                     //dgv.Columns[header_OrderQty].Visible = false;
                     dgv.Columns[header_SizeString].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
 
-                    dgv.Columns[header_BalanceString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                    dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
-                    dgv.Columns[header_DONoString].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
+                    dgv.Columns[header_BalanceString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
+                    dgv.Columns[header_DONoString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Regular);
                     //dgv.Columns[header_StockString].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
-                    dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 8F, FontStyle.Bold);
+                    dgv.Columns[header_DeliveryQTY].DefaultCellStyle.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
                     //dgv.Columns[header_Size].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
                     //dgv.Columns[header_Unit].DefaultCellStyle.Font = new Font("Segoe UI", 6F, FontStyle.Regular);
 

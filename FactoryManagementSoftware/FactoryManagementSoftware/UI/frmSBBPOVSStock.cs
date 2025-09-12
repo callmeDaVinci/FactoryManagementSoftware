@@ -371,6 +371,7 @@ namespace FactoryManagementSoftware.UI
             //dgv.Columns[header_StockString].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCellsExceptHeader;
 
             dgv.Rows[0].Height = 70;
+            dgv.Rows[1].Height = 80;
 
             dgv.Columns[header_Index].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             dgv.Columns[header_Index].Width = 35;
@@ -1231,7 +1232,7 @@ namespace FactoryManagementSoftware.UI
 
                 string EditUnit = cmbEditUnit.Text;
 
-                //start: code to improve speed
+   
 
                 DB_DO_ACTIVE = DB_DO_ALL.Clone();
 
@@ -1254,7 +1255,7 @@ namespace FactoryManagementSoftware.UI
                     }
                 }
 
-                // Now, iterate through the PO list and check against the dictionary.
+          
                 foreach (DataRow row in DB_PO_ACTIVE.Rows)
                 {
                     string poTblCode = row[dalSPP.TableCode].ToString();
@@ -1268,7 +1269,7 @@ namespace FactoryManagementSoftware.UI
                 }
 
 
-                #region old Code to improve speed
+               
                 int itemTargetDeliveryDateCount = 0;
 
                 foreach (DataRow row in DB_PO_ACTIVE.Rows)
@@ -1526,30 +1527,38 @@ namespace FactoryManagementSoftware.UI
 
                                     ShortName = row[dalSPP.ShortName].ToString();
 
-
-                                    // string POShippingInfo = " " + PODate.ToShortDateString() + " ";
                                     string POShippingInfo = "";
 
                                     string ShippingShortName = row[dalSPP.ShippingShortName].ToString();
                                     string ShippingState = row[dalSPP.AddressState].ToString().ToUpper();
                                     string ShippingTransporter = row[dalSPP.ShippingTransporter].ToString();
+                                    string RemarkInDO = row[dalSPP.RemarkInDO].ToString();
 
-
-                                    POShippingInfo += nl;
 
                                     if (ShippingShortName != ShortName && !usingBillingAddress)
-                                        POShippingInfo += " " + ShippingShortName;
-                                    else
+                                    {
                                         POShippingInfo += nl;
-
-
+                                        POShippingInfo += " " + ShippingShortName;
+                                    }
+                                    //else
+                                    //    POShippingInfo += nl;
 
                                     if (ShippingState != "SELANGOR" && ShippingState != "KL" && ShippingState != "KUALA LUMPUR")
                                     {
+                                        POShippingInfo += nl;
                                         POShippingInfo += " (" + ShippingState + ")";
                                     }
 
-                                    POShippingInfo += " " + nl + ShippingTransporter + " ";
+                                    if(!string.IsNullOrEmpty(ShippingTransporter))
+                                    {
+                                        POShippingInfo += " " + nl + ShippingTransporter + " ";
+                                    }
+
+                                    if (!string.IsNullOrEmpty(RemarkInDO))
+                                    {
+                                        POShippingInfo +=  nl + RemarkInDO;
+                                    }
+
                                     dt_Planning.Rows[1][colName] = POShippingInfo;
                                 }
                                 else
@@ -1565,8 +1574,8 @@ namespace FactoryManagementSoftware.UI
                     }
 
                 }
-                #endregion
-                //ennd: code to improve speed
+              
+               
 
                 #endregion
 
@@ -1893,7 +1902,7 @@ namespace FactoryManagementSoftware.UI
 
                 string parentCode = itemCode;
 
-                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C")
+                if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
                 {
                     parentCode = GetChildCode(dtJoin, row[header_ItemCode].ToString());
                 }

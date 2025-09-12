@@ -116,6 +116,10 @@ namespace FactoryManagementSoftware.UI
         readonly string header_BalAfterPcs = "BAL. AFTER (PCS)";
         readonly string header_QtyPerBag = "QTY PER BAG";
 
+        readonly string header_BalAfterPlan = "BAL. AFTER (PLAN)";
+        readonly string header_BalAfterPlanBag = "BAL. AFTER PLAN (BAG)";
+        readonly string header_BalAfterPlanPcs = "BAL. AFTER PLAN (PCS)";
+
         readonly string MonthlyDate_Normal = "1-30/31";
         readonly string MonthlyDate_Safety = "23-22";
 
@@ -404,6 +408,10 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_BalAfterBag, typeof(int));
             dt.Columns.Add(header_BalAfterPcs, typeof(int));
 
+            dt.Columns.Add(header_BalAfterPlan, typeof(double));
+            dt.Columns.Add(header_BalAfterPlanBag, typeof(int));
+            dt.Columns.Add(header_BalAfterPlanPcs, typeof(int));
+
             dt.Columns.Add(header_Produced, typeof(int));
             dt.Columns.Add(header_ProduceTarget, typeof(int));
             dt.Columns.Add(header_ProDaysNeeded, typeof(float));
@@ -501,6 +509,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[header_ItemName].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgv.Columns[header_Index].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
             dgv.Columns[header_BalAfter].DefaultCellStyle.Format = "0.###";
+            dgv.Columns[header_BalAfterPlan].DefaultCellStyle.Format = "0.###";
             dgv.Columns[header_ItemCode].Visible = false;
 
             if (dgv == dgvStockAlert)
@@ -535,6 +544,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_Qty_Yellow].Visible = false;
                 dgv.Columns[header_Balance].Visible = false;
                 dgv.Columns[text.Header_Transfer_Qty].Visible = false;
+                dgv.Columns[header_ProDaysNeeded].Visible = false;
 
                 dgv.Columns[header_Qty_White].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_StdPacking_White].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -558,6 +568,7 @@ namespace FactoryManagementSoftware.UI
 
                 dgv.Columns[header_StockMinLvl].DefaultCellStyle.BackColor = Color.LightYellow;
                 dgv.Columns[header_BalAfter].DefaultCellStyle.BackColor = Color.LightBlue;
+                dgv.Columns[header_BalAfterPlan].DefaultCellStyle.BackColor = Color.LightCyan;
 
                 dgv.Columns[header_Qty_Blue].DefaultCellStyle.BackColor = Color.Blue;
                 dgv.Columns[header_Qty_Blue].DefaultCellStyle.ForeColor = Color.White;
@@ -574,6 +585,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[header_ItemName].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
 
                 dgv.Columns[header_BalAfter].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                dgv.Columns[header_BalAfterPlan].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                 dgv.Columns[header_ActualStock].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[header_StockDiff].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
                 dgv.Columns[header_BalAfterBag].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
@@ -588,7 +600,8 @@ namespace FactoryManagementSoftware.UI
                 if (STOCK_CHECK_MODE)
                 {
                     dgv.Columns[header_BalAfter].Visible = false;
-                    dgv.Columns[header_ProDaysNeeded].Visible = false;
+                    dgv.Columns[header_BalAfterPlan].Visible = false;
+                    
                 }
                 else
                 {
@@ -602,13 +615,18 @@ namespace FactoryManagementSoftware.UI
                         dgv.Columns[header_BalAfter].Visible = true;
                         dgv.Columns[header_BalAfterBag].Visible = false;
                         dgv.Columns[header_BalAfterPcs].Visible = false;
-                        dgv.Columns[header_ProDaysNeeded].Visible = true;
+
+                        dgv.Columns[header_BalAfterPlan].Visible = true;
+                        dgv.Columns[header_BalAfterPlanBag].Visible = false;
+                        dgv.Columns[header_BalAfterPlanPcs].Visible = false;
+
+                        //dgv.Columns[header_ProDaysNeeded].Visible = true;
                         dgv.Columns[header_Note].Visible = true;
                     }
                     else if (STOCK_INFO_ITEM_TYPE == Type_Product)
                     {
                         dgv.Columns[header_Stock].Visible = false;
-                        dgv.Columns[header_ProDaysNeeded].Visible = false;
+                        //dgv.Columns[header_ProDaysNeeded].Visible = false;
                         dgv.Columns[header_Note].Visible = false;
 
                         if (cbInBagUnit.Checked)
@@ -618,6 +636,10 @@ namespace FactoryManagementSoftware.UI
                             dgv.Columns[header_BalAfterBag].Visible = true;
                             dgv.Columns[header_BalAfterPcs].Visible = true;
 
+                            dgv.Columns[header_BalAfterPlan].Visible = false;
+                            dgv.Columns[header_BalAfterPlanBag].Visible = true;
+                            dgv.Columns[header_BalAfterPlanPcs].Visible = true;
+
                         }
                         else if (cbInPcsUnit.Checked)
                         {
@@ -626,12 +648,16 @@ namespace FactoryManagementSoftware.UI
                             dgv.Columns[header_BalAfterBag].Visible = false;
                             dgv.Columns[header_BalAfterPcs].Visible = false;
 
+                            dgv.Columns[header_BalAfterPlan].Visible = true;
+                            dgv.Columns[header_BalAfterPlanBag].Visible = false;
+                            dgv.Columns[header_BalAfterPlanPcs].Visible = false;
+
                         }
 
                     }
 
 
-                    dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
+                    //dgv.Columns[header_ProDaysNeeded].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleCenter;
                     dgv.Columns[header_Note].DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleLeft;
                     dgv.Columns[header_Note].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
                     dgv.Columns[header_ActualStock].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
@@ -688,6 +714,7 @@ namespace FactoryManagementSoftware.UI
             return parentCode;
         }
 
+
         private DataTable NEWLoadMatPartList(DataTable dt_Product)
         {
             DataTable dt_ChildPart = NewStockInfoTable();
@@ -714,8 +741,10 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 int stillNeed = int.TryParse(row[header_BalAfter].ToString(), out stillNeed) ? stillNeed : 0;
+                int stillNeedAfterPlan = int.TryParse(row[header_BalAfterPlan].ToString(), out stillNeedAfterPlan) ? stillNeedAfterPlan : 0;
 
                 stillNeed = stillNeed > 0 ? 0 : stillNeed * -1;
+                stillNeedAfterPlan = stillNeedAfterPlan > 0 ? 0 : stillNeedAfterPlan * -1;
 
                 foreach (DataRow rowJoin in dt_JoinSelectWithChildCat.Rows)
                 {
@@ -808,6 +837,10 @@ namespace FactoryManagementSoftware.UI
                             float recycleMat_Need = 0;
                             float colorMat_Need = 0;
 
+                            float rawMat_NeedAfterPlan = 0;
+                            float recycleMat_NeedAfterPlan = 0;
+                            float colorMat_NeedAfterPlan = 0;
+
                             int child_StillNeed = 0;
 
                             joinMax = joinMax <= 0 ? 1 : joinMax;
@@ -817,14 +850,26 @@ namespace FactoryManagementSoftware.UI
 
                             child_StillNeed = stillNeed % joinMax >= joinMin ? child_StillNeed + joinQty : child_StillNeed;
 
-
                             int bal = readyStock - child_StillNeed;
-
                             float totalMaterialNeededInKG = child_StillNeed * PWRWPerPcs / 1000;
 
-                            rawMat_Need = (float)Math.Round(totalMaterialNeededInKG * RawMaterialPercentage * rawRatio, 3);
-                            recycleMat_Need = (float)Math.Round(totalMaterialNeededInKG * recycleRatio, 3);
-                            colorMat_Need = (float)Math.Round(totalMaterialNeededInKG * childColorRate * rawRatio, 3);
+                            int child_StillNeedAfterPlan = 0;
+                            child_StillNeedAfterPlan = stillNeedAfterPlan / joinMax * joinQty;
+                            child_StillNeedAfterPlan = stillNeedAfterPlan % joinMax >= joinMin ? child_StillNeedAfterPlan + joinQty : child_StillNeedAfterPlan;
+
+                            int balAfterPlan = readyStock - child_StillNeedAfterPlan;
+
+                            float totalMaterialNeededInKGAfterPlan = child_StillNeedAfterPlan * PWRWPerPcs / 1000;
+
+
+                            rawMat_NeedAfterPlan = (float)Math.Round(totalMaterialNeededInKG * RawMaterialPercentage * rawRatio, 3);
+                            recycleMat_NeedAfterPlan = (float)Math.Round(totalMaterialNeededInKG * recycleRatio, 3);
+                            colorMat_NeedAfterPlan = (float)Math.Round(totalMaterialNeededInKG * childColorRate * rawRatio, 3);
+
+
+                            rawMat_Need = (float)Math.Round(totalMaterialNeededInKGAfterPlan * RawMaterialPercentage * rawRatio, 3);
+                            recycleMat_Need = (float)Math.Round(totalMaterialNeededInKGAfterPlan * recycleRatio, 3);
+                            colorMat_Need = (float)Math.Round(totalMaterialNeededInKGAfterPlan * childColorRate * rawRatio, 3);
 
                             bool childInserted = false;
 
@@ -835,10 +880,16 @@ namespace FactoryManagementSoftware.UI
                                     childInserted = true;
 
                                     int previousBal = int.TryParse(mat_row[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
+                                    int previousBalAfterPlan = int.TryParse(mat_row[header_BalAfterPlan].ToString(), out previousBalAfterPlan) ? previousBalAfterPlan : 0;
 
                                     bal = previousBal - child_StillNeed;
 
+                                    balAfterPlan = previousBalAfterPlan - child_StillNeedAfterPlan;
+
+
                                     mat_row[header_BalAfter] = bal;
+                                    mat_row[header_BalAfterPlan] = balAfterPlan;
+
 
 
                                     break;
@@ -854,6 +905,7 @@ namespace FactoryManagementSoftware.UI
                                 alert_row[header_ItemCode] = childCode;
                                 alert_row[header_ItemName] = childName;
                                 alert_row[header_BalAfter] = bal;
+                                alert_row[header_BalAfterPlan] = balAfterPlan;
                                 alert_row[header_Stock] = readyStock;
 
                                 alert_row[header_SBB_Category] = rowJoin[dalItem.CategoryTblCode];
@@ -870,11 +922,13 @@ namespace FactoryManagementSoftware.UI
                                 foreach (DataRow part in dt_ChildMat.Rows)
                                 {
                                     double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
+                                    double balAfterPlan_mat = double.TryParse(part[header_BalAfterPlan].ToString(), out balAfterPlan_mat) ? balAfterPlan_mat : 0;
 
                                     if (childMat == part[header_ItemCode].ToString())
                                     {
                                         matFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - rawMat_NeedAfterPlan, 3);
 
                                     }
 
@@ -882,12 +936,14 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         recycleFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - recycleMat_NeedAfterPlan, 3);
                                     }
 
                                     if (childColorMat == part[header_ItemCode].ToString())
                                     {
                                         colorMatFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - colorMat_NeedAfterPlan, 3);
                                     }
                                 }
 
@@ -902,6 +958,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childMat;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
                                     alert_row[header_BalAfter] = rawMat_Need;
+                                    alert_row[header_BalAfterPlan] = rawMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
 
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -918,6 +975,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childRecycle;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
                                     alert_row[header_BalAfter] = recycleMat_Need;
+                                    alert_row[header_BalAfterPlan] = recycleMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
 
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -934,6 +992,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childColorMat;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
                                     alert_row[header_BalAfter] = colorMat_Need;
+                                    alert_row[header_BalAfterPlan] = colorMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
 
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -951,11 +1010,13 @@ namespace FactoryManagementSoftware.UI
                                 foreach (DataRow part in dt_ChildMat.Rows)
                                 {
                                     double balAfter = double.TryParse(part[header_BalAfter].ToString(), out balAfter) ? balAfter : 0;
+                                    double balAfterPlan_mat = double.TryParse(part[header_BalAfterPlan].ToString(), out balAfterPlan_mat) ? balAfterPlan_mat : 0;
 
                                     if (childMat == part[header_ItemCode].ToString())
                                     {
                                         matFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - rawMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - rawMat_NeedAfterPlan, 3);
 
                                     }
 
@@ -963,12 +1024,14 @@ namespace FactoryManagementSoftware.UI
                                     {
                                         recycleFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - recycleMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - recycleMat_NeedAfterPlan, 3);
                                     }
 
                                     if (childColorMat == part[header_ItemCode].ToString())
                                     {
                                         colorMatFound = true;
                                         part[header_BalAfter] = Math.Round(balAfter - colorMat_Need, 3);
+                                        part[header_BalAfterPlan] = Math.Round(balAfterPlan_mat - colorMat_NeedAfterPlan, 3);
                                     }
                                 }
 
@@ -983,6 +1046,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childMat;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childMat);
                                     alert_row[header_BalAfter] = rawMat_Need;
+                                    alert_row[header_BalAfterPlan] = rawMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
                                     alert_row[header_SBB_Category] = 94;
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -1001,6 +1065,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childRecycle;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childRecycle);
                                     alert_row[header_BalAfter] = recycleMat_Need;
+                                    alert_row[header_BalAfterPlan] = recycleMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
 
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -1019,6 +1084,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childColorMat;
                                     alert_row[header_ItemName] = tool.getItemNameFromDataTable(dt_Item, childColorMat);
                                     alert_row[header_BalAfter] = colorMat_Need;
+                                    alert_row[header_BalAfterPlan] = colorMat_NeedAfterPlan;
                                     alert_row[header_Stock] = stock;
 
                                     dt_ChildMat.Rows.Add(alert_row);
@@ -1036,10 +1102,13 @@ namespace FactoryManagementSoftware.UI
                                         otherMaterialFound = true;
 
                                         int previousBal = int.TryParse(part[header_BalAfter].ToString(), out previousBal) ? previousBal : 0;
+                                        int previousBalAfterPlan = int.TryParse(part[header_BalAfterPlan].ToString(), out previousBalAfterPlan) ? previousBalAfterPlan : 0;
 
                                         bal = previousBal - child_StillNeed;
+                                        balAfterPlan = previousBalAfterPlan - child_StillNeedAfterPlan;
 
                                         part[header_BalAfter] = bal;
+                                        part[header_BalAfterPlan] = balAfterPlan;
 
                                         break;
                                     }
@@ -1055,6 +1124,7 @@ namespace FactoryManagementSoftware.UI
                                     alert_row[header_ItemCode] = childCode;
                                     alert_row[header_ItemName] = childName;
                                     alert_row[header_BalAfter] = bal;
+                                    alert_row[header_BalAfterPlan] = balAfterPlan;
                                     alert_row[header_Stock] = readyStock;
 
                                     dt_Packaging.Rows.Add(alert_row);
@@ -1449,7 +1519,6 @@ namespace FactoryManagementSoftware.UI
 
             DT_STOCK_ALERT_MASTER_LIST = null;
 
-
             //DataTable dt_PendingPOSelect = dalSBB.PendingPOSelect();
 
             DataTable dt_FillAll = NewStockInfoTable();
@@ -1475,6 +1544,7 @@ namespace FactoryManagementSoftware.UI
 
 
                     int itemPOQty = int.TryParse(pendingRow[dalSBB.POQty].ToString(), out itemPOQty) ? itemPOQty : 0;
+                    int itemtoDeliverQty = int.TryParse(pendingRow[dalSBB.ToDeliveryQty].ToString(), out itemtoDeliverQty) ? itemtoDeliverQty : 0;
                     int itemDeliveredQty = int.TryParse(pendingRow[dalSBB.DeliveredQty].ToString(), out itemDeliveredQty) ? itemDeliveredQty : 0;
                     int itemPerBag = int.TryParse(pendingRow[dalSBB.QtyPerBag].ToString(), out itemPerBag) ? itemPerBag : 0;
 
@@ -1492,11 +1562,17 @@ namespace FactoryManagementSoftware.UI
                                 itemFound = true;
 
                                 int itemBal = int.TryParse(fillAllRow[header_BalAfter].ToString(), out itemBal) ? itemBal : 0;
+                                int itemBalAfterPlan = int.TryParse(fillAllRow[header_BalAfterPlan].ToString(), out itemBalAfterPlan) ? itemBalAfterPlan : 0;
 
                                 fillAllRow[header_BalAfter] = itemBal - pendingQty;
 
                                 fillAllRow[header_BalAfterBag] = (itemBal - pendingQty) / itemPerBag;
                                 fillAllRow[header_BalAfterPcs] = (itemBal - pendingQty) % itemPerBag;
+
+                                fillAllRow[header_BalAfterPlan] = itemBalAfterPlan - itemtoDeliverQty;
+
+                                fillAllRow[header_BalAfterPlanBag] = (itemBalAfterPlan - itemtoDeliverQty) / itemPerBag;
+                                fillAllRow[header_BalAfterPlanPcs] = (itemBalAfterPlan - itemtoDeliverQty) % itemPerBag;
 
                                 break;
                             }
@@ -1510,15 +1586,26 @@ namespace FactoryManagementSoftware.UI
 
                         newRow[header_ItemCode] = itemCode;
                         newRow[header_ItemName] = itemName;
-                        newRow[header_BalAfter] = itemStock - pendingQty;
                         newRow[header_QtyPerBag] = itemPerBag;
+
 
                         if (itemPerBag == 0)
                         {
                             itemPerBag = 1;
                         }
+
+                        if(itemCode == "(OK) CFEC 20")
+                        {
+                            var checkpoint = 1;
+                        }
+
+                        newRow[header_BalAfter] = itemStock - pendingQty;
                         newRow[header_BalAfterBag] = (itemStock - pendingQty) / itemPerBag;
                         newRow[header_BalAfterPcs] = (itemStock - pendingQty) % itemPerBag;
+
+                        newRow[header_BalAfterPlan] = itemStock - itemtoDeliverQty;
+                        newRow[header_BalAfterPlanBag] = (itemStock - itemtoDeliverQty) / itemPerBag;
+                        newRow[header_BalAfterPlanPcs] = (itemStock - itemtoDeliverQty) % itemPerBag;
 
                         newRow[header_SBB_Category] = pendingRow[dalItem.CategoryTblCode];
                         newRow[header_SBB_Type] = pendingRow[dalItem.TypeTblCode];

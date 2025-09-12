@@ -211,9 +211,9 @@
             this.cbZeroCostOnly.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbZeroCostOnly.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbZeroCostOnly.Font = new System.Drawing.Font("Segoe UI", 7F);
-            this.cbZeroCostOnly.Location = new System.Drawing.Point(197, 3);
+            this.cbZeroCostOnly.Location = new System.Drawing.Point(196, 3);
             this.cbZeroCostOnly.Name = "cbZeroCostOnly";
-            this.cbZeroCostOnly.Size = new System.Drawing.Size(90, 19);
+            this.cbZeroCostOnly.Size = new System.Drawing.Size(91, 19);
             this.cbZeroCostOnly.TabIndex = 156;
             this.cbZeroCostOnly.Text = "ZERO COST";
             this.cbZeroCostOnly.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -502,7 +502,7 @@
             this.label10.Location = new System.Drawing.Point(19, 28);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(48, 13);
+            this.label10.Size = new System.Drawing.Size(47, 13);
             this.label10.TabIndex = 158;
             this.label10.Text = "MONTH";
             // 
@@ -624,7 +624,7 @@
             this.label4.Location = new System.Drawing.Point(16, 28);
             this.label4.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(48, 13);
+            this.label4.Size = new System.Drawing.Size(47, 13);
             this.label4.TabIndex = 153;
             this.label4.Text = "MONTH";
             // 
@@ -691,7 +691,7 @@
             this.cbDeductDeliveredQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbDeductDeliveredQty.Location = new System.Drawing.Point(204, 52);
             this.cbDeductDeliveredQty.Name = "cbDeductDeliveredQty";
-            this.cbDeductDeliveredQty.Size = new System.Drawing.Size(157, 19);
+            this.cbDeductDeliveredQty.Size = new System.Drawing.Size(159, 19);
             this.cbDeductDeliveredQty.TabIndex = 169;
             this.cbDeductDeliveredQty.Text = "DEDUCT DELIVERED QTY";
             this.cbDeductDeliveredQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -707,7 +707,7 @@
             this.cbShowTerminatedItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowTerminatedItem.Location = new System.Drawing.Point(17, 51);
             this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
-            this.cbShowTerminatedItem.Size = new System.Drawing.Size(165, 19);
+            this.cbShowTerminatedItem.Size = new System.Drawing.Size(168, 19);
             this.cbShowTerminatedItem.TabIndex = 168;
             this.cbShowTerminatedItem.Text = "SHOW TERMINATED ITEM";
             this.cbShowTerminatedItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -722,7 +722,7 @@
             this.cbZeroStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbZeroStockType.Location = new System.Drawing.Point(17, 26);
             this.cbZeroStockType.Name = "cbZeroStockType";
-            this.cbZeroStockType.Size = new System.Drawing.Size(96, 19);
+            this.cbZeroStockType.Size = new System.Drawing.Size(97, 19);
             this.cbZeroStockType.TabIndex = 158;
             this.cbZeroStockType.Text = "ZERO STOCK";
             this.cbZeroStockType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -738,7 +738,7 @@
             this.cbDeductUsedStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbDeductUsedStock.Location = new System.Drawing.Point(204, 29);
             this.cbDeductUsedStock.Name = "cbDeductUsedStock";
-            this.cbDeductUsedStock.Size = new System.Drawing.Size(142, 19);
+            this.cbDeductUsedStock.Size = new System.Drawing.Size(144, 19);
             this.cbDeductUsedStock.TabIndex = 157;
             this.cbDeductUsedStock.Text = "DEDUCT USED STOCK";
             this.cbDeductUsedStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
@@ -851,7 +851,7 @@
             this.label3.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.label3.Location = new System.Drawing.Point(3, 20);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(45, 15);
+            this.label3.Size = new System.Drawing.Size(47, 15);
             this.label3.TabIndex = 86;
             this.label3.Text = "STATUS";
             // 

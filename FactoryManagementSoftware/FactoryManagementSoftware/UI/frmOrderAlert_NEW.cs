@@ -696,7 +696,7 @@ namespace FactoryManagementSoftware.UI
 
                         if (matType == Material_Type && stock != "-1")
                         {
-                            if (cbZeroCostOnly.Checked && (itemCode == "XTW4+10EEJ" || itemCode == "A38K1900 " || itemCode == "V44KBW4000" || itemCode == "C84KXQ000"))
+                            if (cbZeroCostOnly.Checked && (itemCode == "XTW4+10EEJ" || itemCode == "INS FOAM C SET SMALL" || itemCode == "A38K1900 " || itemCode == "V44KBW4000" || itemCode == "C84KXQ000"))
                             {
                                 
                             }

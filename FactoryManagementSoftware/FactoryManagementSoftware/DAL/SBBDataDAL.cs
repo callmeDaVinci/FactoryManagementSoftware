@@ -1727,7 +1727,8 @@ namespace FactoryManagementSoftware.DAL
                                 tbl_item.size_tbl_code_1,
                                 tbl_item.size_tbl_code_2,
                                tbl_spp_po.po_qty,
-                               tbl_spp_po.delivered_qty,
+                               tbl_spp_po.delivered_qty,                               
+                               tbl_spp_po.to_delivery_qty,
                                tbl_spp_stdpacking.qty_per_bag,
                                tbl_spp_po.po_date
                                FROM tbl_spp_po 
