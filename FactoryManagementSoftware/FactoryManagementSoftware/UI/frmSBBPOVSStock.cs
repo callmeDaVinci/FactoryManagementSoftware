@@ -4417,7 +4417,7 @@ namespace FactoryManagementSoftware.UI
 
             return false;
         }
-
+        readonly string text_ShowOrderedItems = "Show Ordered Items";
         private void dgvList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
@@ -4731,16 +4731,49 @@ namespace FactoryManagementSoftware.UI
 
                         if(headerName.Contains(header_Priority))
                         {
-                            my_menu.Items.Add(text_JumpToNextItem).Name = text_JumpToNextItem;
-                            my_menu.Items.Add(text_JumpToLastItem).Name = text_JumpToLastItem;
-                            my_menu.Items.Add(text_JumpToFirstItem).Name = text_JumpToFirstItem;
+                            //my_menu.Items.Add(text_JumpToNextItem).Name = text_JumpToNextItem;
+                            //my_menu.Items.Add(text_JumpToLastItem).Name = text_JumpToLastItem;
+                            //my_menu.Items.Add(text_JumpToFirstItem).Name = text_JumpToFirstItem;
+                            // Extract the level number from P/O_X (your idea)
 
+                            string level = headerName.Replace(header_Priority, ""); // e.g., "P/O_1" -> "1"
+
+                            // Find ordered items using PRIORITY ORDER_X column (your idea)
+                            var orderedItems = GetOrderedItemsForPO_Direct(dgv, level);
+
+                            // Add "Show Ordered Items" menu
+                            ToolStripMenuItem showOrderedItemsMenu = new ToolStripMenuItem(text_ShowOrderedItems);
+
+                            if (orderedItems.Count > 0)
+                            {
+                                // Add each ordered item as submenu
+                                foreach (var item in orderedItems)
+                                {
+                                    string displayText = !string.IsNullOrEmpty(item.ItemName) && item.ItemName != item.ItemCode
+                                        ? $"{item.ItemName} ({item.ItemCode})"
+                                        : item.ItemCode;
+
+                                    ToolStripMenuItem itemMenuItem = new ToolStripMenuItem(displayText);
+                                    itemMenuItem.Tag = item;
+                                    showOrderedItemsMenu.DropDownItems.Add(itemMenuItem);
+                                }
+                            }
+                            else
+                            {
+                                ToolStripMenuItem noItemsMenuItem = new ToolStripMenuItem("No items ordered");
+                                noItemsMenuItem.Enabled = false;
+                                showOrderedItemsMenu.DropDownItems.Add(noItemsMenuItem);
+                            }
+
+                            my_menu.Items.Add(showOrderedItemsMenu);
                         }
 
                         if (dgv.SelectionMode != DataGridViewSelectionMode.CellSelect)
                         {
                             my_menu.Items.Add(text_AddDO).Name = text_AddDO;
                         }
+
+
                     }
                 
                     //my_menu.Items.Add(text_NewTrip).Name = text_NewTrip;
@@ -4761,6 +4794,83 @@ namespace FactoryManagementSoftware.UI
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
+        }
+
+        public class OrderedItemInfo
+        {
+            public string ItemCode { get; set; }
+            public string ItemName { get; set; }
+            public int OrderQuantity { get; set; }
+        }
+        private List<OrderedItemInfo> GetOrderedItemsForPO_Direct(DataGridView dgv, string level)
+        {
+            List<OrderedItemInfo> items = new List<OrderedItemInfo>();
+
+            try
+            {
+                DataTable dt = (DataTable)dgv.DataSource;
+
+                // Check if this PO level exists
+                if (!dt.Columns.Contains(header_PriorityOrder + level))
+                {
+                    return items;
+                }
+
+                for (int i = 1; i < dt.Rows.Count; i++)
+                {
+                    int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + level].ToString(), out orderQty) ? orderQty : 0;
+
+                    if (orderQty > 0)
+                    {
+                        // Get item code and name
+                        string itemCode = dt.Rows[i + 1][header_Code]?.ToString() ?? "";
+                        string itemName = dt.Rows[i + 1][header_Type]?.ToString() ?? "";
+
+                        // If no item code in current row, this might be a header/summary row - skip
+                        if (string.IsNullOrEmpty(itemCode))
+                            continue;
+
+                        // Try to get item name from DB_ITEM_ALL (your existing data)
+                        if (DB_ITEM_ALL != null)
+                        {
+                            foreach (DataRow itemRow in DB_ITEM_ALL.Rows)
+                            {
+                                if (itemRow[dalItem.ItemCode]?.ToString() == itemCode)
+                                {
+                                    itemName = itemRow[dalItem.ItemName]?.ToString() ?? "";
+                                    break;
+                                }
+                            }
+                        }
+
+                        // If still no name, use the code as name
+                        if (string.IsNullOrEmpty(itemName))
+                        {
+                            itemName = itemCode;
+                        }
+
+                        // Add to list (avoid duplicates)
+                        if (!items.Any(x => x.ItemCode == itemCode))
+                        {
+                            items.Add(new OrderedItemInfo
+                            {
+                                ItemCode = itemCode,
+                                ItemName = itemName,
+                                OrderQuantity = orderQty
+                            });
+                        }
+                    }
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+
+            // Return sorted by item code
+            return items.OrderBy(x => x.ItemCode).ToList();
         }
 
         private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)

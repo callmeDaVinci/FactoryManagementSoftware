@@ -1,4 +1,5 @@
-﻿using FactoryManagementSoftware.BLL;
+﻿using Accord.Statistics.Filters;
+using FactoryManagementSoftware.BLL;
 using FactoryManagementSoftware.DAL;
 using FactoryManagementSoftware.Module;
 using Microsoft.Office.Interop.Word;
@@ -617,7 +618,7 @@ namespace FactoryManagementSoftware.UI
                 dgv.Columns[text.Header_JobNo].Visible = false;
                 dgv.Columns[text.Header_ItemCode].Visible = false;
                 dgv.Columns[text.Header_ItemName].Visible = false;
-                dgv.Columns[text.Header_MouldCode].Visible = false;
+                //dgv.Columns[text.Header_MouldCode].Visible = false;
 
                 //dgv.Columns[text.Header_Cavity].Visible = false;
                 dgv.Columns[text.Header_ProTon].Visible = false;
@@ -2310,8 +2311,9 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataGridViewRow row in dgvRawMatList.Rows)
                     {
                         string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
+                        bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
 
-                        if(!string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, matCode)))
+                        if (!string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, matCode)) && selection)
                         {
                             string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
 
@@ -2532,8 +2534,9 @@ namespace FactoryManagementSoftware.UI
                     foreach (DataGridViewRow row in dgvRawMatList.Rows)
                     {
                         string matCode = row.Cells[text.Header_ItemCode].Value.ToString();
+                        bool selection = bool.TryParse(row.Cells[text.Header_Selection].Value.ToString(), out selection) ? selection : false;
 
-                        if (!string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, matCode)))
+                        if (!string.IsNullOrEmpty(tool.getItemNameFromDataTable(DT_ITEM, matCode)) && selection)
                         {
                             string matDescription = row.Cells[text.Header_ItemDescription].Value.ToString();
 
@@ -6051,40 +6054,43 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in DT_SUMMARY_RAW.Rows)
             {
-                if (rawMaterialDescription == "")
+                bool selection = bool.TryParse(row[text.Header_Selection].ToString(), out selection) ? selection : false;
+
+                if (selection)
                 {
-                    rawMaterialDescription = row[text.Header_ItemDescription].ToString();
+                    if (rawMaterialDescription == "")
+                    {
+                        rawMaterialDescription = row[text.Header_ItemDescription].ToString();
+                    }
+                    else
+                    {
+                        rawMaterialDescription += "(" + rawRatio + " %)";
+
+                        rawMaterialDescription += " + " + row[text.Header_ItemDescription].ToString();
+                        rawMaterialDescription += "(" + rawRatio + " %)";
+                    }
+
+                    if (rawMatCount == 1)
+                    {
+                        BLL_JOB_SUMMARY.material_code = row[text.Header_ItemCode].ToString();
+                        BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
+                        BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_Qty_Required_Bag].ToString();
+                        BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_Qty_Required_KG].ToString();
+                        BLL_JOB_SUMMARY.raw_mat_ratio_1 = row[text.Header_Ratio].ToString();
+
+                        rawMatCount++;
+                    }
+                    else
+                    {
+                        BLL_JOB_SUMMARY.material_code_2 = row[text.Header_ItemCode].ToString();
+                        BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
+                        BLL_JOB_SUMMARY.material_bag_qty_2 = row[text.Header_Qty_Required_Bag].ToString();
+                        BLL_JOB_SUMMARY.raw_material_qty_2 = row[text.Header_Qty_Required_KG].ToString();
+                        BLL_JOB_SUMMARY.raw_mat_ratio_2 = row[text.Header_Ratio].ToString();
+                    }
+                    rawRatio = row[text.Header_Ratio].ToString();
                 }
-                else
-                {
-                    rawMaterialDescription += "(" + rawRatio + " %)";
-
-                    rawMaterialDescription += " + " + row[text.Header_ItemDescription].ToString();
-                    rawMaterialDescription += "(" + rawRatio + " %)";
-                }
-
-                if (rawMatCount == 1)
-                {
-                    BLL_JOB_SUMMARY.material_code = row[text.Header_ItemCode].ToString();
-                    BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
-                    BLL_JOB_SUMMARY.material_bag_qty = row[text.Header_Qty_Required_Bag].ToString();
-                    BLL_JOB_SUMMARY.raw_material_qty = row[text.Header_Qty_Required_KG].ToString();
-                    BLL_JOB_SUMMARY.raw_mat_ratio_1 = row[text.Header_Ratio].ToString();
-
-                    rawMatCount++;
-                }
-                else
-                {
-                    BLL_JOB_SUMMARY.material_code_2 = row[text.Header_ItemCode].ToString();
-                    BLL_JOB_SUMMARY.material_bag_kg = row[text.Header_KGPERBAG].ToString();
-                    BLL_JOB_SUMMARY.material_bag_qty_2 = row[text.Header_Qty_Required_Bag].ToString();
-                    BLL_JOB_SUMMARY.raw_material_qty_2 = row[text.Header_Qty_Required_KG].ToString();
-                    BLL_JOB_SUMMARY.raw_mat_ratio_2 = row[text.Header_Ratio].ToString();
-                }
-
-                
-
-                rawRatio = row[text.Header_Ratio].ToString();
+               
             }
 
             lblRawDescription.Text = rawMaterialDescription;

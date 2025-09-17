@@ -290,7 +290,7 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_ItemName].Visible = false;
             dgv.Columns[text.Header_Recycle_Qty].Visible = false;
             dgv.Columns[text.Header_FacID].Visible = false;
-            dgv.Columns[text.Header_MouldCode].Visible = false;
+            //dgv.Columns[text.Header_MouldCode].Visible = false;
             dgv.Columns[text.Header_MacID].Visible = false;
             dgv.Columns[text.Header_Ori_DateStart].Visible = false;
             dgv.Columns[text.Header_Ori_EstDateEnd].Visible = false;

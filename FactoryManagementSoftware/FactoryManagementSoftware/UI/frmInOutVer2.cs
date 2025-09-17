@@ -511,6 +511,38 @@ namespace FactoryManagementSoftware.UI
 
         }
 
+        private string ProcessSearchKeywords(string searchText)
+        {
+            if (string.IsNullOrWhiteSpace(searchText) || searchText == "Search")
+                return "";
+
+            // Split into individual words and remove empty entries
+            string[] words = searchText.Trim().ToUpper()
+                .Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+            if (words.Length == 0)
+                return "";
+
+            if (words.Length == 1)
+            {
+                // Single word - return as is for existing behavior
+                return words[0];
+            }
+
+            // Multiple words - create pattern for database search
+            // This creates: "word1" AND contains "word2" AND contains "word3"...
+            string pattern = "";
+            for (int i = 0; i < words.Length; i++)
+            {
+                if (i == 0)
+                    pattern = words[i];
+                else
+                    pattern += " " + words[i]; // Space-separated for database processing
+            }
+
+            return pattern;
+        }
+
         private void loadItemList()
         {
             Cursor = Cursors.WaitCursor; // change cursor to hourglass type
@@ -518,18 +550,21 @@ namespace FactoryManagementSoftware.UI
             dataUpdatedTime();
 
             DataTable dtItem;
-            string keywords = txtSearch.Text;
+            //string keywords = txtSearch.Text;
+            string keywords = ProcessSearchKeywords(txtSearch.Text);
 
             if (!string.IsNullOrEmpty(keywords) && keywords != "Search")
             {
                 if (cmbSearchCat.Text.Equals("All"))//string.IsNullOrEmpty(cmbSearchCat.Text) || 
                 {
                     //show all item from the database
-                    dtItem = dalItem.InOutSearch(keywords);//search item code and item name
+                    //dtItem = dalItem.InOutSearch(keywords);//search item code and item name
+                    dtItem = dalItem.NewInOutSearch(keywords);//search item code and item name
                 }
                 else
                 {
-                    dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
+                    dtItem = dalItem.InOutNewCatItemSearch(keywords, cmbSearchCat.Text);
+                    //dtItem = dalItem.InOutCatItemSearch(keywords, cmbSearchCat.Text);
                 }
             }
             else
@@ -1123,7 +1158,8 @@ namespace FactoryManagementSoftware.UI
 
         private void txtSearch_TextChanged(object sender, EventArgs e)
         {
-            if (formLoaded)
+            string search = txtSearch.Text;
+            if (formLoaded && !string.IsNullOrEmpty(search))
             {
                 timer1.Stop();
                 timer1.Start();

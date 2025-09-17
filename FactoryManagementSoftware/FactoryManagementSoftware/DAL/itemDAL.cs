@@ -3403,6 +3403,83 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable NewInOutSearch(string keywords)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string sql;
+                SqlCommand cmd;
+
+                // Check if multiple words (contains space)
+                if (keywords.Contains(" "))
+                {
+                    string[] words = keywords.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    // Build dynamic WHERE clause for multiple words
+                    string searchWhereClause = "";
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (i > 0) searchWhereClause += " AND ";
+
+                        //searchWhereClause += $"(UPPER(item_code) LIKE @keyword{i} OR UPPER(item_name) LIKE @keyword{i})";
+                        //searchWhereClause += $"(UPPER(' ' + item_code + ' ') LIKE @keyword{i} OR UPPER(' ' + item_name + ' ') LIKE @keyword{i})";
+
+                        searchWhereClause += $"(UPPER(item_code) LIKE @keyword{i} OR UPPER(item_name) LIKE @keyword{i} OR " +
+                    $"UPPER(' ' + item_code + ' ') LIKE @keywordWB{i} OR UPPER(' ' + item_name + ' ') LIKE @keywordWB{i})";
+                    }
+
+                    sql = $@"SELECT item_cat, item_code, item_name, item_ord, item_qty 
+                    FROM tbl_item 
+                    WHERE {searchWhereClause}
+                    ORDER BY item_code";
+
+                    cmd = new SqlCommand(sql, conn);
+
+                    // Add parameters for each word
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        //cmd.Parameters.AddWithValue($"@keyword{i}", "%" + words[i].ToUpper() + "%");
+                        //cmd.Parameters.AddWithValue($"@keyword{i}", "% " + words[i].ToUpper() + " %");
+
+                        cmd.Parameters.AddWithValue($"@keyword{i}", "%" + words[i].ToUpper() + "%");
+                        cmd.Parameters.AddWithValue($"@keywordWB{i}", "% " + words[i].ToUpper() + " %");
+
+                    }
+                }
+                else
+                {
+                    // Single word - existing behavior
+                    sql = @"SELECT item_cat, item_code, item_name, item_ord, item_qty 
+                   FROM tbl_item 
+                   WHERE UPPER(item_code) LIKE @keyword OR UPPER(item_name) LIKE @keyword
+                   ORDER BY item_code";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@keyword", "%" + keywords.ToUpper() + "%");
+                }
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+
+                //MessageBox.Show("SQL: " + sql + "\nKeywords: " + keywords);
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
+
         public DataTable InOutSearch(string keywords)
         {
             //static methodd to connect database
@@ -3469,6 +3546,84 @@ namespace FactoryManagementSoftware.DAL
             return dt;
         }
 
+        public DataTable InOutNewCatItemSearch(string keywords, string category)
+        {
+            SqlConnection conn = new SqlConnection(myconnstrng);
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string sql;
+                SqlCommand cmd;
+
+                // Check if multiple words (contains space)
+                if (keywords.Contains(" "))
+                {
+                    string[] words = keywords.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    // Build dynamic WHERE clause for multiple words
+                    string searchWhereClause = "";
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        if (i > 0) searchWhereClause += " AND ";
+
+                        //searchWhereClause += $"(UPPER(item_code) LIKE @keyword{i} OR UPPER(item_name) LIKE @keyword{i})";
+                        //searchWhereClause += $"(UPPER(' ' + item_code + ' ') LIKE @keyword{i} OR UPPER(' ' + item_name + ' ') LIKE @keyword{i})";
+
+                        searchWhereClause += $"(UPPER(item_code) LIKE @keyword{i} OR UPPER(item_name) LIKE @keyword{i} OR " +
+                    $"UPPER(' ' + item_code + ' ') LIKE @keywordWB{i} OR UPPER(' ' + item_name + ' ') LIKE @keywordWB{i})";
+
+                    }
+
+                    sql = $@"SELECT item_cat, item_code, item_name, item_ord, item_qty 
+                    FROM tbl_item 
+                    WHERE item_cat = @category AND ({searchWhereClause})
+                    ORDER BY item_code";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@category", category);
+
+                    // Add parameters for each word
+                    for (int i = 0; i < words.Length; i++)
+                    {
+                        //cmd.Parameters.AddWithValue($"@keyword{i}", "%" + words[i].ToUpper() + "%");
+
+                        //cmd.Parameters.AddWithValue($"@keyword{i}", "% " + words[i].ToUpper() + " %");
+
+                        cmd.Parameters.AddWithValue($"@keyword{i}", "%" + words[i].ToUpper() + "%");
+                        cmd.Parameters.AddWithValue($"@keywordWB{i}", "% " + words[i].ToUpper() + " %");
+                    }
+                }
+                else
+                {
+                    // Single word - existing behavior
+                    sql = @"SELECT item_cat, item_code, item_name, item_ord, item_qty 
+                   FROM tbl_item 
+                   WHERE item_cat = @category 
+                   AND (UPPER(item_code) LIKE @keyword OR UPPER(item_name) LIKE @keyword)
+                   ORDER BY item_code";
+
+                    cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@category", category);
+                    cmd.Parameters.AddWithValue("@keyword", "%" + keywords.ToUpper() + "%");
+                }
+
+                SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                conn.Open();
+                adapter.Fill(dt);
+            }
+            catch (Exception ex)
+            {
+                Module.Tool tool = new Module.Tool();
+                tool.saveToText(ex);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return dt;
+        }
         public DataTable InOutCatItemSearch(string keywords, string category)
         {
             SqlConnection conn = new SqlConnection(myconnstrng);

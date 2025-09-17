@@ -29,7 +29,7 @@
     <InstallUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</InstallUrl>
     <UpdateUrl>\\ADMIN001\Admin Server\%28 IT %29\StockAssistant\%28INSTALLATION%29\FOR USER\</UpdateUrl>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>691</ApplicationRevision>
+    <ApplicationRevision>692</ApplicationRevision>
     <ApplicationVersion>1.0.2.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -55,10 +55,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>4D61D8EBC4D7E55CA2FCCE1CEBFAFC704977434D</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>2FA9C9C640B4728D1BB90784145AA39FF1B2F824</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>FactoryManagementSoftware_6_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>FactoryManagementSoftware_8_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -1838,6 +1838,8 @@
     <None Include="FactoryManagementSoftware_4_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_5_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_6_TemporaryKey.pfx" />
+    <None Include="FactoryManagementSoftware_7_TemporaryKey.pfx" />
+    <None Include="FactoryManagementSoftware_8_TemporaryKey.pfx" />
     <None Include="FactoryManagementSoftware_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
