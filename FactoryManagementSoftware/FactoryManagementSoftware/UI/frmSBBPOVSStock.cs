@@ -1,16 +1,17 @@
-﻿using System;
+﻿using FactoryManagementSoftware.BLL;
+using FactoryManagementSoftware.DAL;
+using FactoryManagementSoftware.Module;
+using Syncfusion.XlsIO.Implementation.XmlSerialization;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using FactoryManagementSoftware.DAL;
-using FactoryManagementSoftware.BLL;
-using FactoryManagementSoftware.Module;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Security.Cryptography;
 
 namespace FactoryManagementSoftware.UI
 {
@@ -46,6 +47,7 @@ namespace FactoryManagementSoftware.UI
 
         readonly string header_Index = "#";
         readonly string header_Size = "SIZE INT";
+        readonly string header_SizeString2 = "SIZE INT 2";
         readonly string header_Unit = "UNIT";
         readonly string header_SizeString = "SIZE";
         readonly string header_Type = "TYPE";
@@ -208,6 +210,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_Size, typeof(int));
             dt.Columns.Add(header_Unit, typeof(string));
             dt.Columns.Add(header_SizeString, typeof(string));
+            dt.Columns.Add(header_SizeString2, typeof(string));
 
             dt.Columns.Add(header_Type, typeof(string));
             dt.Columns.Add(header_Code, typeof(string));
@@ -218,6 +221,7 @@ namespace FactoryManagementSoftware.UI
             dt.Columns.Add(header_QtyPerBag, typeof(int));
             dt.Columns.Add(header_BalAfterDelivery, typeof(string));
             dt.Columns.Add(header_BalAfterDeliveryInPcs, typeof(int));
+
             return dt;
         }
 
@@ -355,6 +359,7 @@ namespace FactoryManagementSoftware.UI
            
             dgv.Columns[header_Code].Visible = false;
             dgv.Columns[header_Size].Visible = false;
+            dgv.Columns[header_SizeString2].Visible = false;
             dgv.Columns[header_Unit].Visible = false;
             dgv.Columns[header_StockPcs].Visible = false;
             dgv.Columns[header_StockBag].Visible = false;
@@ -519,520 +524,6 @@ namespace FactoryManagementSoftware.UI
          
         }
 
-        private void Old_LoadPOList()
-        {
-
-            DialogResult dialogResult;
-
-            if (dataChanged)
-            {
-                dialogResult = MessageBox.Show("Reload data will lose all the unsaved changes.\nAre you sure you want to reload data?", "Message",
-                                                          MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            }
-            else
-            {
-                dialogResult = DialogResult.Yes;
-            }
-
-            if (dialogResult == DialogResult.Yes)
-            {
-                Cursor = Cursors.WaitCursor;
-                frmLoading.ShowLoadingScreen();
-
-                ResetPage();
-
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-
-                #region Load data from database
-
-                DataTable dt_Planning = NewPlanningTable();
-
-                DataRow newRow = dt_Planning.NewRow();
-                dt_Planning.Rows.Add(newRow);
-                newRow = dt_Planning.NewRow();
-                dt_Planning.Rows.Add(newRow);
-
-                string itemCust = text.SPP_BrandName;
-                dt_Product = dalItemCust.SPPCustSearchWithTypeAndSize(itemCust);
-
-
-               // dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC" ;
-                dt_Product.DefaultView.Sort = dalSPP.SizeWeight + " ASC," + dalSPP.SizeWeight + "1 ASC";
-                //dt_Product.DefaultView.Sort = dalSPP.SizeNumerator + " ASC," + dalSPP.SizeWeight + "1 ASC";
-
-                dt_Product = dt_Product.DefaultView.ToTable();
-
-                if (cmbProductSortBy.Text == text_Type)
-                {
-                    dt_Product.DefaultView.Sort = dalSPP.TypeName + " ASC";
-                    dt_Product = dt_Product.DefaultView.ToTable();
-                }
-                //^^19ms
-                DB_ITEM_ALL = dalItem.Select();//40ms
-                DB_PO_ACTIVE = dalSPP.ActivePOSelect();//48ms
-                DB_DO_ALL = dalSPP.ActiveDOWithInfoSelect();//487ms
-
-                //dt_POList = dalSPP.POSelect();
-                //dt_DOList = dalSPP.DOWithInfoSelect();
-
-                DB_STOCK_ALL = dalStock.Select();//41ms
-                DB_JOIN_ALL = dalJoin.SelectAll();//8ms
-
-                if (cmbPOSortBy.Text == text_ReceivedDate)
-                {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.CustTblCode + " ASC," + dalSPP.PriorityLevel + " ASC";
-                }
-                else if (cmbPOSortBy.Text == text_Customer)
-                {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC," + dalSPP.PriorityLevel + " ASC";
-                }
-                else
-                {
-                    DB_PO_ACTIVE.DefaultView.Sort = dalSPP.PriorityLevel + " ASC," + dalSPP.ShortName + " ASC," + dalSPP.PODate + " ASC," + dalSPP.POCode + " ASC";
-                }
-
-                //^^2831ms
-                DB_PO_ACTIVE = DB_PO_ACTIVE.DefaultView.ToTable();
-
-                int index = 1;
-                #endregion
-
-                #region load product & stock
-
-                foreach (DataRow row in dt_Product.Rows)
-                {
-                    string itemCode = row[dalSPP.ItemCode].ToString();
-                    string itemName = row[dalSPP.ItemName].ToString();
-                    int readyStock = int.TryParse(row[dalItem.ItemStock].ToString(), out readyStock) ? readyStock : 0;
-                    int qtyPerPacket = int.TryParse(row[dalSPP.QtyPerPacket].ToString(), out qtyPerPacket) ? qtyPerPacket : 0;
-                    int qtyPerBag = int.TryParse(row[dalSPP.QtyPerBag].ToString(), out qtyPerBag) ? qtyPerBag : 0;
-                    int maxLevel = int.TryParse(row[dalSPP.MaxLevel].ToString(), out maxLevel) ? maxLevel : 0;
-                    int numerator = int.TryParse(row[dalSPP.SizeNumerator].ToString(), out numerator) ? numerator : 1;
-                    int denominator = int.TryParse(row[dalSPP.SizeDenominator].ToString(), out denominator) ? denominator : 1;
-                    string sizeUnit = row[dalSPP.SizeUnit].ToString().ToUpper();
-
-                    string typeName = row[dalSPP.TypeName].ToString();
-
-                    int pcsStock = readyStock;
-                    int bagStock = pcsStock / (qtyPerBag > 0 ? qtyPerBag : 1);
-                    int balStock = pcsStock % (qtyPerBag > 0 ? qtyPerBag : 1);
-
-                    string sizeString = "";
-                    int size = 1;
-                    if (denominator == 1)
-                    {
-                        size = numerator;
-                        sizeString = numerator + " " + sizeUnit;
-
-                    }
-                    else
-                    {
-                        size = numerator / denominator;
-                        sizeString = numerator + "/" + denominator + " " + sizeUnit;
-                    }
-
-
-                    DataRow planning_row = dt_Planning.NewRow();
-
-                    string stockString = pcsStock + " PCS";
-                    string stdPackingString = qtyPerPacket + "/PKT, " + qtyPerBag + "/BAG";
-
-
-                    if (typeName == text.Type_PolyORing)
-                    {
-                        stdPackingString = qtyPerPacket + "/PKT";
-                    }
-
-                    planning_row[header_Type] = itemCode;
-                    planning_row[header_StockString] = stockString;
-                    planning_row[header_BalAfterDelivery] = stdPackingString;
-                    planning_row[header_QtyPerPkt] = qtyPerPacket;
-                    dt_Planning.Rows.Add(planning_row);
-
-                    //stockString = bagStock + " BAGS (" + pcsStock + ")";
-
-
-                    stockString = bagStock + " BAGS";
-
-                    if (typeName == text.Type_PolyORing)
-                    {
-                        stockString = bagStock + " PKTS";
-                    }
-
-                    planning_row = dt_Planning.NewRow();
-
-                    planning_row[header_Index] = index;
-
-                    planning_row[header_Size] = size;
-                    planning_row[header_Unit] = sizeUnit;
-                    planning_row[header_SizeString] = sizeString;
-
-                    planning_row[header_Type] = typeName;
-                    planning_row[header_Code] = itemCode;
-                    planning_row[header_StockPcs] = pcsStock;
-                    planning_row[header_StockBag] = bagStock;
-                    planning_row[header_QtyPerBag] = qtyPerBag;
-                    planning_row[header_QtyPerPkt] = qtyPerPacket;
-                    planning_row[header_BalAfterDelivery] = stockString;
-                    planning_row[header_BalAfterDeliveryInPcs] = pcsStock;
-
-                    if (balStock > 0)
-                    {
-                        string nl = Environment.NewLine;
-                        stockString += nl + " + " + balStock + " PCS";
-                    }
-
-                   
-
-                    planning_row[header_StockString] = stockString;
-
-                    dt_Planning.Rows.Add(planning_row);
-                    index++;
-
-                    dt_Planning.Rows.Add(dt_Planning.NewRow());
-                }
-
-                #endregion
-
-                #region load PO data
-
-                int prePOCode = -2;
-                string PONo = "", ShortName = "";
-                DateTime PODate = DateTime.MaxValue;
-                int colNum = 0;
-                string colName = "";
-                string colDeliveredName = "";
-                string colOrderName = "";
-                string colTblCodeName = "";
-                string colPOCodeName = "";
-                string colPONoName = "";
-                string colCustShortName = "";
-                string colDeliveryStatusName = "";
-                string colToDeliveryQtyName = "";
-                string colPlanningToDeliveryQtyName = "";
-                string colSelectedName = "";
-                string colCustIDName = "";
-                string colPODateName = "";
-
-                string EditUnit = cmbEditUnit.Text;
-
-                //start: code to improve speed
-
-                DataTable dt_DO_Short = DB_DO_ALL.Clone();
-
-                foreach (DataRow row in DB_PO_ACTIVE.Rows)
-                {
-                    string poTblCode = row[dalSPP.TableCode].ToString();
-
-                    foreach (DataRow rowDO in DB_DO_ALL.Rows)
-                    {
-                        bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
-                        bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
-                        string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
-
-                        if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
-                        {
-                            //get to delivery qty
-                            dt_DO_Short.Rows.Add(rowDO.ItemArray);
-                        }
-                    }
-
-                }
-
-                #region old Code to improve speed
-                foreach (DataRow row in DB_PO_ACTIVE.Rows)
-                {
-                    bool isRemoved = bool.TryParse(row[dalSPP.IsRemoved].ToString(), out isRemoved) ? isRemoved : false;
-                    bool isFreeze = bool.TryParse(row[dalSPP.Freeze].ToString(), out isFreeze) ? isFreeze : false;
-                    bool custOwnDO = bool.TryParse(row[dalSPP.CustOwnDO].ToString(), out custOwnDO) ? custOwnDO : false;
-
-
-                    int deliveredQty = int.TryParse(row[dalSPP.DeliveredQty].ToString(), out deliveredQty) ? deliveredQty : 0;
-                    int orderQty = int.TryParse(row[dalSPP.POQty].ToString(), out orderQty) ? orderQty : 0;
-                    int toDeliveryQty = int.TryParse(row[dalSPP.ToDeliveryQty].ToString(), out toDeliveryQty) ? toDeliveryQty : 0;
-                    string poTblCode = row[dalSPP.TableCode].ToString();
-
-                    int poCustTblCode = int.TryParse(row[dalSPP.CustTblCode].ToString(), out poCustTblCode) ? poCustTblCode : 0;
-                    bool usingBillingAddress = bool.TryParse(row[dalSPP.ShippingSameAsBilling].ToString(), out usingBillingAddress) ? usingBillingAddress : false;
-                    bool gotBalanceOrder = false;
-
-                    if (!isRemoved && !isFreeze && deliveredQty < orderQty)
-                    {
-                        int poCode = int.TryParse(row[dalSPP.POCode].ToString(), out poCode) ? poCode : -1;
-                        string poItemCode = row[dalSPP.ItemCode].ToString();
-                        
-
-                        if (prePOCode != poCode)
-                        {
-                            #region add column to table planning
-
-                            colNum++;
-                            colName = header_Priority + colNum;
-                            dt_Planning.Columns.Add(colName, typeof(string));
-
-                            colDeliveryStatusName = header_PriorityToDeliveryStatus + colNum;
-                            dt_Planning.Columns.Add(colDeliveryStatusName, typeof(string));
-
-                            colDeliveredName = header_PriorityDelivered + colNum;
-                            dt_Planning.Columns.Add(colDeliveredName, typeof(int));
-
-                            colOrderName = header_PriorityOrder + colNum;
-                            dt_Planning.Columns.Add(colOrderName, typeof(int));
-
-                            colTblCodeName = header_PriorityTblCode + colNum;
-                            dt_Planning.Columns.Add(colTblCodeName, typeof(string));
-
-                            colPOCodeName = header_PriorityPOCode + colNum;
-                            dt_Planning.Columns.Add(colPOCodeName, typeof(string));
-
-                            colPONoName = header_PriorityPONo + colNum;
-                            dt_Planning.Columns.Add(colPONoName, typeof(string));
-
-                            colCustShortName = header_PriorityCustShortName + colNum;
-                            dt_Planning.Columns.Add(colCustShortName, typeof(string));
-
-                            colToDeliveryQtyName = header_PriorityToDeliveryQty + colNum;
-                            dt_Planning.Columns.Add(colToDeliveryQtyName, typeof(int));
-
-                            colPlanningToDeliveryQtyName = header_PriorityToDeliveryPlanningInPCS + colNum;
-                            dt_Planning.Columns.Add(colPlanningToDeliveryQtyName, typeof(int));
-
-                            colSelectedName = header_ColSelected + colNum;
-                            dt_Planning.Columns.Add(colSelectedName, typeof(bool));
-
-                            colCustIDName = header_PriorityCustCode + colNum;
-                            dt_Planning.Columns.Add(colCustIDName, typeof(int));
-
-                            colPODateName = header_PriorityPODate + colNum;
-                            dt_Planning.Columns.Add(colPODateName, typeof(DateTime));
-
-                            #endregion
-
-                            prePOCode = poCode;
-
-                            PONo = row[dalSPP.PONo].ToString();
-
-                            PODate = Convert.ToDateTime(row[dalSPP.PODate]).Date;
-
-                            ShortName = row[dalSPP.ShortName].ToString();
-
-                        }
-
-                        //add data
-                        for (int i = 0; i < dt_Planning.Rows.Count; i++)
-                        {
-                            string planningCode = dt_Planning.Rows[i][header_Code].ToString();
-                            int pcsPerBag = int.TryParse(dt_Planning.Rows[i][header_QtyPerBag].ToString(), out pcsPerBag) ? pcsPerBag : 1;
-
-                            if (planningCode == poItemCode && i - 1 >= 0)
-                            {
-                                DataColumnCollection columns = dt_Planning.Columns;
-
-                                if (columns.Contains(colName) && columns.Contains(colDeliveredName) && columns.Contains(colOrderName))
-                                {
-                                    int planningDelivered = int.TryParse(dt_Planning.Rows[i - 1][colDeliveredName].ToString(), out planningDelivered) ? planningDelivered : 0;
-                                    int planningOrder = int.TryParse(dt_Planning.Rows[i - 1][colOrderName].ToString(), out planningOrder) ? planningOrder : 0;
-                                    //int planningToDelivery = int.TryParse(dt_Planning.Rows[i][colOrderName].ToString(), out planningToDelivery) ? planningToDelivery : 0;
-
-                                    planningDelivered += deliveredQty;
-                                    planningOrder += orderQty;
-
-                                    int divideBy = pcsPerBag;
-
-                                    if (EditUnit == text_Pcs)
-                                    {
-                                        divideBy = 1;
-                                    }
-
-                                    //planningToDelivery =  toDeliveryQty;
-
-                                    //planningDelivered /= pcsPerBag;
-                                    //planningOrder /= pcsPerBag;
-
-
-                                    dt_Planning.Rows[i - 1][colDeliveredName] = planningDelivered;
-                                    dt_Planning.Rows[i - 1][colOrderName] = planningOrder;
-
-                                    dt_Planning.Rows[i - 1][colTblCodeName] = poTblCode;
-                                    dt_Planning.Rows[i - 1][colPOCodeName] = poCode;
-                                    dt_Planning.Rows[i - 1][colPONoName] = PONo;
-                                    dt_Planning.Rows[i - 1][colCustShortName] = ShortName;
-                                    dt_Planning.Rows[i - 1][colCustIDName] = poCustTblCode;
-                                    dt_Planning.Rows[i - 1][colPODateName] = PODate;
-
-                                    //get DO to delivery qty from tbl_DO, and compare to planning toDelivery
-                                    //input delivery status
-                                    int DO_ToDeliveryQty = 0;
-                                    string deliveryStatus = text_DeliveryStatus_ToOpen;
-
-                                    foreach (DataRow rowDO in dt_DO_Short.Rows)
-                                    {
-                                        bool isDORemoved = bool.TryParse(rowDO[dalSPP.IsRemoved].ToString(), out isDORemoved) ? isDORemoved : false;
-                                        bool isDODelivered = bool.TryParse(rowDO[dalSPP.IsDelivered].ToString(), out isDODelivered) ? isDODelivered : false;
-                                        string DO_POTblCode = rowDO[dalSPP.POTableCode].ToString();
-
-                                        if (!isDORemoved && !isDODelivered && DO_POTblCode == poTblCode)
-                                        {
-                                            //get to delivery qty
-                                            DO_ToDeliveryQty += int.TryParse(rowDO[dalSPP.ToDeliveryQty].ToString(), out DO_ToDeliveryQty) ? DO_ToDeliveryQty : 0;
-
-                                        }
-                                    }
-
-                                    if (DO_ToDeliveryQty != 0)
-                                    {
-                                        if (DO_ToDeliveryQty == toDeliveryQty)
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_Opened;
-                                        }
-                                        else
-                                        {
-                                            deliveryStatus = text_DeliveryStatus_OpenedWithDiff;
-                                        }
-                                    }
-
-                                    dt_Planning.Rows[i][colName] = toDeliveryQty / divideBy;
-                                    dt_Planning.Rows[i - 1][colPlanningToDeliveryQtyName] = toDeliveryQty;
-                                    dt_Planning.Rows[i - 1][colDeliveryStatusName] = deliveryStatus;
-                                    dt_Planning.Rows[i - 1][colToDeliveryQtyName] = DO_ToDeliveryQty;
-
-                                    //string POData = " " + ShortName + " (" + PONo + "): " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
-                                    string POData = "";
-
-
-                                    if ((orderQty - deliveredQty) % divideBy > 0)
-                                    {
-                                        POData += "★ ";//★⍟☆⋆✪✫❂🌟#%★
-                                        gotBalanceOrder = true;
-                                    }
-
-                                    POData += " " + DO_ToDeliveryQty / divideBy + "/" + planningDelivered / divideBy + "/" + planningOrder / divideBy + " ";
-
-                                    if ((orderQty - deliveredQty) % divideBy > 0)
-                                    {
-                                        POData += "★";//★⍟☆⋆✪✫❂🌟#%★
-
-                                    }
-                                    dt_Planning.Rows[i - 1][colName] = POData;
-
-                                    string nl = Environment.NewLine;
-
-
-                                    string POInfo = "";
-
-
-                                    string DateString = PODate.ToShortDateString();
-
-                                    if (custOwnDO)
-                                    {
-                                        if(gotBalanceOrder)
-                                        {
-                                            POInfo = " " + ShortName + nl + nl + "★✪ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                        }
-                                        else
-                                        {
-                                            POInfo = " " + ShortName + nl + nl + " ✪ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                        }
-                                    }
-                                    else if (gotBalanceOrder)
-                                    {
-                                        POInfo = " " + ShortName + nl + nl + "★ (" + PONo + ") " + nl + " " + DateString + " ";
-
-                                    }
-                                    else
-                                    {
-                                        POInfo = " " + ShortName + nl + nl + " (" + PONo + ") " + nl + " " + DateString + " ";
-                                    }
-
-                                    dt_Planning.Rows[0][colName] = POInfo;
-                                    dt_Planning.Rows[0][colCustIDName] = poCustTblCode;
-                                   
-                                    ShortName = row[dalSPP.ShortName].ToString();
-
-
-                                    // string POShippingInfo = " " + PODate.ToShortDateString() + " ";
-                                    string POShippingInfo = "";
-
-                                    string ShippingShortName = row[dalSPP.ShippingShortName].ToString();
-                                    string ShippingState = row[dalSPP.AddressState].ToString().ToUpper();
-                                    string ShippingTransporter = row[dalSPP.ShippingTransporter].ToString();
-
-                                    
-                                    POShippingInfo += nl ;
-
-                                    if (ShippingShortName != ShortName && !usingBillingAddress)
-                                        POShippingInfo +=  " " + ShippingShortName;
-                                    else
-                                        POShippingInfo +=  nl;
-
-
-
-                                    if (ShippingState != "SELANGOR" && ShippingState != "KL" && ShippingState != "KUALA LUMPUR" )
-                                    {
-                                        POShippingInfo += " (" + ShippingState + ")";
-                                    }
-
-                                    POShippingInfo += " " + nl + ShippingTransporter + " ";
-                                    dt_Planning.Rows[1][colName] = POShippingInfo;
-                                }
-                                else
-                                {
-                                    MessageBox.Show("Columns not exist!");
-                                }
-
-                                break;
-                            }
-                        }
-
-
-                    }
-
-                }
-                #endregion
-                //ennd: code to improve speed
-
-                #endregion
-                
-                dgvList.SuspendLayout();
-
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None;
-                dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
-                dgvList.ColumnHeadersVisible = false;
-
-                dgvList.DataSource = dt_Planning;
-
-               
-
-                DgvUIEdit(dgvList, colNum);
-
-                AdjustDGVRowAlignment(dgvList);
-
-                AdjustToDeliveryBackColor();
-
-                UpdateBalAfterDelivery();
-
-                dgvList.ResumeLayout();
-
-                dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
-
-                dgvList.Columns.Cast<DataGridViewColumn>().ToList().ForEach(f => f.SortMode = DataGridViewColumnSortMode.NotSortable);
-
-                dgvList.ColumnHeadersVisible = true;
-
-
-              
-                dgvList.ClearSelection();
-
-                //^^872ms
-                Cursor = Cursors.Arrow;
-
-                frmLoading.CloseForm();//1122ms//986ms
-            }
-          
-        }
-
         private void LoadPOList()
         {
 
@@ -1148,6 +639,31 @@ namespace FactoryManagementSoftware.UI
                     }
 
 
+                    int numerator2 = int.TryParse(row[dalSPP.SizeNumerator + "1"].ToString(), out numerator2) ? numerator2 : 0;
+                    int denominator2 = int.TryParse(row[dalSPP.SizeDenominator + "1"].ToString(), out denominator2) ? denominator2 : 1;
+                    string sizeUnit2 = row[dalSPP.SizeUnit +"1"].ToString().ToUpper();
+
+                    string sizeString2 = "";
+                    int size2 = 0;
+
+                    if(numerator2 > 0)
+                    {
+                        if (denominator2 == 1)
+                        {
+                            size2 = numerator2;
+                            sizeString2 = numerator2.ToString();
+
+                        }
+                        else
+                        {
+                            size2 = numerator2 / denominator2;
+                            sizeString2 = numerator2 + "/" + denominator2;
+                        }
+                    }
+                   
+
+
+
                     DataRow planning_row = dt_Planning.NewRow();
 
                     string stockString = pcsStock + " PCS";
@@ -1182,6 +698,7 @@ namespace FactoryManagementSoftware.UI
                     planning_row[header_Size] = size;
                     planning_row[header_Unit] = sizeUnit;
                     planning_row[header_SizeString] = sizeString;
+                    planning_row[header_SizeString2] = sizeString2;
 
                     planning_row[header_Type] = typeName;
                     planning_row[header_Code] = itemCode;
@@ -3994,7 +3511,18 @@ namespace FactoryManagementSoftware.UI
 
             int colIndex = e.ColumnIndex;
 
-            if((fillStatus == text_SelectCol || fillStatus == text_FillIn) && dgvList.SelectedColumns.Count > 0)
+            // Add this to your existing dgvList_CellClick method
+            if (dgv.Columns[colIndex].Name == header_BalAfterDelivery)
+            {
+                // Get item code 
+                string itemCode = GetItemCodeFromRow(dgv, e.RowIndex);
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    ShowOrderSummary(itemCode);
+                }
+            }
+            if ((fillStatus == text_SelectCol || fillStatus == text_FillIn) && dgvList.SelectedColumns.Count > 0)
             {
                 dgv.EnableHeadersVisualStyles = false;
 
@@ -4088,6 +3616,315 @@ namespace FactoryManagementSoftware.UI
             //dgv.EnableHeadersVisualStyles = true;
         }
 
+
+        // Replace your existing ShowOrderSummary method with this:
+        private void ShowOrderSummary(string itemCode)
+        {
+            DataTable dt = (DataTable)dgvList.DataSource;
+            List<(string poLevel, string poSummary, int qty, string deliverySummary, string shippingSummary)> orderList = new List<(string, string, int, string, string)>();
+            string unit = cmbEditUnit.Text;
+
+            // Get item display name
+            string itemDisplay = GetItemDisplay(dt, itemCode);
+
+            // Collect order data
+            foreach (DataColumn column in dt.Columns)
+            {
+                if (column.ColumnName.StartsWith(header_PriorityOrder))
+                {
+                    string level = column.ColumnName.Replace(header_PriorityOrder, "");
+
+                    foreach (DataRow row in dt.Rows)
+                    {
+                        if (row[header_Code]?.ToString() == itemCode)
+                        {
+                            int rowIndex = dt.Rows.IndexOf(row);
+                            int orderQty = int.TryParse(dt.Rows[rowIndex - 1][header_PriorityOrder + level]?.ToString(), out int qty) ? qty : 0;
+
+                            if (orderQty > 0)
+                            {
+                                string customer = dt.Rows[rowIndex - 1][header_PriorityCustShortName + level]?.ToString() ?? "";
+                                string poNo = dt.Rows[rowIndex - 1][header_PriorityPONo + level]?.ToString() ?? "";
+                                string poDate = dt.Rows[rowIndex - 1][header_PriorityPODate + level]?.ToString() ?? "";
+
+                                if (DateTime.TryParse(poDate, out DateTime date))
+                                    poDate = date.ToString("dd MMM yyyy");
+
+
+                                string poLevel = header_Priority + level;
+
+                                int toDelivery = int.TryParse(row[header_Priority + level]?.ToString(), out int delivery) ? delivery : 0;
+                                string deliverySummary = dt.Rows[rowIndex - 1][header_Priority + level]?.ToString() ?? "";
+
+                                string poSummary = dt.Rows[0][header_Priority + level]?.ToString() ?? "";
+                                poSummary = poSummary.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Trim();
+
+                                string shippingSummary = dt.Rows[1][header_Priority + level]?.ToString() ?? "";
+                                shippingSummary = shippingSummary.Replace("\r\n", " ").Replace("\n", " ").Replace("\r", " ").Trim();
+
+                                orderList.Add((poLevel, poSummary, toDelivery, deliverySummary, shippingSummary));
+                                //orderList.Add((customer, poNo, poDate, toDelivery, deliverySummary, shippingSummary));
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // Show popup form
+            ShowOrderSummaryPopup(itemDisplay, orderList, unit, itemCode);
+        }
+
+        // Add this new method for the popup:
+        private void ShowOrderSummaryPopup(string itemDisplay, List<(string poLevel, string poSummary, int qty, string deliverySummary, string shippingSummary)> orderList, string unit, string itemCode)
+        {
+            // Create popup form
+            Form frmOrderSummary = new Form();
+            frmOrderSummary.Text = "Order Summary";
+            frmOrderSummary.StartPosition = FormStartPosition.CenterParent;
+            frmOrderSummary.FormBorderStyle = FormBorderStyle.FixedDialog;
+            frmOrderSummary.MaximizeBox = false;
+            frmOrderSummary.MinimizeBox = false;
+            frmOrderSummary.BackColor = Color.White;
+            frmOrderSummary.Size = new Size(700, 700);
+
+            // Create scrollable panel
+            Panel pnlContent = new Panel();
+            pnlContent.Dock = DockStyle.Fill;
+            pnlContent.AutoScroll = true;
+            pnlContent.BackColor = Color.White;
+            pnlContent.Padding = new Padding(20);
+
+            //// Create content
+            //string content = GenerateOrderSummaryText(itemDisplay, orderList, unit);
+
+            //Label lblContent = new Label();
+            //lblContent.Text = content;
+            //lblContent.AutoSize = true;
+            //lblContent.Font = new Font("Consolas", 9F); // Monospace font for alignment
+            //lblContent.ForeColor = Color.FromArgb(1, 33, 71);
+            //lblContent.Location = new Point(20, 10); // Move it 20px from left, 10px from top
+
+            //pnlContent.Controls.Add(lblContent);
+            // Create clickable labels for each order
+            CreateClickableOrderLabels(pnlContent, itemDisplay, orderList, unit, frmOrderSummary, itemCode);
+
+            frmOrderSummary.Controls.Add(pnlContent);
+
+            // Show popup
+            frmOrderSummary.ShowDialog(this);
+        }
+
+        private void CreateClickableOrderLabels(Panel panel, string itemDisplay, List<(string poLevel, string poSummary, int qty, string deliverySummary, string shippingSummary)> orderList, string unit, Form parentForm, string itemCode)
+        {
+            int yPosition = 10;
+            Font headerFont = new Font("Consolas", 9F, FontStyle.Bold);
+            Font normalFont = new Font("Consolas", 9F);
+            Color normalColor = Color.FromArgb(1, 33, 71);
+            Color hoverColor = Color.Blue;
+
+            // Header
+            Label lblHeader1 = new Label();
+            lblHeader1.Text = "===============================================";
+            lblHeader1.Font = normalFont;
+            lblHeader1.ForeColor = normalColor;
+            lblHeader1.Location = new Point(20, yPosition);
+            lblHeader1.AutoSize = true;
+            panel.Controls.Add(lblHeader1);
+            yPosition += 20;
+
+            Label lblHeader2 = new Label();
+            lblHeader2.Text = $"  ORDER SUMMARY - {itemDisplay}";
+            lblHeader2.Font = headerFont;
+            lblHeader2.ForeColor = normalColor;
+            lblHeader2.Location = new Point(20, yPosition);
+            lblHeader2.AutoSize = true;
+            panel.Controls.Add(lblHeader2);
+            yPosition += 20;
+
+            Label lblHeader3 = new Label();
+            lblHeader3.Text = "===============================================";
+            lblHeader3.Font = normalFont;
+            lblHeader3.ForeColor = normalColor;
+            lblHeader3.Location = new Point(20, yPosition);
+            lblHeader3.AutoSize = true;
+            panel.Controls.Add(lblHeader3);
+            yPosition += 40;
+
+            if (orderList.Count == 0)
+            {
+                Label lblNoData = new Label();
+                lblNoData.Text = "No orders found for this item.";
+                lblNoData.Font = normalFont;
+                lblNoData.ForeColor = normalColor;
+                lblNoData.Location = new Point(20, yPosition);
+                lblNoData.AutoSize = true;
+                panel.Controls.Add(lblNoData);
+                return;
+            }
+
+            Label lblRecords = new Label();
+            lblRecords.Text = "RECORDS:";
+            lblRecords.Font = headerFont;
+            lblRecords.ForeColor = normalColor;
+            lblRecords.Location = new Point(20, yPosition);
+            lblRecords.AutoSize = true;
+            panel.Controls.Add(lblRecords);
+            yPosition += 40;
+
+            // Create labels for each order
+            foreach (var order in orderList)
+            {
+                // Main PO line - CLICKABLE
+                Label lblPOLine = new Label();
+                lblPOLine.Text = $"{order.poLevel,-7}  {order.poSummary,-35} : {order.qty} {unit.ToUpper()} ( {order.deliverySummary} )";
+                lblPOLine.Font = normalFont;
+                lblPOLine.ForeColor = normalColor;
+                lblPOLine.Location = new Point(20, yPosition);
+                lblPOLine.AutoSize = true;
+                lblPOLine.Cursor = Cursors.Hand;
+
+                // Add hover effects
+                lblPOLine.MouseEnter += (s, e) => lblPOLine.ForeColor = hoverColor;
+                lblPOLine.MouseLeave += (s, e) => lblPOLine.ForeColor = normalColor;
+
+                // Add click event - this is where the magic happens
+                lblPOLine.Click += (s, e) => {
+                    parentForm.Close();
+                    NavigateToCell(order.poLevel, itemCode);
+                };
+
+                panel.Controls.Add(lblPOLine);
+                yPosition += 20;
+
+                // Shipping summary line - NOT CLICKABLE
+                if (!string.IsNullOrEmpty(order.shippingSummary))
+                {
+                    Label lblShippingLine = new Label();
+                    lblShippingLine.Text = $"{"",-7}  {order.shippingSummary}";
+                    lblShippingLine.Font = normalFont;
+                    lblShippingLine.ForeColor = normalColor;
+                    lblShippingLine.Location = new Point(20, yPosition);
+                    lblShippingLine.AutoSize = true;
+                    panel.Controls.Add(lblShippingLine);
+                    yPosition += 20;
+                }
+
+                yPosition += 10; // Spacing between records
+            }
+        }
+
+
+
+        private void NavigateToCell(string poLevel, string itemCode)
+        {
+            DataGridView dgv = dgvList;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            int targetColumnIndex = -1;
+            int targetRowIndex = -1;
+
+            // Find the column index for the poLevel
+            for (int col = 0; col < dgv.Columns.Count; col++)
+            {
+                if (dgv.Columns[col].Name == poLevel)
+                {
+                    targetColumnIndex = col;
+                    break;
+                }
+            }
+
+            // Find the row index for the itemCode
+            for (int row = 0; row < dgv.Rows.Count; row++)
+            {
+                string cellItemCode = dgv.Rows[row].Cells[header_Code]?.Value?.ToString() ?? "";
+                if (cellItemCode == itemCode)
+                {
+                    targetRowIndex = row;
+                    break;
+                }
+            }
+
+            // Navigate to the cell if both column and row are found
+            if (targetColumnIndex >= 0 && targetRowIndex >= 0)
+            {
+                // Clear any existing selections
+                dgv.ClearSelection();
+
+                // Set the current cell to the intersection
+                dgv.CurrentCell = dgv.Rows[targetRowIndex].Cells[targetColumnIndex];
+
+                // Scroll to make sure the cell is visible
+                dgv.FirstDisplayedScrollingColumnIndex = targetColumnIndex;
+                dgv.FirstDisplayedScrollingRowIndex = targetRowIndex;
+
+                // Focus on the DataGridView
+                dgv.Focus();
+            }
+        }
+        private string GenerateOrderSummaryText(string itemDisplay, List<(string poLevel, string poSummary, int qty, string deliverySummary, string shippingSummary)> orderList, string unit)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("===============================================");
+            sb.AppendLine($"  ORDER SUMMARY - {itemDisplay}");
+            sb.AppendLine("===============================================");
+            sb.AppendLine();
+
+            if (orderList.Count == 0)
+            {
+                sb.AppendLine("No orders found for this item.");
+            }
+            else
+            {
+                sb.AppendLine("RECORDS:");
+                sb.AppendLine();
+
+                foreach (var order in orderList)
+                {
+                    //sb.AppendLine($"{order.poLevel,-7}  {order.poSummary}");
+                    //sb.AppendLine($"{"",-7}  {order.qty} {unit.ToUpper()} ( {order.deliverySummary} )");
+
+                    //if(!string.IsNullOrEmpty(order.shippingSummary))
+                    //{
+                    //    sb.AppendLine($"{"",-7}  {order.shippingSummary}");
+                    //}
+                    //sb.AppendLine();
+                    sb.AppendLine($"{order.poLevel,-7}  {order.poSummary,-35} : {order.qty} {unit.ToUpper()} ( {order.deliverySummary} )");
+                    //sb.AppendLine($"{"",-7}  {order.qty} {unit.ToUpper()} ( {order.deliverySummary} )");
+
+                    if (!string.IsNullOrEmpty(order.shippingSummary))
+                    {
+                        sb.AppendLine($"{"",-7}  {order.shippingSummary}");
+                    }
+                    sb.AppendLine();
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        private string GetItemDisplay(DataTable dt, string itemCode)
+        {
+            foreach (DataRow row in dt.Rows)
+            {
+                if (row[header_Code]?.ToString() == itemCode)
+                {
+                    string size1 = row[header_Size]?.ToString() ?? "";
+                    string size2 = row[header_SizeString2]?.ToString() ?? "";
+                    string type = row[header_Type]?.ToString() ?? "";
+
+                    string display = size1;
+                    if (!string.IsNullOrEmpty(size2))
+                        display += " x " + size2;
+                    if (!string.IsNullOrEmpty(type))
+                        display += " " + type.ToUpper();
+
+                    return display;
+                }
+            }
+            return itemCode;
+        }
         private void OpenDO(DataGridView dgv)
         {
             bool OktoNextStep = true;
@@ -4417,7 +4254,7 @@ namespace FactoryManagementSoftware.UI
 
             return false;
         }
-        readonly string text_ShowOrderedItems = "Show Ordered Items";
+        readonly string text_ShowOrderedItems = "Show Pending Items";
         private void dgvList_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
             try
@@ -4449,6 +4286,11 @@ namespace FactoryManagementSoftware.UI
                     string headerName = dgv.Columns[e.ColumnIndex].Name;
                     int colIndex = e.ColumnIndex;
                     bool validCelltoShowMenu = false;
+
+                    if (headerName == header_BalAfterDelivery)
+                    {
+                        return; // Exit early, don't show any menu
+                    }
 
                     if (colIndex <= 11)
                     {
@@ -4729,7 +4571,20 @@ namespace FactoryManagementSoftware.UI
                         my_menu.Items.Add(text_FillAll).Name = text_FillAll;
                         my_menu.Items.Add(text_FillAllByCustomer).Name = text_FillAllByCustomer;
 
-                        if(headerName.Contains(header_Priority))
+                        if (headerName == header_BalAfterDelivery)
+                        {
+                            validCelltoShowMenu = true;
+
+                            // Get item code from current row or next row
+                            string itemCode = GetItemCodeFromRow(dgv, e.RowIndex);
+
+                            if (!string.IsNullOrEmpty(itemCode))
+                            {
+                                my_menu.Items.Add("Show Order Summary").Name = "ShowOrderSummary";
+                                my_menu.Items.Add("ItemCode:" + itemCode).Name = "HiddenItemCode"; // Store item code
+                            }
+                        }
+                        else if (headerName.Contains(header_Priority))
                         {
                             //my_menu.Items.Add(text_JumpToNextItem).Name = text_JumpToNextItem;
                             //my_menu.Items.Add(text_JumpToLastItem).Name = text_JumpToLastItem;
@@ -4746,17 +4601,35 @@ namespace FactoryManagementSoftware.UI
 
                             if (orderedItems.Count > 0)
                             {
+                                // Add empty line at top
+                                ToolStripMenuItem topSeparator = new ToolStripMenuItem(" ");
+                                topSeparator.Enabled = false;
+                                showOrderedItemsMenu.DropDownItems.Add(topSeparator);
+
                                 // Add each ordered item as submenu
                                 foreach (var item in orderedItems)
                                 {
-                                    string displayText = !string.IsNullOrEmpty(item.ItemName) && item.ItemName != item.ItemCode
-                                        ? $"{item.ItemName} ({item.ItemCode})"
-                                        : item.ItemCode;
+                                    ToolStripMenuItem itemMenuItem = new ToolStripMenuItem(item.ItemInfo);
 
-                                    ToolStripMenuItem itemMenuItem = new ToolStripMenuItem(displayText);
+                                    // Use normal font, not monospace
+                                    //itemMenuItem.Font = new Font("Segoe UI", 9F, FontStyle.Regular);
+                                    itemMenuItem.Font = new Font("Consolas", 9F, FontStyle.Regular);
+
                                     itemMenuItem.Tag = item;
+
+                                    itemMenuItem.Click += (menuSender, args) =>
+                                    {
+                                        JumpToItemInGrid(item, e.ColumnIndex);
+                                    };
+
                                     showOrderedItemsMenu.DropDownItems.Add(itemMenuItem);
                                 }
+
+                                // Add empty line at bottom
+                                ToolStripMenuItem bottomSeparator = new ToolStripMenuItem(" ");
+                                bottomSeparator.Enabled = false;
+                                showOrderedItemsMenu.DropDownItems.Add(bottomSeparator);
+
                             }
                             else
                             {
@@ -4796,12 +4669,121 @@ namespace FactoryManagementSoftware.UI
             }
         }
 
+        private string GetItemCodeFromRow(DataGridView dgv, int rowIndex)
+        {
+            string itemCode = dgv.Rows[rowIndex].Cells[header_Code].Value?.ToString() ?? "";
+
+            if (string.IsNullOrEmpty(itemCode) && rowIndex + 1 < dgv.Rows.Count)
+            {
+                itemCode = dgv.Rows[rowIndex + 1].Cells[header_Code].Value?.ToString() ?? "";
+            }
+
+            return itemCode;
+        }
+
+        
+
         public class OrderedItemInfo
         {
-            public string ItemCode { get; set; }
-            public string ItemName { get; set; }
+            public string ItemInfo { get; set; }  // The formatted display text
             public int OrderQuantity { get; set; }
+            public string DeliveryInfo { get; set; }
+            public string Size1 { get; set; }      // For matching when clicked
+            public string Size2 { get; set; }      // For matching when clicked  
+            public string ItemType { get; set; }   // For matching when clicked
+
         }
+        private List<OrderedItemInfo> oldGetOrderedItemsForPO_Direct(DataGridView dgv, string level)
+        {
+            List<OrderedItemInfo> items = new List<OrderedItemInfo>();
+
+            try
+            {
+                DataTable dt = (DataTable)dgv.DataSource;
+
+                // Check if this PO level exists
+                if (!dt.Columns.Contains(header_PriorityOrder + level))
+                {
+                    return items;
+                }
+
+                string unit = cmbEditUnit.Text;
+
+                for (int i = 1; i < dt.Rows.Count; i++)
+                {
+                    int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + level].ToString(), out orderQty) ? orderQty : 0;
+
+                    if (orderQty > 0)
+                    {
+                        // Get item code and name
+                        string itemCode = dt.Rows[i + 1][header_Code]?.ToString() ?? "";
+
+                        // If no item code in current row, this might be a header/summary row - skip
+                        if (string.IsNullOrEmpty(itemCode))
+                            continue;
+
+                        string itemType = dt.Rows[i + 1][header_Type]?.ToString() ?? "";
+
+                        int toDeliverQty_Pcs = int.TryParse(dt.Rows[i][header_PriorityToDeliveryPlanningInPCS + level].ToString(), out toDeliverQty_Pcs) ? toDeliverQty_Pcs : 0;
+                        int toDeliverQty_Bag = int.TryParse(dt.Rows[i + 1][header_Priority + level].ToString(), out toDeliverQty_Bag) ? toDeliverQty_Bag : 0;
+
+                        string deliveredSummary = dt.Rows[i][header_Priority + level]?.ToString() ?? "";
+                        string toDeliverySummary = "";
+
+                        if (toDeliverQty_Bag <= 0 && toDeliverQty_Pcs > 0)
+                        {
+                            if (unit == text_Bag)
+                            {
+                                toDeliverySummary = toDeliverQty_Pcs + " (" + deliveredSummary + ") pcs";
+                            }
+                            else
+                            {
+                                toDeliverySummary = toDeliverQty_Pcs + " (" + deliveredSummary + ") " + unit;
+
+                            }
+                        }
+                        else
+                        {
+                            toDeliverySummary = toDeliverQty_Bag + " (" + deliveredSummary + ") " + unit;
+                        }
+
+                        string itemInfo = "";
+                        string size1 = dt.Rows[i + 1][header_Size]?.ToString() ?? "";
+                        string size2 = dt.Rows[i + 1][header_SizeString2]?.ToString() ?? "";
+
+                        itemInfo = size1;
+
+                        if (!string.IsNullOrEmpty(size2))
+                        {
+                            itemInfo += " x " + size2;
+
+                        }
+                        itemInfo += " " + itemType;
+
+                        // Add to list (avoid duplicates)
+                        if (!items.Any(x => x.ItemInfo == itemCode))
+                        {
+                            items.Add(new OrderedItemInfo
+                            {
+                                ItemInfo = itemInfo,
+                                OrderQuantity = orderQty,
+                                DeliveryInfo = toDeliverySummary
+                            });
+                        }
+                    }
+                }
+
+               
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+
+            // Return sorted by item code
+            return items.OrderBy(x => x.ItemInfo).ToList();
+        }
+
         private List<OrderedItemInfo> GetOrderedItemsForPO_Direct(DataGridView dgv, string level)
         {
             List<OrderedItemInfo> items = new List<OrderedItemInfo>();
@@ -4816,6 +4798,8 @@ namespace FactoryManagementSoftware.UI
                     return items;
                 }
 
+                string unit = cmbEditUnit.Text;
+
                 for (int i = 1; i < dt.Rows.Count; i++)
                 {
                     int orderQty = int.TryParse(dt.Rows[i][header_PriorityOrder + level].ToString(), out orderQty) ? orderQty : 0;
@@ -4824,55 +4808,96 @@ namespace FactoryManagementSoftware.UI
                     {
                         // Get item code and name
                         string itemCode = dt.Rows[i + 1][header_Code]?.ToString() ?? "";
-                        string itemName = dt.Rows[i + 1][header_Type]?.ToString() ?? "";
 
                         // If no item code in current row, this might be a header/summary row - skip
                         if (string.IsNullOrEmpty(itemCode))
                             continue;
 
-                        // Try to get item name from DB_ITEM_ALL (your existing data)
-                        if (DB_ITEM_ALL != null)
-                        {
-                            foreach (DataRow itemRow in DB_ITEM_ALL.Rows)
-                            {
-                                if (itemRow[dalItem.ItemCode]?.ToString() == itemCode)
-                                {
-                                    itemName = itemRow[dalItem.ItemName]?.ToString() ?? "";
-                                    break;
-                                }
-                            }
-                        }
+                        string itemType = dt.Rows[i + 1][header_Type]?.ToString() ?? "";
 
-                        // If still no name, use the code as name
-                        if (string.IsNullOrEmpty(itemName))
-                        {
-                            itemName = itemCode;
-                        }
+                        int toDeliverQty_Pcs = int.TryParse(dt.Rows[i][header_PriorityToDeliveryPlanningInPCS + level].ToString(), out toDeliverQty_Pcs) ? toDeliverQty_Pcs : 0;
+                        int toDeliverQty_Bag = int.TryParse(dt.Rows[i + 1][header_Priority + level].ToString(), out toDeliverQty_Bag) ? toDeliverQty_Bag : 0;
+
+                        string deliveredSummary = dt.Rows[i][header_Priority + level]?.ToString() ?? "";
+
+                        // Get size information
+                        string size1 = dt.Rows[i + 1][header_Size]?.ToString() ?? "";
+                        string size2 = dt.Rows[i + 1][header_SizeString2]?.ToString() ?? "";
+
+                        // Create simple formatted text
+                        string formattedText = FormatItemText(size1, size2, itemType, toDeliverQty_Bag > 0 ? toDeliverQty_Bag : toDeliverQty_Pcs, deliveredSummary, unit);
 
                         // Add to list (avoid duplicates)
-                        if (!items.Any(x => x.ItemCode == itemCode))
+                        if (!items.Any(x => x.ItemInfo == formattedText))
                         {
                             items.Add(new OrderedItemInfo
                             {
-                                ItemCode = itemCode,
-                                ItemName = itemName,
-                                OrderQuantity = orderQty
+                                ItemInfo = formattedText,
+                                OrderQuantity = orderQty,
+                                DeliveryInfo = deliveredSummary,
+                                Size1 = size1,
+                                Size2 = size2,
+                                ItemType = itemType
                             });
                         }
                     }
                 }
-
-               
             }
             catch (Exception ex)
             {
                 tool.saveToTextAndMessageToUser(ex);
             }
 
-            // Return sorted by item code
-            return items.OrderBy(x => x.ItemCode).ToList();
+            // Return sorted by item info
+            return items.OrderBy(x => x.ItemInfo).ToList();
         }
 
+        // Simple formatting function
+        // Replace your existing FormatItemText method with this:
+        private string FormatItemText(string size1, string size2, string itemType, int qty, string deliveredSummary, string unit)
+        {
+            string itemDesc = "";
+
+            // Build: size1 x size2 itemType
+            if (!string.IsNullOrEmpty(size1))
+            {
+                itemDesc = size1;
+                if (!string.IsNullOrEmpty(size2))
+                {
+                    itemDesc += " x " + size2;
+                }
+            }
+
+            if (!string.IsNullOrEmpty(itemType))
+            {
+                if (!string.IsNullOrEmpty(itemDesc))
+                {
+                    itemDesc += " " + itemType.ToUpper();
+                }
+                else
+                {
+                    itemDesc = itemType.ToUpper();
+                }
+            }
+
+            // Build: qty (deliveredSummary) unit
+            string qtyInfo = qty.ToString();
+            if (!string.IsNullOrEmpty(deliveredSummary))
+            {
+                qtyInfo += " (" + deliveredSummary + ")";
+            }
+            qtyInfo += " " + unit.ToUpper();
+
+            // Add dots for alignment (total width = 35 characters)
+            int totalWidth = 35;
+            int currentLength = itemDesc.Length;
+            int dotsNeeded = Math.Max(1, totalWidth - currentLength - 3); // -3 for " : "
+
+            string dots = new string('.', dotsNeeded);
+
+            // Combine: "ITEM DESCRIPTION ........ : QTY INFO"
+            return itemDesc + " " + dots + " : " + qtyInfo;
+        }
         private void DOList_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
@@ -4885,7 +4910,13 @@ namespace FactoryManagementSoftware.UI
 
             string ClickedItem = e.ClickedItem.Name.ToString();
             stopAfterBalUpdate = true;
-            if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_JumpToLastItem) || ClickedItem.Equals(text_JumpToFirstItem) || ClickedItem.Equals(text_JumpToNextItem) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer) || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
+
+            if (e.ClickedItem.Tag is OrderedItemInfo clickedOrderedItem)
+            {
+                // Jump to the item in the grid
+                JumpToItemInGrid(clickedOrderedItem, colIndex);
+            }
+            else if (rowIndex >= 0 && (ClickedItem.Equals(text_AddDO) || ClickedItem.Equals(text_JumpToLastItem) || ClickedItem.Equals(text_JumpToFirstItem) || ClickedItem.Equals(text_JumpToNextItem) || ClickedItem.Equals(text_ResetAll) || ClickedItem.Equals(text_ResetAllByCustomer) || ClickedItem.Equals(text_FillAll) || ClickedItem.Equals(text_FillAllByCustomer) || CheckIfValidCellSelected()))
             {
 
                 if (ClickedItem.Equals(text_Reset))
@@ -4949,6 +4980,95 @@ namespace FactoryManagementSoftware.UI
             //}
         }
 
+    
+        private void JumpToItemInGrid(OrderedItemInfo item, int currentPOColumn)
+        {
+            DataGridView dgv = dgvList;
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            try
+            {
+                // Loop through all rows to find matching item
+                for (int row = 0; row < dt.Rows.Count; row++)
+                {
+                    // Get item data from current row
+                    string rowItemCode = dt.Rows[row][header_Code]?.ToString() ?? "";
+                    string rowSize1 = dt.Rows[row][header_Size]?.ToString() ?? "";
+                    string rowSize2 = dt.Rows[row][header_SizeString2]?.ToString() ?? "";
+                    string rowType = dt.Rows[row][header_Type]?.ToString() ?? "";
+
+                    // Check if this row matches the clicked item
+                    bool matches = MatchesItem(item, rowSize1, rowSize2, rowType);
+
+                    if (matches && !string.IsNullOrEmpty(rowItemCode))
+                    {
+                        // Found the matching row! Jump to it
+                        dgv.CurrentCell = dgv[currentPOColumn, row];
+                        dgv.FirstDisplayedScrollingRowIndex = Math.Max(0, row - 5); // Scroll with some padding
+
+                        // Optional: Flash the cell to highlight it
+                        FlashCell(dgv, row, currentPOColumn);
+
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                tool.saveToTextAndMessageToUser(ex);
+            }
+        }
+
+        // Helper method to check if row matches the clicked item
+        private bool MatchesItem(OrderedItemInfo item, string rowSize1, string rowSize2, string rowType)
+        {
+            // Clean up data for comparison
+            string cleanRowSize1 = rowSize1?.Trim() ?? "";
+            string cleanRowSize2 = rowSize2?.Trim() ?? "";
+            string cleanRowType = rowType?.Trim().ToUpper() ?? "";
+
+            string cleanItemSize1 = item.Size1?.Trim() ?? "";
+            string cleanItemSize2 = item.Size2?.Trim() ?? "";
+            string cleanItemType = item.ItemType?.Trim().ToUpper() ?? "";
+
+            // Check if all three match
+            bool size1Match = cleanRowSize1 == cleanItemSize1;
+            bool size2Match = cleanRowSize2 == cleanItemSize2;
+            bool typeMatch = cleanRowType == cleanItemType;
+
+            return size1Match && size2Match && typeMatch;
+        }
+
+        // Optional: Flash the cell to highlight it visually
+        private void FlashCell(DataGridView dgv, int row, int col)
+        {
+            try
+            {
+                // Store original colors
+                Color originalBackColor = dgv.Rows[row].Cells[col].Style.BackColor;
+                Color originalForeColor = dgv.Rows[row].Cells[col].Style.ForeColor;
+
+                // Flash yellow
+                dgv.Rows[row].Cells[col].Style.BackColor = Color.Yellow;
+                dgv.Rows[row].Cells[col].Style.ForeColor = Color.Black;
+
+                // Use a timer to restore original colors after 1 second
+                System.Windows.Forms.Timer flashTimer = new System.Windows.Forms.Timer();
+                flashTimer.Interval = 1000; // 1 second
+                flashTimer.Tick += (sender, e) =>
+                {
+                    dgv.Rows[row].Cells[col].Style.BackColor = originalBackColor;
+                    dgv.Rows[row].Cells[col].Style.ForeColor = originalForeColor;
+                    flashTimer.Stop();
+                    flashTimer.Dispose();
+                };
+                flashTimer.Start();
+            }
+            catch
+            {
+                // Ignore flash errors
+            }
+        }
         private void dgvList_CellContentClick_2(object sender, DataGridViewCellEventArgs e)
         {
            // MessageBox.Show("Cell selected");
@@ -5031,6 +5151,279 @@ namespace FactoryManagementSoftware.UI
         {
             if(!stopAfterBalUpdate)
             UpdateBalAfterDelivery();
+        }
+
+        private void cbMergePO_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtItemSearch_TextChanged(object sender, EventArgs e)
+        {
+            timer1.Stop();
+            timer1.Start();
+        }
+
+        private List<int> Row_Index_Found;
+
+        int CURRENT_ROW_JUMP = -1;
+
+        private void ItemSearchUIReset()
+        {
+            CURRENT_ROW_JUMP = -1;
+            lblSearchInfo.Text = "";
+            Row_Index_Found = new List<int>();
+
+            lblResultNo.Text = "";
+            btnPreviousSearchResult.Enabled = false;
+            btnNextSearchResult.Enabled = false;
+        }
+
+        private void ItemSearch()
+        {
+            ItemSearchUIReset();
+            string searchText = txtItemSearch.Text;
+
+            if (searchText != "SEARCH" && !string.IsNullOrWhiteSpace(searchText))
+            {
+                DataGridView dgv = dgvList;
+
+                if (dgv.DataSource != null)
+                {
+                    // Split search into words
+                    string[] searchWords = searchText.ToUpper().Split(' ');
+
+                    foreach (DataGridViewRow row in dgv.Rows)
+                    {
+                        if (row.IsNewRow) continue;
+
+                        string itemCode = row.Cells[header_Type].Value?.ToString().ToUpper() ?? "";
+                        string itemName = row.Cells[header_Code].Value?.ToString().ToUpper() ?? "";
+
+                        string size1 = row.Cells[header_Size].Value?.ToString().ToUpper() ?? "";
+                        string size2 = row.Cells[header_SizeString2].Value?.ToString().ToUpper() ?? "";
+
+
+                        // Remove apostrophes and combine text
+                        string combinedText = (itemCode + " " + itemName + " " + size1 + " " + size2).Replace("'", "");
+
+                        // Check if all search words exist
+                        bool allWordsFound = true;
+                        foreach (string word in searchWords)
+                        {
+                            if (!combinedText.Contains(word))
+                            {
+                                allWordsFound = false;
+                                break;
+                            }
+                        }
+
+                        if (allWordsFound)
+                        {
+                            // Save the Index column value instead of row index
+                            string indexValue = row.Cells[header_Index].Value?.ToString();
+                            if (!string.IsNullOrEmpty(indexValue))
+                            {
+                                Row_Index_Found.Add(int.Parse(indexValue));
+                            }
+                        }
+                    }
+
+                    int itemFoundCount = Row_Index_Found.Count;
+                    lblSearchInfo.Text = itemFoundCount + " items found";
+
+                    if (itemFoundCount > 0)
+                    {
+                        JumpToNextRow();
+                        btnPreviousSearchResult.Enabled = false;
+                        btnNextSearchResult.Enabled = itemFoundCount > 1;
+                    }
+                }
+            }
+        }
+
+        private void JumpToNextRow()
+        {
+            if (Row_Index_Found == null || Row_Index_Found.Count == 0)
+                return;
+
+            DataGridView dgv = dgvList;
+
+            // Find next index value greater than current
+            int nextIndexValue = -1;
+            int currentPosition = -1;
+
+            for (int i = 0; i < Row_Index_Found.Count; i++)
+            {
+                if (Row_Index_Found[i] > CURRENT_ROW_JUMP)
+                {
+                    nextIndexValue = Row_Index_Found[i];
+                    currentPosition = i;
+                    break;
+                }
+            }
+
+            // If no next found, we're at the end
+            if (nextIndexValue == -1) return;
+
+            // Update current position
+            CURRENT_ROW_JUMP = nextIndexValue;
+
+            // Find the actual row with this index value
+            DataGridViewRow targetRow = null;
+            foreach (DataGridViewRow row in dgvList.Rows)
+            {
+                if (row.Cells[header_Index].Value?.ToString() == nextIndexValue.ToString())
+                {
+                    targetRow = row;
+                    break;
+                }
+            }
+
+            if (targetRow != null)
+            {
+                // Clear selection and select new row
+                dgvList.ClearSelection();
+                targetRow.Selected = true;
+                //dgvList.FirstDisplayedScrollingRowIndex = targetRow.Index;
+
+                // Set the current cell to the intersection
+                //dgv.CurrentCell = dgv.Rows[targetRow.Index].Cells[header_Type];
+
+                // Scroll to make sure the cell is visible
+                //dgv.FirstDisplayedScrollingColumnIndex = dgv.Columns[header_Type].Index; 
+                dgv.FirstDisplayedScrollingRowIndex = targetRow.Index;
+
+                // Focus on the DataGridView
+                //dgv.Focus();
+
+                // Update buttons
+                btnPreviousSearchResult.Enabled = true;
+                btnNextSearchResult.Enabled = (currentPosition < Row_Index_Found.Count - 1);
+
+                // Show position
+                lblResultNo.Text = $"#{currentPosition + 1} of {Row_Index_Found.Count}";
+            }
+        }
+
+        private void BackToPreviousRow()
+        {
+            if (Row_Index_Found == null || Row_Index_Found.Count == 0)
+                return;
+
+            DataGridView dgv = dgvList;
+
+            // Find previous index value less than current
+            int prevIndexValue = -1;
+            int currentPosition = -1;
+
+            for (int i = Row_Index_Found.Count - 1; i >= 0; i--)
+            {
+                if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
+                {
+                    prevIndexValue = Row_Index_Found[i];
+                    currentPosition = i;
+                    break;
+                }
+            }
+
+            // If no previous found, we're at the beginning
+            if (prevIndexValue == -1) return;
+
+            // Update current position
+            CURRENT_ROW_JUMP = prevIndexValue;
+
+            // Find the actual row with this index value
+            DataGridViewRow targetRow = null;
+            foreach (DataGridViewRow row in dgvList.Rows)
+            {
+                if (row.Cells[header_Index].Value?.ToString() == prevIndexValue.ToString())
+                {
+                    targetRow = row;
+                    break;
+                }
+            }
+
+            if (targetRow != null)
+            {
+                // Clear selection and select new row
+                dgvList.ClearSelection();
+                targetRow.Selected = true;
+                // Set the current cell to the intersection
+                //dgv.CurrentCell = dgv.Rows[targetRow.Index].Cells[header_Type];
+
+                // Scroll to make sure the cell is visible
+                //dgv.FirstDisplayedScrollingColumnIndex = dgv.Columns[header_Type].Index;
+                dgv.FirstDisplayedScrollingRowIndex = targetRow.Index;
+                // Update buttons
+                btnPreviousSearchResult.Enabled = (currentPosition > 0);
+                btnNextSearchResult.Enabled = true;
+
+                // Show position
+                lblResultNo.Text = $"#{currentPosition + 1} of {Row_Index_Found.Count}";
+            }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            timer1.Stop();
+
+            Cursor = Cursors.WaitCursor; // change cursor to hourglass type
+
+            if (txtItemSearch.Text.Length == 0 || txtItemSearch.Text == text.Search_DefaultText)
+            {
+                lblSearchClear.Visible = false;
+                ItemSearchUIReset();
+            }
+            else
+            {
+                lblSearchClear.Visible = true;
+                ItemSearch();
+            }
+
+            //dgvForecastReport.DataSource = null;
+
+            Cursor = Cursors.Arrow; // change cursor to normal type
+        }
+
+        private void btnPreviousSearchResult_Click(object sender, EventArgs e)
+        {
+            BackToPreviousRow();
+        }
+
+        private void btnNextSearchResult_Click(object sender, EventArgs e)
+        {
+            JumpToNextRow();
+        }
+
+        private void txtItemSearch_Enter(object sender, EventArgs e)
+        {
+            if (txtItemSearch.Text == text.Search_DefaultText)
+            {
+                txtItemSearch.Text = "";
+                txtItemSearch.ForeColor = SystemColors.WindowText;
+            }
+        }
+
+        private void txtItemSearch_Leave(object sender, EventArgs e)
+        {
+            if (txtItemSearch.Text.Length == 0)
+            {
+                txtItemSearch.Text = text.Search_DefaultText;
+                txtItemSearch.ForeColor = SystemColors.GrayText;
+
+                ItemSearchUIReset();
+
+            }
+        }
+
+        private void lblSearchClear_Click(object sender, EventArgs e)
+        {
+            txtItemSearch.Text = text.Search_DefaultText;
+            txtItemSearch.ForeColor = SystemColors.GrayText;
+            ItemSearchUIReset();
+
+            lblSearchClear.Visible = false;
         }
     }
 }
