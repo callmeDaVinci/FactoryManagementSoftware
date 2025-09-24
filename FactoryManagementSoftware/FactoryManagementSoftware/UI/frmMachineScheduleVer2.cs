@@ -1405,6 +1405,7 @@ namespace FactoryManagementSoftware.UI
 
                     row_Schedule[text.Header_MouldCode] = row[dalPlanning.planMouldCode];
                     row_Schedule[text.Header_JobNo] = row[dalPlanning.jobNo];
+
                     row_Schedule[text.Header_DateStart] = row[dalPlanning.productionStartDate];
                     row_Schedule[text.Header_EstDateEnd] = row[dalPlanning.productionEndDate];
                     row_Schedule[text.Header_Ori_DateStart] = row[dalPlanning.productionStartDate];
@@ -3354,6 +3355,21 @@ namespace FactoryManagementSoftware.UI
             dgv.Columns[text.Header_DateStart].DefaultCellStyle.ForeColor = Color.Black;
             dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.ForeColor = Color.Black;
 
+            //dgv.Columns[text.Header_DateStart].DefaultCellStyle.Format = "dd/MM/yyyy h:mm tt";
+            //dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.Format = "dd/MM/yyyy h:mm tt";
+
+            //dgv.Columns[text.Header_DateStart].DefaultCellStyle.Format = "dd/MM/yyyy\nh:mm tt";
+            //dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.Format = "dd/MM/yyyy\nh:mm tt";
+
+            //dgv.Columns[text.Header_DateStart].DefaultCellStyle.Format = "dd/MM\nh:mm tt";
+            //dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.Format = "dd/MM\nh:mm tt";
+
+            //dgv.Columns[text.Header_DateStart].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+            //dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.WrapMode = DataGridViewTriState.True;
+
+            dgv.Columns[text.Header_DateStart].DefaultCellStyle.Format = "dd/MM/yy HH:mm";
+            dgv.Columns[text.Header_EstDateEnd].DefaultCellStyle.Format = "dd/MM/yy HH:mm";
+           
             //49ms -> 156ms
             foreach (DataRow row in dt.Rows)
             {
@@ -4076,11 +4092,7 @@ namespace FactoryManagementSoftware.UI
 
                 if (statusPass)
                 {
-                   
-
                     JobEditMode(rowIndex, colIndex);
-
-
                 }
             }
             else if (itemClicked.Equals(SCHEDULE_ACTION_ADD_JOB))
@@ -4098,8 +4110,6 @@ namespace FactoryManagementSoftware.UI
                 }
 
                 AddNewJob();
-
-
             }
             else if(itemClicked.Equals(SCHEDULE_ACTION_DATE_EDIT) && rowIndex > -1)
             {

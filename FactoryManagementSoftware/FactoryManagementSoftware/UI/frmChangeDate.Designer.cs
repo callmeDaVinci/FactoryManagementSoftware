@@ -33,12 +33,14 @@
             this.dtpEstimateEndDate = new System.Windows.Forms.DateTimePicker();
             this.dtpStartDate = new System.Windows.Forms.DateTimePicker();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
             this.cbSundayInclude = new Guna.UI.WinForms.GunaCheckBox();
             this.btnConfirm = new Guna.UI.WinForms.GunaGradientButton();
             this.btnCancel = new Guna.UI.WinForms.GunaGradientButton();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel4.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.SuspendLayout();
@@ -48,7 +50,7 @@
             this.lblEndDate.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lblEndDate.AutoSize = true;
             this.lblEndDate.Font = new System.Drawing.Font("Segoe UI", 8F);
-            this.lblEndDate.Location = new System.Drawing.Point(228, 18);
+            this.lblEndDate.Location = new System.Drawing.Point(3, 8);
             this.lblEndDate.Margin = new System.Windows.Forms.Padding(3);
             this.lblEndDate.Name = "lblEndDate";
             this.lblEndDate.Size = new System.Drawing.Size(65, 19);
@@ -73,9 +75,9 @@
             this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(228, 43);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(285, 43);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
-            this.dtpEstimateEndDate.Size = new System.Drawing.Size(189, 34);
+            this.dtpEstimateEndDate.Size = new System.Drawing.Size(246, 34);
             this.dtpEstimateEndDate.TabIndex = 123;
             // 
             // dtpStartDate
@@ -87,7 +89,7 @@
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStartDate.Location = new System.Drawing.Point(13, 43);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(189, 34);
+            this.dtpStartDate.Size = new System.Drawing.Size(246, 34);
             this.dtpStartDate.TabIndex = 122;
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
@@ -99,12 +101,11 @@
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 11F));
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 12F));
             this.tableLayoutPanel1.Controls.Add(this.lblStartDate, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.dtpStartDate, 1, 2);
-            this.tableLayoutPanel1.Controls.Add(this.lblEndDate, 3, 1);
             this.tableLayoutPanel1.Controls.Add(this.dtpEstimateEndDate, 3, 2);
-            this.tableLayoutPanel1.Controls.Add(this.cbSundayInclude, 3, 3);
+            this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 3, 1);
             this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel1.Location = new System.Drawing.Point(20, 20);
             this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(20);
@@ -115,18 +116,35 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(432, 173);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(546, 173);
             this.tableLayoutPanel1.TabIndex = 128;
+            // 
+            // tableLayoutPanel4
+            // 
+            this.tableLayoutPanel4.ColumnCount = 2;
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Controls.Add(this.lblEndDate, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.cbSundayInclude, 1, 0);
+            this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(282, 10);
+            this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+            this.tableLayoutPanel4.RowCount = 1;
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(252, 30);
+            this.tableLayoutPanel4.TabIndex = 127;
             // 
             // cbSundayInclude
             // 
             this.cbSundayInclude.BaseColor = System.Drawing.Color.White;
             this.cbSundayInclude.CheckedOffColor = System.Drawing.Color.Gray;
             this.cbSundayInclude.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
+            this.cbSundayInclude.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbSundayInclude.FillColor = System.Drawing.Color.White;
-            this.cbSundayInclude.Location = new System.Drawing.Point(228, 83);
+            this.cbSundayInclude.Location = new System.Drawing.Point(129, 3);
             this.cbSundayInclude.Name = "cbSundayInclude";
-            this.cbSundayInclude.Size = new System.Drawing.Size(123, 20);
+            this.cbSundayInclude.Size = new System.Drawing.Size(120, 21);
             this.cbSundayInclude.TabIndex = 126;
             this.cbSundayInclude.Text = "Include Sunday";
             this.cbSundayInclude.CheckedChanged += new System.EventHandler(this.cbSundayInclude_CheckedChanged);
@@ -147,7 +165,7 @@
             this.btnConfirm.ForeColor = System.Drawing.Color.White;
             this.btnConfirm.Image = null;
             this.btnConfirm.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnConfirm.Location = new System.Drawing.Point(305, 13);
+            this.btnConfirm.Location = new System.Drawing.Point(419, 13);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnConfirm.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -178,7 +196,7 @@
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(145, 13);
+            this.btnCancel.Location = new System.Drawing.Point(259, 13);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnCancel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -212,7 +230,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(472, 60);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(586, 60);
             this.tableLayoutPanel2.TabIndex = 226;
             // 
             // tableLayoutPanel3
@@ -227,7 +245,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(472, 273);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(586, 273);
             this.tableLayoutPanel3.TabIndex = 227;
             // 
             // frmChangeDate
@@ -235,7 +253,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(472, 273);
+            this.ClientSize = new System.Drawing.Size(586, 273);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmChangeDate";
@@ -244,6 +262,8 @@
             this.Load += new System.EventHandler(this.frmChangeDate_Load);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel2.ResumeLayout(false);
             this.tableLayoutPanel3.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -262,5 +282,6 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel3;
         private Guna.UI.WinForms.GunaCheckBox cbSundayInclude;
+        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
     }
 }

@@ -4475,8 +4475,13 @@ namespace FactoryManagementSoftware.UI
 
             foreach (DataRow row in dt_ItemList.Rows)
             {
-                string itemCode = row[header_ItemCode].ToString();
+                string itemCode = row[header_ItemCode].ToString();   
                 string itemCat = tool.getItemCatFromDataTable(dt_Item, itemCode);
+
+                if(itemCode == "PP PD855")
+                {
+                    var checkpoint = 1;
+                }
 
                 int totPro = 0;
                 int totUsage = 0;
@@ -4491,7 +4496,12 @@ namespace FactoryManagementSoftware.UI
 
                     if (trfResult == text.Passed && itemCode == trfItemCode)
                     {
-                        int trfQty = int.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+                        string trfstring = trfRow[dalTrfHist.TrfQty].ToString();
+                        //int trfQty = int.TryParse(trfRow[dalTrfHist.TrfQty].ToString(), out trfQty) ? trfQty : 0;
+
+                        double dblVal = double.TryParse(trfstring, out double d) ? d : 0;
+                        int trfQty = (int)Math.Round(dblVal);   // or (int)d if you want truncation
+
                         string trfFrom = trfRow[dalTrfHist.TrfFrom].ToString();
                         string trfTo = trfRow[dalTrfHist.TrfTo].ToString();
 
@@ -5494,18 +5504,17 @@ namespace FactoryManagementSoftware.UI
                 }
             }
 
-            // Handle quantity and balance columns - calculate actual stock
-            else if (columnName.Contains(header_Qty_White) ||
-                     columnName.Contains(header_Qty_Blue) ||
-                     columnName.Contains(header_Qty_Yellow) ||
-                     columnName.Contains(header_Balance))
-            {
-                CalculateActualStock(dgv, rowIndex);
-            }
+            //// Handle quantity and balance columns - calculate actual stock
+            //else if (columnName.Contains(header_Qty_White) ||
+            //         columnName.Contains(header_Qty_Blue) ||
+            //         columnName.Contains(header_Qty_Yellow) ||
+            //         columnName.Contains(header_Balance))
+            //{
+            //    CalculateActualStock(dgv, rowIndex);
+            //}   
             // Handle stock min level
             else if (columnName.Contains(header_StockMinLvl))
             {
-                // Your existing stock min level code...
                 HandleStockMinLevelUpdate(dgv, rowIndex, colIndex);
             }
         }
@@ -5527,7 +5536,80 @@ namespace FactoryManagementSoftware.UI
                 // Get balance (loose pieces)
                 int balance = int.TryParse(dgv.Rows[rowIndex].Cells[header_Balance].Value?.ToString(), out int bal) ? bal : 0;
 
+
+                //to send warning message, if transfer qty > 0, but std packing = 0
+                if (qtyWhite >= 0 && stdPackingWhite == 0)
+                {
+                    MessageBox.Show("White transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_White].Value = 0;
+                    qtyWhite = 0;
+                }
+
+                if (qtyBlue >= 0 && stdPackingBlue == 0)
+                {
+                    MessageBox.Show("Blue transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_Blue].Value = 0;
+                    qtyBlue = 0;
+                }
+
+                if (qtyYellow >= 0 && stdPackingYellow == 0)
+                {
+                    MessageBox.Show("Yellow transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_Yellow].Value = 0;
+                    qtyYellow = 0;
+                }
+
                 // Calculate total actual stock: (containers × pieces per container) + balance
+
+                //int totalActualStock = -999999;
+
+                //if (qtyWhite != -999999)
+                //{
+                //    if(totalActualStock == -999999)
+                //    {
+                //        totalActualStock = 0;
+                //    }
+
+                //    totalActualStock = (qtyWhite * stdPackingWhite);
+                //}
+
+                //if (qtyBlue != -999999)
+                //{
+                //    if (totalActualStock == -999999)
+                //    {
+                //        totalActualStock = 0;
+                //    }
+
+                //    totalActualStock += (qtyBlue * stdPackingBlue);
+                //}
+
+                //if (qtyYellow != -999999)
+                //{
+                //    if (totalActualStock == -999999)
+                //    {
+                //        totalActualStock = 0;
+                //    }
+
+                //    totalActualStock += (qtyYellow * stdPackingYellow);
+                //}
+
+                //if (balance != -999999)
+                //{
+                //    if (totalActualStock == -999999)
+                //    {
+                //        totalActualStock = 0;
+                //    }
+
+                //    totalActualStock += balance;
+                //}
+
+
                 int totalActualStock = (qtyWhite * stdPackingWhite) +
                                       (qtyBlue * stdPackingBlue) +
                                       (qtyYellow * stdPackingYellow) +
@@ -5536,8 +5618,9 @@ namespace FactoryManagementSoftware.UI
                 // Update the Actual Stock column
                 dgv.Rows[rowIndex].Cells[header_ActualStock].Value = totalActualStock;
 
-                // Now calculate stock difference
                 int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value?.ToString(), out int sysStock) ? sysStock : 0;
+                    
+                // Now calculate stock difference
                 int stockDiff = totalActualStock - systemStock;
 
                 dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
@@ -5564,6 +5647,8 @@ namespace FactoryManagementSoftware.UI
                 MessageBox.Show($"Error calculating actual stock: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+
         private int currentLowStockIndex = -1;
         private List<int> lowStockRowIndices = new List<int>();
 
@@ -6244,8 +6329,21 @@ namespace FactoryManagementSoftware.UI
 
         private void dgvStockAlert_CellMouseDown(object sender, DataGridViewCellMouseEventArgs e)
         {
-            if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
             {
+                // Get item code from clicked row
+                string itemCode = dgvStockAlert.Rows[e.RowIndex].Cells[header_ItemCode].Value?.ToString();
+
+                if (!string.IsNullOrEmpty(itemCode))
+                {
+                    ShowMachineHistory(itemCode); 
+                }
+            }
+
+            else if (e.ColumnIndex >= 0 && e.RowIndex >= 0)
+            {
+                
+
                 DataGridView dgv = dgvStockAlert;
                 // Get the column indices of all editable columns
                 int stockMinLvlColumnIndex = dgv.Columns[header_StockMinLvl].Index;
@@ -6597,15 +6695,34 @@ namespace FactoryManagementSoftware.UI
             int nextIndexValue = -1;
             int currentPosition = -1;
 
-            for (int i = 0; i < Row_Index_Found.Count; i++)
+            if (CURRENT_ROW_JUMP == -1)
             {
-                if (Row_Index_Found[i] > CURRENT_ROW_JUMP)
+                nextIndexValue = Row_Index_Found[0];
+                currentPosition = 0;
+            }
+            else
+            {
+                for (int i = 0; i < Row_Index_Found.Count; i++)
                 {
-                    nextIndexValue = Row_Index_Found[i];
-                    currentPosition = i;
-                    break;
+
+
+                    if (Row_Index_Found[i] == CURRENT_ROW_JUMP)
+                    {
+                        if (i == Row_Index_Found.Count - 1)
+                        {
+                            currentPosition = 0;
+                            nextIndexValue = Row_Index_Found[currentPosition];
+                        }
+                        else
+                        {
+                            currentPosition = i + 1;
+                            nextIndexValue = Row_Index_Found[currentPosition];
+                        }
+                        break;
+                    }
                 }
             }
+               
 
             // If no next found, we're at the end
             if (nextIndexValue == -1) return;
@@ -6648,15 +6765,31 @@ namespace FactoryManagementSoftware.UI
             // Find previous index value less than current
             int prevIndexValue = -1;
             int currentPosition = -1;
-
+            
             for (int i = Row_Index_Found.Count - 1; i >= 0; i--)
             {
-                if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
+                //if (Row_Index_Found[i] < CURRENT_ROW_JUMP)
+                //{
+                //    prevIndexValue = Row_Index_Found[i];
+                //    currentPosition = i;
+                //    break;
+                //}
+
+                if (Row_Index_Found[i] == CURRENT_ROW_JUMP)
                 {
-                    prevIndexValue = Row_Index_Found[i];
-                    currentPosition = i;
+                    if (i == 0)
+                    {
+                        currentPosition = Row_Index_Found.Count - 1;
+                        prevIndexValue = Row_Index_Found[currentPosition];
+                    }
+                    else
+                    {
+                        currentPosition = i - 1;
+                        prevIndexValue = Row_Index_Found[currentPosition];
+                    }
                     break;
                 }
+
             }
 
             // If no previous found, we're at the beginning
@@ -7319,6 +7452,35 @@ namespace FactoryManagementSoftware.UI
                 // Get balance transfer (loose pieces)
                 int transferBalance = int.TryParse(dgv.Rows[rowIndex].Cells[header_Balance].Value?.ToString(), out int transferBal) ? transferBal : 0;
 
+
+                //to send warning message, if transfer qty > 0, but std packing = 0
+                if (transferQtyWhite > 0 && stdPackingWhite == 0)
+                {
+                    MessageBox.Show("White transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_White].Value = 0;
+                    transferQtyWhite = 0;
+                }
+
+                if (transferQtyBlue > 0 && stdPackingBlue == 0)
+                {
+                    MessageBox.Show("Blue transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_Blue].Value = 0;
+                    transferQtyBlue = 0;
+                }
+
+                if (transferQtyYellow > 0 && stdPackingYellow == 0)
+                {
+                    MessageBox.Show("Yellow transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
+                                    "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                    dgv.Rows[rowIndex].Cells[header_Qty_Yellow].Value = 0;
+                    transferQtyYellow = 0;
+                }
+
                 // Calculate total transfer pieces: (containers × pieces per container) + balance
                 int totalTransferPcs = (transferQtyWhite * stdPackingWhite) +
                                       (transferQtyBlue * stdPackingBlue) +
@@ -7405,19 +7567,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void dgvStockAlert_CellMouseDown_1(object sender, DataGridViewCellMouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Right && e.RowIndex >= 0)
-            {
-                // Get item code from clicked row
-                string itemCode = dgvStockAlert.Rows[e.RowIndex].Cells[header_ItemCode].Value?.ToString();
-
-                if (!string.IsNullOrEmpty(itemCode))
-                {
-                    ShowMachineHistory(itemCode);
-                }
-            }
-        }
+       
 
         private void ShowMachineHistory(string itemCode)
         {

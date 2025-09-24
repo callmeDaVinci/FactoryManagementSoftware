@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSBBVer2));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -2939,14 +2939,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle7.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle7.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle7.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvStockAlert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(5, 260);
@@ -2964,7 +2964,7 @@
             this.dgvStockAlert.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellDoubleClick);
             this.dgvStockAlert.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellEndEdit);
             this.dgvStockAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvStockAlert_CellFormatting);
-            this.dgvStockAlert.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockAlert_CellMouseDown_1);
+            this.dgvStockAlert.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockAlert_CellMouseDown);
             this.dgvStockAlert.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockAlert_EditingControlShowing);
             this.dgvStockAlert.SelectionChanged += new System.EventHandler(this.dgvStockAlert_SelectionChanged);
             this.dgvStockAlert.Sorted += new System.EventHandler(this.dgvStockAlert_Sorted);

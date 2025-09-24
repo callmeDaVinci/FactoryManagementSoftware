@@ -1543,7 +1543,9 @@ namespace FactoryManagementSoftware.UI
                 int userPermission = dalUser.getPermissionLevel(userID);
                 string userName = dalUser.getUsername(userID);
                 DateTime dateNow = DateTime.Now;
-                bool valid = userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 8 || userID == 13;
+                //bool valid = userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 8 || userID == 13;
+                bool valid = true;
+
                 bool checkedStatus = cbFinalDataReview.Checked;
 
 
@@ -1728,7 +1730,7 @@ namespace FactoryManagementSoftware.UI
 
             //handle the row selection on right click
 
-            if (e.Button == MouseButtons.Right && e.RowIndex > -1 && (userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 6))// && userPermission >= MainDashboard.ACTION_LVL_THREE
+            if (e.Button == MouseButtons.Right && e.RowIndex > -1)// && (userPermission >= MainDashboard.ACTION_LVL_FIVE || userID == 6)
             {
                 ContextMenuStrip my_menu = new ContextMenuStrip();
                 dgvActiveJobList.CurrentCell = dgvActiveJobList.Rows[e.RowIndex].Cells[e.ColumnIndex];
