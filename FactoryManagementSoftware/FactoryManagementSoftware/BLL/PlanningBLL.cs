@@ -66,6 +66,7 @@ namespace FactoryManagementSoftware.BLL
 
         public int machine_id { get; set; }
         public int machine_location { get; set; }
+        public string machine_location_name { get; set; }
         public string machine_name { get; set; }
         public int family_with { get; set; } = -1;
         public bool recording { get; set; }
@@ -78,8 +79,6 @@ namespace FactoryManagementSoftware.BLL
         public DateTime CheckedDate { get; set; }
         public int CheckedBy { get; set; }
         public string CheckedRemark { get; set; }
-
-
 
     }
 }

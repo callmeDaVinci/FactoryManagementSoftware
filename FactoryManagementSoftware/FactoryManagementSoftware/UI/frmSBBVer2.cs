@@ -5467,10 +5467,10 @@ namespace FactoryManagementSoftware.UI
 
             string cellValue = dgv.Rows[rowIndex].Cells[colIndex].Value?.ToString() ?? "";
 
-            if (string.IsNullOrEmpty(cellValue))
-            {
-                return;
-            }
+            //if (string.IsNullOrEmpty(cellValue))
+            //{
+            //    return;
+            //}
 
             // Handle std packing columns - update string
             if (columnName.Contains(header_StdPacking_White) ||
@@ -5538,76 +5538,32 @@ namespace FactoryManagementSoftware.UI
 
 
                 //to send warning message, if transfer qty > 0, but std packing = 0
-                if (qtyWhite >= 0 && stdPackingWhite == 0)
+                if (qtyWhite > 0 && stdPackingWhite == 0)
                 {
                     MessageBox.Show("White transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
                                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    dgv.Rows[rowIndex].Cells[header_Qty_White].Value = 0;
+                    dgv.Rows[rowIndex].Cells[header_Qty_White].Value = DBNull.Value;
                     qtyWhite = 0;
                 }
 
-                if (qtyBlue >= 0 && stdPackingBlue == 0)
+                if (qtyBlue > 0 && stdPackingBlue == 0)
                 {
                     MessageBox.Show("Blue transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
                                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    dgv.Rows[rowIndex].Cells[header_Qty_Blue].Value = 0;
+                    dgv.Rows[rowIndex].Cells[header_Qty_Blue].Value = DBNull.Value;
                     qtyBlue = 0;
                 }
 
-                if (qtyYellow >= 0 && stdPackingYellow == 0)
+                if (qtyYellow > 0 && stdPackingYellow == 0)
                 {
                     MessageBox.Show("Yellow transfer QTY cannot be set because STD. PACKING is 0.\nIt has been cleared.",
                                     "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 
-                    dgv.Rows[rowIndex].Cells[header_Qty_Yellow].Value = 0;
+                    dgv.Rows[rowIndex].Cells[header_Qty_Yellow].Value = DBNull.Value;
                     qtyYellow = 0;
                 }
-
-                // Calculate total actual stock: (containers × pieces per container) + balance
-
-                //int totalActualStock = -999999;
-
-                //if (qtyWhite != -999999)
-                //{
-                //    if(totalActualStock == -999999)
-                //    {
-                //        totalActualStock = 0;
-                //    }
-
-                //    totalActualStock = (qtyWhite * stdPackingWhite);
-                //}
-
-                //if (qtyBlue != -999999)
-                //{
-                //    if (totalActualStock == -999999)
-                //    {
-                //        totalActualStock = 0;
-                //    }
-
-                //    totalActualStock += (qtyBlue * stdPackingBlue);
-                //}
-
-                //if (qtyYellow != -999999)
-                //{
-                //    if (totalActualStock == -999999)
-                //    {
-                //        totalActualStock = 0;
-                //    }
-
-                //    totalActualStock += (qtyYellow * stdPackingYellow);
-                //}
-
-                //if (balance != -999999)
-                //{
-                //    if (totalActualStock == -999999)
-                //    {
-                //        totalActualStock = 0;
-                //    }
-
-                //    totalActualStock += balance;
-                //}
 
 
                 int totalActualStock = (qtyWhite * stdPackingWhite) +
@@ -5615,32 +5571,48 @@ namespace FactoryManagementSoftware.UI
                                       (qtyYellow * stdPackingYellow) +
                                       balance;
 
-                // Update the Actual Stock column
-                dgv.Rows[rowIndex].Cells[header_ActualStock].Value = totalActualStock;
+                int qtyWhiteCheck = int.TryParse(dgv.Rows[rowIndex].Cells[header_Qty_White].Value?.ToString(), out qtyW) ? qtyW : -1;
+                int qtyBlueCheck = int.TryParse(dgv.Rows[rowIndex].Cells[header_Qty_Blue].Value?.ToString(), out qtyB) ? qtyB : -1;
+                int qtyYellowCheck = int.TryParse(dgv.Rows[rowIndex].Cells[header_Qty_Yellow].Value?.ToString(), out qtyY) ? qtyY : -1;
+                int balanceCheck = int.TryParse(dgv.Rows[rowIndex].Cells[header_Balance].Value?.ToString(), out bal) ? bal : -1;
 
-                int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value?.ToString(), out int sysStock) ? sysStock : 0;
-                    
-                // Now calculate stock difference
-                int stockDiff = totalActualStock - systemStock;
-
-                dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
-
-                // Update stock diff color
-                if (stockDiff > 0)
+                if (totalActualStock == 0 && qtyWhiteCheck == -1 && qtyBlueCheck == -1 && qtyYellowCheck == -1 && balanceCheck == -1)
                 {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Blue;
-                    btnStockCheck.Enabled = true;
-                }
-                else if (stockDiff < 0)
-                {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Red;
-                    btnStockCheck.Enabled = true;
+                    dgv.Rows[rowIndex].Cells[header_ActualStock].Value = DBNull.Value;
+                    dgv.Rows[rowIndex].Cells[header_StockDiff].Value = DBNull.Value;
                 }
                 else
                 {
-                    dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Black;
-                    btnStockCheck.Enabled = StockDiffExist();
+                    // Update the Actual Stock column
+                    dgv.Rows[rowIndex].Cells[header_ActualStock].Value = totalActualStock;
+
+                    int systemStock = int.TryParse(dgv.Rows[rowIndex].Cells[header_Stock].Value?.ToString(), out int sysStock) ? sysStock : 0;
+
+                    // Now calculate stock difference
+                    int stockDiff = totalActualStock - systemStock;
+
+                    dgv.Rows[rowIndex].Cells[header_StockDiff].Value = stockDiff;
+
+                    // Update stock diff color
+                    if (stockDiff > 0)
+                    {
+                        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Blue;
+                        btnStockCheck.Enabled = true;
+                    }
+                    else if (stockDiff < 0)
+                    {
+                        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Red;
+                        btnStockCheck.Enabled = true;
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[header_StockDiff].Style.ForeColor = Color.Black;
+                        btnStockCheck.Enabled = StockDiffExist();
+                    }
                 }
+                    
+
+               
             }
             catch (Exception ex)
             {
@@ -7677,6 +7649,83 @@ namespace FactoryManagementSoftware.UI
             }
 
             return sb.ToString();
+        }
+
+        private void dgvStockAlert_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsControl(e.KeyChar) && !dgvStockAlert.IsCurrentCellInEditMode)
+                dgvStockAlert.BeginEdit(true);
+        }
+
+        private void dgvStockAlert_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            
+        }
+
+        private void dgvStockAlert_CellValueChanged(object sender, DataGridViewCellEventArgs e)
+        {
+            //DataGridView dgv = dgvStockAlert;
+            //int rowIndex = e.RowIndex;
+            //int colIndex = e.ColumnIndex;
+
+            //if(rowIndex >= 0 && colIndex >=0)
+            //{
+            //    string columnName = dgv.Columns[colIndex].Name;
+
+            //    string cellValue = dgv.Rows[rowIndex].Cells[colIndex].Value?.ToString() ?? "";
+
+            //    if (string.IsNullOrEmpty(cellValue))
+            //    {
+            //        return;
+            //    }
+
+            //    // Handle std packing columns - update string
+            //    if (columnName.Contains(header_StdPacking_White) ||
+            //        columnName.Contains(header_StdPacking_BLue) ||
+            //        columnName.Contains(header_StdPacking_Yellow))
+            //    {
+            //        UpdateStdPackingString(dgv, rowIndex);
+            //        CalculateActualStock(dgv, rowIndex);
+
+            //        // Track this item for saving
+            //        string itemCode = dgv.Rows[rowIndex].Cells[header_ItemCode].Value?.ToString();
+            //        if (!string.IsNullOrEmpty(itemCode))
+            //        {
+            //            changedItemCodes.Add(itemCode);
+            //            hasStdPackingChanges = true;
+            //            btnSaveStdPacking.Visible = true; // Show save button
+            //        }
+            //    }
+            //    else if (columnName.Contains(header_Qty_White) ||
+            //        columnName.Contains(header_Qty_Blue) ||
+            //        columnName.Contains(header_Qty_Yellow) ||
+            //        columnName.Contains(header_Balance))
+            //    {
+            //        if (STOCK_TRANSFER_MODE)
+            //        {
+            //            CalculateTransferPcs(dgv, rowIndex);
+            //        }
+            //        else
+            //        {
+            //            CalculateActualStock(dgv, rowIndex); // Existing stock check logic
+            //        }
+            //    }
+
+            //    //// Handle quantity and balance columns - calculate actual stock
+            //    //else if (columnName.Contains(header_Qty_White) ||
+            //    //         columnName.Contains(header_Qty_Blue) ||
+            //    //         columnName.Contains(header_Qty_Yellow) ||
+            //    //         columnName.Contains(header_Balance))
+            //    //{
+            //    //    CalculateActualStock(dgv, rowIndex);
+            //    //}   
+            //    // Handle stock min level
+            //    else if (columnName.Contains(header_StockMinLvl))
+            //    {
+            //        HandleStockMinLevelUpdate(dgv, rowIndex, colIndex);
+            //    }
+            //}
+          
         }
     }
 }

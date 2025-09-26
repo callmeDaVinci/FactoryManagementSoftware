@@ -75,9 +75,9 @@
             this.dtpEstimateEndDate.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dtpEstimateEndDate.Font = new System.Drawing.Font("Segoe UI", 12F);
             this.dtpEstimateEndDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpEstimateEndDate.Location = new System.Drawing.Point(285, 43);
+            this.dtpEstimateEndDate.Location = new System.Drawing.Point(359, 43);
             this.dtpEstimateEndDate.Name = "dtpEstimateEndDate";
-            this.dtpEstimateEndDate.Size = new System.Drawing.Size(246, 34);
+            this.dtpEstimateEndDate.Size = new System.Drawing.Size(320, 34);
             this.dtpEstimateEndDate.TabIndex = 123;
             // 
             // dtpStartDate
@@ -89,7 +89,7 @@
             this.dtpStartDate.Format = System.Windows.Forms.DateTimePickerFormat.Short;
             this.dtpStartDate.Location = new System.Drawing.Point(13, 43);
             this.dtpStartDate.Name = "dtpStartDate";
-            this.dtpStartDate.Size = new System.Drawing.Size(246, 34);
+            this.dtpStartDate.Size = new System.Drawing.Size(320, 34);
             this.dtpStartDate.TabIndex = 122;
             this.dtpStartDate.ValueChanged += new System.EventHandler(this.dtpStartDate_ValueChanged);
             // 
@@ -116,7 +116,7 @@
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 30F));
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(546, 173);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(695, 368);
             this.tableLayoutPanel1.TabIndex = 128;
             // 
             // tableLayoutPanel4
@@ -127,12 +127,12 @@
             this.tableLayoutPanel4.Controls.Add(this.lblEndDate, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.cbSundayInclude, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(282, 10);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(356, 10);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(252, 30);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(326, 30);
             this.tableLayoutPanel4.TabIndex = 127;
             // 
             // cbSundayInclude
@@ -142,7 +142,7 @@
             this.cbSundayInclude.CheckedOnColor = System.Drawing.Color.FromArgb(((int)(((byte)(100)))), ((int)(((byte)(88)))), ((int)(((byte)(255)))));
             this.cbSundayInclude.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cbSundayInclude.FillColor = System.Drawing.Color.White;
-            this.cbSundayInclude.Location = new System.Drawing.Point(129, 3);
+            this.cbSundayInclude.Location = new System.Drawing.Point(166, 3);
             this.cbSundayInclude.Name = "cbSundayInclude";
             this.cbSundayInclude.Size = new System.Drawing.Size(120, 21);
             this.cbSundayInclude.TabIndex = 126;
@@ -165,7 +165,7 @@
             this.btnConfirm.ForeColor = System.Drawing.Color.White;
             this.btnConfirm.Image = null;
             this.btnConfirm.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnConfirm.Location = new System.Drawing.Point(419, 13);
+            this.btnConfirm.Location = new System.Drawing.Point(568, 13);
             this.btnConfirm.Name = "btnConfirm";
             this.btnConfirm.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnConfirm.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -196,7 +196,7 @@
             this.btnCancel.ForeColor = System.Drawing.Color.Black;
             this.btnCancel.Image = null;
             this.btnCancel.ImageSize = new System.Drawing.Size(20, 20);
-            this.btnCancel.Location = new System.Drawing.Point(259, 13);
+            this.btnCancel.Location = new System.Drawing.Point(408, 13);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.OnHoverBaseColor1 = System.Drawing.Color.FromArgb(((int)(((byte)(155)))), ((int)(((byte)(145)))), ((int)(((byte)(221)))));
             this.btnCancel.OnHoverBaseColor2 = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(85)))), ((int)(((byte)(255)))));
@@ -223,14 +223,14 @@
             this.tableLayoutPanel2.Controls.Add(this.btnCancel, 1, 1);
             this.tableLayoutPanel2.Controls.Add(this.btnConfirm, 3, 1);
             this.tableLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 213);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(0, 408);
             this.tableLayoutPanel2.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 3;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 10F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(586, 60);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(735, 60);
             this.tableLayoutPanel2.TabIndex = 226;
             // 
             // tableLayoutPanel3
@@ -245,7 +245,7 @@
             this.tableLayoutPanel3.RowCount = 2;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 60F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(586, 273);
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(735, 468);
             this.tableLayoutPanel3.TabIndex = 227;
             // 
             // frmChangeDate
@@ -253,7 +253,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(147)))), ((int)(((byte)(168)))), ((int)(((byte)(255)))));
-            this.ClientSize = new System.Drawing.Size(586, 273);
+            this.ClientSize = new System.Drawing.Size(735, 468);
             this.Controls.Add(this.tableLayoutPanel3);
             this.Font = new System.Drawing.Font("Segoe UI", 7.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Name = "frmChangeDate";

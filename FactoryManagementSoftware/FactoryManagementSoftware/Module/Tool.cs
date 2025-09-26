@@ -1015,24 +1015,28 @@ namespace FactoryManagementSoftware.Module
                 foreach (DataRow row in dt.Rows)
                 {
                     string rawMat = row[dalPlanning.materialCode].ToString();
+                    string rawMat2 = row[dalPlanning.materialCode2].ToString();
                     string colorMat = row[dalPlanning.colorMaterialCode].ToString();
                     float matQty = 0;
                     float ableProduce = float.TryParse(row[dalPlanning.ableQty].ToString(), out float i) ? i : 0;
                     float ProducedQty = float.TryParse(row[dalPlanning.planProduced].ToString(), out i) ? i : 0;
+                    float toProduceQty = ableProduce - ProducedQty;
 
-                    if (Material.Equals(rawMat))
+                    if (toProduceQty < 0)
+                    {
+                        toProduceQty = 0;
+                    }
+
+                    if (Material.Equals(rawMat) || Material.Equals(rawMat2))
                     {
                         float MatBag = float.TryParse(row[dalPlanning.materialBagQty_1].ToString(), out i) ? i : 0;
-                        matQty = MatBag * 25;
 
-
-
-                        float toProduceQty = ableProduce - ProducedQty;
-
-                        if (toProduceQty < 0)
+                        if (Material.Equals(rawMat2))
                         {
-                            toProduceQty = 0;
+                            MatBag = float.TryParse(row[dalPlanning.materialBagQty_2].ToString(), out i) ? i : 0;
                         }
+
+                        matQty = MatBag * 25;
 
                         float matused_perPcs = matQty / ableProduce;
 
@@ -1049,15 +1053,7 @@ namespace FactoryManagementSoftware.Module
                     }
                     else if (Material.Equals(colorMat))
                     {
-                          matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out i) ? i : 0;
-
-
-                        float toProduceQty = ableProduce - ProducedQty;
-
-                        if (toProduceQty < 0)
-                        {
-                            toProduceQty = 0;
-                        }
+                        matQty = float.TryParse(row[dalPlanning.colorMaterialQty].ToString(), out i) ? i : 0;
 
                         float matused_perPcs = matQty / ableProduce;
 
@@ -1070,7 +1066,6 @@ namespace FactoryManagementSoftware.Module
                         colorType = true;
 
                         planCounter++;
-
                     }
 
 

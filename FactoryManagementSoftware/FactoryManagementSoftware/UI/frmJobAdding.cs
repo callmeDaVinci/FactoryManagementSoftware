@@ -527,11 +527,13 @@ namespace FactoryManagementSoftware.UI
 
 
                 int macID = 0;
+                string macName = "";
 
                 if (cmbMac.SelectedIndex > -1)
                 {
                     DataRowView drv = (DataRowView)cmbMac.SelectedItem;
                     macID = int.TryParse(drv[dalMac.MacID].ToString(), out macID) ? macID : 0;
+                    macName = drv[dalMac.MacName].ToString();
                 }
 
                 if (macID == 0)
@@ -3947,12 +3949,10 @@ namespace FactoryManagementSoftware.UI
                 if(JOB_EDITING_MODE)
                 {
                     LoadMatCheckList_EditingMode();
-
                 }
                 else
                 {
                     LoadMatCheckList();
-
                 }
             }
             else
@@ -5844,7 +5844,6 @@ namespace FactoryManagementSoftware.UI
                     PlanningBLL uPlanning = new PlanningBLL();
                     uPlanning.plan_updated_date = dateNow;
                     uPlanning.plan_updated_by = MainDashboard.USER_ID;
-
                     foreach (DataRow row in dt.Rows)
                     {
                         int jobNo = int.TryParse(row[text.Header_JobNo].ToString(), out jobNo) ? jobNo : -1;
@@ -5871,8 +5870,7 @@ namespace FactoryManagementSoftware.UI
                             uPlanning.plan_note = remark;
 
                             JOB_UPDATED = dalPlanningAction.planningStatusAndScheduleChange(uPlanning, OriStatus, oriStart, oriEnd, familyWith);
-
-                            if(JOB_UPDATED)
+                            if (JOB_UPDATED)
                             {
                                 JOB_UPDATED_COUNT++;
                                 tool.historyRecord(text.System, "Job Updated", dateNow, MainDashboard.USER_ID);

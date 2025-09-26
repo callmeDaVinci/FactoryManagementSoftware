@@ -672,13 +672,19 @@ namespace FactoryManagementSoftware.UI
         }
         private void MatSummaryReset()
         {
-            lblTotalPlannedToUse.Text = "";
-            lblTotalUsed.Text = "";
-            lblTotalToUse.Text = "";
-            lblMatStock.Text = "";
+            lblTotalPlannedToUse1.Text = "";
+            lblTotalUsed1.Text = "";
+            lblTotalToUse1.Text = "";
+            lblMatStock1.Text = "";
+            lblMat1.Text = "";
+
+            lblTotalPlannedToUse2.Text = "";
+            lblTotalUsed2.Text = "";
+            lblTotalToUse2.Text = "";
+            lblMatStock2.Text = "";
+            lblMat2.Text = "";
 
             MatSummaryColoring(dgvMacSchedule, "", true, true);
-
         }
 
         DataTable DT_ITEM;
@@ -1113,10 +1119,17 @@ namespace FactoryManagementSoftware.UI
 
             frmLoading.ShowLoadingScreen();
 
-            lblTotalPlannedToUse.Text = "";
-            lblTotalUsed.Text = "";
-            lblTotalToUse.Text = "";
-            lblMatStock.Text = "";
+            lblTotalPlannedToUse1.Text = "";
+            lblTotalUsed1.Text = "";
+            lblTotalToUse1.Text = "";
+            lblMatStock1.Text = "";
+            lblMat1.Text = "";
+
+            lblTotalPlannedToUse2.Text = "";
+            lblTotalUsed2.Text = "";
+            lblTotalToUse2.Text = "";
+            lblMatStock2.Text = "";
+            lblMat2.Text = "";
 
             if (DT_ITEM == null || DT_ITEM.Rows.Count <= 0)
             {
@@ -1594,7 +1607,7 @@ namespace FactoryManagementSoftware.UI
 
         }
 
-        private void loadMaterialSummary(string Material)
+        private void loadMaterialSummary(string Material, string Material2)
         {
             float TotalMatPlannedToUse = 0;
             float TotalMatUsed = 0;
@@ -1605,8 +1618,6 @@ namespace FactoryManagementSoftware.UI
             bool colorType = false;
 
             int planCounter = 0;
-            DataTable dt;
-
 
             var matSummary = tool.loadMaterialPlanningSummary(Material);
             planCounter = matSummary.Item1;
@@ -1617,24 +1628,68 @@ namespace FactoryManagementSoftware.UI
             rawType = matSummary.Item6;
             colorType = matSummary.Item7;
 
-            lblTotalPlannedToUse.Text = "Total Planned ( " + planCounter + " ) To Use : " + TotalMatPlannedToUse.ToString("0.###") + " kg  ( " + (TotalMatPlannedToUse / 25).ToString("0.###") + " bag(s)  )";
-            lblTotalUsed.Text = "Total Mat. Used : " + TotalMatUsed.ToString("0.###") + " kg  ( " + (TotalMatUsed / 25).ToString("0.###") + " bag(s)  )";
-            lblTotalToUse.Text = "Total Mat. To Use : " + TotalMatToUse.ToString("0.###") + " kg  ( " + (TotalMatToUse / 25).ToString("0.###") + " bag(s)  )";
-
-            //get stock qty
-
-            lblMatStock.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
-
-            if (stock < TotalMatToUse)
+            if (!string.IsNullOrEmpty(Material2)) 
             {
-                lblMatStock.ForeColor = Color.Red;
+                lblMat2.Text = "Mat : " + Material;
+                lblTotalPlannedToUse2.Text = "Total Planned ( " + planCounter + " ) To Use : " + TotalMatPlannedToUse.ToString("0.###") + " kg  ( " + (TotalMatPlannedToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalUsed2.Text = "Total Mat. Used : " + TotalMatUsed.ToString("0.###") + " kg  ( " + (TotalMatUsed / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalToUse2.Text = "Total Mat. To Use : " + TotalMatToUse.ToString("0.###") + " kg  ( " + (TotalMatToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblMatStock2.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
+
+                if (stock < TotalMatToUse)
+                {
+                    lblMatStock2.ForeColor = Color.Red;
+                }
+                else
+                {
+                    lblMatStock2.ForeColor = Color.Green;
+                }
+
+                matSummary = tool.loadMaterialPlanningSummary(Material2);
+                planCounter = matSummary.Item1;
+                TotalMatPlannedToUse = matSummary.Item2;
+                TotalMatUsed = matSummary.Item3;
+                TotalMatToUse = matSummary.Item4;
+                stock = matSummary.Item5;
+                rawType = matSummary.Item6;
+                colorType = matSummary.Item7;
+
+                lblMat1.Text = "Mat : " + Material2;
+                lblTotalPlannedToUse1.Text = "Total Planned ( " + planCounter + " ) To Use : " + TotalMatPlannedToUse.ToString("0.###") + " kg  ( " + (TotalMatPlannedToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalUsed1.Text = "Total Mat. Used : " + TotalMatUsed.ToString("0.###") + " kg  ( " + (TotalMatUsed / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalToUse1.Text = "Total Mat. To Use : " + TotalMatToUse.ToString("0.###") + " kg  ( " + (TotalMatToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblMatStock1.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
+
+                if (stock < TotalMatToUse)
+                {
+                    lblMatStock1.ForeColor = Color.Red;
+                }
+                else
+                {
+                    lblMatStock1.ForeColor = Color.Green;
+                }
+
+                MatSummaryColoring(dgvMacSchedule, Material, Material2, rawType, colorType);
             }
             else
             {
-                lblMatStock.ForeColor = Color.Green;
+                lblMat1.Text = "Mat : " + Material;
+                lblTotalPlannedToUse1.Text = "Total Planned ( " + planCounter + " ) To Use : " + TotalMatPlannedToUse.ToString("0.###") + " kg  ( " + (TotalMatPlannedToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalUsed1.Text = "Total Mat. Used : " + TotalMatUsed.ToString("0.###") + " kg  ( " + (TotalMatUsed / 25).ToString("0.###") + " bag(s)  )";
+                lblTotalToUse1.Text = "Total Mat. To Use : " + TotalMatToUse.ToString("0.###") + " kg  ( " + (TotalMatToUse / 25).ToString("0.###") + " bag(s)  )";
+                lblMatStock1.Text = "Stock : " + stock.ToString("0.###") + " kg  ( " + (stock / 25).ToString("0.###") + " bag(s)  )";
 
+                if (stock < TotalMatToUse)
+                {
+                    lblMatStock1.ForeColor = Color.Red;
+                }
+                else
+                {
+                    lblMatStock1.ForeColor = Color.Green;
+                }
+
+                MatSummaryColoring(dgvMacSchedule, Material, rawType, colorType);
             }
-            MatSummaryColoring(dgvMacSchedule, Material, rawType, colorType);
         }
 
         private void MatSummaryColoring(DataGridView dgv, string materialCode, bool rawMode, bool colorMode)
@@ -1668,11 +1723,14 @@ namespace FactoryManagementSoftware.UI
                     int rowIndex = dt.Rows.IndexOf(row);
 
                     string matCode_DGV = "";
+                    string matCode2_DGV = "";
                     string headerName = "";
+                    string headerName2 = "";
 
                     if (rawMode)
                     {
                         headerName = text.Header_RawMat_1;
+                        headerName2 = text.Header_RawMat_2;
 
                     }
                     else if (colorMode)
@@ -1681,6 +1739,9 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     matCode_DGV = row[headerName].ToString();
+
+                    if(headerName2 != "")
+                        matCode2_DGV = row[headerName2].ToString();
 
                     if (rawMode)
                     {
@@ -1691,7 +1752,7 @@ namespace FactoryManagementSoftware.UI
                         headerName = text.Header_ColorMat;
                     }
 
-                    if (matCode_DGV == materialCode)
+                    if (matCode_DGV == materialCode || matCode2_DGV == materialCode)
                     {
                         dgv.Rows[rowIndex].Cells[headerName].Style.BackColor = Color.OrangeRed;
 
@@ -1725,6 +1786,96 @@ namespace FactoryManagementSoftware.UI
             dgv.ResumeLayout();
         }
 
+        private void MatSummaryColoring(DataGridView dgv, string materialCode,string materialCode2, bool rawMode, bool colorMode)
+        {
+            dgv.SuspendLayout();
+
+            DataTable dt = (DataTable)dgv.DataSource;
+
+            if (rawMode && colorMode)
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
+                    {
+                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(1, 33, 71);
+                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(1, 33, 71);
+                    }
+                    else
+                    {
+                        dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+                        dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
+                    }
+                }
+            }
+            else
+            {
+                foreach (DataRow row in dt.Rows)
+                {
+                    int rowIndex = dt.Rows.IndexOf(row);
+
+                    string matCode_DGV = "";
+                    string matCode2_DGV = "";
+                    string headerName = "";
+                    string headerName2 = "";
+
+                    if (rawMode)
+                    {
+                        headerName = text.Header_RawMat_1;
+                        headerName2 = text.Header_RawMat_2;
+                    }
+                    else if (colorMode)
+                    {
+                        headerName = text.Header_ColorMatCode;
+                    }
+
+                    matCode_DGV = row[headerName].ToString();
+                    matCode2_DGV = row[headerName2].ToString();
+
+                    if (rawMode)
+                    {
+                        headerName = text.Header_RawMat_String;
+                    }
+                    else if (colorMode)
+                    {
+                        headerName = text.Header_ColorMat;
+                    }
+
+                    if (matCode_DGV == materialCode || matCode_DGV == materialCode2)
+                    {
+                        dgv.Rows[rowIndex].Cells[headerName].Style.BackColor = Color.OrangeRed;
+
+                        if (rawMode)
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
+                        }
+                        else if (colorMode)
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+
+                        }
+                    }
+                    else
+                    {
+                        if (string.IsNullOrEmpty(row[text.Header_ItemCode].ToString()) && row[text.Header_Status].ToString() != text.planning_status_idle)
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.FromArgb(1, 33, 71);
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.FromArgb(1, 33, 71);
+                        }
+                        else
+                        {
+                            dgv.Rows[rowIndex].Cells[text.Header_RawMat_String].Style.BackColor = Color.White;
+                            dgv.Rows[rowIndex].Cells[text.Header_ColorMat].Style.BackColor = Color.White;
+                        }
+                    }
+                }
+            }
+
+
+            dgv.ResumeLayout();
+        }
 
         private bool checkIfFamilyMould(int jobNo, int jobNotoCompare)
         {
@@ -1762,10 +1913,17 @@ namespace FactoryManagementSoftware.UI
         {
             dgvMacSchedule.ClearSelection();
 
-            lblTotalPlannedToUse.Text = "";
-            lblTotalUsed.Text = "";
-            lblTotalToUse.Text = "";
-            lblMatStock.Text = "";
+            lblTotalPlannedToUse1.Text = "";
+            lblTotalUsed1.Text = "";
+            lblTotalToUse1.Text = "";
+            lblMatStock1.Text = "";
+            lblMat1.Text = "";
+
+            lblTotalPlannedToUse2.Text = "";
+            lblTotalUsed2.Text = "";
+            lblTotalToUse2.Text = "";
+            lblMatStock2.Text = "";
+            lblMat2.Text = "";
 
             loaded = true;
             //loadMachine();
@@ -3336,10 +3494,17 @@ namespace FactoryManagementSoftware.UI
 
             DataTable dt = (DataTable)dgv.DataSource;
 
-            lblTotalPlannedToUse.Text = "";
-            lblTotalUsed.Text = "";
-            lblTotalToUse.Text = "";
-            lblMatStock.Text = "";
+            lblTotalPlannedToUse1.Text = "";
+            lblTotalUsed1.Text = "";
+            lblTotalToUse1.Text = "";
+            lblMatStock1.Text = "";
+            lblMat1.Text = "";
+
+            lblTotalPlannedToUse2.Text = "";
+            lblTotalUsed2.Text = "";
+            lblTotalToUse2.Text = "";
+            lblMatStock2.Text = "";
+            lblMat2.Text = "";
 
             dgv.Columns[text.Header_Status].DefaultCellStyle.ForeColor = Color.Black; 
             dgv.Columns[text.Header_Status].DefaultCellStyle.Font = new Font("Segoe UI", 7.8F, FontStyle.Regular);
@@ -3987,11 +4152,6 @@ namespace FactoryManagementSoftware.UI
             return statusChanged;
         }
 
-        private void CalculationMaterialSummary(string material)
-        {
-            loadMaterialSummary(material);
-        }
-
         private void removeExtraSpace_MachineSchedule()
         {
             if (dgvMacSchedule?.Rows.Count > 0)
@@ -4318,7 +4478,7 @@ namespace FactoryManagementSoftware.UI
 
                 }
 
-                CalculationMaterialSummary(cellValue);
+                loadMaterialSummary(cellValue,"");
             }
 
             Cursor = Cursors.Arrow; // change cursor to normal type
@@ -4593,13 +4753,15 @@ namespace FactoryManagementSoftware.UI
 
                 if (headerName == text.Header_RawMat_String || headerName == text.Header_ColorMat || headerName == text.Header_ColorMatCode)
                 {
+                    MatSummaryReset();
                     string cellValue = dgvMacSchedule.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                    string rawMat2 = "";
 
                     if (headerName == text.Header_RawMat_String)
                     {
                         cellValue = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_RawMat_1].Value.ToString();
 
-                        string rawMat2 = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_RawMat_2].Value.ToString();
+                        rawMat2 = dgvMacSchedule.Rows[e.RowIndex].Cells[text.Header_RawMat_2].Value.ToString();
 
                     }
 
@@ -4609,12 +4771,12 @@ namespace FactoryManagementSoftware.UI
                     }
 
                     if (!string.IsNullOrEmpty(cellValue))
-                        CalculationMaterialSummary(cellValue);
-                    else
-                    {
-                        MatSummaryReset();
+                        loadMaterialSummary(cellValue, rawMat2);
+                    //else
+                    //{
+                    //    MatSummaryReset();
 
-                    }
+                    //}
                 }
                 else
                 {

@@ -259,6 +259,17 @@ namespace FactoryManagementSoftware.DAL
             {
                 tool.historyRecord(text.plan_Updated, text.getNewPlanningDetail(u), DateTime.Now, MainDashboard.USER_ID);
 
+                uPlanningAction.planning_id = u.plan_id;
+                uPlanningAction.added_date = DateTime.Now;
+                uPlanningAction.added_by = MainDashboard.USER_ID;
+                uPlanningAction.action = text.plan_Updated;
+                uPlanningAction.action_detail = text.getNewPlanningDetail(u);
+                uPlanningAction.action_from = "";
+                uPlanningAction.action_to = "";
+                uPlanningAction.note = "";
+
+                bool actionSaveSuccess = Insert(uPlanningAction);
+
                 ////get the last record from tbl_planning
                 //DataTable lastRecord = dalPlanning.lastRecordSelect();
 

@@ -2965,9 +2965,12 @@
             this.dgvStockAlert.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellEndEdit);
             this.dgvStockAlert.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dgvStockAlert_CellFormatting);
             this.dgvStockAlert.CellMouseDown += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dgvStockAlert_CellMouseDown);
+            this.dgvStockAlert.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dgvStockAlert_CellValidating);
+            this.dgvStockAlert.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvStockAlert_CellValueChanged);
             this.dgvStockAlert.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dgvStockAlert_EditingControlShowing);
             this.dgvStockAlert.SelectionChanged += new System.EventHandler(this.dgvStockAlert_SelectionChanged);
             this.dgvStockAlert.Sorted += new System.EventHandler(this.dgvStockAlert_Sorted);
+            this.dgvStockAlert.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.dgvStockAlert_KeyPress);
             // 
             // tableLayoutPanel17
             // 

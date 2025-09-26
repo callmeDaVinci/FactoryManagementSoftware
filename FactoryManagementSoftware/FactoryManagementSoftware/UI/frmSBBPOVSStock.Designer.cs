@@ -436,7 +436,7 @@
             this.lblAssemblyNeeded.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblAssemblyNeeded.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
             this.lblAssemblyNeeded.ForeColor = System.Drawing.Color.Red;
-            this.lblAssemblyNeeded.Location = new System.Drawing.Point(146, 124);
+            this.lblAssemblyNeeded.Location = new System.Drawing.Point(146, 128);
             this.lblAssemblyNeeded.Name = "lblAssemblyNeeded";
             this.lblAssemblyNeeded.Size = new System.Drawing.Size(121, 15);
             this.lblAssemblyNeeded.TabIndex = 188;
@@ -450,7 +450,7 @@
             this.lblProductionAlert.Cursor = System.Windows.Forms.Cursors.Hand;
             this.lblProductionAlert.Font = new System.Drawing.Font("Segoe UI", 7F, System.Drawing.FontStyle.Underline);
             this.lblProductionAlert.ForeColor = System.Drawing.Color.Red;
-            this.lblProductionAlert.Location = new System.Drawing.Point(273, 124);
+            this.lblProductionAlert.Location = new System.Drawing.Point(146, 113);
             this.lblProductionAlert.Name = "lblProductionAlert";
             this.lblProductionAlert.Size = new System.Drawing.Size(140, 15);
             this.lblProductionAlert.TabIndex = 189;
