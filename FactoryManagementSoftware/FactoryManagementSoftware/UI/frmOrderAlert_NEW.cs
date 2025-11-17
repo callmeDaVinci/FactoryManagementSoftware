@@ -829,7 +829,6 @@ namespace FactoryManagementSoftware.UI
         private void GetChildFromGroup(DataTable dt_Join, DataTable dt_Item, string parentCode, int parentIndex, int groupLevel, int childIndex)
         {
             //search child
-
             foreach (DataRow join in dt_Join.Rows)
             {
                 if (parentCode == join[dalJoin.ParentCode].ToString())
@@ -853,9 +852,17 @@ namespace FactoryManagementSoftware.UI
                             string itemName = item[dalItem.ItemName].ToString();
                             string itemType = item[dalItem.ItemCat].ToString();
                             float Child_Stock = float.TryParse(item[dalItem.ItemStock].ToString(), out Child_Stock) ? Child_Stock : 0;
+
+                           
                             float pendingOrder = float.TryParse(item[dalItem.ItemOrd].ToString(), out pendingOrder) ? pendingOrder : 0;
                             float Color_Rate = float.TryParse(item[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
                             string itemUnit = item[dalItem.ItemUnit].ToString();
+
+                            //ready stock need to send to "0" for zerocost material calculation, because zero cost material deduct when delivered, not part produced
+                            if (cbPartStockSet0.Checked)
+                            {
+                                Child_Stock = 0;
+                            }
 
                             if (cbZeroStockType.Checked && itemType != text.Cat_Part)
                             {
@@ -1273,6 +1280,13 @@ namespace FactoryManagementSoftware.UI
                     string ProductName = ProductRow[dalItem.ItemName].ToString();
                     string itemUnit = ProductRow[dalItem.ItemUnit].ToString();
                     float Ready_Stock = float.TryParse(ProductRow[dalItem.ItemStock].ToString(), out Ready_Stock) ? Ready_Stock : 0;
+
+                    //ready stock need to send to "0" for zerocost material calculation, because zero cost material deduct when delivered, not part produced
+                    if(cbPartStockSet0.Checked)
+                    {
+                        Ready_Stock = 0;
+                    }
+
                     float Pending_Order = float.TryParse(ProductRow[dalItem.ItemOrd].ToString(), out Pending_Order) ? Pending_Order : 0;
                     float Color_Rate = float.TryParse(ProductRow[dalItem.ItemMBRate].ToString(), out Color_Rate) ? Color_Rate : 0;
                     float Forecast = 0;
@@ -2683,6 +2697,7 @@ namespace FactoryManagementSoftware.UI
                     lblChangeDate.Visible = true;
                     cbZeroCostOnly.Checked = true;
 
+
                 }
                 else
                 {
@@ -2824,7 +2839,7 @@ namespace FactoryManagementSoftware.UI
             {
                 cbZeroStockType.Checked = true;
                 cbZeroStockType.Enabled = true;
-
+                cbPartStockSet0.Checked = true;
                 cbDeductUsedStock.Checked = false;
 
             }
@@ -2833,6 +2848,8 @@ namespace FactoryManagementSoftware.UI
                 cbZeroStockType.Checked = false;
                 cbZeroStockType.Enabled = false;
                 cbDeductUsedStock.Checked = true;
+                cbPartStockSet0.Checked = false;
+
 
             }
         }

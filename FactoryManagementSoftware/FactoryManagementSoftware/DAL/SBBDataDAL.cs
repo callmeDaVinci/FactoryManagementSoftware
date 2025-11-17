@@ -1094,7 +1094,7 @@ namespace FactoryManagementSoftware.DAL
                 String sql = @"SELECT * FROM tbl_spp_po 
                                INNER JOIN tbl_spp_customer 
                                ON tbl_spp_po.customer_tbl_code = tbl_spp_customer.tbl_code 
-                               WHERE tbl_spp_po.po_date >= DATEADD(month, -3, GETDATE())
+                               WHERE tbl_spp_po.po_date >= DATEADD(month, -12, GETDATE())
                                ORDER BY tbl_spp_po.po_date ASC";
 
 

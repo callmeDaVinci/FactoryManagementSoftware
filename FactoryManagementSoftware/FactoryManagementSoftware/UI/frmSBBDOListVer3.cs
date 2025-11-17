@@ -1365,7 +1365,7 @@ namespace FactoryManagementSoftware.UI
             if(cbInvoiceMode.Checked)
             {
             
-                DB_DO_INFO = dalSPP.CompletedDOWithInfoSelectByMonth(DATABASE_MONTHS_AGO_NUMBER);
+                DB_DO_INFO = dalSPP.CompletedDOWithInfoSelectByMonth(12);
             }
             else
             {
@@ -9885,6 +9885,11 @@ namespace FactoryManagementSoftware.UI
                     // Get basic DO information
                     string DONo = rowDOList[header_DONo].ToString();
                     string DONoString = rowDOList[header_DONoString].ToString();
+
+                    //string DONoString2 = int.Parse(rowDOList[header_DONoString].ToString()).ToString("D6");
+                    //string DONoString3 = rowDOList[header_DONoString].ToString().PadLeft(6, '0');
+
+
                     string debtorCode = rowDOList[header_DebtorCode].ToString();
                     string customerName = rowDOList[header_Customer].ToString();
                     string PONo = rowDOList[header_PONo].ToString();
@@ -10045,7 +10050,7 @@ namespace FactoryManagementSoftware.UI
                             autoCountRow["CurrencyCode"] = "MYR";                       // Fixed value
                             autoCountRow["UOM"] = "PC";                                 // Fixed value
                             autoCountRow["TaxCode"] = DONoString.Contains("NB")? "S-0" : "S-5";                            // Fixed value
-                            autoCountRow["OurDONo"] = DONoString;                       // DO Number
+                            autoCountRow["OurDONo"] = "'" + DONoString;                       // DO Number
                             autoCountRow["Cancelled"] = "";                             // Leave blank
 
                             dt_AutoCountData.Rows.Add(autoCountRow);

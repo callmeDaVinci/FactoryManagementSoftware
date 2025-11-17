@@ -521,7 +521,6 @@ namespace FactoryManagementSoftware.UI
             cbFillALL.Checked = false;
             cbFillALL.Text = text_FillAll;
 
-         
         }
 
         private void LoadPOList()

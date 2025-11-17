@@ -97,6 +97,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.cbPartStockSet0 = new System.Windows.Forms.CheckBox();
             this.tlpMainFIlter.SuspendLayout();
             this.tableLayoutPanel6.SuspendLayout();
             this.tableLayoutPanel7.SuspendLayout();
@@ -449,7 +450,7 @@
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 200F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 265F));
-            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 398F));
+            this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 467F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tlpFilter.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.tlpFilter.Controls.Add(this.groupBox3, 1, 0);
@@ -667,6 +668,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.cbPartStockSet0);
             this.groupBox2.Controls.Add(this.cbDeductDeliveredQty);
             this.groupBox2.Controls.Add(this.cbShowTerminatedItem);
             this.groupBox2.Controls.Add(this.cbZeroStockType);
@@ -675,7 +677,7 @@
             this.groupBox2.Font = new System.Drawing.Font("Segoe UI", 6F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.Location = new System.Drawing.Point(668, 3);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(392, 74);
+            this.groupBox2.Size = new System.Drawing.Size(461, 74);
             this.groupBox2.TabIndex = 167;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "OTHER SETTING";
@@ -689,11 +691,11 @@
             this.cbDeductDeliveredQty.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbDeductDeliveredQty.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbDeductDeliveredQty.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeductDeliveredQty.Location = new System.Drawing.Point(204, 52);
+            this.cbDeductDeliveredQty.Location = new System.Drawing.Point(303, 25);
             this.cbDeductDeliveredQty.Name = "cbDeductDeliveredQty";
-            this.cbDeductDeliveredQty.Size = new System.Drawing.Size(159, 19);
+            this.cbDeductDeliveredQty.Size = new System.Drawing.Size(141, 19);
             this.cbDeductDeliveredQty.TabIndex = 169;
-            this.cbDeductDeliveredQty.Text = "DEDUCT DELIVERED QTY";
+            this.cbDeductDeliveredQty.Text = "Deduct Delivered Qty";
             this.cbDeductDeliveredQty.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbDeductDeliveredQty.UseVisualStyleBackColor = true;
             this.cbDeductDeliveredQty.CheckedChanged += new System.EventHandler(this.cbDeductDeliveredQty_CheckedChanged);
@@ -705,11 +707,11 @@
             this.cbShowTerminatedItem.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbShowTerminatedItem.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbShowTerminatedItem.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbShowTerminatedItem.Location = new System.Drawing.Point(17, 51);
+            this.cbShowTerminatedItem.Location = new System.Drawing.Point(151, 49);
             this.cbShowTerminatedItem.Name = "cbShowTerminatedItem";
-            this.cbShowTerminatedItem.Size = new System.Drawing.Size(168, 19);
+            this.cbShowTerminatedItem.Size = new System.Drawing.Size(148, 19);
             this.cbShowTerminatedItem.TabIndex = 168;
-            this.cbShowTerminatedItem.Text = "SHOW TERMINATED ITEM";
+            this.cbShowTerminatedItem.Text = "Show Terminated Item";
             this.cbShowTerminatedItem.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbShowTerminatedItem.UseVisualStyleBackColor = true;
             // 
@@ -722,9 +724,9 @@
             this.cbZeroStockType.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbZeroStockType.Location = new System.Drawing.Point(17, 26);
             this.cbZeroStockType.Name = "cbZeroStockType";
-            this.cbZeroStockType.Size = new System.Drawing.Size(97, 19);
+            this.cbZeroStockType.Size = new System.Drawing.Size(108, 19);
             this.cbZeroStockType.TabIndex = 158;
-            this.cbZeroStockType.Text = "ZERO STOCK";
+            this.cbZeroStockType.Text = "Zero Cost Type";
             this.cbZeroStockType.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbZeroStockType.UseVisualStyleBackColor = true;
             this.cbZeroStockType.CheckedChanged += new System.EventHandler(this.cbZeroStockType_CheckedChanged);
@@ -736,11 +738,11 @@
             this.cbDeductUsedStock.Cursor = System.Windows.Forms.Cursors.Hand;
             this.cbDeductUsedStock.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.cbDeductUsedStock.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
-            this.cbDeductUsedStock.Location = new System.Drawing.Point(204, 29);
+            this.cbDeductUsedStock.Location = new System.Drawing.Point(17, 51);
             this.cbDeductUsedStock.Name = "cbDeductUsedStock";
-            this.cbDeductUsedStock.Size = new System.Drawing.Size(144, 19);
+            this.cbDeductUsedStock.Size = new System.Drawing.Size(128, 19);
             this.cbDeductUsedStock.TabIndex = 157;
-            this.cbDeductUsedStock.Text = "DEDUCT USED STOCK";
+            this.cbDeductUsedStock.Text = "Deduct Used Stock";
             this.cbDeductUsedStock.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
             this.cbDeductUsedStock.UseVisualStyleBackColor = true;
             this.cbDeductUsedStock.CheckedChanged += new System.EventHandler(this.cbDeductUsedStock_CheckedChanged);
@@ -1112,6 +1114,23 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // cbPartStockSet0
+            // 
+            this.cbPartStockSet0.AutoSize = true;
+            this.cbPartStockSet0.CheckAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbPartStockSet0.Checked = true;
+            this.cbPartStockSet0.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.cbPartStockSet0.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.cbPartStockSet0.Font = new System.Drawing.Font("Segoe UI", 7F);
+            this.cbPartStockSet0.ImageAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbPartStockSet0.Location = new System.Drawing.Point(151, 25);
+            this.cbPartStockSet0.Name = "cbPartStockSet0";
+            this.cbPartStockSet0.Size = new System.Drawing.Size(110, 19);
+            this.cbPartStockSet0.TabIndex = 170;
+            this.cbPartStockSet0.Text = "Part Stock Set 0";
+            this.cbPartStockSet0.TextAlign = System.Drawing.ContentAlignment.BottomLeft;
+            this.cbPartStockSet0.UseVisualStyleBackColor = true;
+            // 
             // frmOrderAlert_NEW
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 23F);
@@ -1227,5 +1246,6 @@
         private System.Windows.Forms.Button btnReport;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.CheckBox cbDeductDeliveredQty;
+        private System.Windows.Forms.CheckBox cbPartStockSet0;
     }
 }

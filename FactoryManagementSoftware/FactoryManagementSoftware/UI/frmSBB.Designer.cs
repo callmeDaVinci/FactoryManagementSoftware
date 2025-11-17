@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmSBB));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
             this.tableLayoutPanel8 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel14 = new System.Windows.Forms.TableLayoutPanel();
@@ -925,10 +925,10 @@
             this.lblTopCust_10.AutoSize = true;
             this.lblTopCust_10.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_10.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_10.Location = new System.Drawing.Point(373, 126);
+            this.lblTopCust_10.Location = new System.Drawing.Point(372, 126);
             this.lblTopCust_10.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_10.Name = "lblTopCust_10";
-            this.lblTopCust_10.Size = new System.Drawing.Size(84, 15);
+            this.lblTopCust_10.Size = new System.Drawing.Size(85, 15);
             this.lblTopCust_10.TabIndex = 185;
             this.lblTopCust_10.Text = "CUSTOMER_10";
             // 
@@ -938,10 +938,10 @@
             this.lblTopCust_9.AutoSize = true;
             this.lblTopCust_9.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_9.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_9.Location = new System.Drawing.Point(379, 104);
+            this.lblTopCust_9.Location = new System.Drawing.Point(378, 104);
             this.lblTopCust_9.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_9.Name = "lblTopCust_9";
-            this.lblTopCust_9.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_9.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_9.TabIndex = 185;
             this.lblTopCust_9.Text = "CUSTOMER_9";
             // 
@@ -951,10 +951,10 @@
             this.lblTopCust_8.AutoSize = true;
             this.lblTopCust_8.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_8.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_8.Location = new System.Drawing.Point(379, 82);
+            this.lblTopCust_8.Location = new System.Drawing.Point(378, 82);
             this.lblTopCust_8.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_8.Name = "lblTopCust_8";
-            this.lblTopCust_8.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_8.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_8.TabIndex = 185;
             this.lblTopCust_8.Text = "CUSTOMER_8";
             // 
@@ -964,10 +964,10 @@
             this.lblTopCust_7.AutoSize = true;
             this.lblTopCust_7.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_7.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_7.Location = new System.Drawing.Point(379, 60);
+            this.lblTopCust_7.Location = new System.Drawing.Point(378, 60);
             this.lblTopCust_7.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_7.Name = "lblTopCust_7";
-            this.lblTopCust_7.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_7.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_7.TabIndex = 185;
             this.lblTopCust_7.Text = "CUSTOMER_7";
             // 
@@ -977,10 +977,10 @@
             this.lblTopCust_6.AutoSize = true;
             this.lblTopCust_6.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_6.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_6.Location = new System.Drawing.Point(379, 38);
+            this.lblTopCust_6.Location = new System.Drawing.Point(378, 38);
             this.lblTopCust_6.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCust_6.Name = "lblTopCust_6";
-            this.lblTopCust_6.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_6.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_6.TabIndex = 182;
             this.lblTopCust_6.Text = "CUSTOMER_6";
             // 
@@ -1165,10 +1165,10 @@
             this.lblTopCust_5.AutoSize = true;
             this.lblTopCust_5.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_5.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_5.Location = new System.Drawing.Point(39, 126);
+            this.lblTopCust_5.Location = new System.Drawing.Point(38, 126);
             this.lblTopCust_5.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_5.Name = "lblTopCust_5";
-            this.lblTopCust_5.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_5.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_5.TabIndex = 184;
             this.lblTopCust_5.Text = "CUSTOMER_5";
             // 
@@ -1178,10 +1178,10 @@
             this.lblTopCust_4.AutoSize = true;
             this.lblTopCust_4.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_4.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_4.Location = new System.Drawing.Point(39, 104);
+            this.lblTopCust_4.Location = new System.Drawing.Point(38, 104);
             this.lblTopCust_4.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_4.Name = "lblTopCust_4";
-            this.lblTopCust_4.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_4.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_4.TabIndex = 184;
             this.lblTopCust_4.Text = "CUSTOMER_4";
             // 
@@ -1191,10 +1191,10 @@
             this.lblTopCust_3.AutoSize = true;
             this.lblTopCust_3.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_3.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_3.Location = new System.Drawing.Point(39, 82);
+            this.lblTopCust_3.Location = new System.Drawing.Point(38, 82);
             this.lblTopCust_3.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_3.Name = "lblTopCust_3";
-            this.lblTopCust_3.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_3.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_3.TabIndex = 184;
             this.lblTopCust_3.Text = "CUSTOMER_3";
             // 
@@ -1204,10 +1204,10 @@
             this.lblTopCust_2.AutoSize = true;
             this.lblTopCust_2.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_2.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_2.Location = new System.Drawing.Point(39, 60);
+            this.lblTopCust_2.Location = new System.Drawing.Point(38, 60);
             this.lblTopCust_2.Margin = new System.Windows.Forms.Padding(3, 5, 3, 0);
             this.lblTopCust_2.Name = "lblTopCust_2";
-            this.lblTopCust_2.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_2.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_2.TabIndex = 184;
             this.lblTopCust_2.Text = "CUSTOMER_2";
             // 
@@ -1314,10 +1314,10 @@
             this.lblTopCust_1.AutoSize = true;
             this.lblTopCust_1.Font = new System.Drawing.Font("Segoe UI", 7F);
             this.lblTopCust_1.ForeColor = System.Drawing.Color.Gray;
-            this.lblTopCust_1.Location = new System.Drawing.Point(39, 38);
+            this.lblTopCust_1.Location = new System.Drawing.Point(38, 38);
             this.lblTopCust_1.Margin = new System.Windows.Forms.Padding(3, 5, 3, 2);
             this.lblTopCust_1.Name = "lblTopCust_1";
-            this.lblTopCust_1.Size = new System.Drawing.Size(78, 15);
+            this.lblTopCust_1.Size = new System.Drawing.Size(79, 15);
             this.lblTopCust_1.TabIndex = 172;
             this.lblTopCust_1.Text = "CUSTOMER_1";
             // 
@@ -2070,14 +2070,14 @@
             this.dgvStockAlert.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvStockAlert.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvStockAlert.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle5.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvStockAlert.DefaultCellStyle = dataGridViewCellStyle1;
             this.dgvStockAlert.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvStockAlert.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvStockAlert.Location = new System.Drawing.Point(5, 106);
@@ -2166,14 +2166,14 @@
             this.dgvUsage.ColumnHeadersBorderStyle = System.Windows.Forms.DataGridViewHeaderBorderStyle.Single;
             this.dgvUsage.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvUsage.Cursor = System.Windows.Forms.Cursors.Hand;
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle6.BackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle2.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvUsage.DefaultCellStyle = dataGridViewCellStyle2;
             this.dgvUsage.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dgvUsage.GridColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.dgvUsage.Location = new System.Drawing.Point(5, 106);

@@ -2824,6 +2824,7 @@ namespace FactoryManagementSoftware.UI
                     dgv.Rows[n].Cells[CodeColumnName].Value = itemCode;
                     dgv.Rows[n].Cells[NameColumnName].Value = itemName;
                     dgv.Rows[n].Cells[UnitColumnName].Value = itemUnit;
+                    dgv.Rows[n].Cells[NoteColumnName].Value = "[STOCK COUNT TALLY]";
 
                     if (diff < 0)
                     {

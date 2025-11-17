@@ -498,8 +498,8 @@ namespace FactoryManagementSoftware.UI
                     string itemCode = row[text.Header_PartCode].ToString();
                    
                     float balance = float.TryParse(row[monthbalanceheader].ToString(), out balance)? balance : 0;
-
-                    if (!string.IsNullOrEmpty(matType) && matType  != text.Cat_Part && stock != "-1" && itemCode != "INS FOAM C SET SMALL" && itemCode != "XTW4+10EEJ" && itemCode != "A38K1900 " && itemCode != "V44KBW4000" && itemCode != "C84KXQ000" && balance < 0)
+                    //PB 12 X 17 X 0.0035 V22ZBW000 V19ZG3000
+                    if (!string.IsNullOrEmpty(matType) && matType  != text.Cat_Part && stock != "-1" && itemCode != "PB 12 X 17 X 0.0035" && itemCode != "V22ZBW000" && itemCode != "V19ZG3000" && itemCode != "INS FOAM C SET SMALL" && itemCode != "XTW4+10EEJ" && itemCode != "A38K1900 " && itemCode != "V44KBW4000" && itemCode != "C84KXQ000" && balance < 0)
                     {
                         dt_MaterialList.ImportRow(row);
 
