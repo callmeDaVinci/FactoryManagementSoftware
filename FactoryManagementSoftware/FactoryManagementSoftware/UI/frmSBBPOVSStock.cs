@@ -521,6 +521,7 @@ namespace FactoryManagementSoftware.UI
             cbFillALL.Checked = false;
             cbFillALL.Text = text_FillAll;
 
+
         }
 
         private void LoadPOList()
@@ -575,8 +576,10 @@ namespace FactoryManagementSoftware.UI
                 DB_ITEM_ALL = dalItem.Select();
                 DB_PO_ACTIVE = dalSPP.ActivePOSelect();
                 DB_DO_ALL = dalSPP.DOSelect();//124ms
-                //dt_DOList = dalSPP.ActiveDOWithInfoSelect();//487ms
+                                              //dt_DOList = dalSPP.ActiveDOWithInfoSelect();//487ms
 
+                DB_PLAN = dalPlan.Select();
+                DB_JOIN = dalJoin.Select();
 
                 //dt_POList = dalSPP.POSelect();
                 //dt_DOList = dalSPP.DOWithInfoSelect();
@@ -1404,13 +1407,15 @@ namespace FactoryManagementSoftware.UI
             return parentCode;
         }
 
+        DataTable DB_PLAN;
+        DataTable DB_JOIN;
         private DataTable LoadMatPartList(DataTable dt_Product)
         {
             DataTable dt_MatPart = NewStockAlertTable();
-            DataTable dt_Plan = dalPlan.Select();
+            //DataTable dt_Plan = dalPlan.Select();
 
             int index = 1;
-            DataTable dtJoin = dalJoin.Select();
+            //DataTable dtJoin = dalJoin.Select();
 
             foreach (DataRow row in dt_Product.Rows)
             {
@@ -1420,14 +1425,14 @@ namespace FactoryManagementSoftware.UI
 
                 if (itemCode[7].ToString() == "E" && itemCode[8].ToString() != "C" && itemCode[10].ToString() != "9" && itemCode[10].ToString() != "1")
                 {
-                    parentCode = GetChildCode(dtJoin, row[header_ItemCode].ToString());
+                    parentCode = GetChildCode(DB_JOIN, row[header_ItemCode].ToString());
                 }
 
                 int stillNeed = int.TryParse(row[header_BalAfter].ToString(), out stillNeed) ? stillNeed : 0;
 
                 stillNeed = stillNeed > 0 ? 0 : stillNeed * -1;
              
-                foreach (DataRow rowJoin in dtJoin.Rows)
+                foreach (DataRow rowJoin in DB_JOIN.Rows)
                 {
                     if (rowJoin[dalJoin.ParentCode].ToString() == parentCode)
                     {
@@ -1571,7 +1576,7 @@ namespace FactoryManagementSoftware.UI
         private void UpdateBalAfterDelivery()
         {
             DataTable dt = (DataTable)dgvList.DataSource;
-
+            //stopAfterBalUpdate = true;
             int rowIndex = 0;
             int TotalAssemblyNeededInBags = 0;
             int TotalAssemblyNeededInPcs = 0;
@@ -1688,6 +1693,8 @@ namespace FactoryManagementSoftware.UI
 
             CheckIfAssemblyNeeded(dt);
             lblAssemblyNeeded.Text += " (" + TotalAssemblyNeededInBags + " bags / " + TotalAssemblyNeededInPcs + " pcs)";
+            //stopAfterBalUpdate = false;
+
         }
 
         private void UpdateBalAfterDelivery(int row)
