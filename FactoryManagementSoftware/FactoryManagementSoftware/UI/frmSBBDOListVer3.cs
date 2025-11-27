@@ -8755,7 +8755,8 @@ namespace FactoryManagementSoftware.UI
                             int indexNo = 1;
                             string previousPO = "";
 
-                            decimal subTotal = 0;
+                            decimal subTotalNeedSST = 0;
+                            decimal subTotalNoNeedSST = 0;
                             decimal SST = 0;
                             decimal totalAmount = 0;
 
@@ -9120,31 +9121,44 @@ namespace FactoryManagementSoftware.UI
                                         InsertToSheet(xlWorkSheet, RowToInsert, DiscRate.ToString("N2"));
 
                                         //net amount
-                                        //decimal netAmount = deliveryQty * unitPrice * (100 - DiscRate) / 100;
                                         decimal netAmount = Math.Round(deliveryQty * unitPrice * (100 - DiscRate) / 100, 2);
 
                                         RowToInsert = "u" + (itemRowOffset + rowNo).ToString() + ":w" + (itemRowOffset + rowNo).ToString();
+
                                         InsertToSheet(xlWorkSheet, RowToInsert, netAmount.ToString("N2"));
 
                                         //sub amount
-                                        subTotal += netAmount;
+                                        //subTotal += netAmount;
+                                        //decimal subTotalNeedSST = 0;
+                                        //decimal subTotalNoNeedSST = 0;
+
+                                        if (itemCode == "(OK) SP323" || itemCode == "(OK) SJ360B" || itemCode == "(OK) SJ360S")
+                                        {
+                                            subTotalNoNeedSST += netAmount;
+                                        }
+                                        else
+                                        {
+                                            subTotalNeedSST += netAmount;
+                                        }
 
                                         //DateTime cutoffDate = new DateTime(2025, 6, 30); // 30 June 2025
 
                                         if (!DONoString.Contains("NB2025"))
                                         {
-                                            SST = subTotal * 0.05m;
+                                            SST = subTotalNeedSST * 0.05m;
                                         }
                                         else
                                         {
                                             SST = 0;
                                         }
+                                        
 
-                                        totalAmount = SST + subTotal;
+                                        totalAmount = SST + subTotalNeedSST + subTotalNoNeedSST;
 
+                                        decimal totalBeforeSST = subTotalNoNeedSST + subTotalNeedSST;
 
                                         InsertToSheet(xlWorkSheet, "a38:a38", ConvertAmountToWords(Math.Round(totalAmount, 2)));
-                                        InsertToSheet(xlWorkSheet, areaSubTotalAmount, subTotal.ToString("N2"));
+                                        InsertToSheet(xlWorkSheet, areaSubTotalAmount, totalBeforeSST.ToString("N2"));
                                         InsertToSheet(xlWorkSheet, areaSSTAmount, SST.ToString("N2"));
                                         InsertToSheet(xlWorkSheet, areaTotalAmount, totalAmount.ToString("N2"));
 
@@ -10048,8 +10062,16 @@ namespace FactoryManagementSoftware.UI
                             autoCountRow["YourPONo"] = (PONo == Text_MultiPOCode) ? "Multiple Pos" : PONo; // Fixed: Multiple Pos when multiple po no
                             autoCountRow["Desc2"] = (PONo == Text_MultiPOCode) ? currentPONo : ""; // Invoice po no when multiple po no
                             autoCountRow["CurrencyCode"] = "MYR";                       // Fixed value
-                            autoCountRow["UOM"] = "PC";                                 // Fixed value
-                            autoCountRow["TaxCode"] = DONoString.Contains("NB")? "S-0" : "S-5";                            // Fixed value
+                            autoCountRow["UOM"] = "PC";
+
+                            string taxCode = DONoString.Contains("NB") ? "S-0" : "S-5";
+
+                            if (itemCode == "(OK) SP323" || itemCode == "(OK) SJ360B" || itemCode == "(OK) SJ360S")
+                            {
+                                taxCode = "S-0";
+                            }
+
+                            autoCountRow["TaxCode"] = taxCode;                            // Fixed value
                             autoCountRow["OurDONo"] = "'" + DONoString;                       // DO Number
                             autoCountRow["Cancelled"] = "";                             // Leave blank
 

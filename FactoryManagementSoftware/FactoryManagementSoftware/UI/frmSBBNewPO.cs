@@ -2357,17 +2357,27 @@ namespace FactoryManagementSoftware.UI
         private void UpdateTotalPrice()
         {
             DataTable dt = (DataTable)dgvPOItemList.DataSource;
+            decimal totalPriceNeedSST = 0;
+            decimal totalPriceNoNeedSST = 0;
             decimal totalPrice = 0;
 
-            if(dt != null)
+            if (dt != null)
             foreach(DataRow row in dt.Rows)
             {
                 string dataMode = row[header_DataMode].ToString();
+                string itemCode = row[header_Code].ToString();
 
-                if(dataMode != text_ToRemove)
+                    if (dataMode != text_ToRemove)
                 {
-                    totalPrice += decimal.TryParse(row[header_Total].ToString(), out decimal subTotal) ? subTotal : 0;
-                }
+                        if (itemCode == "(OK) SP323" || itemCode == "(OK) SJ360B" || itemCode == "(OK) SJ360S")
+                        {
+                            totalPriceNoNeedSST += decimal.TryParse(row[header_Total].ToString(), out decimal subTotal) ? subTotal : 0;
+                        }
+                        else
+                        {
+                            totalPriceNeedSST += decimal.TryParse(row[header_Total].ToString(), out decimal subTotal) ? subTotal : 0;
+                        }
+                    }
                
             }
 
@@ -2375,10 +2385,10 @@ namespace FactoryManagementSoftware.UI
 
             if(cbAddSST.Checked)
             {
-                SST = totalPrice * 0.05m;
+                SST = totalPriceNeedSST * 0.05m;
             }
 
-            totalPrice += SST;
+            totalPrice = SST + totalPriceNeedSST + totalPriceNoNeedSST;
 
             totalPrice = decimal.Round(totalPrice, 2, MidpointRounding.AwayFromZero);
 
